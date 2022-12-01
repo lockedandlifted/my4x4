@@ -32,6 +32,65 @@ model Account {
   @@map("accounts")
 }
 
+model Image {
+  id               String  @id @default(uuid())
+  fileKey          String  @map("file_key")
+  filename         String
+  originalFilename String  @map("original_filename")
+  user             User?   @relation(fields: [userId], references: [id])
+  userId           String? @map("user_id")
+  title            String?
+  description      String? @db.Text()
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  projectImages ProjectsImage[]
+
+  @@map("images")
+}
+
+model Project {
+  id    String @id @default(uuid())
+  title String
+  slug  String @unique
+
+  projectImages ProjectsImage[]
+  projectUsers  ProjectsUser[]
+
+  @@map("projects")
+}
+
+model ProjectsImage {
+  id        String  @id @default(uuid())
+  project   Project @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId String  @map("project_id")
+  image     Image   @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  imageId   String  @map("image_id")
+  sort      Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([projectId, imageId])
+  @@map("projects_images")
+}
+
+model ProjectsUser {
+  id        String  @id @default(uuid())
+  project   Project @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId String  @map("project_id")
+  user      User    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId    String  @map("user_id")
+  sort      Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([projectId, userId])
+  @@map("projects_users")
+}
+
 model Session {
   id           String   @id @default(uuid())
   sessionToken String   @unique @map("session_token")
@@ -48,8 +107,11 @@ model User {
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
-  accounts      Account[]
-  sessions      Session[]
+
+  accounts     Account[]
+  sessions     Session[]
+  images       Image[]
+  projectUsers ProjectsUser[]
 
   @@map("users")
 }
