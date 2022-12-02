@@ -1,12 +1,12 @@
 import { Flex } from '@chakra-ui/react'
 
-import DefaultLayout from '@layouts/MobileLayout'
+import MobileLayout from '@layouts/MobileLayout'
 
 const SearchPage = () => {
   return (
-    <DefaultLayout>
+    <MobileLayout>
       <Flex width="100%">Search</Flex>
-    </DefaultLayout>
+    </MobileLayout>
   )
 }
 

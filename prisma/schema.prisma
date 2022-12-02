@@ -105,6 +105,7 @@ model User {
   id            String    @id @default(uuid())
   name          String?
   email         String?   @unique
+  username      String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
 

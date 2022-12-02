@@ -1,14 +1,14 @@
 import { Flex } from '@chakra-ui/react'
 import Head from 'next/head'
 
-// import Footer from '@components/Footer/Footer'
-// import Header from '@components/Header/Header'
+import Footer from '@components/Footer'
+import Header from '@components/Header'
 
-interface DefaultLayoutProps {
+interface MobileLayoutProps {
   children: React.ReactNode
 }
 
-const DefaultLayout = (props: DefaultLayoutProps) => {
+const MobileLayout = (props: MobileLayoutProps) => {
   const { children } = props
 
   return (
@@ -19,15 +19,17 @@ const DefaultLayout = (props: DefaultLayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* <Header /> */}
+      <Flex flexDirection="column" width={['100%', 600]}>
+        <Header />
 
-      <Flex width={['100%', 600]}>
-        {children}
+        <Flex flexDirection="column" padding="4" width="100%">
+          {children}
+        </Flex>
+
+        <Footer />
       </Flex>
-
-      {/* <Footer /> */}
     </Flex>
   )
 }
 
-export default DefaultLayout
+export default MobileLayout

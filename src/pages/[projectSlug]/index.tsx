@@ -3,18 +3,21 @@ import { Flex } from '@chakra-ui/react'
 
 import { trpc } from "@utils/trpc"
 
-import DefaultLayout from '@layouts/MobileLayout'
+import MobileLayout from '@layouts/MobileLayout'
 
 const BuildPage = () => {
   const { query: { projectSlug } } = useRouter()
 
-  const projectsQuery = trpc.projects.getProject.useQuery({ slug: projectSlug }, { enabled: !!projectSlug },)
-  console.log(projectsQuery)
+  const projectQuery = trpc.projects.getProjectBySlug.useQuery(
+    { slug: projectSlug },
+    { enabled: !!projectSlug },
+  )
+  console.log(projectQuery)
 
   return (
-    <DefaultLayout>
+    <MobileLayout>
       <Flex width="100%">{projectSlug}</Flex>
-    </DefaultLayout>
+    </MobileLayout>
   )
 }
 
