@@ -7,9 +7,9 @@ const Header = () => {
   return (
     <Flex
       alignItems="center"
-      borderBottom="1px dashed"
       height="64px"
       justifyContent={['center']}
+      marginBottom="6"
       paddingX={[4, 8]}
       width="100%"
     >
