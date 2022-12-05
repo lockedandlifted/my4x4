@@ -30,6 +30,10 @@ const manufacturers: Prisma.ManufacturerCreateArgs['data'][] = [
     key: 'jeep',
     title: 'Jeep',
   },
+  {
+    key: 'volkswagen',
+    title: 'Volkswagen',
+  },
 ]
 
 const seedFn = (prisma: PrismaClient) => {
@@ -40,7 +44,7 @@ const seedFn = (prisma: PrismaClient) => {
       create: data,
     })
 
-    console.log(record)
+    return record
   })
 }
 

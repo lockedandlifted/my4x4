@@ -55,7 +55,19 @@ model Manufacturer {
   key   String @unique
   title String
 
+  manufacturerModels ManufacturerModel[]
+
   @@map("manufacturers")
+}
+
+model ManufacturerModel {
+  id             String       @id @default(uuid())
+  manufacturer   Manufacturer @relation(fields: [manufacturerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerId String       @map("manufacturer_id")
+  key            String       @unique
+  title          String
+
+  @@map("manufacturer_models")
 }
 
 model Project {
