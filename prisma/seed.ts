@@ -1,4 +1,4 @@
-import { prisma } from '../src/server/db/client.js'
+import prisma from '../src/server/db/client.js'
 
 import manufacturerSeedFn from './seeds/manufacturers.js'
 import manufacturerModelSeedFn from './seeds/manufacturerModels.js'
