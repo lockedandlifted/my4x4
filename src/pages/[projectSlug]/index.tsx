@@ -12,7 +12,6 @@ const BuildPage = () => {
     { slug: projectSlug },
     { enabled: !!projectSlug },
   )
-  console.log(projectQuery)
 
   return (
     <MobileLayout>

@@ -22,8 +22,6 @@ const ProfilePage = () => {
   )
   const { data: projects } = userProjectsQuery
 
-  console.log(projects)
-
   return (
     <MobileLayout>
       <Flex flexDirection="column">

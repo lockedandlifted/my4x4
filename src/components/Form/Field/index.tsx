@@ -14,8 +14,6 @@ type FieldProps = {
 const Field = (props: FieldProps) => {
   const { children, label, labelRight, ...restProps } = props
 
-  console.log(restProps)
-
   return (
     <Flex className={styles.root} flexDirection="column" width="100%" {...restProps}>
       <Flex alignItems="center" width="100%">
