@@ -50,6 +50,14 @@ model Image {
   @@map("images")
 }
 
+model Manufacturer {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  @@map("manufacturers")
+}
+
 model Project {
   id    String @id @default(uuid())
   title String
