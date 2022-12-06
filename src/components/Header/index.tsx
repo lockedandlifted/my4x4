@@ -14,7 +14,7 @@ const Header = () => {
       width="100%"
     >
       <Link href="/">
-        <Image priority src={LogoUrl} height={30} width={82} alt="MY4X4 Logo" />
+        <Image priority src={LogoUrl} width={82} alt="MY4X4 Logo" />
       </Link>
     </Flex>
   )

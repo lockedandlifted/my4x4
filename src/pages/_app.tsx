@@ -2,6 +2,7 @@ import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { ChakraProvider } from '@chakra-ui/provider';
+import { Toaster } from 'react-hot-toast'
 
 import theme from '@utils/theme'
 
@@ -15,6 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
+        <Toaster />
       </ChakraProvider>
     </SessionProvider>
   );
