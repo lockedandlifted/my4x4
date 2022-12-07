@@ -62,7 +62,7 @@ const Field = (props: FieldProps) => {
       </Flex>
 
       <Flex flexDirection="column" marginTop="1" width="100%">
-        {React.cloneElement(children as React.ReactElement<any>, {
+        {React.cloneElement(children as React.ReactElement, {
           autoComplete: "off",
           color: (!field.value) ? 'gray.400' : 'gray.900',
           id: name,
