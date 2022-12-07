@@ -1,6 +1,3 @@
 {
-  "buildCommand": "npm run build && npm run ci:migrate && npm run ci:seed",
-  "outputDirectory": "dist",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install"
+  "buildCommand": "npm run build && npm run ci:migrate && npm run ci:seed"
 }
