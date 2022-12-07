@@ -56,7 +56,7 @@ const ProjectForm = (props: ProjectFormProps) => {
             <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
           )}
           marginTop={Form.Field.MARGIN_TOP}
-          name="year"
+          name="yearManufactured"
           validationRules={{ required: false }}
         >
           <input type="number" min="1950" max="2099" step="1" />
@@ -70,6 +70,15 @@ const ProjectForm = (props: ProjectFormProps) => {
           marginTop={Form.Field.MARGIN_TOP}
           name="colour"
           validationRules={{ required: false }}
+        >
+          <input />
+        </Form.Field>
+
+        <Form.Field
+          label="Title"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="title"
+          validationRules={{ required: true }}
         >
           <input />
         </Form.Field>

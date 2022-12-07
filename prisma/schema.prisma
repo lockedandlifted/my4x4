@@ -32,6 +32,19 @@ model Account {
   @@map("accounts")
 }
 
+model Attribute {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  projectsAttributes ProjectsAttribute[]
+
+  @@map("attributes")
+}
+
 model Image {
   id               String  @id @default(uuid())
   fileKey          String  @map("file_key")
@@ -55,6 +68,9 @@ model Manufacturer {
   key   String @unique
   title String
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
   manufacturerModels ManufacturerModel[]
 
   @@map("manufacturers")
@@ -67,6 +83,11 @@ model ManufacturerModel {
   key            String       @unique
   title          String
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  projects Project[]
+
   @@map("manufacturer_models")
 }
 
@@ -75,10 +96,32 @@ model Project {
   title String
   slug  String @unique
 
-  projectImages ProjectsImage[]
-  projectUsers  ProjectsUser[]
+  manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerModelId String            @map("manufacturer_model_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  projectsAttributes ProjectsAttribute[]
+  projectImages      ProjectsImage[]
+  projectUsers       ProjectsUser[]
 
   @@map("projects")
+}
+
+model ProjectsAttribute {
+  id          String    @id @default(uuid())
+  project     Project   @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId   String    @map("project_id")
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  attributeId String    @map("attribute_id")
+  value       String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([projectId, attributeId])
+  @@map("projects_attributes")
 }
 
 model ProjectsImage {
@@ -128,6 +171,9 @@ model User {
   username      String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 
   accounts     Account[]
   sessions     Session[]
