@@ -1,7 +1,6 @@
-import cuid from 'cuid'
-import { getCookie, setCookie } from 'cookies-next'
-
 import type { GetServerSideProps } from 'next'
+
+import setTemporaryUserIdCookie from '@utils/setTemporaryUserIdCookie'
 
 import MobileLayout from '@layouts/MobileLayout'
 
@@ -18,13 +17,7 @@ const NewProjectPage = (props: { temporaryUserId: string }) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res } = context
-
-  const cookieKey = 'my4x4-temporary-user-id'
-  const temporaryUserId = getCookie(cookieKey, { req, res }) ?? cuid()
-
-  setCookie(cookieKey, temporaryUserId, { req, res, maxAge: 86400 * 31 }) // Expires in 31 days
-
+  const temporaryUserId = setTemporaryUserIdCookie(context)
   return { props: { temporaryUserId } }
 }
 

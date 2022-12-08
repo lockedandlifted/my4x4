@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import cuid from 'cuid'
 
-import type { Manufacturer, ManufacturerModel, Project } from '@prisma/client'
+import type { Manufacturer, ManufacturerModel, Project, ProjectsAttribute } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 import { kebabCase } from '@utils/string'
@@ -60,9 +60,32 @@ const createProject = (params: CreateProjectParams) => {
   return mutation.mutate(updatedData)
 }
 
-type ProjectAttribute = {
-  key: string,
-  value: string,
+type UpdateProjectParams = {
+  data: typeof defaultState,
+  mutation: {
+    mutate: (data: typeof defaultState) => void,
+  },
+  project?: Project,
+}
+
+const updateProject = (params: UpdateProjectParams) => {
+  const { data, mutation, project } = params
+
+  const updatedData = {
+    ...data,
+    id: project?.id,
+  }
+
+  if (data.attributes){
+    updatedData.projectsAttributes = Object.keys(data.attributes).map((attributeKey) => {
+      return {
+        key: attributeKey,
+        value: data.attributes[attributeKey],
+      }
+    })
+  }
+
+  return mutation.mutate(updatedData)
 }
 
 type DefaultState = {
@@ -73,7 +96,7 @@ type DefaultState = {
   },
   manufacturerId: string,
   manufacturerModelId: string,
-  projectsAttributes: ProjectAttribute[],
+  projectsAttributes: { key: string, value: string }[],
   slug: string,
   title: string,
 }
@@ -93,11 +116,25 @@ const defaultState: DefaultState = {
 
 const setupProjectInitialState = (project: Project) => {
   const initialState = Object.keys(defaultState).reduce((acc, key) => {
-    acc[key] = project[key] || ''
+    acc[key] = project[key] || defaultState[key]
     return acc
-  }, {})
+  }, { ...defaultState })
 
-  console.log(initialState)
+  if (project.manufacturerModel?.manufacturer){
+    initialState.manufacturerId = project.manufacturerModel?.manufacturer.id
+  }
+
+  if (project.projectsAttributes){
+    initialState.projectsAttributes = []
+
+    project.projectsAttributes.forEach((projectsAttribute: ProjectsAttribute) => {
+      const { attribute, value } = projectsAttribute
+
+      if (attribute?.key){
+        initialState.attributes[attribute.key] = value
+      }
+    })
+  }
 
   return initialState
 }
@@ -110,14 +147,10 @@ type UseProjectFormOptions = {
 function useProjectForm(options: UseProjectFormOptions){
   const { project, temporaryUserId } = options ?? {}
 
-  if (project?.id){
-    setupProjectInitialState(project)
-  }
-
   const router = useRouter()
 
   const formPayload = useForm({
-    defaultValues: project?.id ? {} : defaultState,
+    defaultValues: project?.id ? setupProjectInitialState(project) : defaultState,
     mode: "onChange",
   })
 
@@ -162,14 +195,22 @@ function useProjectForm(options: UseProjectFormOptions){
   // Create Mutation
   const createProjectMutation = trpc.projects.createProject.useMutation({
     onSuccess: (data) => {
-      const { slug } = data
-      router.push(`/${slug}`)
+      const { id } = data
+      router.push(`/projects/${id}/edit`)
     },
+  })
+
+  // Update Mutation
+  const updateProjectMutation = trpc.projects.updateProjectById.useMutation({
+    onSuccess: (data) => {
+      console.log(data)
+    }
   })
 
   return {
     callbacks: {
-      submitForm: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation, temporaryUserId }),
+      createProject: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation, temporaryUserId }),
+      updateProject: (data: typeof defaultState) => updateProject({ data, mutation: updateProjectMutation, project }),
     },
     formPayload,
     manufacturerId,
@@ -178,6 +219,7 @@ function useProjectForm(options: UseProjectFormOptions){
     manufacturerModels,
     mutations: {
       createProject: createProjectMutation,
+      updateProject: updateProjectMutation,
     },
     project,
   }

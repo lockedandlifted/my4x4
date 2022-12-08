@@ -17,7 +17,10 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const projectFormPayload = useProjectForm({ project, temporaryUserId })
   const {
-    callbacks,
+    callbacks: {
+      createProject: createFn,
+      updateProject: updateFn,
+    },
     formPayload,
     manufacturers,
     manufacturerModels,
@@ -27,7 +30,12 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   return (
     <Flex width="100%">
-      <Form callbacks={callbacks} formPayload={formPayload}>
+      <Form
+        callbacks={{
+          submitForm: project?.id ? updateFn : createFn,
+        }}
+        formPayload={formPayload}
+      >
         <Heading fontWeight="medium" size="lg">
           {project?.id ? 'Edit' : 'Add'} Your Build
         </Heading>

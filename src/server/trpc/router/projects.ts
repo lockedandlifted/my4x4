@@ -1,6 +1,44 @@
-import { z } from "zod";
+import { z } from 'zod'
 
-import { router, publicProcedure } from "../trpc";
+import { router, publicProcedure } from '../trpc'
+
+type ProjectsAttribute = {
+  attribute: {
+    connect: {
+      key: string,
+    },
+  },
+  value?: string,
+}
+
+const mapCreateProjectsAttributes = (
+  input: {
+    projectsAttributes: { key: string, value: string }[],
+  }
+) => {
+  const projectsAttributes: ProjectsAttribute[] = []
+
+  if (!input.projectsAttributes){
+    return projectsAttributes
+  }
+
+  input.projectsAttributes.forEach((projectsAttribute) => {
+    const { key, value } = projectsAttribute
+
+    if (key && value){
+      projectsAttributes.push({
+        attribute: {
+          connect: {
+            key,
+          },
+        },
+        value,
+      })
+    }
+  })
+
+  return projectsAttributes
+}
 
 export const projectsRouter = router({
   createProject: publicProcedure
@@ -15,22 +53,6 @@ export const projectsRouter = router({
       temporaryUserId: z.string(),
     }))
     .mutation(({ ctx, input }) => {
-      let projectsAttributes = undefined
-      if (input.projectsAttributes){
-        projectsAttributes = input.projectsAttributes.map((projectsAttribute) => {
-          const { key, value } = projectsAttribute
-
-          return {
-            attribute: {
-              connect: {
-                key,
-              },
-            },
-            value,
-          }
-        })
-      }
-
       return ctx.prisma.project.create({
         data: {
           manufacturerModelId: input.manufacturerModelId,
@@ -38,7 +60,7 @@ export const projectsRouter = router({
           temporaryUserId: input.temporaryUserId,
           title: input.title,
           projectsAttributes: {
-            create: projectsAttributes,
+            create: mapCreateProjectsAttributes(input),
           },
         },
         include: {
@@ -82,6 +104,11 @@ export const projectsRouter = router({
           id: input.id,
         },
         include: {
+          manufacturerModel: {
+            include: {
+              manufacturer: true,
+            },
+          },
           projectsAttributes: {
             include: {
               attribute: true,
@@ -100,6 +127,11 @@ export const projectsRouter = router({
           slug: input.slug,
         },
         include: {
+          manufacturerModel: {
+            include: {
+              manufacturer: true,
+            },
+          },
           projectsAttributes: {
             include: {
               attribute: true,
@@ -108,4 +140,46 @@ export const projectsRouter = router({
         },
       })
     }),
+    updateProjectById: publicProcedure
+      .input(z.object({
+        id: z.string(),
+        manufacturerModelId: z.string(),
+        projectsAttributes: z.array(z.object({
+          key: z.string(),
+          value: z.string(),
+        })),
+        slug: z.string(),
+        title: z.string(),
+      }))
+      .mutation(({ ctx, input }) => {
+        return ctx.prisma.$transaction([
+          // Delete existing attributes
+          ctx.prisma.projectsAttribute.deleteMany({
+            where: {
+              projectId: input.id,
+            },
+          }),
+          // Update project
+          ctx.prisma.project.update({
+            where: {
+              id: input.id,
+            },
+            data: {
+              manufacturerModelId: input.manufacturerModelId,
+              slug: input.slug,
+              title: input.title,
+              projectsAttributes: {
+                create: mapCreateProjectsAttributes(input),
+              },
+            },
+            include: {
+              projectsAttributes: {
+                include: {
+                  attribute: true,
+                },
+              },
+            },
+          }),
+        ])
+      }),
 })
