@@ -34,6 +34,34 @@ const manufacturers: Prisma.ManufacturerCreateArgs['data'][] = [
     key: 'volkswagen',
     title: 'Volkswagen',
   },
+  {
+    key: 'suzuki',
+    title: 'Suzuki',
+  },
+  {
+    key: 'ram',
+    title: 'Ram',
+  },
+  {
+    key: 'land_rover',
+    title: 'Land Rover',
+  },
+  {
+    key: 'gmg',
+    title: 'GMC',
+  },
+  {
+    key: 'chevrolet',
+    title: 'Chevrolet',
+  },
+  {
+    key: 'daihatsu',
+    title: 'Daihatsu',
+  },
+  {
+    key: 'holden',
+    title: 'Holden',
+  },
 ]
 
 const seedFn = (prisma: PrismaClient) => {
