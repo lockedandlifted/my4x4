@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
 import cuid from 'cuid'
 
 import type { Manufacturer, ManufacturerModel, Project } from '@prisma/client'
@@ -32,15 +33,17 @@ const buildProjectTitle = (params: BuildProjectTitleParams) => {
 type CreateProjectParams = {
   data: typeof defaultState,
   mutation: {
-    mutate: (data: typeof defaultState) => void,
+    mutate: (data: typeof defaultState & { temporaryUserId: string }) => void,
   },
+  temporaryUserId: string,
 }
 
 const createProject = (params: CreateProjectParams) => {
-  const { data, mutation } = params
+  const { data, mutation, temporaryUserId } = params
 
   const updatedData = {
     ...data,
+    temporaryUserId,
   }
 
   if (data.colour){
@@ -57,7 +60,7 @@ const createProject = (params: CreateProjectParams) => {
     })
   }
 
-  mutation.mutate(updatedData)
+  return mutation.mutate(updatedData)
 }
 
 type ProjectAttribute = {
@@ -85,7 +88,16 @@ const defaultState: DefaultState = {
   yearManufactured: '',
 }
 
-function useProjectForm(project?: Project){
+type UseProjectFormOptions = {
+  project?: Project,
+  temporaryUserId: string,
+}
+
+function useProjectForm(options: UseProjectFormOptions){
+  const { project, temporaryUserId } = options ?? {}
+
+  const router = useRouter()
+
   const formPayload = useForm({
     defaultValues: defaultState,
     mode: "onChange",
@@ -128,15 +140,23 @@ function useProjectForm(project?: Project){
   }, [selectedManufacturer, selectedManufacturerModel, setValue, yearManufactured])
 
   // Create Mutation
-  const createProjectMutation = trpc.projects.createProject.useMutation()
+  const createProjectMutation = trpc.projects.createProject.useMutation({
+    onSuccess: (data) => {
+      const { slug } = data
+      router.push(`/${slug}`)
+    },
+  })
 
   return {
     callbacks: {
-      submitForm: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation }),
+      submitForm: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation, temporaryUserId }),
     },
     formPayload,
     manufacturers,
     manufacturerModels,
+    mutations: {
+      createProject: createProjectMutation,
+    },
     project,
   }
 }

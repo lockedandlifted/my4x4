@@ -8,8 +8,6 @@ import { trpc } from "../utils/trpc";
 const styles = {}
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>
@@ -45,9 +43,6 @@ const Home: NextPage = () => {
             </Link>
           </div>
           <div className={styles.showcaseContainer}>
-            <p className={styles.showcaseText}>
-              {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-            </p>
             <AuthShowcase />
           </div>
         </div>

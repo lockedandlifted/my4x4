@@ -9,12 +9,13 @@ import useProjectForm from './hooks/useProjectForm'
 
 type ProjectFormProps = {
   project?: Project,
+  temporaryUserId: string,
 }
 
 const ProjectForm = (props: ProjectFormProps) => {
-  const { project } = props
+  const { project, temporaryUserId } = props
 
-  const projectFormPayload = useProjectForm(project)
+  const projectFormPayload = useProjectForm({ project, temporaryUserId })
   const { callbacks, formPayload, manufacturers, manufacturerModels } = projectFormPayload
 
   return (

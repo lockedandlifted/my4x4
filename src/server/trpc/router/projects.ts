@@ -12,6 +12,7 @@ export const projectsRouter = router({
       })),
       slug: z.string(),
       title: z.string(),
+      temporaryUserId: z.string(),
     }))
     .mutation(({ ctx, input }) => {
       let projectsAttributes = undefined
@@ -34,6 +35,7 @@ export const projectsRouter = router({
         data: {
           manufacturerModelId: input.manufacturerModelId,
           slug: input.slug,
+          temporaryUserId: input.temporaryUserId,
           title: input.title,
           projectsAttributes: {
             create: projectsAttributes,

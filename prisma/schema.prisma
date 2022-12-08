@@ -92,9 +92,11 @@ model ManufacturerModel {
 }
 
 model Project {
-  id    String @id @default(uuid())
-  title String
-  slug  String @unique
+  id              String  @id @default(uuid())
+  title           String
+  slug            String  @unique
+  published       Boolean @default(false)
+  temporaryUserId String? @map("temporary_user_id")
 
   manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   manufacturerModelId String            @map("manufacturer_model_id")
