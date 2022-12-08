@@ -172,6 +172,8 @@ function useProjectForm(options: UseProjectFormOptions){
       submitForm: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation, temporaryUserId }),
     },
     formPayload,
+    manufacturerId,
+    manufacturerModelId,
     manufacturers,
     manufacturerModels,
     mutations: {

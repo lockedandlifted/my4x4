@@ -16,7 +16,14 @@ const ProjectForm = (props: ProjectFormProps) => {
   const { project, temporaryUserId } = props
 
   const projectFormPayload = useProjectForm({ project, temporaryUserId })
-  const { callbacks, formPayload, manufacturers, manufacturerModels } = projectFormPayload
+  const {
+    callbacks,
+    formPayload,
+    manufacturers,
+    manufacturerModels,
+    manufacturerModelId,
+    manufacturerId,
+  } = projectFormPayload
 
   return (
     <Flex width="100%">
@@ -40,61 +47,67 @@ const ProjectForm = (props: ProjectFormProps) => {
           </select>
         </Form.Field>
 
-        <Form.Field label="Model" marginTop={Form.Field.MARGIN_TOP} name="manufacturerModelId" validationRules={{ required: true }}>
-          <select>
-            <option value="">Please Select...</option>
-            {manufacturerModels.map((manufacturerModel) => (
-              <option key={manufacturerModel.id} value={manufacturerModel.id}>
-                {manufacturerModel.title}
-              </option>
-            ))}
-          </select>
-        </Form.Field>
+        {!!manufacturerId && (
+          <Form.Field label="Model" marginTop={Form.Field.MARGIN_TOP} name="manufacturerModelId" validationRules={{ required: true }}>
+            <select>
+              <option value="">Please Select...</option>
+              {manufacturerModels.map((manufacturerModel) => (
+                <option key={manufacturerModel.id} value={manufacturerModel.id}>
+                  {manufacturerModel.title}
+                </option>
+              ))}
+            </select>
+          </Form.Field>
+        )}
 
-        <Form.Field
-          label="Series"
-          labelRight={(
-            <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
-          )}
-          marginTop={Form.Field.MARGIN_TOP}
-          name="attributes.model_series"
-          validationRules={{ required: false }}
-        >
-          <input />
-        </Form.Field>
+        {!!manufacturerModelId && (
+          <>
+            <Form.Field
+              label="Series"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              marginTop={Form.Field.MARGIN_TOP}
+              name="attributes.model_series"
+              validationRules={{ required: false }}
+            >
+              <input />
+            </Form.Field>
 
-        <Form.Field
-          label="Year"
-          labelRight={(
-            <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
-          )}
-          marginTop={Form.Field.MARGIN_TOP}
-          name="attributes.year_manufactured"
-          validationRules={{ required: false }}
-        >
-          <input type="number" min="1950" max="2099" step="1" />
-        </Form.Field>
+            <Form.Field
+              label="Year"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              marginTop={Form.Field.MARGIN_TOP}
+              name="attributes.year_manufactured"
+              validationRules={{ required: false }}
+            >
+              <input type="number" min="1950" max="2099" step="1" />
+            </Form.Field>
 
-        <Form.Field
-          label="Colour"
-          labelRight={(
-            <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
-          )}
-          marginTop={Form.Field.MARGIN_TOP}
-          name="attributes.colour"
-          validationRules={{ required: false }}
-        >
-          <input />
-        </Form.Field>
+            <Form.Field
+              label="Colour"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              marginTop={Form.Field.MARGIN_TOP}
+              name="attributes.colour"
+              validationRules={{ required: false }}
+            >
+              <input />
+            </Form.Field>
 
-        <Form.Field
-          label="Title"
-          marginTop={Form.Field.MARGIN_TOP}
-          name="title"
-          validationRules={{ required: true }}
-        >
-          <input />
-        </Form.Field>
+            <Form.Field
+              label="Title"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="title"
+              validationRules={{ required: true }}
+            >
+              <input />
+            </Form.Field>
+          </>
+        )}
 
         <Button marginTop="4" type="submit">Next Step</Button>
       </Form>
