@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast'
 
 import theme from '@utils/theme'
 
-import { trpc } from "../utils/trpc";
+import { trpc } from "@utils/trpc";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
