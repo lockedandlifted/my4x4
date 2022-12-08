@@ -72,6 +72,24 @@ export const projectsRouter = router({
         },
       })
     }),
+  getProjectById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.project.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          projectsAttributes: {
+            include: {
+              attribute: true,
+            },
+          },
+        },
+      })
+    }),
   getProjectBySlug: publicProcedure
     .input(z.object({
       slug: z.string(),
@@ -80,6 +98,13 @@ export const projectsRouter = router({
       return ctx.prisma.project.findUnique({
         where: {
           slug: input.slug,
+        },
+        include: {
+          projectsAttributes: {
+            include: {
+              attribute: true,
+            },
+          },
         },
       })
     }),

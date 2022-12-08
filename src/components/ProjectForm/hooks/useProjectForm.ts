@@ -46,17 +46,12 @@ const createProject = (params: CreateProjectParams) => {
     temporaryUserId,
   }
 
-  if (data.colour){
-    updatedData.projectsAttributes.push({
-      key: 'colour',
-      value: data.colour,
-    })
-  }
-
-  if (data.yearManufactured){
-    updatedData.projectsAttributes.push({
-      key: 'year_manufactured',
-      value: data.yearManufactured,
+  if (data.attributes){
+    updatedData.projectsAttributes = Object.keys(data.attributes).map((attributeKey) => {
+      return {
+        key: attributeKey,
+        value: data.attributes[attributeKey],
+      }
     })
   }
 
@@ -69,23 +64,38 @@ type ProjectAttribute = {
 }
 
 type DefaultState = {
-  colour: string,
+  attributes: {
+    colour: string,
+    yearManufactured: string,
+  },
   manufacturerId: string,
   manufacturerModelId: string,
   projectsAttributes: ProjectAttribute[],
   slug: string,
   title: string,
-  yearManufactured: string,
 }
 
 const defaultState: DefaultState = {
-  colour: '',
+  attributes: {
+    colour: '',
+    yearManufactured: '',
+  },
   manufacturerId: '',
   manufacturerModelId: '',
   projectsAttributes: [],
   slug: '',
   title: '',
-  yearManufactured: '',
+}
+
+const setupProjectInitialState = (project: Project) => {
+  const initialState = Object.keys(defaultState).reduce((acc, key) => {
+    acc[key] = project[key] || ''
+    return acc
+  }, {})
+
+  console.log(initialState)
+
+  return initialState
 }
 
 type UseProjectFormOptions = {
@@ -96,17 +106,21 @@ type UseProjectFormOptions = {
 function useProjectForm(options: UseProjectFormOptions){
   const { project, temporaryUserId } = options ?? {}
 
+  if (project?.id){
+    setupProjectInitialState(project)
+  }
+
   const router = useRouter()
 
   const formPayload = useForm({
-    defaultValues: defaultState,
+    defaultValues: project?.id ? {} : defaultState,
     mode: "onChange",
   })
 
   const { setValue, watch } = formPayload
   const manufacturerId = watch('manufacturerId')
   const manufacturerModelId = watch('manufacturerModelId')
-  const yearManufactured = watch('yearManufactured')
+  const yearManufactured = watch('attributes.yearManufactured')
 
   // Load Manufacturers
   const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery()

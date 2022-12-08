@@ -5,6 +5,8 @@
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env/server.mjs"));
 
+import { withSuperjson } from 'next-superjson'
+
 /** @type {import("next").NextConfig} */
 const config = {
   eslint: {
@@ -21,4 +23,5 @@ const config = {
     ignoreBuildErrors: true,
   },
 };
-export default config;
+
+export default withSuperjson()(config);

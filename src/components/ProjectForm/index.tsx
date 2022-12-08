@@ -9,7 +9,7 @@ import useProjectForm from './hooks/useProjectForm'
 
 type ProjectFormProps = {
   project?: Project,
-  temporaryUserId: string,
+  temporaryUserId?: string,
 }
 
 const ProjectForm = (props: ProjectFormProps) => {
@@ -57,7 +57,7 @@ const ProjectForm = (props: ProjectFormProps) => {
             <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
           )}
           marginTop={Form.Field.MARGIN_TOP}
-          name="yearManufactured"
+          name="attributes.yearManufactured"
           validationRules={{ required: false }}
         >
           <input type="number" min="1950" max="2099" step="1" />
@@ -69,7 +69,7 @@ const ProjectForm = (props: ProjectFormProps) => {
             <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
           )}
           marginTop={Form.Field.MARGIN_TOP}
-          name="colour"
+          name="attributes.colour"
           validationRules={{ required: false }}
         >
           <input />
