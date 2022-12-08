@@ -18,14 +18,16 @@ const buildProjectSlug = (
 type BuildProjectTitleParams = {
   manufacturer: Manufacturer,
   manufacturerModel: ManufacturerModel,
+  modelSeries?: string,
   yearManufactured?: string,
 }
 
 const buildProjectTitle = (params: BuildProjectTitleParams) => {
-  const { manufacturer, manufacturerModel, yearManufactured } = params
+  const { manufacturer, manufacturerModel, modelSeries, yearManufactured } = params
 
   let title = `${manufacturer.title} ${manufacturerModel.title}`
   if (yearManufactured) title = `${yearManufactured} ${title}`
+  if (modelSeries) title = `${title} ${modelSeries}`
 
   return title
 }
@@ -66,7 +68,8 @@ type ProjectAttribute = {
 type DefaultState = {
   attributes: {
     colour: string,
-    yearManufactured: string,
+    model_series: string,
+    year_manufactured: string,
   },
   manufacturerId: string,
   manufacturerModelId: string,
@@ -78,7 +81,8 @@ type DefaultState = {
 const defaultState: DefaultState = {
   attributes: {
     colour: '',
-    yearManufactured: '',
+    model_series: '',
+    year_manufactured: '',
   },
   manufacturerId: '',
   manufacturerModelId: '',
@@ -120,7 +124,8 @@ function useProjectForm(options: UseProjectFormOptions){
   const { setValue, watch } = formPayload
   const manufacturerId = watch('manufacturerId')
   const manufacturerModelId = watch('manufacturerModelId')
-  const yearManufactured = watch('attributes.yearManufactured')
+  const modelSeries = watch('attributes.model_series')
+  const yearManufactured = watch('attributes.year_manufactured')
 
   // Load Manufacturers
   const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery()
@@ -143,6 +148,7 @@ function useProjectForm(options: UseProjectFormOptions){
       const title = buildProjectTitle({
         manufacturer: selectedManufacturer,
         manufacturerModel: selectedManufacturerModel,
+        modelSeries,
         yearManufactured,
       })
 
@@ -151,7 +157,7 @@ function useProjectForm(options: UseProjectFormOptions){
         setValue('slug', buildProjectSlug({ title }))
       }
     }
-  }, [selectedManufacturer, selectedManufacturerModel, setValue, yearManufactured])
+  }, [selectedManufacturer, selectedManufacturerModel, setValue, yearManufactured, modelSeries])
 
   // Create Mutation
   const createProjectMutation = trpc.projects.createProject.useMutation({

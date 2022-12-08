@@ -52,12 +52,24 @@ const ProjectForm = (props: ProjectFormProps) => {
         </Form.Field>
 
         <Form.Field
+          label="Series"
+          labelRight={(
+            <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+          )}
+          marginTop={Form.Field.MARGIN_TOP}
+          name="attributes.model_series"
+          validationRules={{ required: false }}
+        >
+          <input />
+        </Form.Field>
+
+        <Form.Field
           label="Year"
           labelRight={(
             <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
           )}
           marginTop={Form.Field.MARGIN_TOP}
-          name="attributes.yearManufactured"
+          name="attributes.year_manufactured"
           validationRules={{ required: false }}
         >
           <input type="number" min="1950" max="2099" step="1" />

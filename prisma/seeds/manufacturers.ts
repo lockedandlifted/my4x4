@@ -47,7 +47,7 @@ const manufacturers: Prisma.ManufacturerCreateArgs['data'][] = [
     title: 'Land Rover',
   },
   {
-    key: 'gmg',
+    key: 'gmc',
     title: 'GMC',
   },
   {

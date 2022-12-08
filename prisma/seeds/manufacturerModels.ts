@@ -264,13 +264,13 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // GMC
-  const GMC = manufacturers.find((manufacturer) => manufacturer.key === 'gmc')
+  const gmc = manufacturers.find((manufacturer) => manufacturer.key === 'gmc')
 
-  const GmcModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
+  const gmcModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
       key: 'gmc_sierra_1500',
       title: 'Sierra 1500',
-      manufacturerId: landRover.id,
+      manufacturerId: gmc.id,
     },
   ]
 
@@ -343,6 +343,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
     ...landRoverModels,
     ...daihatsuModels,
     ...holdenModels,
+    ...gmcModels,
   ]
 
   const queries = mergedModels.map(async (data: Prisma.ManufacturerModelCreateArgs['data']) => {

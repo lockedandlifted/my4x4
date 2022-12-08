@@ -10,6 +10,10 @@ const attributes: Prisma.AttributeCreateArgs['data'][] = [
     key: 'year_manufactured',
     title: 'Year',
   },
+  {
+    key: 'model_series',
+    title: 'Series',
+  },
 ]
 
 const seedFn = (prisma: PrismaClient) => {
