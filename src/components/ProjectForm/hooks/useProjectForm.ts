@@ -203,7 +203,8 @@ function useProjectForm(options: UseProjectFormOptions){
   // Update Mutation
   const updateProjectMutation = trpc.projects.updateProjectById.useMutation({
     onSuccess: (data) => {
-      console.log(data)
+      const [_, project] = data
+      router.push(`/projects/${project.id}/edit`)
     }
   })
 

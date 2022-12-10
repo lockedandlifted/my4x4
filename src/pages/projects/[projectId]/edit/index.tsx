@@ -5,6 +5,8 @@ import setupTrpcCaller from '@utils/setupTrpcCaller'
 
 import MobileLayout from '@layouts/MobileLayout'
 
+import MainImage from '@components/ProjectForm/components/MainImage'
+
 type EditProjectPageProps = {
   project: Project,
 }
@@ -14,8 +16,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   return (
     <MobileLayout>
-      Project Parts
-      {project?.slug}
+      <MainImage project={project} />
     </MobileLayout>
   )
 }

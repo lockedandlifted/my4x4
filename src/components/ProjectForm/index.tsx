@@ -117,7 +117,9 @@ const ProjectForm = (props: ProjectFormProps) => {
           </>
         )}
 
-        <Button marginTop="4" type="submit">Next Step</Button>
+        <Button colorScheme="green" marginTop="4" size="lg" type="submit">
+          {project?.id ? 'Save Details' : 'Create Build'}
+        </Button>
       </Form>
     </Flex>
   )
