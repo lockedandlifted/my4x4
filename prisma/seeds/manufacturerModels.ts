@@ -1,5 +1,4 @@
 import type { Prisma, PrismaClient, Manufacturer } from '@prisma/client'
-import { m } from 'framer-motion'
 
 // Manufacturer Models
 const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {

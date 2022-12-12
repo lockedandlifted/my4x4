@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
 
+import Actions from './Actions'
 import Field from './Field'
 
 const showInvalidFormWarning = (data: FieldValues) => {
@@ -47,6 +48,7 @@ const Form = (props: FormProps) => {
   )
 }
 
+Form.Actions = Actions
 Form.Field = Field
 
 export default Form

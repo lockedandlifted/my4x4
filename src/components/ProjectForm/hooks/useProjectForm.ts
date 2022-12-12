@@ -94,6 +94,7 @@ type DefaultState = {
     model_series: string,
     year_manufactured: string,
   },
+  description: string,
   manufacturerId: string,
   manufacturerModelId: string,
   projectsAttributes: { key: string, value: string }[],
@@ -107,6 +108,7 @@ const defaultState: DefaultState = {
     model_series: '',
     year_manufactured: '',
   },
+  description: '',
   manufacturerId: '',
   manufacturerModelId: '',
   projectsAttributes: [],
@@ -187,10 +189,17 @@ function useProjectForm(options: UseProjectFormOptions){
 
       if (title){
         setValue('title', title)
-        setValue('slug', buildProjectSlug({ title }))
+        if (!project?.slug) setValue('slug', buildProjectSlug({ title }))
       }
     }
-  }, [selectedManufacturer, selectedManufacturerModel, setValue, yearManufactured, modelSeries])
+  }, [
+    modelSeries,
+    project?.slug,
+    selectedManufacturer,
+    selectedManufacturerModel,
+    setValue,
+    yearManufactured,
+  ])
 
   // Create Mutation
   const createProjectMutation = trpc.projects.createProject.useMutation({
@@ -204,7 +213,10 @@ function useProjectForm(options: UseProjectFormOptions){
   const updateProjectMutation = trpc.projects.updateProjectById.useMutation({
     onSuccess: (data) => {
       const [_, project] = data
-      router.push(`/projects/${project.id}/edit`)
+
+      if (router.pathname !== '/projects/[projectId]/edit'){
+        router.push(`/projects/${project.id}/edit`)
+      }
     }
   })
 

@@ -72,6 +72,7 @@ export const projectsRouter = router({
         },
       })
     }),
+
   getProjects: publicProcedure
     .input(z.object({
       userId: z.string().uuid(),
@@ -94,6 +95,7 @@ export const projectsRouter = router({
         },
       })
     }),
+
   getProjectById: publicProcedure
     .input(z.object({
       id: z.string(),
@@ -117,6 +119,7 @@ export const projectsRouter = router({
         },
       })
     }),
+
   getProjectBySlug: publicProcedure
     .input(z.object({
       slug: z.string(),
@@ -140,9 +143,11 @@ export const projectsRouter = router({
         },
       })
     }),
+
     updateProjectById: publicProcedure
       .input(z.object({
         id: z.string(),
+        description: z.string(),
         manufacturerModelId: z.string(),
         projectsAttributes: z.array(z.object({
           key: z.string(),
@@ -165,6 +170,7 @@ export const projectsRouter = router({
               id: input.id,
             },
             data: {
+              description: input.description,
               manufacturerModelId: input.manufacturerModelId,
               slug: input.slug,
               title: input.title,

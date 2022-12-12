@@ -6,6 +6,7 @@ export const usersRouter = router({
   getUsers: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
+
   getUserByUsername: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(({ ctx, input }) => {

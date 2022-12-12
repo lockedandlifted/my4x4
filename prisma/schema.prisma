@@ -64,9 +64,11 @@ model Image {
 }
 
 model Manufacturer {
-  id    String @id @default(uuid())
-  key   String @unique
-  title String
+  id                 String            @id @default(uuid())
+  key                String            @unique
+  title              String
+  manufacturerType   ManufacturerType? @relation(fields: [manufacturerTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerTypeId String?           @map("manufacturer_type_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
@@ -91,10 +93,24 @@ model ManufacturerModel {
   @@map("manufacturer_models")
 }
 
+model ManufacturerType {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  manufacturers Manufacturer[]
+
+  @@map("manufacturer_types")
+}
+
 model Project {
   id              String  @id @default(uuid())
   title           String
   slug            String  @unique
+  description     String?
   published       Boolean @default(false)
   temporaryUserId String? @map("temporary_user_id")
 

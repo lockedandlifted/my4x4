@@ -1,8 +1,9 @@
 import prisma from '../src/server/db/client.js'
 
 import attributeSeedFn from './seeds/attributes.js'
-import manufacturerSeedFn from './seeds/manufacturers.js'
 import manufacturerModelSeedFn from './seeds/manufacturerModels.js'
+import manufacturerSeedFn from './seeds/manufacturers.js'
+import manufacturerTypeSeedFn from './seeds/manufacturerTypes.js'
 
 const seedDatabase = async () => {
   try {
@@ -10,8 +11,12 @@ const seedDatabase = async () => {
     const attributes = await Promise.all(attributeSeedFn(prisma))
     console.log('--- Seeded Attributes ---', attributes)
 
+    // Manufacturer Types
+    const manufacturerTypes = await Promise.all(manufacturerTypeSeedFn(prisma))
+    console.log('--- Seeded Manufacturer Types ---', manufacturerTypes)
+
     // Manufacturers
-    const manufacturers = await Promise.all(manufacturerSeedFn(prisma))
+    const manufacturers = await Promise.all(manufacturerSeedFn(prisma, manufacturerTypes))
     console.log('--- Seeded Manufacturers ---', manufacturers)
 
     // Manufacturer Models

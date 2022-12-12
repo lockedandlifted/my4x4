@@ -18,7 +18,7 @@ const MainImage = (props: MainImageProps) => {
   return (
     <Flex
       border="2px dashed"
-      borderColor="#efefef"
+      borderColor={hasImage ? 'white' : "#efefef"}
       borderRadius={45}
       flexDirection="column"
       overflow="hidden"
@@ -28,7 +28,13 @@ const MainImage = (props: MainImageProps) => {
     >
       <Image alt="Project Main Image" fill src={TempImage} style={{ objectFit: 'cover' }} />
 
-      <Flex backgroundColor={hasImage ? "black" : undefined} direction="column" marginTop="auto" padding="8" zIndex="1">
+      <Flex
+        background={hasImage ? "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 60%, rgba(255,255,255,0) 100%)" : undefined}
+        direction="column"
+        marginTop="auto"
+        padding="8"
+        zIndex="1"
+      >
         <Flex alignItems="center">
           <Text color={hasImage ? 'white' : 'black'} fontSize="4xl" fontWeight="bold" lineHeight={1.3} marginBottom="8" width="75%">
             {project?.title}
@@ -40,7 +46,7 @@ const MainImage = (props: MainImageProps) => {
         </Flex>
 
         <Button marginTop="auto" size="lg" zIndex="1" width="auto">
-          Add Photo
+          {hasImage ? 'Change' : 'Add'} Photo
         </Button>
 
       </Flex>
