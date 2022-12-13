@@ -58,7 +58,7 @@ model Image {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  projectImages ProjectsImage[]
+  projectsImages ProjectsImage[]
 
   @@map("images")
 }
@@ -74,6 +74,7 @@ model Manufacturer {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   manufacturerModels ManufacturerModel[]
+  manufacturerParts  ManufacturerPart[]
 
   @@map("manufacturers")
 }
@@ -91,6 +92,21 @@ model ManufacturerModel {
   projects Project[]
 
   @@map("manufacturer_models")
+}
+
+model ManufacturerPart {
+  id             String       @id @default(uuid())
+  manufacturer   Manufacturer @relation(fields: [manufacturerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerId String       @map("manufacturer_id")
+  title          String
+  partNumber     String?      @map("part_number")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  projectsParts ProjectsPart[]
+
+  @@map("manufacturer_parts")
 }
 
 model ManufacturerType {
@@ -121,8 +137,9 @@ model Project {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   projectsAttributes ProjectsAttribute[]
-  projectImages      ProjectsImage[]
-  projectUsers       ProjectsUser[]
+  projectsImages     ProjectsImage[]
+  projectsUsers      ProjectsUser[]
+  projectsParts      ProjectsPart[]
 
   @@map("projects")
 }
@@ -155,6 +172,20 @@ model ProjectsImage {
 
   @@unique([projectId, imageId])
   @@map("projects_images")
+}
+
+model ProjectsPart {
+  id                 String           @id @default(uuid())
+  manufacturerPart   ManufacturerPart @relation(fields: [manufacturerPartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerPartId String           @map("manufacturer_part_id")
+  project            Project          @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId          String           @map("project_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([projectId, manufacturerPartId])
+  @@map("projects_manufacturer_parts")
 }
 
 model ProjectsUser {
@@ -193,10 +224,10 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  accounts     Account[]
-  sessions     Session[]
-  images       Image[]
-  projectUsers ProjectsUser[]
+  accounts      Account[]
+  sessions      Session[]
+  images        Image[]
+  projectsUsers ProjectsUser[]
 
   @@map("users")
 }

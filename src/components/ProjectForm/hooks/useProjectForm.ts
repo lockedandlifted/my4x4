@@ -37,7 +37,7 @@ type CreateProjectParams = {
   mutation: {
     mutate: (data: typeof defaultState & { temporaryUserId: string }) => void,
   },
-  temporaryUserId: string,
+  temporaryUserId?: string,
 }
 
 const createProject = (params: CreateProjectParams) => {
@@ -143,7 +143,7 @@ const setupProjectInitialState = (project: Project) => {
 
 type UseProjectFormOptions = {
   project?: Project,
-  temporaryUserId: string,
+  temporaryUserId?: string,
 }
 
 function useProjectForm(options: UseProjectFormOptions){

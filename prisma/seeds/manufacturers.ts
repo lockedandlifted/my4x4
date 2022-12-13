@@ -3,6 +3,27 @@ import type { ManufacturerType, Prisma, PrismaClient } from '@prisma/client'
 // Manufacturers
 const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => {
 
+  // Parts
+  const partManufacturerType = manufacturerTypes.find((manufacturerType) => manufacturerType.key === 'part')
+
+  const partManufacturers: Prisma.ManufacturerCreateArgs['data'][] = [
+    {
+      key: 'outback_armour',
+      title: 'Outback Armour',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'redarc',
+      title: 'REDARC',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'toyota_genuine_accessories',
+      title: 'Toyota Genuine Accessories',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+  ]
+
   // Vehicles
   const vehicleManufacturerType = manufacturerTypes.find((manufacturerType) => manufacturerType.key === 'vehicle')
 
@@ -84,12 +105,13 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     },
   ]
 
-  // Merge Models
-  const mergedModels = [
+  // Merge Manufacturers
+  const mergedManufacturers = [
+    ...partManufacturers,
     ...vehicleManufacturers,
   ]
 
-  return mergedModels.map(async (data: Prisma.ManufacturerCreateArgs['data']) => {
+  return mergedManufacturers.map(async (data: Prisma.ManufacturerCreateArgs['data']) => {
     const record = await prisma.manufacturer.upsert({
       where: { key: data.key },
       update: data,
