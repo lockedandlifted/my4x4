@@ -7,6 +7,8 @@
     "dev": "next dev -p 3001",
     "postinstall": "prisma generate",
     "lint": "next lint",
+    "seed": "npx prisma db push && npx prisma db seed",
+    "migrate": "npx prisma db push",
     "start": "next start -p 3001",
     "ci:migrate": "DATABASE_URL=$DATABASE_MIGRATION_URL npx prisma db push",
     "ci:seed": "DATABASE_URL=$DATABASE_MIGRATION_URL npx prisma db seed"
