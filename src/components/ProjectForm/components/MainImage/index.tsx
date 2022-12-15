@@ -36,7 +36,7 @@ const MainImage = (props: MainImageProps) => {
         zIndex="1"
       >
         <Flex alignItems="center">
-          <Text color={hasImage ? 'white' : 'black'} fontSize="4xl" fontWeight="bold" lineHeight={1.3} marginBottom="8" width="75%">
+          <Text color={hasImage ? 'white' : 'black'} fontSize="3xl" fontWeight="bold" lineHeight={1.3} marginBottom="8" width="75%">
             {project?.title}
           </Text>
 
@@ -45,7 +45,7 @@ const MainImage = (props: MainImageProps) => {
           </Link>
         </Flex>
 
-        <Button marginTop="auto" size="lg" zIndex="1" width="auto">
+        <Button backgroundColor="whiteAlpha.300" colorScheme="whiteAlpha" marginTop="auto" size="lg" zIndex="1" width="auto">
           {hasImage ? 'Change' : 'Add'} Photo
         </Button>
       </Flex>

@@ -21,7 +21,7 @@ const Attributes = (props: AttributesProps) => {
   const projectsAttributes = project?.projectsAttributes || []
 
   return (
-    <Flex direction="column" marginTop="8">
+    <Flex direction="column" marginTop="12">
       <Heading size="md" marginBottom="4">Attributes</Heading>
 
       <table>
