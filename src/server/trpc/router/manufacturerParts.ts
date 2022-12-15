@@ -1,13 +1,7 @@
 import { z } from 'zod'
 import { router, publicProcedure } from '../trpc'
 
-type GetManufacturerPartsFilters = {
-  manufacturerId?: string,
-  title?: {
-    contains: string,
-    mode: string,
-  },
-}
+import type { Prisma } from '@prisma/client'
 
 export const manufacturerPartsRouter = router({
   getManufacturerParts: publicProcedure
@@ -16,7 +10,7 @@ export const manufacturerPartsRouter = router({
       string: z.string().nullable(),
     }))
     .query(({ ctx, input }) => {
-      const filters: GetManufacturerPartsFilters = {}
+      const filters: Prisma.ManufacturerPartWhereInput = {}
 
       if (input.manufacturerId){
         filters.manufacturerId = input.manufacturerId

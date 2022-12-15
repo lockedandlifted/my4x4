@@ -12,6 +12,7 @@ const defaultState = {
 
 type AutocompleteFieldProps = {
   callbacks: {
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     selectItem: (result: object) => void,
   }
   routerKey: keyof typeof appRouters,
@@ -22,7 +23,7 @@ type AutocompleteFieldProps = {
 
 const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldProps>((props, ref) => {
   const {
-    callbacks: { selectItem },
+    callbacks: { onChange, selectItem },
     inputValue,
     routerKey,
     queryKey,
@@ -45,7 +46,10 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
     <Flex position="relative">
       <Flex width="100%">
         <input
-          onChange={e => setState(s => ({ ...s, string: e.target.value }))}
+          onChange={(e) => {
+            setState(s => ({ ...s, string: e.target.value }))
+            if (onChange) onChange(e)
+          }}
           ref={ref}
           type="text"
           value={string || inputValue}

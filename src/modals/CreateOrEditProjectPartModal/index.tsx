@@ -9,7 +9,7 @@ import {
   DrawerOverlay,
 } from '@chakra-ui/react'
 
-import type { ManufacturerPart } from '@prisma/client'
+import type { ManufacturerPart, Project } from '@prisma/client'
 
 import useProjectsPartForm from '@hooks/useProjectsPartForm'
 
@@ -20,14 +20,22 @@ type CreateOrEditProjectPartModalProps = {
   callbacks: {
     closeModal: VoidFunction,
   },
+  project: Project,
   showModal: boolean,
 }
 
 const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) => {
-  const { callbacks: { closeModal }, showModal } = props
+  const { callbacks: { closeModal, createProjectsPart }, project, showModal } = props
 
-  const projectsPartFormPayload = useProjectsPartForm({})
+  const projectsPart = { projectId: project?.id }
+  const newRecord = !!projectsPart.id
+
+  const projectsPartFormPayload = useProjectsPartForm({ projectsPart })
   const {
+    callbacks: {
+      createProjectsPart: createFn,
+      updateProjectsPart: updateFn,
+    },
     formPayload: {
       setValue,
     },
@@ -36,6 +44,13 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
     manufacturers,
     title,
   } = projectsPartFormPayload
+
+  const saveFn = newRecord ? updateFn : createFn
+
+  const processCallbackPayload = {
+    action: saveFn,
+    afterAction: closeModal,
+  }
 
   return (
     <Drawer
@@ -47,10 +62,14 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Add a Part</DrawerHeader>
+        <DrawerHeader>{newRecord ? 'Add' : 'Update'} a Part</DrawerHeader>
 
         <DrawerBody>
-          <Form callbacks={{ submitForm: data => console.log(data) }} formPayload={formPayload}>
+          <Form
+            callbacks={{ submitForm: data => createProjectsPart({ ...processCallbackPayload, actionPayload: data }) }}
+            formPayload={formPayload}
+            id="project-part-form"
+          >
             <Form.Field label="Manufacturer" name="manufacturerId" validationRules={{ required: true }}>
               <select>
                 <option value="">Please Select...</option>
@@ -65,6 +84,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
             <Form.Field label="Title" name="title" marginTop={4} validationRules={{ required: true }}>
               <AutocompleteField
                 callbacks={{
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => setValue('title', e.target?.value),
                   selectItem: (result: ManufacturerPart) => {
                     setValue('partNumber', result.partNumber)
                     setValue('manufacturerPartId', result.id)
@@ -79,7 +99,15 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
               />
             </Form.Field>
 
-            <Form.Field label="Model/Part Number" name="partNumber" marginTop={4} validationRules={{ required: false }}>
+            <Form.Field
+              label="Model/Part Number"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              name="partNumber"
+              marginTop={4}
+              validationRules={{ required: false }}
+            >
               <input type="text" />
             </Form.Field>
           </Form>
@@ -89,7 +117,14 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
           <Button variant="outline" mr={3} onClick={closeModal}>
             Cancel
           </Button>
-          <Button colorScheme="green">Save</Button>
+
+          <Button
+            colorScheme="green"
+            form="project-part-form"
+            type="submit"
+          >
+            Save
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

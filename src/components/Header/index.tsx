@@ -9,7 +9,6 @@ const Header = () => {
       alignItems="center"
       height="64px"
       justifyContent={['center']}
-      marginBottom="6"
       paddingX={[4, 8]}
       width="100%"
     >

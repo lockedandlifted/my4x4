@@ -3,6 +3,7 @@ import { useState } from 'react'
 import type { GetServerSideProps } from 'next'
 import type { Project } from '@prisma/client'
 
+import processCallback from '@utils/processCallback'
 import setupTrpcCaller from '@utils/setupTrpcCaller'
 
 import useProjectForm from '@hooks/useProjectForm'
@@ -19,9 +20,32 @@ import Description from '@components/ProjectForm/components/Description'
 import MainImage from '@components/ProjectForm/components/MainImage'
 import Parts from '@components/ProjectForm/components/Parts'
 
+const showModal = (setState, payload?: object) => {
+  setState(state => ({
+    ...state,
+    showCreateOrEditProjectPartModal: true,
+    modalPayloads: {
+      ...state.modalPayloads,
+      CreateOrEditProjectPartModal: payload,
+    },
+  }))
+}
+
+const callbacks = (componentName: string | undefined, setState) => {
+  const componentCallbacks = {
+    CreateOrEditProjectPartModal: {
+      closeModal: () => setState(s => ({ ...s, showCreateOrEditProjectPartModal: false })),
+      createProjectsPart: (payload) => processCallback(payload),
+      showModal: (payload?: object) => showModal(setState, payload)
+    },
+  }
+
+  return componentCallbacks[componentName] || componentCallbacks
+}
+
 const defaultState = {
   showCreateOrEditProjectAttributeModal: false,
-  showCreateOrEditProjectPartModal: true,
+  showCreateOrEditProjectPartModal: false,
 }
 
 type EditProjectPageProps = {
@@ -39,22 +63,23 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   return (
     <MobileLayout>
-      <Form callbacks={{ submitForm: updateProject }} formPayload={formPayload}>
+      <Form callbacks={{ submitForm: updateProject }} formPayload={formPayload} id="project-form">
         <MainImage project={project} />
         <Description project={project} />
         <Attributes project={project} />
-        <Parts project={project} />
-
-        <CreateOrEditProjectAttributeModal
-          callbacks={{ closeModal: () => setState(s => ({ ...s, showCreateOrEditProjectAttributeModal: false })) }}
-          showModal={showCreateOrEditProjectAttributeModal}
-        />
-
-        <CreateOrEditProjectPartModal
-          callbacks={{ closeModal: () => setState(s => ({ ...s, showCreateOrEditProjectPartModal: false })) }}
-          showModal={showCreateOrEditProjectPartModal}
-        />
+        <Parts callbacks={callbacks(undefined, setState)} project={project} />
       </Form>
+
+      <CreateOrEditProjectAttributeModal
+        callbacks={{ closeModal: () => setState(s => ({ ...s, showCreateOrEditProjectAttributeModal: false })) }}
+        showModal={showCreateOrEditProjectAttributeModal}
+      />
+
+      <CreateOrEditProjectPartModal
+        callbacks={callbacks('CreateOrEditProjectPartModal', setState)}
+        project={project}
+        showModal={showCreateOrEditProjectPartModal}
+      />
     </MobileLayout>
   )
 }

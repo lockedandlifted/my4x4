@@ -22,7 +22,7 @@ const MobileLayout = (props: MobileLayoutProps) => {
       <Flex flexDirection="column" width={['100%', 600]}>
         <Header />
 
-        <Flex flexDirection="column" padding="4" width="100%">
+        <Flex flexDirection="column" paddingX="4" width="100%">
           {children}
         </Flex>
 

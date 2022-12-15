@@ -1,4 +1,5 @@
-import { Button, Flex, Heading } from '@chakra-ui/react'
+import { useState } from 'react'
+import { Button, Flex, Heading, Text } from '@chakra-ui/react'
 
 import Form from '@components/Form'
 
@@ -11,19 +12,40 @@ type DescriptionProps = {
 const Description = (props: DescriptionProps) => {
   const { project } = props
 
+  const [editing, setEditing] = useState(false)
+
   return (
     <Flex flexDirection="column" marginTop="8">
-      <Heading size="md" marginBottom="4">About the Build</Heading>
-
-      <Form.Field label="Description" name="description">
-        <textarea style={{ height: 200 }} />
-      </Form.Field>
-
-      <Form.Actions>
-        <Button colorScheme="green" size="sm" type="submit">
-          Save
+      <Flex justifyContent="space-between">
+        <Heading size="md" marginBottom="4">About the Build</Heading>
+        <Button onClick={() => setEditing(!editing)} size="sm">
+          {editing ? 'Cancel' : 'Edit'}
         </Button>
-      </Form.Actions>
+      </Flex>
+
+      {editing && (
+        <Form.Field label="Description" name="description">
+          <textarea style={{ height: 200 }} />
+        </Form.Field>
+      )}
+
+      {!editing && (
+        <Text>
+          {project?.description}
+        </Text>
+      )}
+
+      {editing && (
+        <Form.Actions>
+          <Button
+            colorScheme="green"
+            size="sm"
+            type="submit"
+          >
+            Save
+          </Button>
+        </Form.Actions>
+      )}
     </Flex>
   )
 }
