@@ -8,7 +8,7 @@ const Parts = (props: PartsProps) => {
   const { children } = props
 
   return (
-    <Flex direction="column" marginTop="8">
+    <Flex direction="column" marginTop="12">
       <Heading size="md" marginBottom="4">Parts & Upgrades</Heading>
       Parts
     </Flex>

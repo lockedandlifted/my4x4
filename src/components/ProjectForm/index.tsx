@@ -5,7 +5,7 @@ import type { Project } from '@prisma/client'
 import Form from '@components/Form'
 import Paragraph from '@components/Paragraph'
 
-import useProjectForm from './hooks/useProjectForm'
+import useProjectForm from '@hooks/useProjectForm'
 
 type ProjectFormProps = {
   project?: Project,

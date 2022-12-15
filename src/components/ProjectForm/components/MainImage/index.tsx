@@ -19,7 +19,7 @@ const MainImage = (props: MainImageProps) => {
     <Flex
       border="2px dashed"
       borderColor={hasImage ? 'white' : "#efefef"}
-      borderRadius={45}
+      borderRadius={20}
       flexDirection="column"
       overflow="hidden"
       position="relative"
@@ -48,7 +48,6 @@ const MainImage = (props: MainImageProps) => {
         <Button marginTop="auto" size="lg" zIndex="1" width="auto">
           {hasImage ? 'Change' : 'Add'} Photo
         </Button>
-
       </Flex>
     </Flex>
   )

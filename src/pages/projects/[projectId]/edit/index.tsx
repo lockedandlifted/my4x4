@@ -5,11 +5,12 @@ import type { Project } from '@prisma/client'
 
 import setupTrpcCaller from '@utils/setupTrpcCaller'
 
-import useProjectForm from '@components/ProjectForm/hooks/useProjectForm'
+import useProjectForm from '@hooks/useProjectForm'
 
 import MobileLayout from '@layouts/MobileLayout'
 
 import CreateOrEditProjectAttributeModal from '@modals/CreateOrEditProjectAttributeModal'
+import CreateOrEditProjectPartModal from '@modals/CreateOrEditProjectPartModal'
 
 import Form from '@components/Form'
 
@@ -20,6 +21,7 @@ import Parts from '@components/ProjectForm/components/Parts'
 
 const defaultState = {
   showCreateOrEditProjectAttributeModal: false,
+  showCreateOrEditProjectPartModal: true,
 }
 
 type EditProjectPageProps = {
@@ -30,7 +32,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const { project } = props
 
   const [state, setState] = useState(defaultState)
-  const { showCreateOrEditProjectAttributeModal } = state
+  const { showCreateOrEditProjectAttributeModal, showCreateOrEditProjectPartModal } = state
 
   const projectFormPayload = useProjectForm({ project })
   const { callbacks: { updateProject }, formPayload } = projectFormPayload
@@ -44,8 +46,13 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         <Parts project={project} />
 
         <CreateOrEditProjectAttributeModal
-          callbacks={{ closeModal: () => console.log('close') }}
+          callbacks={{ closeModal: () => setState(s => ({ ...s, showCreateOrEditProjectAttributeModal: false })) }}
           showModal={showCreateOrEditProjectAttributeModal}
+        />
+
+        <CreateOrEditProjectPartModal
+          callbacks={{ closeModal: () => setState(s => ({ ...s, showCreateOrEditProjectPartModal: false })) }}
+          showModal={showCreateOrEditProjectPartModal}
         />
       </Form>
     </MobileLayout>
