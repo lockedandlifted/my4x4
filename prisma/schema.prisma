@@ -45,6 +45,19 @@ model Attribute {
   @@map("attributes")
 }
 
+model Country {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  manufacturerParts ManufacturerPart[]
+
+  @@map("countries")
+}
+
 model Image {
   id               String  @id @default(uuid())
   fileKey          String  @map("file_key")
@@ -95,11 +108,13 @@ model ManufacturerModel {
 }
 
 model ManufacturerPart {
-  id             String       @id @default(uuid())
-  manufacturer   Manufacturer @relation(fields: [manufacturerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  manufacturerId String       @map("manufacturer_id")
-  title          String
-  partNumber     String?      @map("part_number")
+  id                     String       @id @default(uuid())
+  manufacturer           Manufacturer @relation(fields: [manufacturerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerId         String       @map("manufacturer_id")
+  title                  String
+  partNumber             String?      @map("part_number")
+  countryOfManufacture   Country?     @relation(fields: [countryOfManufactureId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  countryOfManufactureId String?      @map("country_of_manufacture_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
