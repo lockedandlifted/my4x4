@@ -24,7 +24,7 @@ const generateFileKey = (filename: string, fileType: string) => {
   return {}
 }
 
-export const awsRouter = router({
+const awsRouter = router({
   presignFileUpload: publicProcedure
     .input(z.object({
       filename: z.string(),
@@ -41,7 +41,7 @@ export const awsRouter = router({
       if (!fileId) return {}
 
       const s3ObjectUrl = parseUrl(
-        `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`
+        `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`,
       )
 
       const presignerOptions = {
@@ -58,7 +58,7 @@ export const awsRouter = router({
       // Create a GET request from S3 url.
       const presignedParams = await presigner.presign(
         new HttpRequest({ ...s3ObjectUrl, method: 'PUT' }),
-        { expiresIn: 300 }
+        { expiresIn: 300 },
       )
 
       return {
@@ -71,3 +71,5 @@ export const awsRouter = router({
       }
     }),
 })
+
+export default awsRouter

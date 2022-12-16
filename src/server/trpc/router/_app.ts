@@ -1,13 +1,14 @@
 import { router } from '../trpc'
 
-import { authRouter } from './auth'
-import { awsRouter } from './aws'
-import { manufacturerModelsRouter } from './manufacturerModels'
-import { manufacturerPartsRouter } from './manufacturerParts'
-import { manufacturersRouter } from './manufacturers'
-import { projectsPartsRouter } from './projectsParts'
-import { projectsRouter } from './projects'
-import { usersRouter } from './users'
+import authRouter from './auth'
+import awsRouter from './aws'
+import manufacturerModelsRouter from './manufacturerModels'
+import manufacturerPartsRouter from './manufacturerParts'
+import manufacturersRouter from './manufacturers'
+import projectsImagesRouter from './projectsImages'
+import projectsPartsRouter from './projectsParts'
+import projectsRouter from './projects'
+import usersRouter from './users'
 
 export const appRouters = {
   auth: authRouter,
@@ -16,6 +17,7 @@ export const appRouters = {
   manufacturerParts: manufacturerPartsRouter,
   manufacturers: manufacturersRouter,
   projects: projectsRouter,
+  projectsImages: projectsImagesRouter,
   projectsParts: projectsPartsRouter,
   users: usersRouter,
 }

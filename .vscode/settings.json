@@ -1,11 +1,68 @@
 {
+  "workbench.sideBar.location": "left",
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "all",
+  "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "files.trimTrailingWhitespace": true,
-  "editor.formatOnSave": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+  "[javascript]": {
+      "editor.insertSpaces": true,
+      "editor.tabSize": 2
+  },
+  "[javascriptreact]": {
+      "editor.insertSpaces": true,
+      "editor.tabSize": 2
+  },
+  "[typescriptreact]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+},
+  "[ruby]": {
+      "editor.insertSpaces": true,
+      "editor.tabSize": 2
+  },
+  "[scss]": {
+      "editor.insertSpaces": false,
+      "editor.tabSize": 4
+  },
+  "[html]": {
+      "editor.defaultFormatter": "vscode.html-language-features"
   },
   "[prisma]": {
-    "editor.formatOnSave": true
-  }
+      "editor.formatOnSave": true
+  },
+  "search.exclude": {
+      "**/node_modules": true,
+      "**/bower_components": true,
+      "**/public": true
+  },
+  "editor.multiCursorModifier": "alt",
+  "editor.snippetSuggestions": "top",
+  "editor.formatOnPaste": false,
+  "files.associations": {
+      "*.axlsx": "ruby",
+      "*.jbuilder": "ruby"
+  },
+  "gitlens.keymap": "chorded",
+  "gitlens.advanced.messages": {
+      "suppressCommitHasNoPreviousCommitWarning": false,
+      "suppressCommitNotFoundWarning": false,
+      "suppressFileNotUnderSourceControlWarning": false,
+      "suppressGitVersionWarning": false,
+      "suppressLineUncommittedWarning": false,
+      "suppressNoRepositoryWarning": false
+  },
+  "workbench.startupEditor": "newUntitledFile",
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "window.zoomLevel": 0,
+  "javascript.suggest.autoImports": false,
+  "typescript.suggest.autoImports": false,
+  "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+  },
+  "eslint.run": "onSave",
+  "eslint.alwaysShowStatus": true,
+  "editor.wordWrap": "on",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.acceptSuggestionOnCommitCharacter": false
 }

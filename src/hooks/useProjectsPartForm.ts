@@ -31,7 +31,7 @@ const setupProjectPartInitialState = (projectsPart: ProjectsPart) => {
     return acc
   }, { ...defaultState })
 
-  if (projectsPart.manufacturerModel?.manufacturer){
+  if (projectsPart.manufacturerModel?.manufacturer) {
     initialState.manufacturerId = projectsPart.manufacturerModel?.manufacturer.id
   }
 
@@ -42,12 +42,12 @@ type UseProjectPartFormOptions = {
   projectsPart?: ProjectsPart,
 }
 
-function useProjectsPartForm(options: UseProjectPartFormOptions){
+function useProjectsPartForm(options: UseProjectPartFormOptions) {
   const { projectsPart } = options
 
   const formPayload = useForm({
     defaultValues: projectsPart ? setupProjectPartInitialState(projectsPart) : defaultState,
-    mode: "onChange",
+    mode: 'onChange',
   })
 
   const { watch } = formPayload
@@ -72,7 +72,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions){
             },
           },
         },
-      }, (prevData) => ([...prevData, data]))
+      }, prevData => ([...prevData, data]))
     },
   })
 
@@ -89,7 +89,9 @@ function useProjectsPartForm(options: UseProjectPartFormOptions){
 
   return {
     callbacks: {
-      createProjectsPart: (data: typeof defaultState) => createProjectsPart({ data, mutation: createProjectsPartMutation }),
+      createProjectsPart: (data: typeof defaultState) => (
+        createProjectsPart({ data, mutation: createProjectsPartMutation })
+      ),
     },
     formPayload,
     manufacturerId,

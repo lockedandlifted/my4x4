@@ -3,6 +3,7 @@ import { type Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import { ChakraProvider } from '@chakra-ui/provider'
 import { Toaster } from 'react-hot-toast'
+import { IKContext } from 'imagekitio-react'
 
 import theme from '@utils/theme'
 
@@ -14,15 +15,15 @@ import '@uppy/drag-drop/dist/style.min.css'
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
-}) => {
-  return (
-    <SessionProvider session={session}>
-      <ChakraProvider theme={theme}>
+}) => (
+  <SessionProvider session={session}>
+    <ChakraProvider theme={theme}>
+      <IKContext urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT_URL}>
         <Component {...pageProps} />
-        <Toaster />
-      </ChakraProvider>
-    </SessionProvider>
-  );
-};
+      </IKContext>
+      <Toaster />
+    </ChakraProvider>
+  </SessionProvider>
+)
 
-export default trpc.withTRPC(MyApp);
+export default trpc.withTRPC(MyApp)
