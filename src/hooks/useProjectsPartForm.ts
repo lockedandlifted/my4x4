@@ -63,7 +63,6 @@ function useProjectsPartForm(options: UseProjectPartFormOptions){
 
   const createProjectsPartMutation = trpc.projectsParts.createProjectsPart.useMutation({
     onSuccess: (data) => {
-      console.log('Created', data)
       setGetProjectsPartsData({
         projectId: data.projectId,
         include: {

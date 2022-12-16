@@ -1,6 +1,7 @@
 import { router } from '../trpc'
 
 import { authRouter } from './auth'
+import { awsRouter } from './aws'
 import { manufacturerModelsRouter } from './manufacturerModels'
 import { manufacturerPartsRouter } from './manufacturerParts'
 import { manufacturersRouter } from './manufacturers'
@@ -10,6 +11,7 @@ import { usersRouter } from './users'
 
 export const appRouters = {
   auth: authRouter,
+  aws: awsRouter,
   manufacturerModels: manufacturerModelsRouter,
   manufacturerParts: manufacturerPartsRouter,
   manufacturers: manufacturersRouter,

@@ -9,6 +9,10 @@ export const serverSchema = z.object({
   AUTH0_CLIENT_ID: z.string(),
   AUTH0_CLIENT_SECRET: z.string(),
   AUTH0_ISSUER: z.string(),
+  AWS_ACCESS_KEY: z.string(),
+  AWS_REGION: z.string(),
+  AWS_S3_BUCKET: z.string(),
+  AWS_SECRET_ACCESS_KEY: z.string(),
   DATABASE_URL: z.string().url(),
   NODE_ENV: z.enum(["development", "test", "production"]),
   NEXTAUTH_SECRET:

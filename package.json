@@ -14,6 +14,8 @@
     "ci:seed": "DATABASE_URL=$DATABASE_MIGRATION_URL npx prisma db seed"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.231.0",
+    "@aws-sdk/s3-request-presigner": "^3.231.0",
     "@chakra-ui/react": "^2.4.2",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -24,6 +26,14 @@
     "@trpc/next": "^10.0.0",
     "@trpc/react-query": "^10.0.0",
     "@trpc/server": "^10.0.0",
+    "@uppy/aws-s3": "^3.0.4",
+    "@uppy/aws-s3-multipart": "^3.1.1",
+    "@uppy/core": "^3.0.4",
+    "@uppy/dashboard": "^3.2.0",
+    "@uppy/drag-drop": "^3.0.1",
+    "@uppy/file-input": "^3.0.1",
+    "@uppy/progress-bar": "^3.0.1",
+    "@uppy/react": "^3.0.2",
     "cookies-next": "^2.1.1",
     "cuid": "^2.1.8",
     "framer-motion": "^6.5.1",
@@ -38,6 +48,7 @@
     "superjson": "1.9.1",
     "ts-node": "^10.9.1",
     "use-debounce": "^9.0.2",
+    "uuid": "^9.0.0",
     "zod": "^3.18.0"
   },
   "devDependencies": {
