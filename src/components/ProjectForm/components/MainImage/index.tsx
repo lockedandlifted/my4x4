@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { Button, Flex, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { DragDrop, FileInput, ProgressBar } from '@uppy/react'
+import { FileInput, ProgressBar } from '@uppy/react'
 
 import type { Project } from '@prisma/client'
 
@@ -11,7 +11,7 @@ import { trpc } from '@utils/trpc'
 import useImageUrl from '@hooks/useImageUrl'
 import useUppy from '@hooks/useUppy'
 
-import CustomFileInput from '@components/FileInput'
+import FileUploadButton from '@components/FileUploadButton'
 
 import TempImage from './image.jpg'
 
@@ -110,26 +110,29 @@ const MainImage = (props: MainImageProps) => {
             </Link>
           </Flex>
 
-          <Button
-            backgroundColor="whiteAlpha.300"
-            colorScheme="whiteAlpha"
-            marginTop="auto"
-            size="lg"
-            zIndex="1"
-            width="auto"
-            _hover={{ backgroundColor: 'whiteAlpha.400' }}
-          >
-            {hasImage ? 'Change' : 'Add'} Photo
-          </Button>
+          {!!uppy && (
+            <FileUploadButton
+              // boxProps={{ width: '100%' }}
+              buttonProps={{
+                backgroundColor: 'whiteAlpha.300',
+                colorScheme: 'whiteAlpha',
+                marginTop: 'auto',
+                size: 'lg',
+                zIndex: '1',
+                width: '100%',
+                _hover: {
+                  backgroundColor: 'whiteAlpha.400',
+                },
+              }}
+              buttonText={`${hasImage ? 'Change' : 'Add'} Photo`}
+              uppy={uppy}
+            />
+          )}
         </Flex>
       </Flex>
 
       {!!uppy && (
-        <>
-          <CustomFileInput uppy={uppy} />
-          <FileInput pretty uppy={uppy} />
-          <ProgressBar uppy={uppy} fixed hideAfterFinish />
-        </>
+        <ProgressBar uppy={uppy} fixed hideAfterFinish />
       )}
     </>
   )

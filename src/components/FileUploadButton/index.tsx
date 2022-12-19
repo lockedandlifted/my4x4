@@ -1,21 +1,24 @@
 import { useEffect, useRef } from 'react'
-import { Flex } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 
 import type Uppy from '@uppy/core'
 
 import styles from './styles.module.css'
 
-console.log(styles)
-
-type FileInputProps = {
+type FileUploadButtonProps = {
+  boxProps?: object,
+  buttonProps?: object,
+  buttonText: string,
   callbacks?: {
     handleError,
   },
   uppy: Uppy,
 }
 
-const FileInput = (props: FileInputProps) => {
-  const { callbacks, uppy } = props
+const FileUploadButton = (props: FileUploadButtonProps) => {
+  const {
+    boxProps, buttonProps, buttonText, callbacks, uppy,
+  } = props
 
   const inputRef = useRef()
 
@@ -66,7 +69,7 @@ const FileInput = (props: FileInputProps) => {
   })
 
   return (
-    <Flex className={styles.root}>
+    <Flex {...boxProps}>
       <input
         accept=".jpg,jpeg"
         className={styles.input}
@@ -76,11 +79,17 @@ const FileInput = (props: FileInputProps) => {
         type="file"
       />
 
-      <button className={styles.button} type="button">
-        Click Me
-      </button>
+      <Button
+        colorScheme="blue"
+        className={styles.button}
+        onClick={() => inputRef.current?.click()}
+        type="button"
+        {...buttonProps}
+      >
+        {buttonText}
+      </Button>
     </Flex>
   )
 }
 
-export default FileInput
+export default FileUploadButton
