@@ -6,18 +6,20 @@ import { trpc } from '@utils/trpc'
 
 interface InitializeOptions {
   callbacks?: {
-    uploadSuccess?: (response) => void
-  }
-  fileKey?: string
-  maxNumberOfFiles?: number
+    uploadSuccess?: (response) => void,
+  },
+  fileKey?: string,
+  maxNumberOfFiles?: number,
   uppyOptions?: {
     id?: string,
-    allowedFileTypes: string[]
-  }
+    allowedFileTypes: string[],
+  },
 }
 
 const initializeUppy = (options: InitializeOptions, trpcClient) => {
-  const { callbacks, fileKey, maxNumberOfFiles, uppyOptions } = options || {}
+  const {
+    callbacks, fileKey, maxNumberOfFiles, uppyOptions,
+  } = options || {}
   const { uploadSuccess } = callbacks || {}
   const { allowedFileTypes, id } = uppyOptions || {}
 
@@ -34,14 +36,11 @@ const initializeUppy = (options: InitializeOptions, trpcClient) => {
     .use(AwsS3, {
       // Generate Presigned Upload Url
       getUploadParameters: async (file) => {
-        console.log('Getting upload params')
         const data = await trpcClient.aws.presignFileUpload.fetch({
           filename: file.name,
           fileType: file.type,
           key: fileKey,
         })
-
-        console.log('DATA', data)
 
         uppy.setFileMeta(file.id, data)
 

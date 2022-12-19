@@ -1,0 +1,86 @@
+import { useEffect, useRef } from 'react'
+import { Flex } from '@chakra-ui/react'
+
+import type Uppy from '@uppy/core'
+
+import styles from './styles.module.css'
+
+console.log(styles)
+
+type FileInputProps = {
+  callbacks?: {
+    handleError,
+  },
+  uppy: Uppy,
+}
+
+const FileInput = (props: FileInputProps) => {
+  const { callbacks, uppy } = props
+
+  const inputRef = useRef()
+
+  useEffect(() => {
+    const inputElement = inputRef.current
+
+    const handleChange = (event) => {
+      const files = Array.from(event.target.files)
+
+      files.forEach((file) => {
+        try {
+          uppy.addFile({
+            source: 'file input',
+            name: file.name,
+            type: file.type,
+            data: file,
+          })
+        } catch (error) {
+          if (callbacks?.handleError) {
+            callbacks.handleError(error)
+          }
+
+          if (error.isRestriction) {
+            // handle restrictions
+            console.log('Restriction error:', error)
+          } else {
+            // handle other errors
+            console.error(error)
+          }
+        }
+      })
+    }
+
+    inputElement.addEventListener('change', handleChange)
+
+    return () => {
+      inputElement.removeEventListener('change', handleChange)
+    }
+  }, [callbacks, uppy])
+
+  // Cleanup
+  uppy.on('file-removed', () => {
+    if (inputRef.current) inputRef.current.value = null
+  })
+
+  uppy.on('complete', () => {
+    if (inputRef.current) inputRef.current.value = null
+  })
+
+  return (
+    <Flex className={styles.root}>
+      <input
+        accept=".jpg,jpeg"
+        className={styles.input}
+        name="files[]"
+        multiple
+        ref={inputRef}
+        type="file"
+      />
+
+      <button className={styles.button} type="button">
+        Click Me
+      </button>
+    </Flex>
+  )
+}
+
+export default FileInput

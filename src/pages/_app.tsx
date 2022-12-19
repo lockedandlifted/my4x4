@@ -11,6 +11,8 @@ import { trpc } from '@utils/trpc'
 
 import '@uppy/core/dist/style.min.css'
 import '@uppy/drag-drop/dist/style.min.css'
+import '@uppy/file-input/dist/style.min.css'
+import '@uppy/progress-bar/dist/style.min.css'
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
