@@ -13,8 +13,6 @@ import useUppy from '@hooks/useUppy'
 
 import FileUploadButton from '@components/FileUploadButton'
 
-import TempImage from './image.jpg'
-
 type MainImageProps = {
   project: Project,
 }
@@ -80,7 +78,7 @@ const MainImage = (props: MainImageProps) => {
         maxWidth="100%"
         style={{ aspectRatio: '4 / 5' }}
       >
-        <Image alt="Project Main Image" fill src={imageUrl || TempImage} style={{ objectFit: 'cover' }} />
+        {hasImage && <Image alt="Project Main Image" fill src={imageUrl} style={{ objectFit: 'cover' }} />}
 
         <Flex
           background={
@@ -112,16 +110,15 @@ const MainImage = (props: MainImageProps) => {
 
           {!!uppy && (
             <FileUploadButton
-              // boxProps={{ width: '100%' }}
               buttonProps={{
-                backgroundColor: 'whiteAlpha.300',
-                colorScheme: 'whiteAlpha',
+                backgroundColor: hasImage ? 'whiteAlpha.300' : 'blackAlpha.300',
+                colorScheme: hasImage ? 'whiteAlpha' : 'blackAlpha',
                 marginTop: 'auto',
                 size: 'lg',
                 zIndex: '1',
                 width: '100%',
                 _hover: {
-                  backgroundColor: 'whiteAlpha.400',
+                  backgroundColor: hasImage ? 'whiteAlpha.400' : 'blackAlpha.400',
                 },
               }}
               buttonText={`${hasImage ? 'Change' : 'Add'} Photo`}

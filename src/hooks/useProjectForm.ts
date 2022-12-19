@@ -3,7 +3,9 @@ import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import cuid from 'cuid'
 
-import type { Manufacturer, ManufacturerModel, Project, ProjectsAttribute } from '@prisma/client'
+import type {
+  Manufacturer, ManufacturerModel, Project, ProjectsAttribute,
+} from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 import { kebabCase } from '@utils/string'
@@ -23,7 +25,9 @@ type BuildProjectTitleParams = {
 }
 
 const buildProjectTitle = (params: BuildProjectTitleParams) => {
-  const { manufacturer, manufacturerModel, modelSeries, yearManufactured } = params
+  const {
+    manufacturer, manufacturerModel, modelSeries, yearManufactured,
+  } = params
 
   let title = `${manufacturer.title} ${manufacturerModel.title}`
   if (yearManufactured) title = `${yearManufactured} ${title}`
@@ -48,13 +52,11 @@ const createProject = (params: CreateProjectParams) => {
     temporaryUserId,
   }
 
-  if (data.attributes){
-    updatedData.projectsAttributes = Object.keys(data.attributes).map((attributeKey) => {
-      return {
-        key: attributeKey,
-        value: data.attributes[attributeKey],
-      }
-    })
+  if (data.attributes) {
+    updatedData.projectsAttributes = Object.keys(data.attributes).map(attributeKey => ({
+      key: attributeKey,
+      value: data.attributes[attributeKey],
+    }))
   }
 
   return mutation.mutate(updatedData)
@@ -76,13 +78,11 @@ const updateProject = (params: UpdateProjectParams) => {
     id: project?.id,
   }
 
-  if (data.attributes){
-    updatedData.projectsAttributes = Object.keys(data.attributes).map((attributeKey) => {
-      return {
-        key: attributeKey,
-        value: data.attributes[attributeKey],
-      }
-    })
+  if (data.attributes) {
+    updatedData.projectsAttributes = Object.keys(data.attributes).map(attributeKey => ({
+      key: attributeKey,
+      value: data.attributes[attributeKey],
+    }))
   }
 
   return mutation.mutate(updatedData)
@@ -122,17 +122,17 @@ const setupProjectInitialState = (project: Project) => {
     return acc
   }, { ...defaultState })
 
-  if (project.manufacturerModel?.manufacturer){
+  if (project.manufacturerModel?.manufacturer) {
     initialState.manufacturerId = project.manufacturerModel?.manufacturer.id
   }
 
-  if (project.projectsAttributes){
+  if (project.projectsAttributes) {
     initialState.projectsAttributes = []
 
     project.projectsAttributes.forEach((projectsAttribute: ProjectsAttribute) => {
       const { attribute, value } = projectsAttribute
 
-      if (attribute?.key){
+      if (attribute?.key) {
         initialState.attributes[attribute.key] = value
       }
     })
@@ -146,14 +146,14 @@ type UseProjectFormOptions = {
   temporaryUserId?: string,
 }
 
-function useProjectForm(options: UseProjectFormOptions){
+function useProjectForm(options: UseProjectFormOptions) {
   const { project, temporaryUserId } = options ?? {}
 
   const router = useRouter()
 
   const formPayload = useForm({
     defaultValues: project?.id ? setupProjectInitialState(project) : defaultState,
-    mode: "onChange",
+    mode: 'onChange',
   })
 
   const { setValue, watch } = formPayload
@@ -174,12 +174,12 @@ function useProjectForm(options: UseProjectFormOptions){
   const { data: manufacturerModels = [] } = manufacturerModelsQuery
 
   // Selected Entities
-  const selectedManufacturer = manufacturers.find((manufacturer) => manufacturer.id === manufacturerId)
-  const selectedManufacturerModel = manufacturerModels.find((model) => model.id === manufacturerModelId)
+  const selectedManufacturer = manufacturers.find(manufacturer => manufacturer.id === manufacturerId)
+  const selectedManufacturerModel = manufacturerModels.find(model => model.id === manufacturerModelId)
 
   // Build Project Title
   useEffect(() => {
-    if (selectedManufacturer?.id && selectedManufacturerModel?.id){
+    if (selectedManufacturer?.id && selectedManufacturerModel?.id) {
       const title = buildProjectTitle({
         manufacturer: selectedManufacturer,
         manufacturerModel: selectedManufacturerModel,
@@ -187,13 +187,14 @@ function useProjectForm(options: UseProjectFormOptions){
         yearManufactured,
       })
 
-      if (title){
+      if (!project?.id && title) {
         setValue('title', title)
         if (!project?.slug) setValue('slug', buildProjectSlug({ title }))
       }
     }
   }, [
     modelSeries,
+    project?.id,
     project?.slug,
     selectedManufacturer,
     selectedManufacturerModel,
@@ -214,10 +215,10 @@ function useProjectForm(options: UseProjectFormOptions){
     onSuccess: (data) => {
       const [_, project] = data
 
-      if (router.pathname !== '/projects/[projectId]/edit'){
+      if (router.pathname !== '/projects/[projectId]/edit') {
         router.push(`/projects/${project.id}/edit`)
       }
-    }
+    },
   })
 
   return {
