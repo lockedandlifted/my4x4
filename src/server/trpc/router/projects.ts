@@ -73,7 +73,8 @@ const projectsRouter = router({
 
   getProjects: publicProcedure
     .input(z.object({
-      userId: z.string().uuid(),
+      limit: z.number().optional(),
+      userId: z.string().uuid().optional(),
     }))
     .query(({ ctx, input }) => {
       const userConditions = []
@@ -91,8 +92,34 @@ const projectsRouter = router({
         where: {
           AND: userConditions,
         },
+        take: input.limit || undefined,
+        orderBy: {
+          createdAt: 'desc',
+        },
       })
     }),
+
+  getRecentProjects: publicProcedure
+    .input(z.object({
+      limit: z.number().optional(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.project.findMany({
+      include: {
+        projectsImages: {
+          include: {
+            image: true,
+          },
+          orderBy: {
+            sort: 'asc',
+          },
+          take: 1,
+        },
+      },
+      take: input.limit || undefined,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })),
 
   getProjectById: publicProcedure
     .input(z.object({

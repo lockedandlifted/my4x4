@@ -17,13 +17,13 @@ type PartsProps = {
 
 const Parts = (props: PartsProps) => {
   const {
-      callbacks: {
-        CreateOrEditProjectPartModal: {
-          showModal: showCreateOrEditProjectPartModal,
-        },
+    callbacks: {
+      CreateOrEditProjectPartModal: {
+        showModal: showCreateOrEditProjectPartModal,
       },
-      project,
-    } = props
+    },
+    project,
+  } = props
 
   const projectsPartsQuery = trpc.projectsParts.getProjectsParts.useQuery(
     { projectId: project?.id, include: { manufacturerPart: { include: { manufacturer: true } } } },
@@ -36,7 +36,7 @@ const Parts = (props: PartsProps) => {
     <Flex direction="column" marginTop="12">
       <Heading size="md" marginBottom="4">Parts & Upgrades</Heading>
 
-      {projectsParts.map((projectsPart) => (
+      {projectsParts.map(projectsPart => (
         <ProjectsPart key={projectsPart.id} projectsPart={projectsPart} />
       ))}
 

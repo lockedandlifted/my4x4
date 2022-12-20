@@ -41,13 +41,14 @@ const ProjectForm = (props: ProjectFormProps) => {
         </Heading>
 
         <Paragraph marginTop={Form.Field.MARGIN_TOP}>
-          My 4x4 was built to give everyone a place to add their builds, parts and car history to show it off, or keep a record for yourself.
+          My 4x4 was built to give everyone a place to add their builds,
+          parts and car history to show it off, or keep a record for yourself.
         </Paragraph>
 
         <Form.Field label="Manufacturer" marginTop={Form.Field.MARGIN_TOP} name="manufacturerId" validationRules={{ required: true }}>
           <select>
             <option value="">Please Select...</option>
-            {manufacturers.map((manufacturer) => (
+            {manufacturers.map(manufacturer => (
               <option key={manufacturer.id} value={manufacturer.id}>
                 {manufacturer.title}
               </option>
@@ -59,7 +60,7 @@ const ProjectForm = (props: ProjectFormProps) => {
           <Form.Field label="Model" marginTop={Form.Field.MARGIN_TOP} name="manufacturerModelId" validationRules={{ required: true }}>
             <select>
               <option value="">Please Select...</option>
-              {manufacturerModels.map((manufacturerModel) => (
+              {manufacturerModels.map(manufacturerModel => (
                 <option key={manufacturerModel.id} value={manufacturerModel.id}>
                   {manufacturerModel.title}
                 </option>

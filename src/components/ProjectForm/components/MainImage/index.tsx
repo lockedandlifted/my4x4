@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
-import { Button, Flex, Text } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { FileInput, ProgressBar } from '@uppy/react'
+import { ProgressBar } from '@uppy/react'
 
 import type { Project } from '@prisma/client'
 
@@ -33,9 +33,12 @@ const MainImage = (props: MainImageProps) => {
     }],
   })
 
+  // Create ProjectsImage Mutation
+  const { projects: { getProjectById: { invalidate } } } = trpc.useContext()
+
   const createProjectsImageMutation = trpc.projectsImages.createProjectsImage.useMutation({
-    onSuccess: (data) => {
-      console.log('Created Image', data)
+    onSuccess: () => {
+      invalidate({ id: project?.id })
     },
   })
 
@@ -69,9 +72,8 @@ const MainImage = (props: MainImageProps) => {
   return (
     <>
       <Flex
-        border="2px dashed"
-        borderColor={hasImage ? 'white' : '#efefef'}
         borderRadius={20}
+        boxShadow="base"
         flexDirection="column"
         overflow="hidden"
         position="relative"
@@ -97,7 +99,7 @@ const MainImage = (props: MainImageProps) => {
               fontSize="3xl"
               fontWeight="bold"
               lineHeight={1.3}
-              marginBottom="8"
+              marginBottom={hasImage ? 4 : 8}
               width="75%"
             >
               {project?.title}
@@ -108,7 +110,7 @@ const MainImage = (props: MainImageProps) => {
             </Link>
           </Flex>
 
-          {!!uppy && (
+          {!hasImage && !!uppy && (
             <FileUploadButton
               buttonProps={{
                 backgroundColor: hasImage ? 'whiteAlpha.300' : 'blackAlpha.300',
@@ -121,7 +123,7 @@ const MainImage = (props: MainImageProps) => {
                   backgroundColor: hasImage ? 'whiteAlpha.400' : 'blackAlpha.400',
                 },
               }}
-              buttonText={`${hasImage ? 'Change' : 'Add'} Photo`}
+              buttonText="Add Photos"
               uppy={uppy}
             />
           )}

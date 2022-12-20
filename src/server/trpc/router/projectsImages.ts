@@ -35,6 +35,20 @@ const projectsImagesRouter = router({
         },
       })
     }),
+
+  getProjectsImages: publicProcedure
+    .input(z.object({
+      include: z.object({
+        image: z.boolean().optional(),
+      }).optional(),
+      projectId: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.projectsImage.findMany({
+      where: {
+        projectId: input.projectId,
+      },
+      include: input.include,
+    })),
 })
 
 export default projectsImagesRouter

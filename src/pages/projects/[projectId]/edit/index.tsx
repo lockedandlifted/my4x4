@@ -19,6 +19,7 @@ import Attributes from '@components/ProjectForm/components/Attributes'
 import Description from '@components/ProjectForm/components/Description'
 import MainImage from '@components/ProjectForm/components/MainImage'
 import Parts from '@components/ProjectForm/components/Parts'
+import ProjectImages from '@components/ProjectImages'
 
 const showModal = (setState, payload?: object) => {
   setState(state => ({
@@ -35,8 +36,8 @@ const callbacks = (componentName: string | undefined, setState) => {
   const componentCallbacks = {
     CreateOrEditProjectPartModal: {
       closeModal: () => setState(s => ({ ...s, showCreateOrEditProjectPartModal: false })),
-      createProjectsPart: (payload) => processCallback(payload),
-      showModal: (payload?: object) => showModal(setState, payload)
+      createProjectsPart: payload => processCallback(payload),
+      showModal: (payload?: object) => showModal(setState, payload),
     },
   }
 
@@ -65,6 +66,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     <MobileLayout>
       <Form callbacks={{ submitForm: updateProject }} formPayload={formPayload} id="project-form">
         <MainImage project={project} />
+        <ProjectImages project={project} />
         <Description project={project} />
         <Attributes project={project} />
         <Parts callbacks={callbacks(undefined, setState)} project={project} />
