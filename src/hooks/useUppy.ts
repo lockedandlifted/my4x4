@@ -56,7 +56,7 @@ const initializeUppy = (options: InitializeOptions, trpcClient) => {
   return uppy
 }
 
-function useUppy(options: InitializeOptions, deps = []) {
+function useUppy(options: InitializeOptions, deps: string[] = []) {
   const trpcClient = trpc.useContext()
 
   const uppyRef = useRef<Uppy>()

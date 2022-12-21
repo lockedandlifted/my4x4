@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react'
 import { ChakraProvider } from '@chakra-ui/provider'
 import { Toaster } from 'react-hot-toast'
 import { IKContext } from 'imagekitio-react'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import theme from '@utils/theme'
 
@@ -22,6 +23,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <ChakraProvider theme={theme}>
       <IKContext urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT_URL}>
         <Component {...pageProps} />
+        <ReactQueryDevtools initialIsOpen={false} />
       </IKContext>
       <Toaster />
     </ChakraProvider>

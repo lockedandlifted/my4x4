@@ -45,7 +45,12 @@ const ProjectForm = (props: ProjectFormProps) => {
           parts and car history to show it off, or keep a record for yourself.
         </Paragraph>
 
-        <Form.Field label="Manufacturer" marginTop={Form.Field.MARGIN_TOP} name="manufacturerId" validationRules={{ required: true }}>
+        <Form.Field
+          label="Manufacturer"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="manufacturerId"
+          validationRules={{ required: true }}
+        >
           <select>
             <option value="">Please Select...</option>
             {manufacturers.map(manufacturer => (
@@ -57,7 +62,12 @@ const ProjectForm = (props: ProjectFormProps) => {
         </Form.Field>
 
         {!!manufacturerId && (
-          <Form.Field label="Model" marginTop={Form.Field.MARGIN_TOP} name="manufacturerModelId" validationRules={{ required: true }}>
+          <Form.Field
+            label="Model"
+            marginTop={Form.Field.MARGIN_TOP}
+            name="manufacturerModelId"
+            validationRules={{ required: true }}
+          >
             <select>
               <option value="">Please Select...</option>
               {manufacturerModels.map(manufacturerModel => (

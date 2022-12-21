@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 import type { GetServerSideProps } from 'next'
 import type { Project } from '@prisma/client'
 
 import processCallback from '@utils/processCallback'
 import setupTrpcCaller from '@utils/setupTrpcCaller'
+import { trpc } from '@utils/trpc'
 
 import useProjectForm from '@hooks/useProjectForm'
 
@@ -49,15 +51,14 @@ const defaultState = {
   showCreateOrEditProjectPartModal: false,
 }
 
-type EditProjectPageProps = {
-  project: Project,
-}
-
-const EditProjectPage = (props: EditProjectPageProps) => {
-  const { project } = props
+const EditProjectPage = () => {
+  const { query: { projectId } } = useRouter()
 
   const [state, setState] = useState(defaultState)
   const { showCreateOrEditProjectAttributeModal, showCreateOrEditProjectPartModal } = state
+
+  const projectQuery = trpc.projects.getProjectById.useQuery({ id: projectId })
+  const { data: project } = projectQuery
 
   const projectFormPayload = useProjectForm({ project })
   const { callbacks: { updateProject }, formPayload } = projectFormPayload
@@ -84,17 +85,6 @@ const EditProjectPage = (props: EditProjectPageProps) => {
       />
     </MobileLayout>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { query: { projectId } } = context
-
-  const trpcCaller = await setupTrpcCaller(context)
-  const project = await trpcCaller.projects.getProjectById({
-    id: projectId,
-  })
-
-  return { props: { project } }
 }
 
 export default EditProjectPage
