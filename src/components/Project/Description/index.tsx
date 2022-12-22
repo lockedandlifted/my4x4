@@ -27,7 +27,7 @@ const Description = (props: DescriptionProps) => {
   }
 
   return (
-    <Flex flexDirection="column" marginTop="8">
+    <Flex flexDirection="column" marginTop={8}>
       <Flex justifyContent="space-between">
         <Heading size="md" marginBottom="4">About the Build</Heading>
       </Flex>
@@ -38,15 +38,17 @@ const Description = (props: DescriptionProps) => {
         </Form.Field>
       )}
 
-      {editMode && !editing && !!project?.description && (
+      {!editing && !!project?.description && (
         <>
           <Paragraph>
             {project?.description}
           </Paragraph>
 
-          <Text cursor="pointer" fontWeight="bold" onClick={() => setEditing(!editing)} marginTop={4}>
-            Edit Description
-          </Text>
+          {editMode && (
+            <Text cursor="pointer" fontWeight="bold" onClick={() => setEditing(!editing)} marginTop={4}>
+              Edit Description
+            </Text>
+          )}
         </>
       )}
 

@@ -6,6 +6,7 @@ import { trpc } from '@utils/trpc'
 
 import MobileLayout from '@layouts/MobileLayout'
 
+import BackToProjectButton from '@components/Project/BackToProjectButton'
 import ImageTile from '@components/Project/ImageTile'
 
 const BuildImagesPage = () => {
@@ -29,18 +30,7 @@ const BuildImagesPage = () => {
 
   return (
     <MobileLayout>
-      <NextLink href={`/${projectSlug}`}>
-        <Flex
-          borderRadius="lg"
-          backgroundColor="gray.50"
-          justifyContent="center"
-          marginBottom={4}
-          padding="4"
-          width="100%"
-        >
-          <Text fontWeight="bold">{project?.title}</Text>
-        </Flex>
-      </NextLink>
+      <BackToProjectButton project={project} />
 
       {projectsImages.map((projectsImage) => {
         const { image } = projectsImage

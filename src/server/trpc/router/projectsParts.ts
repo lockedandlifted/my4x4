@@ -21,6 +21,23 @@ const projectsPartsRouter = router({
       include: input.include,
     })),
 
+  getProjectsPartById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.projectsPart.findFirst({
+      where: {
+        id: input.id,
+      },
+      include: {
+        manufacturerPart: {
+          include: {
+            manufacturer: true,
+          },
+        },
+      },
+    })),
+
   createProjectsPart: publicProcedure
     .input(z.object({
       manufacturerId: z.string(),

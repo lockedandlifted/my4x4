@@ -16,7 +16,7 @@ import Form from '@components/Form'
 import Attributes from '@components/Project/Attributes'
 import Description from '@components/Project/Description'
 import MainImage from '@components/ProjectForm/components/MainImage'
-import Parts from '@components/ProjectForm/components/Parts'
+import Parts from '@components/Project/Parts'
 import ProjectImageThumbs from '@components/ProjectImageThumbs'
 
 const showModal = (setState, payload?: object) => {

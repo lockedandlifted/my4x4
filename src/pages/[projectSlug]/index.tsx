@@ -8,6 +8,7 @@ import MobileLayout from '@layouts/MobileLayout'
 import Attributes from '@components/Project/Attributes'
 import Description from '@components/Project/Description'
 import MainImage from '@components/Project/MainImage'
+import Parts from '@components/Project/Parts'
 import ProjectImageThumbs from '@components/ProjectImageThumbs'
 import SimilarProjects from '@components/Project/SimilarProjects'
 
@@ -31,6 +32,7 @@ const BuildPage = () => {
       <ProjectImageThumbs project={project} />
       <Description project={project} />
       <Attributes project={project} />
+      <Parts project={project} />
 
       <SimilarProjects project={project} />
     </MobileLayout>
