@@ -9,10 +9,6 @@ export const serverSchema = z.object({
   AUTH0_CLIENT_ID: z.string(),
   AUTH0_CLIENT_SECRET: z.string(),
   AUTH0_ISSUER: z.string(),
-  AWS_ACCESS_KEY: z.string(),
-  AWS_REGION: z.string(),
-  AWS_S3_BUCKET: z.string(),
-  AWS_SECRET_ACCESS_KEY: z.string(),
   DATABASE_URL: z.string().url(),
   INSTAGRAM_CLIENT_ID: z.string(),
   INSTAGRAM_CLIENT_SECRET: z.string(),
@@ -28,6 +24,10 @@ export const serverSchema = z.object({
     // VERCEL_URL doesn't include `https` so it cant be validated as a URL
     process.env.VERCEL ? z.string() : z.string().url(),
   ),
+  PROJECT_AWS_ACCESS_KEY: z.string(),
+  PROJECT_AWS_REGION: z.string(),
+  PROJECT_AWS_S3_BUCKET: z.string(),
+  PROJECT_AWS_SECRET_ACCESS_KEY: z.string(),
 })
 
 /**

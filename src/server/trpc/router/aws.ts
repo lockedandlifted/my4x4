@@ -41,15 +41,15 @@ const awsRouter = router({
       if (!fileId) return {}
 
       const s3ObjectUrl = parseUrl(
-        `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`,
+        `https://${process.env.PROJECT_AWS_S3_BUCKET}.s3.${process.env.PROJECT_AWS_REGION}.amazonaws.com/${fileKey}`,
       )
 
       const presignerOptions = {
         credentials: {
-          accessKeyId: process.env.AWS_ACCESS_KEY || '',
-          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+          accessKeyId: process.env.PROJECT_AWS_ACCESS_KEY || '',
+          secretAccessKey: process.env.PROJECT_AWS_SECRET_ACCESS_KEY || '',
         },
-        region: process.env.AWS_REGION || '',
+        region: process.env.PROJECT_AWS_REGION || '',
         sha256: Hash.bind(null, 'sha256'),
       }
 
