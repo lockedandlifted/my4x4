@@ -5,12 +5,13 @@ import type { Image } from '@prisma/client'
 
 import useImageUrl from '@hooks/useImageUrl'
 
-type ProjectImageProps = {
+type ProjectImageThumbProps = {
+  href?: string,
   image: Image,
 }
 
-const ProjectImage = (props: ProjectImageProps) => {
-  const { image } = props
+const ProjectImageThumb = (props: ProjectImageThumbProps) => {
+  const { href, image } = props
 
   const { imageUrl } = useImageUrl({
     enabled: !!image.id,
@@ -22,10 +23,17 @@ const ProjectImage = (props: ProjectImageProps) => {
     }],
   })
 
-  console.log(imageUrl)
-
   return (
-    <Flex borderWidth="1px" borderRadius="2xl" flexShrink="0" height="120px" overflow="hidden" width="120px">
+    <Flex
+      as={href ? 'a' : 'div'}
+      borderWidth="1px"
+      borderRadius="2xl"
+      flexShrink="0"
+      href={href}
+      height="120px"
+      overflow="hidden"
+      width="120px"
+    >
       <NextImage
         alt="Project Image Thumbnail"
         src={imageUrl || ''}
@@ -37,4 +45,4 @@ const ProjectImage = (props: ProjectImageProps) => {
   )
 }
 
-export default ProjectImage
+export default ProjectImageThumb

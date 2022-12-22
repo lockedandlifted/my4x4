@@ -211,12 +211,16 @@ function useProjectForm(options: UseProjectFormOptions) {
   })
 
   // Update Mutation
+  const { projects: { getProjectById: { invalidate: invalidateGetProjectById } } } = trpc.useContext()
+
   const updateProjectMutation = trpc.projects.updateProjectById.useMutation({
     onSuccess: (data) => {
       const [_, project] = data
 
       if (router.pathname !== '/projects/[projectId]/edit') {
         router.push(`/projects/${project.id}/edit`)
+      } else {
+        invalidateGetProjectById({ id: project?.id })
       }
     },
   })

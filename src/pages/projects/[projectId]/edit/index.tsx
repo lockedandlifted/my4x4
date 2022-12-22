@@ -1,11 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
-import type { GetServerSideProps } from 'next'
-import type { Project } from '@prisma/client'
-
 import processCallback from '@utils/processCallback'
-import setupTrpcCaller from '@utils/setupTrpcCaller'
 import { trpc } from '@utils/trpc'
 
 import useProjectForm from '@hooks/useProjectForm'
@@ -17,11 +13,11 @@ import CreateOrEditProjectPartModal from '@modals/CreateOrEditProjectPartModal'
 
 import Form from '@components/Form'
 
-import Attributes from '@components/ProjectForm/components/Attributes'
-import Description from '@components/ProjectForm/components/Description'
+import Attributes from '@components/Project/Attributes'
+import Description from '@components/Project/Description'
 import MainImage from '@components/ProjectForm/components/MainImage'
 import Parts from '@components/ProjectForm/components/Parts'
-import ProjectImages from '@components/ProjectImages'
+import ProjectImageThumbs from '@components/ProjectImageThumbs'
 
 const showModal = (setState, payload?: object) => {
   setState(state => ({
@@ -67,10 +63,10 @@ const EditProjectPage = () => {
     <MobileLayout>
       <Form callbacks={{ submitForm: updateProject }} formPayload={formPayload} id="project-form">
         <MainImage project={project} />
-        <ProjectImages project={project} />
-        <Description project={project} />
-        <Attributes project={project} />
-        <Parts callbacks={callbacks(undefined, setState)} project={project} />
+        <ProjectImageThumbs editMode project={project} />
+        <Description editMode project={project} />
+        <Attributes editMode project={project} />
+        <Parts editMode callbacks={callbacks(undefined, setState)} project={project} />
       </Form>
 
       <CreateOrEditProjectAttributeModal

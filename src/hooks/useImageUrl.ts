@@ -1,13 +1,13 @@
-import ImageKit from 'imagekit-javascript'
+import { useContext } from 'react'
+
+import ImageKitContext from '@contexts/imageKit'
 
 function useImageUrl(options: Transformation) {
   const { enabled = false, path, ...restOptions } = options
 
-  const imagekit = new ImageKit({
-    urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT_URL || '',
-  })
+  const { imageKit } = useContext(ImageKitContext)
 
-  const imageUrl = enabled ? imagekit.url({
+  const imageUrl = enabled && imageKit ? imageKit.url({
     path,
     ...restOptions,
   }) : null

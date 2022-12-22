@@ -121,6 +121,41 @@ const projectsRouter = router({
       },
     })),
 
+  getSimilarProjects: publicProcedure
+    .input(z.object({
+      limit: z.number().optional(),
+      projectId: z.string(),
+    }))
+    .query(async ({ ctx, input }) => {
+      const project = (await ctx.prisma.project.findFirst({
+        where: { id: input.projectId },
+      }))
+
+      return ctx.prisma.project.findMany({
+        where: {
+          manufacturerModelId: project?.manufacturerModelId,
+          NOT: {
+            id: project?.id,
+          },
+        },
+        include: {
+          projectsImages: {
+            include: {
+              image: true,
+            },
+            orderBy: {
+              sort: 'asc',
+            },
+            take: 1,
+          },
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        take: input.limit || 3,
+      })
+    }),
+
   getProjectById: publicProcedure
     .input(z.object({
       id: z.string(),
@@ -170,6 +205,15 @@ const projectsRouter = router({
           include: {
             attribute: true,
           },
+        },
+        projectsImages: {
+          include: {
+            image: true,
+          },
+          orderBy: {
+            sort: 'asc',
+          },
+          take: 1,
         },
       },
     })),

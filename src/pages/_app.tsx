@@ -3,12 +3,12 @@ import { type Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import { ChakraProvider } from '@chakra-ui/provider'
 import { Toaster } from 'react-hot-toast'
-import { IKContext } from 'imagekitio-react'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import theme from '@utils/theme'
-
 import { trpc } from '@utils/trpc'
+
+import { ImageKitContextProvider } from '@contexts/imageKit'
 
 import '@uppy/core/dist/style.min.css'
 import '@uppy/drag-drop/dist/style.min.css'
@@ -21,10 +21,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => (
   <SessionProvider session={session}>
     <ChakraProvider theme={theme}>
-      <IKContext urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT_URL}>
+      <ImageKitContextProvider>
         <Component {...pageProps} />
         <ReactQueryDevtools initialIsOpen={false} />
-      </IKContext>
+      </ImageKitContextProvider>
       <Toaster />
     </ChakraProvider>
   </SessionProvider>

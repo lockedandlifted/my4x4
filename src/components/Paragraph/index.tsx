@@ -8,7 +8,7 @@ const Paragraph = (props: ParagraphProps) => {
   const { children, ...restProps } = props
 
   return (
-    <Text lineHeight="1.5" {...restProps}>
+    <Text lineHeight="1.5" whiteSpace="pre-wrap" {...restProps}>
       {children}
     </Text>
   )

@@ -5,18 +5,18 @@ import type { Project } from '@prisma/client'
 import { trpc } from '@utils/trpc'
 
 import useProjectImageUpload from '@hooks/useProjectImageUpload'
-import useUppy from '@hooks/useUppy'
 
 import FileUploadButton from '@components/FileUploadButton'
 
-import ProjectImage from './ProjectImage'
+import ProjectImageThumb from './ProjectImageThumb'
 
-type ProjectImagesProps = {
+type ProjectImageThumbsProps = {
+  editMode: boolean,
   project: Project,
 }
 
-const ProjectImages = (props: ProjectImagesProps) => {
-  const { project } = props
+const ProjectImageThumbs = (props: ProjectImageThumbsProps) => {
+  const { editMode = false, project } = props
 
   const { projectsImages: { getProjectsImages: { invalidate } } } = trpc.useContext()
 
@@ -34,7 +34,7 @@ const ProjectImages = (props: ProjectImagesProps) => {
     projectId: project?.id,
   })
 
-  if (!projectsImages.length) {
+  if (!projectsImages.length || (!editMode && projectsImages.length === 1)) {
     return null
   }
 
@@ -44,11 +44,15 @@ const ProjectImages = (props: ProjectImagesProps) => {
         const { id, image } = projectsImage
 
         return (
-          <ProjectImage key={id} image={image} />
+          <ProjectImageThumb
+            href={editMode ? null : `/${project?.slug}/images`}
+            key={id}
+            image={image}
+          />
         )
       })}
 
-      {!!uppy && (
+      {editMode && !!uppy && (
         <FileUploadButton
           buttonProps={{
             borderRadius: '2xl',
@@ -68,4 +72,4 @@ const ProjectImages = (props: ProjectImagesProps) => {
   )
 }
 
-export default ProjectImages
+export default ProjectImageThumbs

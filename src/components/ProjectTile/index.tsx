@@ -1,7 +1,6 @@
 import {
   Flex, LinkBox, LinkOverlay, Text,
 } from '@chakra-ui/react'
-import Link from 'next/link'
 import Image from 'next/image'
 
 import type { Project } from '@prisma/client'
@@ -9,11 +8,12 @@ import type { Project } from '@prisma/client'
 import useImageUrl from '@hooks/useImageUrl'
 
 type ProjectTileProps = {
+  compact?: boolean,
   project: Project,
 }
 
 const ProjectTile = (props: ProjectTileProps) => {
-  const { project } = props
+  const { compact = false, project } = props
 
   const image = project?.projectsImages?.[0]?.image
   const hasImage = !!image
@@ -52,18 +52,20 @@ const ProjectTile = (props: ProjectTileProps) => {
           }
           direction="column"
           marginTop="auto"
-          padding="8"
+          padding={compact ? 6 : 8}
+          paddingBottom={compact ? 4 : undefined}
           zIndex="1"
         >
           <Flex alignItems="center">
             <LinkOverlay href={`/${project?.slug}`}>
               <Text
                 color={hasImage ? 'white' : 'black'}
-                fontSize="3xl"
+                fontSize={compact ? 'xl' : '3xl'}
                 fontWeight="bold"
                 lineHeight={1.3}
-                marginBottom="4"
-                width="75%"
+                marginBottom={4}
+                noOfLines={compact ? 2 : undefined}
+                width={compact ? '100%' : '75%'}
               >
                 {project?.title}
               </Text>

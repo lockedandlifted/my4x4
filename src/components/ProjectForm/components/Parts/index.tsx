@@ -41,10 +41,10 @@ const Parts = (props: PartsProps) => {
       ))}
 
       <Button
-        colorScheme="blue"
+        colorScheme="gray"
         marginTop="4"
         onClick={() => showCreateOrEditProjectPartModal()}
-        size="md"
+        size="lg"
         width="auto"
       >
         Add Part
