@@ -14,6 +14,8 @@ export const serverSchema = z.object({
   AWS_S3_BUCKET: z.string(),
   AWS_SECRET_ACCESS_KEY: z.string(),
   DATABASE_URL: z.string().url(),
+  INSTAGRAM_CLIENT_ID: z.string(),
+  INSTAGRAM_CLIENT_SECRET: z.string(),
   NODE_ENV: z.enum(['development', 'test', 'production']),
   NEXTAUTH_SECRET:
     process.env.NODE_ENV === 'production'
