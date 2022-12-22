@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import { Flex, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -9,7 +8,7 @@ import type { Project } from '@prisma/client'
 import { trpc } from '@utils/trpc'
 
 import useImageUrl from '@hooks/useImageUrl'
-import useUppy from '@hooks/useUppy'
+import useProjectImageUpload from '@hooks/useProjectImageUpload'
 
 import FileUploadButton from '@components/FileUploadButton'
 
@@ -19,6 +18,15 @@ type MainImageProps = {
 
 const MainImage = (props: MainImageProps) => {
   const { project } = props
+
+  const { projects: { getProjectById: { invalidate } } } = trpc.useContext()
+
+  const { uppy } = useProjectImageUpload({
+    callbacks: {
+      onSuccess: () => invalidate({ id: project?.id }),
+    },
+    projectId: project?.id,
+  })
 
   const image = project?.projectsImages?.[0]?.image
   const hasImage = !!image
@@ -32,42 +40,6 @@ const MainImage = (props: MainImageProps) => {
       width: '568',
     }],
   })
-
-  // Create ProjectsImage Mutation
-  const { projects: { getProjectById: { invalidate } } } = trpc.useContext()
-
-  const createProjectsImageMutation = trpc.projectsImages.createProjectsImage.useMutation({
-    onSuccess: () => {
-      invalidate({ id: project?.id })
-    },
-  })
-
-  const { mutate } = createProjectsImageMutation
-
-  const uploadSuccess = useCallback((file) => {
-    const params = {
-      projectId: project?.id,
-      image: {
-        id: file?.meta?.fileId,
-        fileKey: file?.meta?.fileKey,
-        filename: file?.meta?.filename,
-        originalFilename: file?.meta?.originalFilename,
-      },
-    }
-
-    mutate(params)
-
-    return params
-  }, [project?.id])
-
-  const uppy = useUppy(
-    {
-      callbacks: {
-        uploadSuccess,
-      },
-    },
-    [project?.id],
-  )
 
   return (
     <>

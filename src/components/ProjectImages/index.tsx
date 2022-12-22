@@ -4,6 +4,7 @@ import type { Project } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 
+import useProjectImageUpload from '@hooks/useProjectImageUpload'
 import useUppy from '@hooks/useUppy'
 
 import FileUploadButton from '@components/FileUploadButton'
@@ -17,6 +18,8 @@ type ProjectImagesProps = {
 const ProjectImages = (props: ProjectImagesProps) => {
   const { project } = props
 
+  const { projectsImages: { getProjectsImages: { invalidate } } } = trpc.useContext()
+
   const projectsImagesQuery = trpc.projectsImages.getProjectsImages.useQuery(
     { projectId: project?.id, include: { image: true } },
     { enabled: !!project?.id },
@@ -24,16 +27,12 @@ const ProjectImages = (props: ProjectImagesProps) => {
 
   const { data: projectsImages = [] } = projectsImagesQuery
 
-  const uppy = useUppy(
-    {
-      callbacks: {
-        uploadSuccess: () => console.log('done'),
-      },
+  const { uppy } = useProjectImageUpload({
+    callbacks: {
+      onSuccess: () => invalidate({ projectId: project?.id }),
     },
-    [project?.id],
-  )
-
-  console.log(projectsImages)
+    projectId: project?.id,
+  })
 
   return (
     <Stack direction="row" spacing="2" paddingBottom="2" marginTop="2" overflowX="auto">
@@ -49,7 +48,7 @@ const ProjectImages = (props: ProjectImagesProps) => {
         <FileUploadButton
           buttonProps={{
             borderRadius: '2xl',
-            colorScheme: 'teal',
+            colorScheme: 'gray',
             marginTop: 'auto',
             size: 'lg',
             zIndex: '1',
