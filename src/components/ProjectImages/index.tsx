@@ -34,6 +34,10 @@ const ProjectImages = (props: ProjectImagesProps) => {
     projectId: project?.id,
   })
 
+  if (!projectsImages.length) {
+    return null
+  }
+
   return (
     <Stack direction="row" spacing="2" paddingBottom="2" marginTop="2" overflowX="auto">
       {projectsImages.map((projectsImage) => {
