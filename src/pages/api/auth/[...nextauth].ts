@@ -9,9 +9,7 @@ import { prisma } from '../../../server/db/client'
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    async signIn({
-      user, account, profile, email, credentials,
-    }: any) {
+    async signIn({ account }: any) {
       delete account.user_id
       return true
     },
