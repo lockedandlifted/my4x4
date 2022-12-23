@@ -1,10 +1,15 @@
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import type { ProjectsPart } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 
+import { createProjectsPartValidationSchema } from '@validationSchemas/projectsPart'
+
 const defaultState = {
+  description: undefined,
+  installedAt: undefined,
   manufacturerId: '',
   manufacturerPartId: '',
   partNumber: '',
@@ -48,6 +53,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   const formPayload = useForm({
     defaultValues: projectsPart ? setupProjectPartInitialState(projectsPart) : defaultState,
     mode: 'onChange',
+    resolver: zodResolver(createProjectsPartValidationSchema, undefined),
   })
 
   const { watch } = formPayload

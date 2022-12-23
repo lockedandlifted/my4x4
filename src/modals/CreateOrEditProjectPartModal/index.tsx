@@ -28,7 +28,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
   const { callbacks: { closeModal, createProjectsPart }, project, showModal } = props
 
   const projectsPart = { projectId: project?.id }
-  const newRecord = !!projectsPart.id
+  const newRecord = !projectsPart.id
 
   const projectsPartFormPayload = useProjectsPartForm({ projectsPart })
   const {
@@ -45,7 +45,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
     title,
   } = projectsPartFormPayload
 
-  const saveFn = newRecord ? updateFn : createFn
+  const saveFn = newRecord ? createFn : updateFn
 
   const processCallbackPayload = {
     action: saveFn,
@@ -73,7 +73,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
             <Form.Field label="Manufacturer" name="manufacturerId" validationRules={{ required: true }}>
               <select>
                 <option value="">Please Select...</option>
-                {manufacturers.map((manufacturer) => (
+                {manufacturers.map(manufacturer => (
                   <option key={manufacturer.id} value={manufacturer.id}>
                     {manufacturer.title}
                   </option>
@@ -90,7 +90,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
                     setValue('manufacturerPartId', result.id)
                     setValue('title', result.title)
                     console.log(result)
-                  }
+                  },
                 }}
                 inputValue={title}
                 routerKey="manufacturerParts"
@@ -109,6 +109,30 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
               validationRules={{ required: false }}
             >
               <input type="text" />
+            </Form.Field>
+
+            <Form.Field
+              label="Description"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              name="description"
+              marginTop={4}
+              validationRules={{ required: false }}
+            >
+              <textarea />
+            </Form.Field>
+
+            <Form.Field
+              label="Installation Date"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              name="installedAt"
+              marginTop={4}
+              validationRules={{ required: false }}
+            >
+              <input type="date" />
             </Form.Field>
           </Form>
         </DrawerBody>

@@ -8,12 +8,13 @@ import type { Project } from '@prisma/client'
 import useImageUrl from '@hooks/useImageUrl'
 
 type ProjectTileProps = {
+  boxProps?: object,
   compact?: boolean,
   project: Project,
 }
 
 const ProjectTile = (props: ProjectTileProps) => {
-  const { compact = false, project } = props
+  const { boxProps, compact = false, project } = props
 
   const image = project?.projectsImages?.[0]?.image
   const hasImage = !!image
@@ -39,6 +40,7 @@ const ProjectTile = (props: ProjectTileProps) => {
         maxWidth="100%"
         marginBottom="4"
         style={{ aspectRatio: '4 / 5' }}
+        {...boxProps}
       >
         {hasImage && (
           <Image alt="Project Main Image" fill src={imageUrl} style={{ objectFit: 'cover' }} />

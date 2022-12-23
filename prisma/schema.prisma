@@ -195,9 +195,11 @@ model ProjectsPart {
   manufacturerPartId String           @map("manufacturer_part_id")
   project            Project          @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   projectId          String           @map("project_id")
+  description        String?
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
+  installedAt DateTime? @map("installed_at")
 
   @@unique([projectId, manufacturerPartId])
   @@map("projects_manufacturer_parts")

@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import NextLink from 'next/link'
 import { Flex, Heading, Text } from '@chakra-ui/react'
 
 import { trpc } from '@utils/trpc'
@@ -7,6 +6,9 @@ import { trpc } from '@utils/trpc'
 import MobileLayout from '@layouts/MobileLayout'
 
 import BackToProjectButton from '@components/Project/BackToProjectButton'
+import Description from '@components/ProjectsPart/Description'
+import Links from '@components/ProjectsPart/Links'
+import ProjectsWithPart from '@components/ProjectsPart/ProjectsWithPart'
 
 const ProjectPartsPage = () => {
   const { query: { projectSlug, projectPartId } } = useRouter()
@@ -36,13 +38,26 @@ const ProjectPartsPage = () => {
       <BackToProjectButton project={project} />
 
       <Flex direction="column">
-        <Text>{projectsPart?.manufacturerPart?.manufacturer?.title}</Text>
-        <Text>{projectsPart?.manufacturerPart?.title}</Text>
+        <Flex
+          alignItems="center"
+          borderWidth={1}
+          borderRadius="xl"
+          padding={2}
+        >
+          <Flex backgroundColor="gray.200" borderRadius="xl" height={16} width={16} />
 
-        <Text>Description</Text>
-        <Text>Links</Text>
+          <Flex justifyContent="center" flexDirection="column" marginLeft={4}>
+            <Heading size="small">
+              {projectsPart?.manufacturerPart.manufacturer?.title}
+            </Heading>
 
-        <Text>Builds with this Part:</Text>
+            <Text>{projectsPart?.manufacturerPart.title}</Text>
+          </Flex>
+        </Flex>
+
+        <Description projectsPart={projectsPart} />
+        <Links projectsPart={projectsPart} />
+        <ProjectsWithPart projectsPart={projectsPart} />
       </Flex>
     </MobileLayout>
   )

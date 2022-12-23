@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { createProjectsPartValidationSchema, getSimilarProjectsValidationSchema } from '@validationSchemas/projectsPart'
+
 import { router, publicProcedure } from '../trpc'
 
 const projectsPartsRouter = router({
@@ -38,16 +40,48 @@ const projectsPartsRouter = router({
       },
     })),
 
+  getSimilarProjectsWithPartId: publicProcedure
+    .input(getSimilarProjectsValidationSchema)
+    .query(async ({ ctx, input }) => {
+      const projectsPart = (await ctx.prisma.projectsPart.findFirst({
+        where: { id: input.projectsPartId },
+      }))
+
+      return ctx.prisma.projectsPart.findMany({
+        where: {
+          manufacturerPartId: projectsPart?.manufacturerPartId,
+          NOT: {
+            id: projectsPart?.id,
+          },
+        },
+        include: {
+          project: {
+            include: {
+              projectsImages: {
+                include: {
+                  image: true,
+                },
+                orderBy: {
+                  sort: 'asc',
+                },
+                take: 1,
+              },
+            },
+          },
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        take: input.limit || 3,
+      })
+    }),
+
   createProjectsPart: publicProcedure
-    .input(z.object({
-      manufacturerId: z.string(),
-      manufacturerPartId: z.string().nullable(),
-      partNumber: z.string(),
-      projectId: z.string(),
-      title: z.string(),
-    }))
+    .input(createProjectsPartValidationSchema)
     .mutation(({ ctx, input }) => ctx.prisma.projectsPart.create({
       data: {
+        description: input.description,
+        installedAt: input.installedAt,
         project: {
           connect: {
             id: input.projectId,

@@ -25,6 +25,7 @@
       "@pages/*": ["pages/*"],
       "@server/*": ["server/*"],
       "@utils/*": ["utils/*"],
+      "@validationSchemas/*": ["validationSchemas/*"],
     }
   },
   "ts-node": {
