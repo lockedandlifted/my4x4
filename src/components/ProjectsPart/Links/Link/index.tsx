@@ -1,30 +1,25 @@
 import { Flex, Heading, Text } from '@chakra-ui/react'
 
-import type { Prisma } from '@prisma/client'
+import type { ExternalLink } from '@prisma/client'
 
-type ManufacturerPartWithManufacturer = Prisma.ManufacturerPartGetPayload<{
-  include: {
-    manufacturer: true,
-  },
-}>
-
-type PartProps = {
-  href?: string,
-  manufacturerPart: ManufacturerPartWithManufacturer,
+type LinkProps = {
+  externalLink: ExternalLink,
 }
 
-const Part = (props: PartProps) => {
-  const { href, manufacturerPart } = props
+const Link = (props: LinkProps) => {
+  const { externalLink } = props
 
   return (
     <Flex
       alignItems="center"
-      as={href ? 'a' : 'div'}
+      as="a"
       borderWidth={1}
       borderRadius="xl"
-      href={href}
+      href={externalLink.url}
       marginTop={4}
       padding={2}
+      target="_blank"
+      rel="noopener noreferrer"
     >
       <Flex
         alignItems="center"
@@ -39,13 +34,13 @@ const Part = (props: PartProps) => {
 
       <Flex justifyContent="center" flexDirection="column" marginLeft={4}>
         <Heading size="small">
-          {manufacturerPart.manufacturer?.title}
+          {externalLink.title}
         </Heading>
 
-        <Text>{manufacturerPart.title}</Text>
+        <Text fontStyle="italic">{externalLink.url}</Text>
       </Flex>
     </Flex>
   )
 }
 
-export default Part
+export default Link

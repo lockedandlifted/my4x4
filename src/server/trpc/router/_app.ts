@@ -5,6 +5,7 @@ import awsRouter from './aws'
 import manufacturerModelsRouter from './manufacturerModels'
 import manufacturerPartsRouter from './manufacturerParts'
 import manufacturersRouter from './manufacturers'
+import projectPageViewsRouter from './projectPageViews'
 import projectsImagesRouter from './projectsImages'
 import projectsPartsRouter from './projectsParts'
 import projectsRouter from './projects'
@@ -16,6 +17,7 @@ export const appRouters = {
   manufacturerModels: manufacturerModelsRouter,
   manufacturerParts: manufacturerPartsRouter,
   manufacturers: manufacturersRouter,
+  projectPageViews: projectPageViewsRouter,
   projects: projectsRouter,
   projectsImages: projectsImagesRouter,
   projectsParts: projectsPartsRouter,

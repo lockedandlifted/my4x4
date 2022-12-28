@@ -191,7 +191,7 @@ const projectsRouter = router({
     .input(z.object({
       slug: z.string(),
     }))
-    .query(({ ctx, input }) => ctx.prisma.project.findUnique({
+    .query(async ({ ctx, input }) => ctx.prisma.project.findUnique({
       where: {
         slug: input.slug,
       },

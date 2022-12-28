@@ -58,6 +58,32 @@ model Country {
   @@map("countries")
 }
 
+model ExternalLink {
+  id    String @id @default(uuid())
+  title String
+  url   String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  externalLinkViews       ExternalLinkView[]
+  projectsExternalLinks   ProjectExternalLink[]
+  ProjectPartExternalLink ProjectPartExternalLink[]
+
+  @@map("external_links")
+}
+
+model ExternalLinkView {
+  id             String       @id @default(uuid())
+  externalLink   ExternalLink @relation(fields: [externalLinkId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  externalLinkId String       @map("external_link_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("external_link_views")
+}
+
 model Image {
   id               String  @id @default(uuid())
   fileKey          String  @map("file_key")
@@ -151,12 +177,27 @@ model Project {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  projectsAttributes ProjectsAttribute[]
-  projectsImages     ProjectsImage[]
-  projectsUsers      ProjectsUser[]
-  projectsParts      ProjectsPart[]
+  projectPageViews      ProjectPageView[]
+  projectsAttributes    ProjectsAttribute[]
+  projectsExternalLinks ProjectExternalLink[]
+  projectsImages        ProjectsImage[]
+  projectsParts         ProjectsPart[]
+  projectsUsers         ProjectsUser[]
 
   @@map("projects")
+}
+
+model ProjectExternalLink {
+  id             String       @id @default(uuid())
+  project        Project      @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId      String       @map("project_id")
+  externalLink   ExternalLink @relation(fields: [externalLinkId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  externalLinkId String       @map("externalLink_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("projects_external_links")
 }
 
 model ProjectsAttribute {
@@ -189,6 +230,17 @@ model ProjectsImage {
   @@map("projects_images")
 }
 
+model ProjectPageView {
+  id        String  @id @default(uuid())
+  project   Project @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId String  @map("project_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("project_page_views")
+}
+
 model ProjectsPart {
   id                 String           @id @default(uuid())
   manufacturerPart   ManufacturerPart @relation(fields: [manufacturerPartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -201,8 +253,23 @@ model ProjectsPart {
   updatedAt   DateTime  @default(now()) @map("updated_at")
   installedAt DateTime? @map("installed_at")
 
+  projectPartsExternalLinks ProjectPartExternalLink[]
+
   @@unique([projectId, manufacturerPartId])
   @@map("projects_manufacturer_parts")
+}
+
+model ProjectPartExternalLink {
+  id             String       @id @default(uuid())
+  projectPart    ProjectsPart @relation(fields: [projectPartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectPartId  String       @map("project_part_id")
+  externalLink   ExternalLink @relation(fields: [externalLinkId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  externalLinkId String       @map("externalLink_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("project_parts_external_links")
 }
 
 model ProjectsUser {

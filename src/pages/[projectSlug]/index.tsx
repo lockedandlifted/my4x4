@@ -15,9 +15,18 @@ import SimilarProjects from '@components/Project/SimilarProjects'
 const BuildPage = () => {
   const { query: { projectSlug } } = useRouter()
 
+  const { mutate: createPageViewFn } = trpc.projectPageViews.createProjectPageView.useMutation()
+
   const projectQuery = trpc.projects.getProjectBySlug.useQuery(
     { slug: projectSlug },
-    { enabled: !!projectSlug },
+    {
+      enabled: !!projectSlug,
+      onSuccess() {
+        createPageViewFn({
+          slug: projectSlug,
+        })
+      },
+    },
   )
 
   const { data: project } = projectQuery
