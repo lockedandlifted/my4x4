@@ -25,9 +25,9 @@ const Link = (props: LinkProps) => {
         alignItems="center"
         backgroundColor="gray.50"
         borderRadius="xl"
-        height={16}
+        height={14}
         justifyContent="center"
-        width={16}
+        width={14}
       >
         Icon
       </Flex>
@@ -37,7 +37,7 @@ const Link = (props: LinkProps) => {
           {externalLink.title}
         </Heading>
 
-        <Text fontStyle="italic">{externalLink.url}</Text>
+        <Text color="gray.500" fontSize="sm" fontStyle="italic">{externalLink.url}</Text>
       </Flex>
     </Flex>
   )

@@ -12,16 +12,14 @@ const manufacturerTypes: Prisma.ManufacturerTypeCreateArgs['data'][] = [
   },
 ]
 
-const seedFn = (prisma: PrismaClient) => {
-  return manufacturerTypes.map(async (data: Prisma.ManufacturerTypeCreateArgs['data']) => {
-    const record = await prisma.manufacturerType.upsert({
-      where: { key: data.key },
-      update: data,
-      create: data,
-    })
-
-    return record
+const seedFn = (prisma: PrismaClient) => manufacturerTypes.map(async (data: Prisma.ManufacturerTypeCreateArgs['data']) => {
+  const record = await prisma.manufacturerType.upsert({
+    where: { key: data.key },
+    update: data,
+    create: data,
   })
-}
+
+  return record
+})
 
 export default seedFn

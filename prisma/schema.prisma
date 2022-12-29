@@ -45,6 +45,38 @@ model Attribute {
   @@map("attributes")
 }
 
+model Category {
+  id             String        @id @default(uuid())
+  key            String        @unique
+  title          String
+  categoryType   CategoryType? @relation(fields: [categoryTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  categoryTypeId String?       @map("category_type_id")
+
+  parentCategoryId String?    @map("parent_category_id")
+  parentCategory   Category?  @relation("CategorySubcategories", fields: [parentCategoryId], references: [id])
+  subcategories    Category[] @relation("CategorySubcategories")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  manufacturerParts ManufacturerPart[]
+
+  @@map("categories")
+}
+
+model CategoryType {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  categories Category[]
+
+  @@map("category_types")
+}
+
 model Country {
   id    String @id @default(uuid())
   key   String @unique
@@ -66,9 +98,9 @@ model ExternalLink {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  externalLinkViews       ExternalLinkView[]
-  projectsExternalLinks   ProjectExternalLink[]
-  ProjectPartExternalLink ProjectPartExternalLink[]
+  externalLinkViews         ExternalLinkView[]
+  projectsExternalLinks     ProjectExternalLink[]
+  projectPartsExternalLinks ProjectPartsExternalLink[]
 
   @@map("external_links")
 }
@@ -137,6 +169,8 @@ model ManufacturerPart {
   id                     String       @id @default(uuid())
   manufacturer           Manufacturer @relation(fields: [manufacturerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   manufacturerId         String       @map("manufacturer_id")
+  category               Category?    @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  categoryId             String?      @map("category_id")
   title                  String
   partNumber             String?      @map("part_number")
   countryOfManufacture   Country?     @relation(fields: [countryOfManufactureId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -253,13 +287,13 @@ model ProjectsPart {
   updatedAt   DateTime  @default(now()) @map("updated_at")
   installedAt DateTime? @map("installed_at")
 
-  projectPartsExternalLinks ProjectPartExternalLink[]
+  projectPartsExternalLinks ProjectPartsExternalLink[]
 
   @@unique([projectId, manufacturerPartId])
   @@map("projects_manufacturer_parts")
 }
 
-model ProjectPartExternalLink {
+model ProjectPartsExternalLink {
   id             String       @id @default(uuid())
   projectPart    ProjectsPart @relation(fields: [projectPartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   projectPartId  String       @map("project_part_id")

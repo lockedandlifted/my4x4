@@ -26,10 +26,9 @@ const Parts = (props: PartsProps) => {
   const { CreateOrEditProjectPartModal } = callbacks || {}
 
   const projectsPartsQuery = trpc.projectsParts.getProjectsParts.useQuery(
-    { projectId: project?.id, include: { manufacturerPart: { include: { manufacturer: true } } } },
+    { projectId: project?.id, include: { manufacturerPart: { include: { category: true, manufacturer: true } } } },
     { enabled: !!project?.id },
   )
-
   const { data: projectsParts = [] } = projectsPartsQuery
 
   return (
@@ -41,7 +40,7 @@ const Parts = (props: PartsProps) => {
 
         return (
           <Part
-            href={editMode ? undefined : `/${project?.slug}/parts/${id}`}
+            href={editMode ? `/projects/${project?.id}/edit/parts/${id}` : `/${project?.slug}/parts/${id}`}
             key={id}
             manufacturerPart={manufacturerPart}
           />

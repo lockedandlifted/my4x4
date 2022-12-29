@@ -36,6 +36,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
       createProjectsPart: createFn,
       updateProjectsPart: updateFn,
     },
+    categories,
     formPayload: {
       setValue,
     },
@@ -86,10 +87,10 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
                 callbacks={{
                   onChange: (e: React.ChangeEvent<HTMLInputElement>) => setValue('title', e.target?.value),
                   selectItem: (result: ManufacturerPart) => {
+                    setValue('categoryId', result.categoryId)
                     setValue('partNumber', result.partNumber)
                     setValue('manufacturerPartId', result.id)
                     setValue('title', result.title)
-                    console.log(result)
                   },
                 }}
                 inputValue={title}
@@ -97,6 +98,17 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
                 queryKey="getManufacturerParts"
                 queryParams={{ manufacturerId }}
               />
+            </Form.Field>
+
+            <Form.Field label="Category" name="categoryId" marginTop={4} validationRules={{ required: true }}>
+              <select>
+                <option value="">Please Select...</option>
+                {categories.map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.title}
+                  </option>
+                ))}
+              </select>
             </Form.Field>
 
             <Form.Field

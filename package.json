@@ -47,6 +47,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.40.0",
     "react-hot-toast": "^2.4.0",
+    "react-icons": "^4.7.1",
     "sass": "^1.56.1",
     "superjson": "1.9.1",
     "ts-node": "^10.9.1",

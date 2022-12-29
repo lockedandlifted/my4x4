@@ -8,6 +8,7 @@ import { trpc } from '@utils/trpc'
 import { createProjectsPartValidationSchema } from '@validationSchemas/projectsPart'
 
 const defaultState = {
+  categoryId: undefined,
   description: undefined,
   installedAt: undefined,
   manufacturerId: '',
@@ -60,6 +61,10 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   const manufacturerId = watch('manufacturerId')
   const title = watch('title')
 
+  // Load Categories
+  const categoriesQuery = trpc.categories.getCategories.useQuery({ categoryType: 'part' })
+  const { data: categories = [] } = categoriesQuery
+
   // Load Manufacturers
   const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerType: 'part' })
   const { data: manufacturers = [] } = manufacturersQuery
@@ -99,6 +104,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
         createProjectsPart({ data, mutation: createProjectsPartMutation })
       ),
     },
+    categories,
     formPayload,
     manufacturerId,
     manufacturers,

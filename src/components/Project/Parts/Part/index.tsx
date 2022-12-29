@@ -1,9 +1,13 @@
 import { Flex, Heading, Text } from '@chakra-ui/react'
+import { FaAngleRight } from 'react-icons/fa'
 
 import type { Prisma } from '@prisma/client'
 
+import PartIcon from '@components/Icons/PartIcon'
+
 type ManufacturerPartWithManufacturer = Prisma.ManufacturerPartGetPayload<{
   include: {
+    category: true,
     manufacturer: true,
   },
 }>
@@ -34,7 +38,9 @@ const Part = (props: PartProps) => {
         justifyContent="center"
         width={16}
       >
-        Icon
+        <Text color="gray.400" fontSize="2xl">
+          <PartIcon categoryKey={manufacturerPart?.category?.key} />
+        </Text>
       </Flex>
 
       <Flex justifyContent="center" flexDirection="column" marginLeft={4}>
@@ -42,8 +48,12 @@ const Part = (props: PartProps) => {
           {manufacturerPart.manufacturer?.title}
         </Heading>
 
-        <Text>{manufacturerPart.title}</Text>
+        <Text fontSize="sm">{manufacturerPart.title}</Text>
       </Flex>
+
+      <Text color="gray.300" fontSize="xl" marginLeft="auto">
+        <FaAngleRight />
+      </Text>
     </Flex>
   )
 }

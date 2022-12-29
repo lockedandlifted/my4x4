@@ -2,9 +2,8 @@ import type { ManufacturerType, Prisma, PrismaClient } from '@prisma/client'
 
 // Manufacturers
 const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => {
-
   // Parts
-  const partManufacturerType = manufacturerTypes.find((manufacturerType) => manufacturerType.key === 'part')
+  const partManufacturerType = manufacturerTypes.find(manufacturerType => manufacturerType.key === 'part')
 
   const partManufacturers: Prisma.ManufacturerCreateArgs['data'][] = [
     {
@@ -241,7 +240,7 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
   ]
 
   // Vehicles
-  const vehicleManufacturerType = manufacturerTypes.find((manufacturerType) => manufacturerType.key === 'vehicle')
+  const vehicleManufacturerType = manufacturerTypes.find(manufacturerType => manufacturerType.key === 'vehicle')
 
   const vehicleManufacturers: Prisma.ManufacturerCreateArgs['data'][] = [
     {

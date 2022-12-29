@@ -10,6 +10,7 @@ const projectsPartsRouter = router({
       include: z.object({
         manufacturerPart: z.object({
           include: z.object({
+            category: z.boolean().default(false),
             manufacturer: z.boolean().default(false),
           }).optional(),
         }).optional(),
@@ -34,6 +35,7 @@ const projectsPartsRouter = router({
       include: {
         manufacturerPart: {
           include: {
+            category: true,
             manufacturer: true,
           },
         },
@@ -103,6 +105,7 @@ const projectsPartsRouter = router({
       include: {
         manufacturerPart: {
           include: {
+            category: true,
             manufacturer: true,
           },
         },

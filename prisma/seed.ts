@@ -1,6 +1,8 @@
 import prisma from '../src/server/db/client.js'
 
 import attributeSeedFn from './seeds/attributes.js'
+import categorySeedFn from './seeds/categories.js'
+import categoryTypeSeedFn from './seeds/categoryTypes.js'
 import manufacturerModelSeedFn from './seeds/manufacturerModels.js'
 import manufacturerSeedFn from './seeds/manufacturers.js'
 import manufacturerTypeSeedFn from './seeds/manufacturerTypes.js'
@@ -11,6 +13,14 @@ const seedDatabase = async () => {
     // Attributes
     const attributes = await Promise.all(attributeSeedFn(prisma))
     console.log('--- Seeded Attributes ---', attributes)
+
+    // Category Types
+    const categoryTypes = await Promise.all(categoryTypeSeedFn(prisma))
+    console.log('--- Seeded Category Types ---', categoryTypes)
+
+    // Categories
+    const categories = await Promise.all(categorySeedFn(prisma, categoryTypes))
+    console.log('--- Seeded Categories ---', categories)
 
     // Countries
     const countries = await Promise.all(countrySeedFn(prisma))
@@ -27,7 +37,6 @@ const seedDatabase = async () => {
     // Manufacturer Models
     const manufacturerModels = await Promise.all(manufacturerModelSeedFn(prisma, manufacturers))
     console.log('--- Seeded Manufacturer Models ---', manufacturerModels)
-
   } catch (error) {
     console.warn('Please define your seed data.')
     console.error(error)
