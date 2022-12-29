@@ -27,6 +27,8 @@ type CreateOrEditProjectPartExternalLinkModalProps = {
 const CreateOrEditProjectPartExternalLinkModal = (props: CreateOrEditProjectPartExternalLinkModalProps) => {
   const { callbacks: { closeModal, createProjectPartsExternalLink }, projectsPart, showModal } = props
 
+  console.log(props.callbacks)
+
   const projectPartsExternalLink = { projectsPartId: projectsPart?.id }
   const newRecord = !projectPartsExternalLink.id
 
@@ -36,10 +38,12 @@ const CreateOrEditProjectPartExternalLinkModal = (props: CreateOrEditProjectPart
       createProjectPartsExternalLink: createFn,
       updateProjectPartsExternalLink: updateFn,
     },
-    formPayload: {
-      setValue,
-    },
     formPayload,
+    mutations: {
+      createProjectPartsExternalLink: {
+        isLoading,
+      },
+    },
   } = projectPartsExternalLinkFormPayload
 
   const saveFn = newRecord ? createFn : updateFn
@@ -64,7 +68,10 @@ const CreateOrEditProjectPartExternalLinkModal = (props: CreateOrEditProjectPart
         <DrawerBody>
           <Form
             callbacks={{
-              submitForm: data => createProjectPartsExternalLink({ ...processCallbackPayload, actionPayload: data }),
+              submitForm: (data) => {
+                console.log(data)
+                createProjectPartsExternalLink({ ...processCallbackPayload, actionPayload: data })
+              },
             }}
             formPayload={formPayload}
             id="project-part-external-link-form"
@@ -87,6 +94,8 @@ const CreateOrEditProjectPartExternalLinkModal = (props: CreateOrEditProjectPart
           <Button
             colorScheme="green"
             form="project-part-external-link-form"
+            isDisabled={isLoading}
+            isLoading={isLoading}
             type="submit"
           >
             Save

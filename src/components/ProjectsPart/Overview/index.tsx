@@ -30,13 +30,15 @@ const Overview = (props: OverviewProps) => {
     >
       <Flex justifyContent="center" flexDirection="column">
         <Heading color="white" size="md">
-          {projectsPart?.manufacturerPart.manufacturer?.title}
+          {projectsPart?.manufacturerPart?.manufacturer?.title}
         </Heading>
 
-        <Text color="white" fontSize="sm">{projectsPart?.manufacturerPart.title}</Text>
+        <Text color="white" fontSize="sm">{projectsPart?.manufacturerPart?.title}</Text>
 
         {!!projectsPart?.installedAt && (
-        <Text color="gray.400" fontSize="sm">Installed: {projectsPart?.installedAt?.toLocaleDateString()}</Text>
+          <Text color="gray.400" fontSize="sm">
+            Installed: {projectsPart.installedAt.toLocaleDateString('en-AU')}
+          </Text>
         )}
       </Flex>
     </Flex>

@@ -83,7 +83,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
             },
           },
         },
-      }, prevData => ([...prevData, data]))
+      }, prevData => (prevData ? [...prevData, data] : [data]))
     },
   })
 
@@ -108,7 +108,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
     formPayload,
     manufacturerId,
     manufacturers,
-    mutation: {
+    mutations: {
       createProjectsPart: createProjectsPartMutation,
     },
     projectsPart,

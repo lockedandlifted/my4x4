@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const createProjectPartsExternalLinkValidationSchema = z.object({
-  url: z.string().url(),
+  projectsPartId: z.string(),
   title: z.string(),
+  url: z.string().url(),
 })

@@ -32,13 +32,11 @@ const Links = (props: LinksProps) => {
 
   const { CreateOrEditProjectPartExternalLinkModal } = callbacks || {}
 
-  const projectPartExternalLinksQuery = trpc.projectPartsExternalLinks.getProjectPartsExternalLinks.useQuery(
-    { projectsPartId: projectsPart?.id, include: { externalLink: true } },
+  const projectPartsExternalLinksQuery = trpc.projectPartsExternalLinks.getProjectPartsExternalLinks.useQuery(
+    { projectsPartId: projectsPart?.id, include: { externalLink: { include: { externalLinkType: true } } } },
     { enabled: !!projectsPart?.id },
   )
-  const { data: projectsPartsExternalLinks = [] } = projectPartExternalLinksQuery
-
-  console.log(projectsPartsExternalLinks)
+  const { data: projectPartsExternalLinks = [] } = projectPartsExternalLinksQuery
 
   return (
     <Flex direction="column" marginTop="8">
@@ -46,8 +44,16 @@ const Links = (props: LinksProps) => {
         Links
       </Heading>
 
-      <Link externalLink={{ url: 'https://www.google.com', title: 'Buy this Part' }} />
-      <Link externalLink={{ url: 'https://www.youtube.com/watch?v=N6so0I0cF48', title: 'Installation Video' }} />
+      {projectPartsExternalLinks.map((projectPartsExternalLink) => {
+        const { externalLink, id } = projectPartsExternalLink
+
+        return (
+          <Link
+            externalLink={externalLink}
+            key={id}
+          />
+        )
+      })}
 
       {editMode && (
         <Button

@@ -2,6 +2,8 @@ import { Flex, Heading, Text } from '@chakra-ui/react'
 
 import type { ExternalLink } from '@prisma/client'
 
+import ExternalLinkIcon from '@components/Icons/ExternalLinkIcon'
+
 type LinkProps = {
   externalLink: ExternalLink,
 }
@@ -29,7 +31,7 @@ const Link = (props: LinkProps) => {
         justifyContent="center"
         width={14}
       >
-        Icon
+        <ExternalLinkIcon externalLinkType={externalLink.externalLinkType?.key} />
       </Flex>
 
       <Flex justifyContent="center" flexDirection="column" marginLeft={4}>

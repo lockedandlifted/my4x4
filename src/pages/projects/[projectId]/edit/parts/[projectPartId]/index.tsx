@@ -71,7 +71,7 @@ const EditProjectsPartPage = () => {
       <Links callbacks={callbacks(undefined, setState)} editMode projectsPart={projectsPart} />
 
       <CreateOrEditProjectPartExternalLinkModal
-        callbacks={{ closeModal: () => setState(s => ({ ...s, showCreateOrEditProjectPartExternalLinkModal: false })) }}
+        callbacks={callbacks('CreateOrEditProjectPartExternalLinkModal', setState)}
         projectsPart={projectsPart}
         showModal={showCreateOrEditProjectPartExternalLinkModal}
       />

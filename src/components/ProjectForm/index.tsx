@@ -26,6 +26,11 @@ const ProjectForm = (props: ProjectFormProps) => {
     manufacturerModels,
     manufacturerModelId,
     manufacturerId,
+    mutations: {
+      createProject: {
+        isLoading,
+      },
+    },
   } = projectFormPayload
 
   return (
@@ -128,7 +133,14 @@ const ProjectForm = (props: ProjectFormProps) => {
           </>
         )}
 
-        <Button colorScheme="green" marginTop="4" size="lg" type="submit">
+        <Button
+          colorScheme="green"
+          isDisabled={isLoading}
+          isLoading={isLoading}
+          marginTop="4"
+          size="lg"
+          type="submit"
+        >
           {project?.id ? 'Save Details' : 'Create Build'}
         </Button>
       </Form>

@@ -38,7 +38,7 @@ const ProjectTile = (props: ProjectTileProps) => {
         overflow="hidden"
         position="relative"
         maxWidth="100%"
-        marginBottom="4"
+        marginBottom={compact ? 0 : 4}
         style={{ aspectRatio: '4 / 5' }}
         {...boxProps}
       >

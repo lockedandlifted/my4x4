@@ -3,6 +3,7 @@ import prisma from '../src/server/db/client.js'
 import attributeSeedFn from './seeds/attributes.js'
 import categorySeedFn from './seeds/categories.js'
 import categoryTypeSeedFn from './seeds/categoryTypes.js'
+import externalLinkTypeSeedFn from './seeds/externalLinkTypes.js'
 import manufacturerModelSeedFn from './seeds/manufacturerModels.js'
 import manufacturerSeedFn from './seeds/manufacturers.js'
 import manufacturerTypeSeedFn from './seeds/manufacturerTypes.js'
@@ -25,6 +26,10 @@ const seedDatabase = async () => {
     // Countries
     const countries = await Promise.all(countrySeedFn(prisma))
     console.log('--- Seeded Countries ---', countries)
+
+    // External Link Types
+    const externalLinkTypes = await Promise.all(externalLinkTypeSeedFn(prisma))
+    console.log('--- Seeded External Link Types ---', externalLinkTypes)
 
     // Manufacturer Types
     const manufacturerTypes = await Promise.all(manufacturerTypeSeedFn(prisma))

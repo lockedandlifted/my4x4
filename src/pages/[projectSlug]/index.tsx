@@ -33,10 +33,6 @@ const BuildPage = () => {
 
   return (
     <MobileLayout>
-      <Button as="a" href={`/projects/${project?.id}/edit`} marginBottom="4" size="lg">
-        Edit
-      </Button>
-
       <MainImage project={project} />
       <ProjectImageThumbs project={project} />
       <Description project={project} />
@@ -44,6 +40,10 @@ const BuildPage = () => {
       <Parts project={project} />
 
       <SimilarProjects project={project} />
+
+      <Button as="a" href={`/projects/${project?.id}/edit`} marginY={4} size="lg">
+        Edit Build
+      </Button>
     </MobileLayout>
   )
 }

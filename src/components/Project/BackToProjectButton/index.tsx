@@ -20,7 +20,7 @@ const BackToProjectButton = (props: BackToProjectButtonProps) => {
         borderBottomWidth={1}
         justifyContent="flex-start"
         marginBottom={4}
-        padding="4"
+        paddingY={4}
         width="100%"
       >
         <Text fontSize="xl">

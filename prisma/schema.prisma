@@ -91,9 +91,11 @@ model Country {
 }
 
 model ExternalLink {
-  id    String @id @default(uuid())
-  title String
-  url   String
+  id                 String           @id @default(uuid())
+  title              String
+  url                String
+  externalLinkType   ExternalLinkType @relation(fields: [externalLinkTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  externalLinkTypeId String           @map("external_link_type_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
@@ -103,6 +105,19 @@ model ExternalLink {
   projectPartsExternalLinks ProjectPartsExternalLink[]
 
   @@map("external_links")
+}
+
+model ExternalLinkType {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  externalLinks ExternalLink[]
+
+  @@map("external_link_type")
 }
 
 model ExternalLinkView {

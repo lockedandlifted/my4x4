@@ -1,6 +1,8 @@
 import { z } from 'zod'
 
-import { createProjectsPartValidationSchema, getSimilarProjectsValidationSchema } from '@validationSchemas/projectsPart'
+import { createProjectPartsExternalLinkValidationSchema } from '@validationSchemas/projectPartsExternalLink'
+
+import { getExternalLinkUrlType } from '@utils/externalLinkType'
 
 import { router, publicProcedure } from '../trpc'
 
@@ -8,7 +10,11 @@ const projectPartsExternalLinksRouter = router({
   getProjectPartsExternalLinks: publicProcedure
     .input(z.object({
       include: z.object({
-        externalLink: z.boolean().default(false),
+        externalLink: z.object({
+          include: z.object({
+            externalLinkType: z.boolean().default(false),
+          }).optional(),
+        }).optional(),
       }).optional(),
       projectsPartId: z.string(),
     }))
@@ -19,39 +25,35 @@ const projectPartsExternalLinksRouter = router({
       include: input.include,
     })),
 
-  // createProjectPartsExternalLink: publicProcedure
-  //   .input(createProjectsPartValidationSchema)
-  //   .mutation(({ ctx, input }) => ctx.prisma.projectsPart.create({
-  //     data: {
-  //       description: input.description,
-  //       installedAt: input.installedAt,
-  //       project: {
-  //         connect: {
-  //           id: input.projectId,
-  //         },
-  //       },
-  //       manufacturerPart: {
-  //         connectOrCreate: {
-  //           where: {
-  //             id: input.manufacturerPartId || 'new-record',
-  //           },
-  //           create: {
-  //             manufacturerId: input.manufacturerId,
-  //             partNumber: input.partNumber,
-  //             title: input.title,
-  //           },
-  //         },
-  //       },
-  //     },
-  //     include: {
-  //       manufacturerPart: {
-  //         include: {
-  //           category: true,
-  //           manufacturer: true,
-  //         },
-  //       },
-  //     },
-  //   })),
+  createProjectPartsExternalLink: publicProcedure
+    .input(createProjectPartsExternalLinkValidationSchema)
+    .mutation(({ ctx, input }) => ctx.prisma.projectPartsExternalLink.create({
+      data: {
+        projectPart: {
+          connect: {
+            id: input.projectsPartId,
+          },
+        },
+        externalLink: {
+          create: {
+            externalLinkType: {
+              connect: {
+                key: getExternalLinkUrlType(input.url),
+              },
+            },
+            title: input.title,
+            url: input.url,
+          },
+        },
+      },
+      include: {
+        externalLink: {
+          include: {
+            externalLinkType: true,
+          },
+        },
+      },
+    })),
 })
 
 export default projectPartsExternalLinksRouter

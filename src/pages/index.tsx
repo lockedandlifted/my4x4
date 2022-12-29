@@ -8,7 +8,8 @@ import setupTrpcCaller from '@utils/setupTrpcCaller'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-import ProjectTile from '@components/ProjectTile'
+import Hero from '@components/Landing/Hero'
+import RecentProjects from '@components/Landing/RecentProjects'
 
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession()
@@ -34,31 +35,14 @@ const AuthShowcase: React.FC = () => {
   )
 }
 
-type HomeProps = {
-  projects: Project[],
-}
+const Home = () => (
+  <MobileLayout>
+    <Hero />
 
-const Home = (props: HomeProps) => {
-  const { projects } = props
+    <RecentProjects />
 
-  return (
-    <MobileLayout>
-      {projects?.map(project => (
-        <ProjectTile key={project.id} project={project} />
-      ))}
-
-      <AuthShowcase />
-    </MobileLayout>
-  )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const trpcCaller = await setupTrpcCaller(context)
-  const projects = await trpcCaller.projects.getRecentProjects({
-    limit: 10,
-  })
-
-  return { props: { projects } }
-}
+    <AuthShowcase />
+  </MobileLayout>
+)
 
 export default Home
