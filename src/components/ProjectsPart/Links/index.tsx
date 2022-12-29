@@ -49,6 +49,7 @@ const Links = (props: LinksProps) => {
 
         return (
           <Link
+            editMode={editMode}
             externalLink={externalLink}
             key={id}
           />

@@ -3,6 +3,8 @@ import { router } from '../trpc'
 import authRouter from './auth'
 import awsRouter from './aws'
 import categoriesRouter from './categories'
+import externalLinkViewsRouter from './externalLinkViews'
+import externalLinksRouter from './externalLinks'
 import manufacturerModelsRouter from './manufacturerModels'
 import manufacturerPartsRouter from './manufacturerParts'
 import manufacturersRouter from './manufacturers'
@@ -17,6 +19,8 @@ export const appRouters = {
   auth: authRouter,
   aws: awsRouter,
   categories: categoriesRouter,
+  externalLinkViews: externalLinkViewsRouter,
+  externalLinks: externalLinksRouter,
   manufacturerModels: manufacturerModelsRouter,
   manufacturerParts: manufacturerPartsRouter,
   manufacturers: manufacturersRouter,

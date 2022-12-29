@@ -5,11 +5,12 @@ import type { ExternalLink } from '@prisma/client'
 import ExternalLinkIcon from '@components/Icons/ExternalLinkIcon'
 
 type LinkProps = {
+  editMode: boolean,
   externalLink: ExternalLink,
 }
 
 const Link = (props: LinkProps) => {
-  const { externalLink } = props
+  const { editMode = false, externalLink } = props
 
   return (
     <Flex
@@ -17,7 +18,7 @@ const Link = (props: LinkProps) => {
       as="a"
       borderWidth={1}
       borderRadius="xl"
-      href={externalLink.url}
+      href={editMode ? externalLink.url : `/externalLinks/${externalLink?.id}`}
       marginTop={4}
       padding={2}
       target="_blank"
