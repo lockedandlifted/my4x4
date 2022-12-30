@@ -74,7 +74,7 @@ const projectsPartsRouter = router({
         orderBy: {
           updatedAt: 'desc',
         },
-        take: input.limit || 3,
+        take: input.limit || 4,
       })
     }),
 

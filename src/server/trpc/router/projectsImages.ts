@@ -7,10 +7,12 @@ const projectsImagesRouter = router({
     .input(z.object({
       projectId: z.string(),
       image: z.object({
-        id: z.string(),
         fileKey: z.string(),
         filename: z.string(),
+        height: z.number(),
+        id: z.string(),
         originalFilename: z.string(),
+        width: z.number(),
       }),
     }))
     .mutation(async ({ ctx, input }) => {
@@ -36,6 +38,19 @@ const projectsImagesRouter = router({
       })
     }),
 
+  getProjectsImageById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.projectsImage.findFirst({
+      where: {
+        id: input.id,
+      },
+      include: {
+        image: true,
+      },
+    })),
+
   getProjectsImages: publicProcedure
     .input(z.object({
       include: z.object({
@@ -48,6 +63,16 @@ const projectsImagesRouter = router({
         projectId: input.projectId,
       },
       include: input.include,
+    })),
+
+  deleteProjectsImageById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(({ ctx, input }) => ctx.prisma.projectsImage.delete({
+      where: {
+        id: input.id,
+      },
     })),
 })
 

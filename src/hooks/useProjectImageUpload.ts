@@ -25,10 +25,12 @@ function useProjectImageUpload(options: UseProjectImageUploadOptions) {
     const params = {
       projectId,
       image: {
-        id: file?.meta?.fileId,
         fileKey: file?.meta?.fileKey,
         filename: file?.meta?.filename,
+        height: file?.meta?.height,
+        id: file?.meta?.fileId,
         originalFilename: file?.meta?.originalFilename,
+        width: file?.meta?.width,
       },
     }
 

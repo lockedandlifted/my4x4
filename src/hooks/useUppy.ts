@@ -36,16 +36,36 @@ const initializeUppy = (options: InitializeOptions, trpcClient) => {
     .use(AwsS3, {
       // Generate Presigned Upload Url
       getUploadParameters: async (file) => {
-        const data = await trpcClient.aws.presignFileUpload.fetch({
-          filename: file.name,
-          fileType: file.type,
+        const { meta, name, type } = file
+
+        const presignData = await trpcClient.aws.presignFileUpload.fetch({
+          filename: name,
+          fileType: type,
           key: fileKey,
         })
 
-        uppy.setFileMeta(file.id, data)
+        uppy.setFileMeta(file.id, { ...meta, ...presignData })
 
-        return data
+        return presignData
       },
+    })
+    .on('file-added', (file) => {
+      const { data, meta } = file
+      const url = URL.createObjectURL(data)
+      const image = new Image()
+      image.src = url
+
+      image.onload = () => {
+        const mergedData = {
+          ...meta,
+          width: image.width,
+          height: image.height,
+        }
+
+        uppy.setFileMeta(file.id, mergedData)
+
+        URL.revokeObjectURL(url)
+      }
     })
     .on('upload-success', (file) => {
       if (uploadSuccess) {

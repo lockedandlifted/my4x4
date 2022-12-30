@@ -8,7 +8,7 @@ import styles from './styles.module.css'
 type FileUploadButtonProps = {
   boxProps?: object,
   buttonProps?: object,
-  buttonText: string,
+  buttonText: string | React.ReactNode,
   callbacks?: {
     handleError,
   },

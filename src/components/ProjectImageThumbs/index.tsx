@@ -1,4 +1,5 @@
 import { Stack } from '@chakra-ui/react'
+import { FiUploadCloud } from 'react-icons/fi'
 
 import type { Project } from '@prisma/client'
 
@@ -45,7 +46,9 @@ const ProjectImageThumbs = (props: ProjectImageThumbsProps) => {
 
         return (
           <ProjectImageThumb
-            href={editMode ? null : `/${project?.slug}/images`}
+            href={editMode
+              ? `/projects/${project?.id}/edit/images/${id}`
+              : `/${project?.slug}/images`}
             key={id}
             image={image}
           />
@@ -64,7 +67,7 @@ const ProjectImageThumbs = (props: ProjectImageThumbsProps) => {
             variant: 'outline',
             width: 120,
           }}
-          buttonText="Add Photos"
+          buttonText={<FiUploadCloud size={28} />}
           uppy={uppy}
         />
       )}

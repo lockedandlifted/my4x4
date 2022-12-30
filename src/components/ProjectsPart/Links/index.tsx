@@ -38,6 +38,10 @@ const Links = (props: LinksProps) => {
   )
   const { data: projectPartsExternalLinks = [] } = projectPartsExternalLinksQuery
 
+  if (projectPartsExternalLinks.length === 0) {
+    return null
+  }
+
   return (
     <Flex direction="column" marginTop="8">
       <Heading size="md">

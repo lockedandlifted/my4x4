@@ -140,6 +140,8 @@ model Image {
   userId           String? @map("user_id")
   title            String?
   description      String? @db.Text()
+  width            Int?
+  height           Int?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")

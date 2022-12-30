@@ -5,6 +5,7 @@ import awsRouter from './aws'
 import categoriesRouter from './categories'
 import externalLinkViewsRouter from './externalLinkViews'
 import externalLinksRouter from './externalLinks'
+import imagesRouter from './images'
 import manufacturerModelsRouter from './manufacturerModels'
 import manufacturerPartsRouter from './manufacturerParts'
 import manufacturersRouter from './manufacturers'
@@ -21,6 +22,7 @@ export const appRouters = {
   categories: categoriesRouter,
   externalLinkViews: externalLinkViewsRouter,
   externalLinks: externalLinksRouter,
+  images: imagesRouter,
   manufacturerModels: manufacturerModelsRouter,
   manufacturerParts: manufacturerPartsRouter,
   manufacturers: manufacturersRouter,
