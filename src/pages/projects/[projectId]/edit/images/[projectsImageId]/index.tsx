@@ -32,9 +32,15 @@ const EditProjectImagePage = () => {
     <MobileLayout>
       <BackToProjectButton editMode project={project} />
 
-      <Preview image={projectsImage?.image} projectsImage={projectsImage} />
+      <Preview
+        image={projectsImage?.image}
+        projectsImage={projectsImage}
+      />
 
       <Actions
+        boxProps={{
+          marginTop: 4,
+        }}
         callbacks={{
           deleteImage: () => deleteProjectsImage(),
         }}
