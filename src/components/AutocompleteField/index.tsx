@@ -4,7 +4,7 @@ import { useDebounce } from 'use-debounce'
 
 import { trpc } from '@utils/trpc'
 
-import type { appRouters} from '@server/trpc/router/_app'
+import type { appRouters } from '@server/trpc/router/_app'
 
 const defaultState = {
   string: '',
@@ -12,22 +12,30 @@ const defaultState = {
 
 type AutocompleteFieldProps = {
   callbacks: {
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onClick: (e: React.FocusEvent<HTMLInputElement>) => void,
+    mapResults?: (results: object[]) => object[],
     selectItem: (result: object) => void,
-  }
-  routerKey: keyof typeof appRouters,
+  },
+  inputProps?: {
+    placeholder?: string,
+    style?: object,
+    value?: string,
+  },
   queryKey: string,
   queryParams?: object,
-  inputValue?: string,
+  routerKey: keyof typeof appRouters,
 }
 
 const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldProps>((props, ref) => {
   const {
-    callbacks: { onChange, selectItem },
-    inputValue,
-    routerKey,
+    callbacks: {
+      onChange, onClick, mapResults, selectItem,
+    },
+    inputProps,
     queryKey,
     queryParams,
+    routerKey,
   } = props
 
   const [state, setState] = useState(defaultState)
@@ -42,21 +50,25 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
 
   const { data: results = [] } = query
 
+  const mappedResults = mapResults ? mapResults(results) : results
+
   return (
-    <Flex position="relative">
+    <Flex position="relative" width="100%">
       <Flex width="100%">
         <input
           onChange={(e) => {
             setState(s => ({ ...s, string: e.target.value }))
             if (onChange) onChange(e)
           }}
+          onClick={onClick}
           ref={ref}
           type="text"
-          value={string || inputValue}
+          {...inputProps}
+          value={string}
         />
       </Flex>
 
-      {!!results.length && (
+      {!!mappedResults.length && (
         <Flex
           backgroundColor="white"
           borderRadius={5}
@@ -69,7 +81,7 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
           top="100%"
           width="100%"
         >
-          {results.map((result: { id: string, title: string }) => {
+          {mappedResults.map((result: { id: string, title: string }) => {
             const { id, title } = result
 
             return (
@@ -80,7 +92,8 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
                 padding={2}
               >
                 <LinkOverlay
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation()
                     setState(s => ({ ...s, string: '' }))
                     selectItem(result)
                   }}

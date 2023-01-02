@@ -1,6 +1,11 @@
 import { useRef, useState } from 'react'
-import { Button, Flex } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 
+import type { ProjectsImage } from '@prisma/client'
+
+import { trpc } from '@utils/trpc'
+
+import ProjectsPartSearch from './ProjectsPartSearch'
 import Tag from './Tag'
 
 type HandleClickParams = {
@@ -29,19 +34,66 @@ const handleClick = (params: HandleClickParams) => {
   inputRef.current?.focus()
 }
 
+const defaultState = {
+  x: 0,
+  y: 0,
+}
+
+const selectItem = (params) => {
+  const {
+    clickLocation, createProjectPartsImageTagMutation, projectsImage, selectedItem, setClickLocation,
+  } = params
+
+  if (selectedItem.id) {
+    const data = {
+      imageId: projectsImage.imageId,
+      projectsPartId: selectedItem.id,
+      x: clickLocation.x,
+      y: clickLocation.y,
+    }
+
+    createProjectPartsImageTagMutation.mutate(data)
+
+    setClickLocation(defaultState)
+  }
+}
+
 type TagContainerProps = {
   containerRef: React.RefObject<HTMLDivElement>,
   height: number,
+  projectsImage: ProjectsImage,
   scale: number,
   width: number,
 }
 
 const TagContainer = (props: TagContainerProps) => {
   const {
-    containerRef, height, scale, width,
+    containerRef, height, projectsImage, scale, width,
   } = props
 
-  const [clickLocation, setClickLocation] = useState({})
+  const [clickLocation, setClickLocation] = useState(defaultState)
+
+  // Query
+  const projectPartsImageTagsQuery = trpc.projectPartsImageTags.getProjectPartsImageTags.useQuery({
+    include: {
+      imageTag: true,
+      projectPart: {
+        include: {
+          manufacturerPart: {
+            include: {
+              manufacturer: true,
+            },
+          },
+        },
+      },
+    },
+    imageId: projectsImage?.imageId,
+  }, { enabled: !!projectsImage?.imageId })
+
+  const { data: projectPartsImageTags = [] } = projectPartsImageTagsQuery
+
+  // Mutation
+  const createProjectPartsImageTagMutation = trpc.projectPartsImageTags.createProjectPartsImageTag.useMutation()
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -59,39 +111,37 @@ const TagContainer = (props: TagContainerProps) => {
       height={height}
       zIndex={1}
     >
+      {projectPartsImageTags.map((projectPartsImageTag) => {
+        const { id, imageTag: { x, y } } = projectPartsImageTag
+
+        return (
+          <Tag key={id} x={x * scale} y={y * scale} />
+        )
+      })}
+
       {!!clickLocation.x && (
         <>
           <Tag x={clickLocation.x * scale} y={clickLocation.y * scale} />
 
-          <Flex
-            backgroundColor="rgba(0, 0, 0, 0.8)"
-            borderRadius="lg"
-            padding={2}
-            position="absolute"
-            justifyContent="space-between"
-            bottom={2}
-            left={2}
-            right={2}
-          >
-            <input
-              ref={inputRef}
-              onClick={e => e.stopPropagation()}
-              placeholder="Find a part to tag..."
-              type="text"
-              style={{
-                backgroundColor: 'transparent',
-                color: 'white',
-                fontSize: 16,
-                width: '100%',
-              }}
-            />
-
-            <Button flexShrink={0} marginLeft={2} size="xs">Save</Button>
-          </Flex>
+          <ProjectsPartSearch
+            callbacks={{
+              selectItem: result => selectItem({
+                clickLocation,
+                createProjectPartsImageTagMutation,
+                projectsImage,
+                selectedItem: result,
+                setClickLocation,
+              }),
+            }}
+            inputRef={inputRef}
+            projectsImage={projectsImage}
+          />
         </>
       )}
     </Flex>
   )
 }
+
+TagContainer.displayName = 'TagContainer'
 
 export default TagContainer

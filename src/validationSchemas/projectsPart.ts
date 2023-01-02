@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { dateSchema } from './date'
 
 export const createProjectsPartValidationSchema = z.object({
+  categoryId: z.string(),
   description: z.string().optional(),
   installedAt: z.optional(dateSchema),
   manufacturerId: z.string(),

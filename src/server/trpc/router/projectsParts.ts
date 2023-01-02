@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import type { Prisma } from '@prisma/client'
+
 import { createProjectsPartValidationSchema, getSimilarProjectsValidationSchema } from '@validationSchemas/projectsPart'
 
 import { router, publicProcedure } from '../trpc'
@@ -16,13 +18,29 @@ const projectsPartsRouter = router({
         }).optional(),
       }).optional(),
       projectId: z.string(),
+      string: z.string().optional(),
     }))
-    .query(({ ctx, input }) => ctx.prisma.projectsPart.findMany({
-      where: {
-        projectId: input.projectId,
-      },
-      include: input.include,
-    })),
+    .query(({ ctx, input }) => {
+      const filters: Prisma.ProjectsPartWhereInput = {}
+
+      if (input.projectId) {
+        filters.projectId = input.projectId
+      }
+
+      if (input.string) {
+        filters.manufacturerPart = {
+          title: {
+            contains: input.string,
+            mode: 'insensitive',
+          },
+        }
+      }
+
+      return ctx.prisma.projectsPart.findMany({
+        where: filters,
+        include: input.include,
+      })
+    }),
 
   getProjectsPartById: publicProcedure
     .input(z.object({
@@ -95,6 +113,7 @@ const projectsPartsRouter = router({
               id: input.manufacturerPartId || 'new-record',
             },
             create: {
+              categoryId: input.categoryId,
               manufacturerId: input.manufacturerId,
               partNumber: input.partNumber,
               title: input.title,

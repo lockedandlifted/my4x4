@@ -1,41 +1,39 @@
 import { useEffect, useRef, useState } from 'react'
 import { Flex } from '@chakra-ui/react'
 
-import type { Image } from '@prisma/client'
+import type { Image, ProjectsImage } from '@prisma/client'
 
 import ScaledImage from './ScaledImage'
 import TagContainer from './TagContainer'
 
 const defaultState = {
-  fileKey: undefined,
+  fileKey: '',
   height: 0,
   width: 0,
 }
 
 type PreviewProps = {
   image: Image,
+  projectsImage: ProjectsImage,
 }
 
 const Preview = (props: PreviewProps) => {
-  const { image } = props
+  const { image, projectsImage } = props
 
   const containerRef = useRef<HTMLDivElement>(null)
 
   const [imageProperties, setImageProperties] = useState(defaultState)
 
   useEffect(() => {
-    if (image?.id) {
+    if (image?.fileKey && image?.height && image?.width) {
       setImageProperties({
         fileKey: image.fileKey,
         height: image.height,
         width: image.width,
       })
     }
-  }, [image?.id])
+  }, [image?.fileKey, image?.height, image?.width])
 
-  if (!imageProperties.width || !imageProperties.height) {
-    return null
-  }
   const containerWidth = containerRef.current?.clientWidth ?? imageProperties.width
 
   const scale = containerWidth / imageProperties.width
@@ -59,6 +57,7 @@ const Preview = (props: PreviewProps) => {
       <TagContainer
         containerRef={containerRef}
         height={scaledHeight}
+        projectsImage={projectsImage}
         scale={scale}
         width={scaledWidth}
       />

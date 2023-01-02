@@ -8,6 +8,7 @@ import MobileLayout from '@layouts/MobileLayout'
 
 import Actions from '@components/Image/Actions'
 import BackToProjectButton from '@components/Project/BackToProjectButton'
+import Part from '@components/Project/Parts/Part'
 import Preview from '@components/Image/Preview'
 
 const EditProjectImagePage = () => {
@@ -20,6 +21,24 @@ const EditProjectImagePage = () => {
     id: projectsImageId,
   }, { enabled: !!projectsImageId })
   const { data: projectsImage } = projectsImageQuery
+
+  const projectPartsImageTagsQuery = trpc.projectPartsImageTags.getProjectPartsImageTags.useQuery({
+    include: {
+      imageTag: true,
+      projectPart: {
+        include: {
+          manufacturerPart: {
+            include: {
+              manufacturer: true,
+            },
+          },
+        },
+      },
+    },
+    imageId: projectsImage?.imageId,
+  }, { enabled: !!projectsImage?.imageId })
+
+  const { data: projectPartsImageTags = [] } = projectPartsImageTagsQuery
 
   const projectsImageFormPayload = useProjectsImageForm({ projectsImage })
   const {
@@ -36,6 +55,17 @@ const EditProjectImagePage = () => {
         image={projectsImage?.image}
         projectsImage={projectsImage}
       />
+
+      {projectPartsImageTags.map((projectPartsImageTag) => {
+        const { id, projectPart: { manufacturerPart } } = projectPartsImageTag
+
+        return (
+          <Part
+            key={id}
+            manufacturerPart={manufacturerPart}
+          />
+        )
+      })}
 
       <Actions
         boxProps={{

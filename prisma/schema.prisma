@@ -146,9 +146,20 @@ model Image {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
+  imageTags      ImageTag[]
   projectsImages ProjectsImage[]
 
   @@map("images")
+}
+
+model ImageTag {
+  id      String  @id @default(uuid())
+  image   Image?  @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  imageId String? @map("image_id")
+  x       Decimal @db.Decimal(8, 3)
+  y       Decimal @db.Decimal(8, 3)
+
+  projectPartsImageTags ProjectPartsImageTag[]
 }
 
 model Manufacturer {
@@ -305,9 +316,23 @@ model ProjectsPart {
   installedAt DateTime? @map("installed_at")
 
   projectPartsExternalLinks ProjectPartsExternalLink[]
+  projectPartsImageTags     ProjectPartsImageTag[]
 
   @@unique([projectId, manufacturerPartId])
   @@map("projects_manufacturer_parts")
+}
+
+model ProjectPartsImageTag {
+  id            String       @id @default(uuid())
+  projectPart   ProjectsPart @relation(fields: [projectPartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectPartId String       @map("project_part_id")
+  imageTag      ImageTag     @relation(fields: [imageTagId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  imageTagId    String       @map("image_tag_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("project_parts_image_tags")
 }
 
 model ProjectPartsExternalLink {
@@ -315,7 +340,7 @@ model ProjectPartsExternalLink {
   projectPart    ProjectsPart @relation(fields: [projectPartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   projectPartId  String       @map("project_part_id")
   externalLink   ExternalLink @relation(fields: [externalLinkId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  externalLinkId String       @map("externalLink_id")
+  externalLinkId String       @map("external_link_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
