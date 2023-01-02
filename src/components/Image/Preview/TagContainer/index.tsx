@@ -93,7 +93,27 @@ const TagContainer = (props: TagContainerProps) => {
   const { data: projectPartsImageTags = [] } = projectPartsImageTagsQuery
 
   // Mutation
-  const createProjectPartsImageTagMutation = trpc.projectPartsImageTags.createProjectPartsImageTag.useMutation()
+  const { projectPartsImageTags: { getProjectPartsImageTags: { setData } } } = trpc.useContext()
+
+  const createProjectPartsImageTagMutation = trpc.projectPartsImageTags.createProjectPartsImageTag.useMutation({
+    onSuccess: (data) => {
+      setData({
+        imageId: projectsImage?.imageId,
+        include: {
+          imageTag: true,
+          projectPart: {
+            include: {
+              manufacturerPart: {
+                include: {
+                  manufacturer: true,
+                },
+              },
+            },
+          },
+        },
+      }, prevData => (prevData ? [...prevData, data] : [data]))
+    },
+  })
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -111,11 +131,13 @@ const TagContainer = (props: TagContainerProps) => {
       height={height}
       zIndex={1}
     >
-      {projectPartsImageTags.map((projectPartsImageTag) => {
+      {projectPartsImageTags.map((projectPartsImageTag, index) => {
         const { id, imageTag: { x, y } } = projectPartsImageTag
 
         return (
-          <Tag key={id} x={x * scale} y={y * scale} />
+          <Tag key={id} x={x * scale} y={y * scale}>
+            {`${index + 1}`}
+          </Tag>
         )
       })}
 

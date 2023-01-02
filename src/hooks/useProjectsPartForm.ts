@@ -79,6 +79,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
         include: {
           manufacturerPart: {
             include: {
+              category: true,
               manufacturer: true,
             },
           },

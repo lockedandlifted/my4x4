@@ -26,7 +26,17 @@ const Parts = (props: PartsProps) => {
   const { CreateOrEditProjectPartModal } = callbacks || {}
 
   const projectsPartsQuery = trpc.projectsParts.getProjectsParts.useQuery(
-    { projectId: project?.id, include: { manufacturerPart: { include: { category: true, manufacturer: true } } } },
+    {
+      projectId: project?.id,
+      include: {
+        manufacturerPart: {
+          include: {
+            category: true,
+            manufacturer: true,
+          },
+        },
+      },
+    },
     { enabled: !!project?.id },
   )
   const { data: projectsParts = [] } = projectsPartsQuery

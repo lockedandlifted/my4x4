@@ -8,8 +8,8 @@ import MobileLayout from '@layouts/MobileLayout'
 
 import Actions from '@components/Image/Actions'
 import BackToProjectButton from '@components/Project/BackToProjectButton'
-import Part from '@components/Project/Parts/Part'
 import Preview from '@components/Image/Preview'
+import TaggedPart from '@components/Image/TaggedPart'
 
 const EditProjectImagePage = () => {
   const { query: { projectId, projectsImageId } } = useRouter()
@@ -56,12 +56,13 @@ const EditProjectImagePage = () => {
         projectsImage={projectsImage}
       />
 
-      {projectPartsImageTags.map((projectPartsImageTag) => {
+      {projectPartsImageTags.map((projectPartsImageTag, index) => {
         const { id, projectPart: { manufacturerPart } } = projectPartsImageTag
 
         return (
-          <Part
+          <TaggedPart
             key={id}
+            iconContent={`${index + 1}`}
             manufacturerPart={manufacturerPart}
           />
         )

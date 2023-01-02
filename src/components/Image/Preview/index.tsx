@@ -36,7 +36,7 @@ const Preview = (props: PreviewProps) => {
 
   const containerWidth = containerRef.current?.clientWidth ?? imageProperties.width
 
-  const scale = containerWidth / imageProperties.width
+  const scale = containerWidth ? containerWidth / imageProperties.width : 1
   const scaledWidth = imageProperties.width * scale
   const scaledHeight = imageProperties.height * scale
 
@@ -48,11 +48,13 @@ const Preview = (props: PreviewProps) => {
       ref={containerRef}
       width="100%"
     >
-      <ScaledImage
-        fileKey={imageProperties.fileKey}
-        height={scaledHeight}
-        width={scaledWidth}
-      />
+      {!!imageProperties.fileKey && (
+        <ScaledImage
+          fileKey={imageProperties.fileKey}
+          height={scaledHeight}
+          width={scaledWidth}
+        />
+      )}
 
       <TagContainer
         containerRef={containerRef}
