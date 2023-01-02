@@ -1,5 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import NextImage from 'next/image'
+import NextLink from 'next/link'
 
 import type { Image } from '@prisma/client'
 
@@ -24,24 +25,24 @@ const ProjectImageThumb = (props: ProjectImageThumbProps) => {
   })
 
   return (
-    <Flex
-      as={href ? 'a' : 'div'}
-      borderWidth="1px"
-      borderRadius="2xl"
-      flexShrink="0"
-      href={href}
-      height="120px"
-      overflow="hidden"
-      width="120px"
-    >
-      <NextImage
-        alt="Project Image Thumbnail"
-        src={imageUrl || ''}
-        height={120}
-        width={120}
-        style={{ objectFit: 'cover' }}
-      />
-    </Flex>
+    <NextLink href={href}>
+      <Flex
+        borderWidth="1px"
+        borderRadius="2xl"
+        flexShrink="0"
+        height="120px"
+        overflow="hidden"
+        width="120px"
+      >
+        <NextImage
+          alt="Project Image Thumbnail"
+          src={imageUrl || ''}
+          height={120}
+          width={120}
+          style={{ objectFit: 'cover' }}
+        />
+      </Flex>
+    </NextLink>
   )
 }
 

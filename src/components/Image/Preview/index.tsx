@@ -1,10 +1,16 @@
-import { useRef } from 'react'
-import { Button, Flex } from '@chakra-ui/react'
+import { useEffect, useRef, useState } from 'react'
+import { Flex } from '@chakra-ui/react'
 
 import type { Image } from '@prisma/client'
 
 import ScaledImage from './ScaledImage'
 import TagContainer from './TagContainer'
+
+const defaultState = {
+  fileKey: undefined,
+  height: 0,
+  width: 0,
+}
 
 type PreviewProps = {
   image: Image,
@@ -15,14 +21,26 @@ const Preview = (props: PreviewProps) => {
 
   const containerRef = useRef<HTMLDivElement>(null)
 
-  if (!image || !image.width || !image.height) {
+  const [imageProperties, setImageProperties] = useState(defaultState)
+
+  useEffect(() => {
+    if (image?.id) {
+      setImageProperties({
+        fileKey: image.fileKey,
+        height: image.height,
+        width: image.width,
+      })
+    }
+  }, [image?.id])
+
+  if (!imageProperties.width || !imageProperties.height) {
     return null
   }
-  const containerWidth = containerRef.current?.clientWidth ?? image.width
+  const containerWidth = containerRef.current?.clientWidth ?? imageProperties.width
 
-  const scale = containerWidth / image.width
-  const scaledWidth = image.width * scale
-  const scaledHeight = image.height * scale
+  const scale = containerWidth / imageProperties.width
+  const scaledWidth = imageProperties.width * scale
+  const scaledHeight = imageProperties.height * scale
 
   return (
     <Flex
@@ -33,7 +51,7 @@ const Preview = (props: PreviewProps) => {
       width="100%"
     >
       <ScaledImage
-        fileKey={image.fileKey}
+        fileKey={imageProperties.fileKey}
         height={scaledHeight}
         width={scaledWidth}
       />

@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import NextLink from 'next/link'
 import { Flex, Heading, Text } from '@chakra-ui/react'
 
 import { trpc } from '@utils/trpc'
