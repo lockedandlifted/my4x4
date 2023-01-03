@@ -1,10 +1,6 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
 
-import type { GetServerSideProps } from 'next'
-import type { Project } from '@prisma/client'
-
 import { trpc } from '@utils/trpc'
-import setupTrpcCaller from '@utils/setupTrpcCaller'
 
 import MobileLayout from '@layouts/MobileLayout'
 

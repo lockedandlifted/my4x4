@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   Button, Flex, Heading, Text,
 } from '@chakra-ui/react'
+import { FaPen } from 'react-icons/fa'
 
 import Form from '@components/Form'
 import Paragraph from '@components/Paragraph'
@@ -45,8 +46,17 @@ const Description = (props: DescriptionProps) => {
           </Paragraph>
 
           {editMode && (
-            <Text cursor="pointer" fontWeight="bold" onClick={() => setEditing(!editing)} marginTop={4}>
-              Edit Description
+            <Text
+              alignItems="center"
+              as="span"
+              color="blue.500"
+              cursor="pointer"
+              display="flex"
+              fontWeight="bold"
+              onClick={() => setEditing(!editing)}
+              marginTop={4}
+            >
+              <FaPen style={{ marginRight: 8 }} /> Edit Description
             </Text>
           )}
         </>

@@ -31,7 +31,10 @@ const projectsImagesRouter = router({
             },
           },
           image: {
-            create: input.image,
+            create: {
+              title: input.image.originalFilename,
+              ...input.image,
+            },
           },
           sort: sort ? sort + 1 : 1,
         },

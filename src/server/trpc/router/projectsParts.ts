@@ -28,12 +28,26 @@ const projectsPartsRouter = router({
       }
 
       if (input.string) {
-        filters.manufacturerPart = {
-          title: {
-            contains: input.string,
-            mode: 'insensitive',
+        filters.OR = [
+          {
+            manufacturerPart: {
+              title: {
+                contains: input.string,
+                mode: 'insensitive',
+              },
+            },
           },
-        }
+          {
+            manufacturerPart: {
+              manufacturer: {
+                title: {
+                  contains: input.string,
+                  mode: 'insensitive',
+                },
+              },
+            },
+          },
+        ]
       }
 
       return ctx.prisma.projectsPart.findMany({

@@ -8,8 +8,9 @@ import MobileLayout from '@layouts/MobileLayout'
 
 import Actions from '@components/Image/Actions'
 import BackToProjectButton from '@components/Project/BackToProjectButton'
+import Details from '@components/Image/Details'
 import Preview from '@components/Image/Preview'
-import TaggedPart from '@components/Image/TaggedPart'
+import TaggedParts from '@components/Image/TaggedParts'
 
 const EditProjectImagePage = () => {
   const { query: { projectId, projectsImageId } } = useRouter()
@@ -17,28 +18,12 @@ const EditProjectImagePage = () => {
   const projectQuery = trpc.projects.getProjectById.useQuery({ id: projectId }, { enabled: !!projectId })
   const { data: project } = projectQuery
 
+  const { projectsImages: { getProjectsImageById: { invalidate } } } = trpc.useContext()
+
   const projectsImageQuery = trpc.projectsImages.getProjectsImageById.useQuery({
     id: projectsImageId,
   }, { enabled: !!projectsImageId })
   const { data: projectsImage } = projectsImageQuery
-
-  const projectPartsImageTagsQuery = trpc.projectPartsImageTags.getProjectPartsImageTags.useQuery({
-    include: {
-      imageTag: true,
-      projectPart: {
-        include: {
-          manufacturerPart: {
-            include: {
-              manufacturer: true,
-            },
-          },
-        },
-      },
-    },
-    imageId: projectsImage?.imageId,
-  }, { enabled: !!projectsImage?.imageId })
-
-  const { data: projectPartsImageTags = [] } = projectPartsImageTagsQuery
 
   const projectsImageFormPayload = useProjectsImageForm({ projectsImage })
   const {
@@ -56,21 +41,19 @@ const EditProjectImagePage = () => {
         projectsImage={projectsImage}
       />
 
-      {projectPartsImageTags.map((projectPartsImageTag, index) => {
-        const { id, projectPart: { manufacturerPart } } = projectPartsImageTag
+      <Details
+        callbacks={{
+          onUpdateSuccess: () => invalidate({ id: projectsImageId }),
+        }}
+        editMode
+        image={projectsImage?.image}
+      />
 
-        return (
-          <TaggedPart
-            key={id}
-            iconContent={`${index + 1}`}
-            manufacturerPart={manufacturerPart}
-          />
-        )
-      })}
+      <TaggedParts projectsImage={projectsImage} />
 
       <Actions
         boxProps={{
-          marginTop: 4,
+          marginTop: 8,
         }}
         callbacks={{
           deleteImage: () => deleteProjectsImage(),

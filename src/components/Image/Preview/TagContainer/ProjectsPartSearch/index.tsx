@@ -30,11 +30,11 @@ const ProjectsPartSearch = (props: ProjectsPartSearchProps) => {
         callbacks={{
           onClick: (e: React.FocusEvent<HTMLInputElement>) => e.stopPropagation(),
           mapResults: (results: ProjectsPart[]) => results.map((result) => {
-            const { id, manufacturerPart } = result
+            const { id, manufacturerPart: { manufacturer, title } } = result
 
             return {
               id,
-              title: manufacturerPart?.title,
+              title: `${manufacturer?.title} - ${title}`,
             }
           }),
           selectItem,
@@ -55,7 +55,9 @@ const ProjectsPartSearch = (props: ProjectsPartSearchProps) => {
         queryParams={{
           include: {
             manufacturerPart: {
-              manufacturer: true,
+              include: {
+                manufacturer: true,
+              },
             },
           },
           projectId: projectsImage?.projectId,

@@ -1,4 +1,4 @@
-import { Button, Flex } from '@chakra-ui/react'
+import { Button, Flex, Heading } from '@chakra-ui/react'
 
 type ActionsProps = {
   boxProps?: object,
@@ -12,9 +12,11 @@ const Actions = (props: ActionsProps) => {
   const { deleteImage } = callbacks || {}
 
   return (
-    <Flex borderTopWidth={1} direction="column" {...boxProps}>
+    <Flex direction="column" {...boxProps}>
+      <Heading size="md">Actions</Heading>
+
       {!!deleteImage && (
-        <Button colorScheme="red" onClick={deleteImage}>
+        <Button colorScheme="red" onClick={deleteImage} marginTop={2}>
           Delete Image
         </Button>
       )}

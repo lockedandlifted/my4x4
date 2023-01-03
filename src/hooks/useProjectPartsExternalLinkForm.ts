@@ -60,7 +60,6 @@ function useProjectPartsExternalLinkForm(options: UseProjectPartsExternalLinkFor
 
   const createProjectPartsExternalLinkMutation = trpc.projectPartsExternalLinks.createProjectPartsExternalLink.useMutation({
     onSuccess: (data) => {
-      console.log(data)
       setGetProjectPartsExternalLinksData({
         projectsPartId: data.projectPartId,
         include: {
