@@ -148,6 +148,7 @@ model Image {
 
   imageTags      ImageTag[]
   projectsImages ProjectsImage[]
+  UsersImage     UsersImage[]
 
   @@map("images")
 }
@@ -388,8 +389,24 @@ model User {
   sessions      Session[]
   images        Image[]
   projectsUsers ProjectsUser[]
+  usersImages   UsersImage[]
 
   @@map("users")
+}
+
+model UsersImage {
+  id      String @id @default(uuid())
+  user    User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId  String @map("user_id")
+  image   Image  @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  imageId String @map("image_id")
+  sort    Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([userId, imageId])
+  @@map("users_images")
 }
 
 model VerificationToken {

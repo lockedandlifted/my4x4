@@ -71,7 +71,7 @@ const FileUploadButton = (props: FileUploadButtonProps) => {
   return (
     <Flex {...boxProps}>
       <input
-        accept=".jpg,jpeg"
+        accept=".jpg,.jpeg,.png"
         className={styles.input}
         name="files[]"
         multiple

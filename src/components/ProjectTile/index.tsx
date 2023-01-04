@@ -33,7 +33,7 @@ const ProjectTile = (props: ProjectTileProps) => {
     <LinkBox>
       <Flex
         boxShadow="base"
-        borderRadius={20}
+        borderRadius="xl"
         flexDirection="column"
         overflow="hidden"
         position="relative"

@@ -28,7 +28,12 @@ const MyApp: AppType<{ session: Session | null }> = (props) => {
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
         <ImageKitContextProvider>
-          <AnimatePresence exitBeforeEnter mode="wait" initial={false} popLayout onExitComplete={() => console.log('done')}>
+          <AnimatePresence
+            exitBeforeEnter
+            mode="wait"
+            initial={false}
+            popLayout
+          >
             <Component key={router.asPath} {...pageProps} />
           </AnimatePresence>
           <ReactQueryDevtools initialIsOpen={false} />

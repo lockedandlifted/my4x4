@@ -1,6 +1,8 @@
 import { z } from 'zod'
 
-import { router, publicProcedure } from '../trpc'
+import type { Prisma } from '@prisma/client'
+
+import { router, publicProcedure, protectedProcedure } from '../trpc'
 
 type ProjectsAttribute = {
   attribute: {
@@ -71,26 +73,65 @@ const projectsRouter = router({
       },
     })),
 
+  claimProjectsByTemporaryUserId: protectedProcedure
+    .input(z.object({
+      temporaryUserId: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const projects = await ctx.prisma.project.findMany({
+        where: {
+          temporaryUserId: input.temporaryUserId,
+        },
+      })
+
+      const updatedProjects = projects.map(async project => ctx.prisma.project.update({
+        where: {
+          id: project.id,
+        },
+        data: {
+          projectsUsers: {
+            create: {
+              user: {
+                connect: {
+                  id: ctx.session?.user?.id,
+                },
+              },
+            },
+          },
+        },
+      }))
+
+      return updatedProjects
+    }),
+
   getProjects: publicProcedure
     .input(z.object({
       limit: z.number().optional(),
       userId: z.string().uuid().optional(),
     }))
     .query(({ ctx, input }) => {
-      const userConditions = []
+      const filters: Prisma.ProjectWhereInput = {}
+
       if (input.userId) {
-        userConditions.push({
-          projectUsers: {
-            some: {
-              userId: input.userId,
-            },
+        filters.projectsUsers = {
+          some: {
+            userId: input.userId,
           },
-        })
+        }
       }
 
       return ctx.prisma.project.findMany({
-        where: {
-          AND: userConditions,
+        where: filters,
+        include: {
+          projectsImages: {
+            include: {
+              image: true,
+            },
+            orderBy: {
+              sort: 'asc',
+            },
+            take: 1,
+          },
         },
         take: input.limit || undefined,
         orderBy: {

@@ -27,8 +27,6 @@ type CreateOrEditProjectPartExternalLinkModalProps = {
 const CreateOrEditProjectPartExternalLinkModal = (props: CreateOrEditProjectPartExternalLinkModalProps) => {
   const { callbacks: { closeModal, createProjectPartsExternalLink }, projectsPart, showModal } = props
 
-  console.log(props.callbacks)
-
   const projectPartsExternalLink = { projectsPartId: projectsPart?.id }
   const newRecord = !projectPartsExternalLink.id
 
@@ -69,7 +67,6 @@ const CreateOrEditProjectPartExternalLinkModal = (props: CreateOrEditProjectPart
           <Form
             callbacks={{
               submitForm: (data) => {
-                console.log(data)
                 createProjectPartsExternalLink({ ...processCallbackPayload, actionPayload: data })
               },
             }}

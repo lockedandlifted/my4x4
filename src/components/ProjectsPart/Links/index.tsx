@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 
-import Link from './Link'
+import ExternalLink from '@components/ExternalLink'
 
 type ProjectsPartWithManufacturer = Prisma.ProjectsPartGetPayload<{
   include: {
@@ -52,7 +52,7 @@ const Links = (props: LinksProps) => {
         const { externalLink, id } = projectPartsExternalLink
 
         return (
-          <Link
+          <ExternalLink
             editMode={editMode}
             externalLink={externalLink}
             key={id}

@@ -22,7 +22,9 @@ const AuthShowcase: React.FC = () => {
         {secretMessage && <span> - {secretMessage}</span>}
       </p>
       <button
-        onClick={sessionData ? () => signOut() : () => signIn()}
+        onClick={sessionData
+          ? () => signOut()
+          : () => signIn(undefined, { callbackUrl: '/users/account' })}
         type="button"
       >
         {sessionData ? 'Sign out' : 'Sign in'}
