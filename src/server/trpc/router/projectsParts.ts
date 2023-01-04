@@ -144,6 +144,16 @@ const projectsPartsRouter = router({
         },
       },
     })),
+
+  deleteProjectsPartById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(({ ctx, input }) => ctx.prisma.projectsPart.delete({
+      where: {
+        id: input.id,
+      },
+    })),
 })
 
 export default projectsPartsRouter

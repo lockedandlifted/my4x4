@@ -65,8 +65,6 @@ const projectPartsImageTagsRouter = router({
         },
       }
 
-      console.log(data)
-
       return ctx.prisma.projectPartsImageTag.create({
         data,
         include: {
@@ -83,6 +81,16 @@ const projectPartsImageTagsRouter = router({
         },
       })
     }),
+
+  deleteProjectPartsImageTagById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(({ ctx, input }) => ctx.prisma.projectPartsImageTag.delete({
+      where: {
+        id: input.id,
+      },
+    })),
 })
 
 export default projectPartsImageTagsRouter

@@ -49,7 +49,11 @@ const EditProjectImagePage = () => {
         image={projectsImage?.image}
       />
 
-      <TaggedParts projectsImage={projectsImage} />
+      <TaggedParts
+        editMode
+        project={project}
+        projectsImage={projectsImage}
+      />
 
       <Actions
         boxProps={{
