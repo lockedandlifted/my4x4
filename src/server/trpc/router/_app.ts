@@ -15,6 +15,7 @@ import projectPartsImageTagsRouter from './projectPartsImageTags'
 import projectsImagesRouter from './projectsImages'
 import projectsPartsRouter from './projectsParts'
 import projectsRouter from './projects'
+import usersExternalLinksRouter from './usersExternalLinks'
 import usersImagesRouter from './usersImages'
 import usersRouter from './users'
 
@@ -34,8 +35,9 @@ export const appRouters = {
   projects: projectsRouter,
   projectsImages: projectsImagesRouter,
   projectsParts: projectsPartsRouter,
-  usersImages: usersImagesRouter,
   users: usersRouter,
+  usersExternalLinks: usersExternalLinksRouter,
+  usersImages: usersImagesRouter,
 }
 
 export const appRouter = router(appRouters)
