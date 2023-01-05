@@ -2,14 +2,33 @@ import { Button, Flex, Heading } from '@chakra-ui/react'
 
 import type { User } from '@prisma/client'
 
+import { trpc } from '@utils/trpc'
+
 import ExternalLink from '@components/ExternalLink'
 
 type LinksProps = {
+  callbacks?: {
+    CreateOrEditUsersExternalLinkModal: {
+      showModal: VoidFunction,
+    },
+  },
   user: User,
 }
 
 const Links = (props: LinksProps) => {
-  const { user } = props
+  const { callbacks, editMode = false, user } = props
+
+  const { CreateOrEditUsersExternalLinkModal } = callbacks || {}
+
+  const usersExternalLinksQuery = trpc.usersExternalLinks.getUsersExternalLinks.useQuery(
+    { userId: user?.id, include: { externalLink: { include: { externalLinkType: true } } } },
+    { enabled: !!user?.id },
+  )
+  const { data: usersExternalLinks = [] } = usersExternalLinksQuery
+
+  if (!editMode && usersExternalLinks.length === 0) {
+    return null
+  }
 
   return (
     <Flex flexDirection="column" marginTop={8}>
@@ -17,23 +36,33 @@ const Links = (props: LinksProps) => {
         <Heading size="md">Links</Heading>
       </Flex>
 
-      <ExternalLink
-        externalLink={{ title: 'YouTube Profile', url: 'https://www.google.com' }}
-      />
-      <ExternalLink
-        externalLink={{ title: 'Donate', url: 'https://www.google.com' }}
-      />
-      <ExternalLink
-        externalLink={{ title: 'Blog', url: 'https://www.google.com' }}
-      />
+      {usersExternalLinks.map((usersExternalLink) => {
+        const { externalLink, id } = usersExternalLink
 
-      <Button
-        // onClick={() => claimProjects({ temporaryUserId })}
-        marginTop={2}
-        size="lg"
-      >
-        Add Link
-      </Button>
+        return (
+          <ExternalLink
+            editMode={editMode}
+            externalLink={externalLink}
+            key={id}
+          />
+        )
+      })}
+
+      {editMode && (
+        <Button
+          colorScheme="gray"
+          marginTop={2}
+          onClick={
+              CreateOrEditUsersExternalLinkModal
+                ? () => CreateOrEditUsersExternalLinkModal.showModal()
+                : undefined
+            }
+          size="lg"
+          width="auto"
+        >
+          Add Link
+        </Button>
+      )}
     </Flex>
   )
 }
