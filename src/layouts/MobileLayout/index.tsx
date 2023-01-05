@@ -1,11 +1,12 @@
 import { Flex } from '@chakra-ui/react'
 import Head from 'next/head'
+import { motion } from 'framer-motion'
 
 import Footer from '@components/Footer'
 import Header from '@components/Header'
 
 interface MobileLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode,
 }
 
 const MobileLayout = (props: MobileLayoutProps) => {
@@ -22,8 +23,19 @@ const MobileLayout = (props: MobileLayoutProps) => {
       <Flex flexDirection="column" width={['100%', 600]}>
         <Header />
 
-        <Flex flexDirection="column" padding="4" width="100%">
-          {children}
+        <Flex flexDirection="column" paddingX="4" width="100%">
+          <motion.div
+            initial={{ x: 200, opacity: 0.5 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 200, opacity: 0.5 }}
+            transition={{
+              type: 'tween',
+              ease: 'easeInOut',
+              duration: 0.3,
+            }}
+          >
+            {children}
+          </motion.div>
         </Flex>
 
         <Footer />

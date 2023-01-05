@@ -1,13 +1,22 @@
-import { Flex } from '@chakra-ui/react'
+import { trpc } from '@utils/trpc'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-const FeedPage = () => {
+import ProjectTile from '@components/ProjectTile'
+
+const Feed = () => {
+  const projectsQuery = trpc.projects.getRecentProjects.useQuery({
+    limit: 10,
+  })
+  const { data: projects } = projectsQuery
+
   return (
     <MobileLayout>
-      <Flex width="100%">Feed</Flex>
+      {projects?.map(project => (
+        <ProjectTile key={project.id} project={project} />
+      ))}
     </MobileLayout>
   )
 }
 
-export default FeedPage
+export default Feed

@@ -1,12 +1,20 @@
-import { router, publicProcedure } from "../trpc";
+import { z } from 'zod'
 
-export const manufacturersRouter = router({
+import { router, publicProcedure } from '../trpc'
+
+const manufacturersRouter = router({
   getManufacturers: publicProcedure
-    .query(({ ctx }) => {
-      return ctx.prisma.manufacturer.findMany({
-        orderBy: {
-          title: 'asc',
+    .input(z.object({ manufacturerType: z.string().nullable() }))
+    .query(({ ctx, input }) => ctx.prisma.manufacturer.findMany({
+      where: {
+        manufacturerType: {
+          key: input?.manufacturerType || undefined,
         },
-      })
-    }),
+      },
+      orderBy: {
+        title: 'asc',
+      },
+    })),
 })
+
+export default manufacturersRouter

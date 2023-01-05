@@ -69,6 +69,7 @@ const Field = (props: FieldProps) => {
           variant: "outline",
           size: "md",
           style: {
+            ...children?.props?.style,
             borderColor: hasError ? 'orange' : undefined,
           },
           ...field,

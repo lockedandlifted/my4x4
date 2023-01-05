@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
 
+import Actions from './Actions'
 import Field from './Field'
 
 const showInvalidFormWarning = (data: FieldValues) => {
@@ -21,6 +22,7 @@ type FormProps = {
     submitForm: (data: object) => void,
   },
   children: React.ReactNode,
+  id?: string,
   formPayload: UseFormReturn,
 }
 
@@ -30,6 +32,7 @@ const Form = (props: FormProps) => {
       submitForm,
     },
     children,
+    id,
     formPayload,
     formPayload: {
       handleSubmit,
@@ -38,7 +41,10 @@ const Form = (props: FormProps) => {
 
   return (
     <FormProvider {...formPayload}>
-      <form onSubmit={e => handleSubmit(submitForm, showInvalidFormWarning)(e).catch(e => console.log(e.message))}>
+      <form
+        id={id}
+        onSubmit={e => handleSubmit(submitForm, showInvalidFormWarning)(e).catch(e => console.log(e.message))}
+      >
         <Flex flexDirection="column" width="100%">
           {children}
         </Flex>
@@ -47,6 +53,7 @@ const Form = (props: FormProps) => {
   )
 }
 
+Form.Actions = Actions
 Form.Field = Field
 
 export default Form

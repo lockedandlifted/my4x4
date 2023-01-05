@@ -18,10 +18,14 @@
     "baseUrl": "./src",
     "paths": {
       "@components/*": ["components/*"],
+      "@contexts/*": ["contexts/*"],
       "@hooks/*": ["hooks/*"],
       "@layouts/*": ["layouts/*"],
+      "@modals/*": ["modals/*"],
       "@pages/*": ["pages/*"],
+      "@server/*": ["server/*"],
       "@utils/*": ["utils/*"],
+      "@validationSchemas/*": ["validationSchemas/*"],
     }
   },
   "ts-node": {
