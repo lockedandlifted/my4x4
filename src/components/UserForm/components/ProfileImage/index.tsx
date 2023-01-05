@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react'
+import Image from 'next/image'
 
 import type { User } from '@prisma/client'
 
@@ -20,12 +21,14 @@ const ProfileImage = (props: ProfileImageProps) => {
 
   const { uppy } = useUserImageUpload({
     callbacks: {
-      onSuccess: () => invalidate({ id: user?.id }),
+      onSuccess: () => invalidate({ id: user.id }),
     },
-    userId: user?.id,
+    userId: user.id,
   })
 
-  const image = user?.usersImages?.[0]?.image
+  console.log(uppy)
+
+  const image = user.usersImages?.[0]?.image
   const hasImage = !!image
 
   const { imageUrl } = useImageUrl({
@@ -33,13 +36,13 @@ const ProfileImage = (props: ProfileImageProps) => {
     path: image?.fileKey,
     transformation: [{
       focus: 'auto',
-      height: '710',
-      width: '568',
+      height: '400',
+      width: '400',
     }],
   })
 
   return (
-    <Flex>
+    <Flex alignItems="center" direction="column">
       <Flex
         alignItems="center"
         borderRadius="100%"
@@ -49,27 +52,29 @@ const ProfileImage = (props: ProfileImageProps) => {
         position="relative"
         marginTop={4}
         justifyContent="center"
-        height="100px"
-        width="100px"
+        height="200px"
+        width="200px"
         style={{ aspectRatio: '4 / 5' }}
       >
-        Image
+        {hasImage && (
+          <Image
+            alt="User Main Image"
+            fill
+            src={imageUrl}
+            style={{ objectFit: 'cover' }}
+          />
+        )}
       </Flex>
 
-      {!hasImage && !!uppy && (
+      {!!uppy && (
         <FileUploadButton
           buttonProps={{
-            backgroundColor: hasImage ? 'whiteAlpha.300' : 'blackAlpha.300',
-            colorScheme: hasImage ? 'whiteAlpha' : 'blackAlpha',
-            marginTop: 'auto',
-            size: 'lg',
+            colorScheme: 'gray',
+            marginTop: 2,
+            size: 'sm',
             zIndex: '1',
-            width: '100%',
-            _hover: {
-              backgroundColor: hasImage ? 'whiteAlpha.400' : 'blackAlpha.400',
-            },
           }}
-          buttonText="Add Photo"
+          buttonText={hasImage ? 'Change Photo' : 'Add Photo'}
           uppy={uppy}
         />
       )}

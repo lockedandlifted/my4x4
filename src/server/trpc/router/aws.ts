@@ -9,9 +9,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { router, publicProcedure } from '../trpc'
 
 const generateFileKey = (filename: string, fileType: string) => {
-  if (['image/jpeg', 'image/jpg'].includes(fileType)) {
+  if (['image/jpeg', 'image/jpg', 'image/png'].includes(fileType)) {
     const uuid = uuidv4()
-    const fileExtension = filename.match(/\.(jpg|jpeg)/g)[0]
+    const fileExtension = filename.toLowerCase().match(/\.(jpg|jpeg|png)/g)?.[0] || '.jpg'
     const newFileName = `${uuid}${fileExtension}`
 
     return {

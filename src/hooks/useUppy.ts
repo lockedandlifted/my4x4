@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Uppy from '@uppy/core'
 import AwsS3 from '@uppy/aws-s3'
 
@@ -16,7 +16,7 @@ interface InitializeOptions {
   },
 }
 
-const initializeUppy = (options: InitializeOptions, trpcClient) => {
+const initializeUppy = (options: InitializeOptions, trpcClient): Uppy => {
   const {
     callbacks, fileKey, maxNumberOfFiles, uppyOptions,
   } = options || {}
@@ -67,6 +67,9 @@ const initializeUppy = (options: InitializeOptions, trpcClient) => {
         URL.revokeObjectURL(url)
       }
     })
+    .on('upload-error', (file) => {
+      uppy.removeFile(file?.id)
+    })
     .on('upload-success', (file) => {
       if (uploadSuccess) {
         uploadSuccess(file)
@@ -77,19 +80,24 @@ const initializeUppy = (options: InitializeOptions, trpcClient) => {
 }
 
 function useUppy(options: InitializeOptions, deps: string[] = []) {
+  const [uppy, setUppy] = useState<Uppy | undefined>(undefined)
+
   const trpcClient = trpc.useContext()
 
   const uppyRef = useRef<Uppy>()
 
   useEffect(() => {
-    uppyRef.current = initializeUppy(options, trpcClient)
+    setUppy(initializeUppy(options, trpcClient))
 
     return () => {
-      uppyRef.current ? uppyRef.current.close() : null
+      if (uppy) {
+        uppy.close()
+        setUppy(undefined)
+      }
     }
   }, [...deps])
 
-  return uppyRef.current
+  return uppy
 }
 
 export default useUppy

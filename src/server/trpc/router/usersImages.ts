@@ -16,12 +16,16 @@ const usersImagesRouter = router({
       }),
     }))
     .mutation(async ({ ctx, input }) => {
-      const { sort } = (await ctx.prisma.usersImage.findFirst({
-        where: { userId: input.userId },
-        orderBy: {
-          sort: 'desc',
+      // Clear Existing Images - Limit to 1 image at this stage
+      await ctx.prisma.image.deleteMany({
+        where: {
+          usersImages: {
+            some: {
+              userId: input.userId,
+            },
+          },
         },
-      })) || {}
+      })
 
       return ctx.prisma.usersImage.create({
         data: {
@@ -36,7 +40,6 @@ const usersImagesRouter = router({
               ...input.image,
             },
           },
-          sort: sort ? sort + 1 : 1,
         },
       })
     }),

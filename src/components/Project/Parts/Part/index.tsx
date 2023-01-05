@@ -48,7 +48,7 @@ const Part = (props: PartProps) => {
           {manufacturerPart.manufacturer?.title}
         </Heading>
 
-        <Text fontSize="sm">{manufacturerPart.title}</Text>
+        <Text fontSize="sm" noOfLines={1}>{manufacturerPart.title}</Text>
       </Flex>
 
       <Text color="gray.300" fontSize="xl" marginLeft="auto">

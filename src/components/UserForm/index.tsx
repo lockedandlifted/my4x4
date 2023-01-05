@@ -42,10 +42,6 @@ const UserForm = (props: UserFormProps) => {
         }}
         formPayload={formPayload}
       >
-        <Heading fontWeight="medium" size="lg">
-          Account
-        </Heading>
-
         <ProfileImage user={user} />
 
         <Flex justifyContent="space-between" marginTop={8}>

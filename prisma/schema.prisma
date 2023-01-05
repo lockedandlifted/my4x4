@@ -148,7 +148,7 @@ model Image {
 
   imageTags      ImageTag[]
   projectsImages ProjectsImage[]
-  UsersImage     UsersImage[]
+  usersImages    UsersImage[]
 
   @@map("images")
 }
