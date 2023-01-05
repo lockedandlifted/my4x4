@@ -34,6 +34,7 @@ const Part = (props: PartProps) => {
         alignItems="center"
         backgroundColor="gray.50"
         borderRadius="xl"
+        flexShrink={0}
         height={16}
         justifyContent="center"
         width={16}

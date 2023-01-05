@@ -54,8 +54,8 @@ const projectsRouter = router({
       title: z.string(),
       temporaryUserId: z.string(),
     }))
-    .mutation(({ ctx, input }) => ctx.prisma.project.create({
-      data: {
+    .mutation(({ ctx, input }) => {
+      const data: Prisma.ProjectCreateArgs['data'] = {
         manufacturerModelId: input.manufacturerModelId,
         slug: input.slug,
         temporaryUserId: input.temporaryUserId,
@@ -63,15 +63,48 @@ const projectsRouter = router({
         projectsAttributes: {
           create: mapCreateProjectsAttributes(input),
         },
-      },
-      include: {
-        projectsAttributes: {
-          include: {
-            attribute: true,
+      }
+
+      if (ctx.session?.user?.id) {
+        data.projectsUsers = {
+          create: {
+            user: {
+              connect: {
+                id: ctx.session.user.id,
+              },
+            },
+          },
+        }
+      }
+
+      return ctx.prisma.project.create({
+        data,
+        include: {
+          projectsAttributes: {
+            include: {
+              attribute: true,
+            },
+          },
+          projectsUsers: {
+            include: {
+              user: {
+                include: {
+                  usersImages: {
+                    include: {
+                      image: true,
+                    },
+                    orderBy: {
+                      sort: 'asc',
+                    },
+                    take: 1,
+                  },
+                },
+              },
+            },
           },
         },
-      },
-    })),
+      })
+    }),
 
   claimProjectsByTemporaryUserId: protectedProcedure
     .input(z.object({
@@ -89,6 +122,7 @@ const projectsRouter = router({
           id: project.id,
         },
         data: {
+          temporaryUserId: null,
           projectsUsers: {
             create: {
               user: {
@@ -132,6 +166,23 @@ const projectsRouter = router({
             },
             take: 1,
           },
+          projectsUsers: {
+            include: {
+              user: {
+                include: {
+                  usersImages: {
+                    include: {
+                      image: true,
+                    },
+                    orderBy: {
+                      sort: 'asc',
+                    },
+                    take: 1,
+                  },
+                },
+              },
+            },
+          },
         },
         take: input.limit || undefined,
         orderBy: {
@@ -154,6 +205,23 @@ const projectsRouter = router({
             sort: 'asc',
           },
           take: 1,
+        },
+        projectsUsers: {
+          include: {
+            user: {
+              include: {
+                usersImages: {
+                  include: {
+                    image: true,
+                  },
+                  orderBy: {
+                    sort: 'asc',
+                  },
+                  take: 1,
+                },
+              },
+            },
+          },
         },
       },
       take: input.limit || undefined,
@@ -188,6 +256,23 @@ const projectsRouter = router({
               sort: 'asc',
             },
             take: 1,
+          },
+          projectsUsers: {
+            include: {
+              user: {
+                include: {
+                  usersImages: {
+                    include: {
+                      image: true,
+                    },
+                    orderBy: {
+                      sort: 'asc',
+                    },
+                    take: 1,
+                  },
+                },
+              },
+            },
           },
         },
         orderBy: {
@@ -225,6 +310,23 @@ const projectsRouter = router({
           },
           take: 1,
         },
+        projectsUsers: {
+          include: {
+            user: {
+              include: {
+                usersImages: {
+                  include: {
+                    image: true,
+                  },
+                  orderBy: {
+                    sort: 'asc',
+                  },
+                  take: 1,
+                },
+              },
+            },
+          },
+        },
       },
     })),
 
@@ -255,6 +357,23 @@ const projectsRouter = router({
             sort: 'asc',
           },
           take: 1,
+        },
+        projectsUsers: {
+          include: {
+            user: {
+              include: {
+                usersImages: {
+                  include: {
+                    image: true,
+                  },
+                  orderBy: {
+                    sort: 'asc',
+                  },
+                  take: 1,
+                },
+              },
+            },
+          },
         },
       },
     })),
@@ -296,6 +415,23 @@ const projectsRouter = router({
           projectsAttributes: {
             include: {
               attribute: true,
+            },
+          },
+          projectsUsers: {
+            include: {
+              user: {
+                include: {
+                  usersImages: {
+                    include: {
+                      image: true,
+                    },
+                    orderBy: {
+                      sort: 'asc',
+                    },
+                    take: 1,
+                  },
+                },
+              },
             },
           },
         },

@@ -6,7 +6,10 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from '@chakra-ui/react'
-import { FaHome, FaTruckMonster, FaUserEdit } from 'react-icons/fa'
+import {
+  FaPlusCircle, FaHome, FaSignOutAlt, FaTruckMonster, FaUserEdit,
+} from 'react-icons/fa'
+import { signOut, useSession } from 'next-auth/react'
 
 import NavigationItem from './NavigationItem'
 
@@ -19,6 +22,8 @@ type MainNavigationModalProps = {
 
 const MainNavigationModal = (props: MainNavigationModalProps) => {
   const { callbacks: { closeModal }, showModal } = props
+
+  const { data: sessionData } = useSession()
 
   return (
     <Drawer
@@ -46,10 +51,26 @@ const MainNavigationModal = (props: MainNavigationModalProps) => {
           />
 
           <NavigationItem
-            href="/users/account"
-            icon={<FaUserEdit />}
-            title="Account"
+            href="/projects/new"
+            icon={<FaPlusCircle />}
+            title="Add a Build"
           />
+
+          {!!sessionData && (
+            <>
+              <NavigationItem
+                href="/users/account"
+                icon={<FaUserEdit />}
+                title="Account"
+              />
+
+              <NavigationItem
+                icon={<FaSignOutAlt />}
+                onClick={() => signOut({ callbackUrl: '/' })}
+                title="Sign Out"
+              />
+            </>
+          )}
         </DrawerBody>
       </DrawerContent>
     </Drawer>

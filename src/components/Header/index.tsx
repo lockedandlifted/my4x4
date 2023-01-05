@@ -3,9 +3,10 @@ import {
   Flex, Link, useDisclosure,
 } from '@chakra-ui/react'
 import { FiMenu } from 'react-icons/fi'
-import NextLink from 'next/link'
 
 import MainNavigationModal from '@modals/MainNavigationModal'
+
+import LoggedInUser from './LoggedInUser'
 
 import LogoUrl from './assets/logo.svg'
 
@@ -29,14 +30,7 @@ const Header = () => {
           <Image priority src={LogoUrl} width={82} alt="MY4X4 Logo" />
         </Link>
 
-        <NextLink href="/users/account">
-          <Flex
-            backgroundColor="black"
-            borderRadius="100%"
-            height="28px"
-            width="28px"
-          />
-        </NextLink>
+        <LoggedInUser />
       </Flex>
 
       <MainNavigationModal

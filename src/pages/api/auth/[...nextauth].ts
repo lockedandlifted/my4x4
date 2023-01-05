@@ -9,11 +9,6 @@ import { prisma } from '../../../server/db/client'
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    // redirect(params) {
-    //   const { baseUrl, url } = params
-    //   console.log(params)
-    //   return baseUrl
-    // },
     async signIn({ account }: any) {
       delete account.user_id
       return true

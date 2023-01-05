@@ -38,6 +38,8 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
     routerKey,
   } = props
 
+  const { value, ...restInputProps } = inputProps || {}
+
   const [state, setState] = useState(defaultState)
   const { string } = state
 
@@ -63,8 +65,8 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
           onClick={onClick}
           ref={ref}
           type="text"
-          {...inputProps}
-          value={string}
+          value={string || value}
+          {...restInputProps}
         />
       </Flex>
 

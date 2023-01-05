@@ -101,8 +101,9 @@ model ExternalLink {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   externalLinkViews         ExternalLinkView[]
-  projectsExternalLinks     ProjectExternalLink[]
+  projectsExternalLinks     ProjectsExternalLink[]
   projectPartsExternalLinks ProjectPartsExternalLink[]
+  usersExternalLinks        UsersExternalLink[]
 
   @@map("external_links")
 }
@@ -242,7 +243,7 @@ model Project {
 
   projectPageViews      ProjectPageView[]
   projectsAttributes    ProjectsAttribute[]
-  projectsExternalLinks ProjectExternalLink[]
+  projectsExternalLinks ProjectsExternalLink[]
   projectsImages        ProjectsImage[]
   projectsParts         ProjectsPart[]
   projectsUsers         ProjectsUser[]
@@ -250,7 +251,7 @@ model Project {
   @@map("projects")
 }
 
-model ProjectExternalLink {
+model ProjectsExternalLink {
   id             String       @id @default(uuid())
   project        Project      @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   projectId      String       @map("project_id")
@@ -381,17 +382,32 @@ model User {
   username      String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
+  bio           String?   @db.Text
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  accounts      Account[]
-  sessions      Session[]
-  images        Image[]
-  projectsUsers ProjectsUser[]
-  usersImages   UsersImage[]
+  accounts           Account[]
+  sessions           Session[]
+  images             Image[]
+  projectsUsers      ProjectsUser[]
+  usersImages        UsersImage[]
+  usersExternalLinks UsersExternalLink[]
 
   @@map("users")
+}
+
+model UsersExternalLink {
+  id             String       @id @default(uuid())
+  user           User         @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId         String       @map("user_id")
+  externalLink   ExternalLink @relation(fields: [externalLinkId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  externalLinkId String       @map("external_link_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("users_external_links")
 }
 
 model UsersImage {

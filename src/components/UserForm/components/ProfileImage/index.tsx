@@ -26,8 +26,6 @@ const ProfileImage = (props: ProfileImageProps) => {
     userId: user.id,
   })
 
-  console.log(uppy)
-
   const image = user.usersImages?.[0]?.image
   const hasImage = !!image
 

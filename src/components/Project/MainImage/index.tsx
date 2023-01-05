@@ -1,9 +1,11 @@
-import { Flex, LinkOverlay, Text } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
 import Image from 'next/image'
 
 import type { Project } from '@prisma/client'
 
 import useImageUrl from '@hooks/useImageUrl'
+
+import OwnerProfile from './OwnerProfile'
 
 type MainImageProps = {
   project: Project,
@@ -50,7 +52,7 @@ const MainImage = (props: MainImageProps) => {
         padding="8"
         zIndex="1"
       >
-        <Flex alignItems="center">
+        <Flex direction="column" justifyContent="center">
           <Text
             color={hasImage ? 'white' : 'black'}
             fontSize="3xl"
@@ -61,6 +63,8 @@ const MainImage = (props: MainImageProps) => {
           >
             {project?.title}
           </Text>
+
+          <OwnerProfile user={project?.projectsUsers?.[0]?.user} />
         </Flex>
       </Flex>
     </Flex>

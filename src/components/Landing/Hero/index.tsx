@@ -4,9 +4,9 @@ import Paragraph from '@components/Paragraph'
 
 const Hero = () => (
   <Flex direction="column" alignItems="flex-start" marginTop={8}>
-    <Heading fontWeight="light" whiteSpace="pre-line" size="xl">
-      {`Add your vehicle,
-      Find and research parts,
+    <Heading fontWeight="normal" whiteSpace="pre-line" size="xl">
+      {`Add Your Vehicle,
+      Find and Research Parts,
       Flex.`}
     </Heading>
 

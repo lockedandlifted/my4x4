@@ -25,9 +25,10 @@ const updateUser = (params: UpdateUserParams) => {
 }
 
 const defaultState = {
-  username: '',
-  name: '',
+  bio: '',
   email: '',
+  name: '',
+  username: '',
 }
 
 type UseUserFormOptions = {

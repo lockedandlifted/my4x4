@@ -34,7 +34,7 @@ const ProjectForm = (props: ProjectFormProps) => {
   } = projectFormPayload
 
   return (
-    <Flex width="100%">
+    <Flex marginTop={8} width="100%">
       <Form
         callbacks={{
           submitForm: project?.id ? updateFn : createFn,

@@ -74,6 +74,15 @@ const UserForm = (props: UserFormProps) => {
           <input />
         </Form.Field>
 
+        <Form.Field
+          label="Bio"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="bio"
+          validationRules={{ required: false }}
+        >
+          <textarea style={{ height: 200 }} />
+        </Form.Field>
+
         <Button
           colorScheme="green"
           isDisabled={isLoading}

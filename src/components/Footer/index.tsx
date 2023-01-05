@@ -22,7 +22,7 @@ const Footer = () => (
 
     <Flex flexDirection="row" paddingTop="2" justifyContent="space-between">
       <Flex>
-        <Link href="/">
+        <Link href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
           <Text fontSize="xs" color="gray.400">Got a suggestion?</Text>
         </Link>
 

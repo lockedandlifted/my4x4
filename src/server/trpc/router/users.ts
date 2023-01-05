@@ -54,6 +54,7 @@ const usersRouter = router({
         id: input.id,
       },
       data: {
+        bio: input.bio,
         email: input.email,
         name: input.name,
         username: input.username,

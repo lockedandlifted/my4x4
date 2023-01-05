@@ -87,13 +87,15 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
                 callbacks={{
                   onChange: (e: React.ChangeEvent<HTMLInputElement>) => setValue('title', e.target?.value),
                   selectItem: (result: ManufacturerPart) => {
-                    setValue('categoryId', result.categoryId)
-                    setValue('partNumber', result.partNumber)
+                    setValue('categoryId', result.categoryId || '')
+                    setValue('partNumber', result.partNumber || '')
                     setValue('manufacturerPartId', result.id)
-                    setValue('title', result.title)
+                    setValue('title', result.title || '')
                   },
                 }}
-                inputValue={title}
+                inputProps={{
+                  value: title,
+                }}
                 routerKey="manufacturerParts"
                 queryKey="getManufacturerParts"
                 queryParams={{ manufacturerId }}
