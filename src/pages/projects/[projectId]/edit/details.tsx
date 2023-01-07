@@ -5,6 +5,7 @@ import setupTrpcCaller from '@utils/setupTrpcCaller'
 
 import MobileLayout from '@layouts/MobileLayout'
 
+import BackToProjectButton from '@components/Project/BackToProjectButton'
 import ProjectForm from '@components/ProjectForm'
 
 type EditProjectDetailsPageProps = {
@@ -16,6 +17,7 @@ const EditProjectDetailsPage = (props: EditProjectDetailsPageProps) => {
 
   return (
     <MobileLayout>
+      <BackToProjectButton editMode project={project} />
       <ProjectForm project={project} />
     </MobileLayout>
   )
