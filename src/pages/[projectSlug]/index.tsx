@@ -1,10 +1,16 @@
 import { useRouter } from 'next/router'
-import { Button } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
+
+import type { GetServerSideProps } from 'next'
 
 import { trpc } from '@utils/trpc'
+import setTemporaryUserIdCookie from '@utils/setTemporaryUserIdCookie'
+
+import useValidateProjectOwner from '@hooks/useValidateProjectOwner'
 
 import MobileLayout from '@layouts/MobileLayout'
 
+import Actions from '@components/Project/Actions'
 import Attributes from '@components/Project/Attributes'
 import Description from '@components/Project/Description'
 import MainImage from '@components/Project/MainImage'
@@ -12,7 +18,9 @@ import Parts from '@components/Project/Parts'
 import ProjectImageThumbs from '@components/ProjectImageThumbs'
 import SimilarProjects from '@components/Project/SimilarProjects'
 
-const BuildPage = () => {
+const BuildPage = (props: { temporaryUserId: string }) => {
+  const { temporaryUserId } = props
+
   const { query: { projectSlug } } = useRouter()
 
   const { mutate: createPageViewFn } = trpc.projectPageViews.createProjectPageView.useMutation()
@@ -31,21 +39,31 @@ const BuildPage = () => {
 
   const { data: project } = projectQuery
 
+  const { isValidOwner } = useValidateProjectOwner({
+    project,
+    temporaryUserId,
+  })
+
   return (
     <MobileLayout>
-      <MainImage project={project} />
-      <ProjectImageThumbs project={project} />
-      <Description project={project} />
-      <Attributes project={project} />
-      <Parts project={project} />
+      <Flex direction="column">
+        <MainImage project={project} />
+        <ProjectImageThumbs project={project} />
+        <Description project={project} />
+        <Attributes project={project} />
+        <Parts project={project} />
 
-      <SimilarProjects project={project} />
+        <SimilarProjects project={project} />
 
-      <Button as="a" href={`/projects/${project?.id}/edit`} marginY={4} size="lg">
-        Edit Build
-      </Button>
+        {isValidOwner && <Actions project={project} />}
+      </Flex>
     </MobileLayout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const temporaryUserId = setTemporaryUserIdCookie(context)
+  return { props: { temporaryUserId } }
 }
 
 export default BuildPage

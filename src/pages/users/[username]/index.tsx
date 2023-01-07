@@ -1,9 +1,14 @@
 import { useRouter } from 'next/router'
-import { Flex } from '@chakra-ui/react'
+import { Flex, Heading, Text } from '@chakra-ui/react'
 
 import { trpc } from '@utils/trpc'
 
 import MobileLayout from '@layouts/MobileLayout'
+
+import Links from '@components/User/Links'
+import Paragraph from '@components/Paragraph'
+import ProfileImage from '@components/User/ProfileImage'
+import Projects from '@components/User/Projects'
 
 const ProfilePage = () => {
   const { query: { username } } = useRouter()
@@ -14,24 +19,30 @@ const ProfilePage = () => {
   )
   const { data: user } = userQuery
 
-  const userProjectsQuery = trpc.projects.getProjects.useQuery(
-    { userId: user?.id },
-    { enabled: !!user?.id },
-  )
-  const { data: projects = [] } = userProjectsQuery
-
   return (
     <MobileLayout>
       <Flex flexDirection="column">
-        Viewing {username}
+        <ProfileImage user={user} />
 
-        <Flex flexDirection="column">
-          {projects?.map(project => (
-            <Flex key={project.id}>
-              {project.title}
-            </Flex>
-          ))}
+        <Flex alignItems="center" direction="column" marginTop={4}>
+          <Heading size="lg">{user?.name}</Heading>
+          <Text fontSize="md">@{user?.username}</Text>
         </Flex>
+
+        {!!user?.bio && (
+          <Flex flexDirection="column" marginTop={8}>
+            <Flex justifyContent="space-between">
+              <Heading size="md" marginBottom="4">Bio</Heading>
+            </Flex>
+
+            <Paragraph>
+              {user?.bio}
+            </Paragraph>
+          </Flex>
+        )}
+
+        <Links user={user} />
+        <Projects user={user} />
       </Flex>
     </MobileLayout>
   )

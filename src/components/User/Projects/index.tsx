@@ -9,12 +9,13 @@ import { trpc } from '@utils/trpc'
 import ProjectTile from '@components/ProjectTile'
 
 type ProjectsProps = {
+  editMode: boolean,
   temporaryUserId: string,
   user: User,
 }
 
 const Projects = (props: ProjectsProps) => {
-  const { temporaryUserId, user } = props
+  const { editMode = false, temporaryUserId, user } = props
 
   // Query
   const projectsQuery = trpc.projects.getProjects.useQuery({
@@ -40,25 +41,28 @@ const Projects = (props: ProjectsProps) => {
         {projects.map(project => (
           <ProjectTile compact key={project.id} project={project} />
         ))}
-
-        <Button
-          as="a"
-          borderRadius="2xl"
-          href="/projects/new"
-          size="lg"
-          height="100%"
-        >
-          New Build
-        </Button>
       </SimpleGrid>
 
-      <Button
-        onClick={() => claimProjects({ temporaryUserId })}
-        marginTop={2}
-        size="lg"
-      >
-        Claim Builds
-      </Button>
+      {editMode && (
+        <>
+          <Button
+            onClick={() => claimProjects({ temporaryUserId })}
+            marginTop={2}
+            size="lg"
+          >
+            Claim Builds
+          </Button>
+
+          <Button
+            as="a"
+            href="/projects/new"
+            marginTop={2}
+            size="lg"
+          >
+            New Build
+          </Button>
+        </>
+      )}
     </Flex>
   )
 }

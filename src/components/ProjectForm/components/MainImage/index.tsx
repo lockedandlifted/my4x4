@@ -76,10 +76,6 @@ const MainImage = (props: MainImageProps) => {
             >
               {project?.title}
             </Text>
-
-            <Link href={`/projects/${project?.id}/edit/details`} style={{ marginLeft: 'auto' }}>
-              Edit
-            </Link>
           </Flex>
 
           {!hasImage && !!uppy && (

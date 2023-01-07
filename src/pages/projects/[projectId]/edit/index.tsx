@@ -13,7 +13,9 @@ import CreateOrEditProjectPartModal from '@modals/CreateOrEditProjectPartModal'
 
 import Form from '@components/Form'
 
+import Actions from '@components/Project/Actions'
 import Attributes from '@components/Project/Attributes'
+import CreateAccountNotice from '@components/Project/CreateAccountNotice'
 import Description from '@components/Project/Description'
 import MainImage from '@components/ProjectForm/components/MainImage'
 import Parts from '@components/Project/Parts'
@@ -62,11 +64,13 @@ const EditProjectPage = () => {
   return (
     <MobileLayout>
       <Form callbacks={{ submitForm: updateProject }} formPayload={formPayload} id="project-form">
+        <CreateAccountNotice project={project} />
         <MainImage project={project} />
         <ProjectImageThumbs editMode project={project} />
         <Description editMode project={project} />
         <Attributes editMode project={project} />
         <Parts editMode callbacks={callbacks(undefined, setState)} project={project} />
+        <Actions editMode project={project} />
       </Form>
 
       <CreateOrEditProjectAttributeModal

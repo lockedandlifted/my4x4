@@ -41,6 +41,10 @@ const Parts = (props: PartsProps) => {
   )
   const { data: projectsParts = [] } = projectsPartsQuery
 
+  if (!editMode && !projectsParts.length) {
+    return null
+  }
+
   return (
     <Flex flexDirection="column" marginTop={8}>
       <Heading size="md">Parts</Heading>
