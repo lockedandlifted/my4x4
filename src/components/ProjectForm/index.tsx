@@ -21,7 +21,11 @@ const ProjectForm = (props: ProjectFormProps) => {
       createProject: createFn,
       updateProject: updateFn,
     },
+    createdByOwner,
     formPayload,
+    formPayload: {
+      setValue,
+    },
     manufacturers,
     manufacturerModels,
     manufacturerModelId,
@@ -42,7 +46,7 @@ const ProjectForm = (props: ProjectFormProps) => {
         formPayload={formPayload}
       >
         <Heading fontWeight="medium" size="lg">
-          {project?.id ? 'Edit' : 'Add'} Your Build
+          {project?.id ? 'Edit' : 'Add'} a Build
         </Heading>
 
         <Paragraph marginTop={Form.Field.MARGIN_TOP}>
@@ -51,20 +55,35 @@ const ProjectForm = (props: ProjectFormProps) => {
         </Paragraph>
 
         <Form.Field
-          label="Manufacturer"
+          label="Are you the Owner?"
           marginTop={Form.Field.MARGIN_TOP}
-          name="manufacturerId"
-          validationRules={{ required: true }}
+          name="createdByOwner"
+          validationRules={{ required: false }}
         >
-          <select>
+          <select onChange={e => setValue('createdByOwner', e.target.value === 'true')}>
             <option value="">Please Select...</option>
-            {manufacturers.map(manufacturer => (
-              <option key={manufacturer.id} value={manufacturer.id}>
-                {manufacturer.title}
-              </option>
-            ))}
+            <option value="false">No</option>
+            <option value="true">Yes</option>
           </select>
         </Form.Field>
+
+        {typeof createdByOwner === 'boolean' && (
+          <Form.Field
+            label="Manufacturer"
+            marginTop={Form.Field.MARGIN_TOP}
+            name="manufacturerId"
+            validationRules={{ required: true }}
+          >
+            <select>
+              <option value="">Please Select...</option>
+              {manufacturers.map(manufacturer => (
+                <option key={manufacturer.id} value={manufacturer.id}>
+                  {manufacturer.title}
+                </option>
+              ))}
+            </select>
+          </Form.Field>
+        )}
 
         {!!manufacturerId && (
           <Form.Field
