@@ -1,6 +1,6 @@
 # MY4X4 - How to get locked and lifted...
 
-This is the repo for Locked & Lifted (My 4x4). Follow the instructions below to get it running on your local machine. If you have any questions keep them to yourself.
+This is the repo for Locked & Lifted (MY4X4). Follow the instructions below to get it running on your local machine. If you have any questions keep them to yourself.
 
 # Getting it started
 
