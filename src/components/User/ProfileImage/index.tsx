@@ -3,12 +3,7 @@ import NextImage from 'next/image'
 
 import type { User } from '@prisma/client'
 
-import { trpc } from '@utils/trpc'
-
 import useImageUrl from '@hooks/useImageUrl'
-import useUserImageUpload from '@hooks/useUserImageUpload'
-
-import FileUploadButton from '@components/FileUploadButton'
 
 type ProfileImageProps = {
   user: User,
@@ -17,16 +12,7 @@ type ProfileImageProps = {
 const ProfileImage = (props: ProfileImageProps) => {
   const { user } = props
 
-  const { users: { getUserById: { invalidate } } } = trpc.useContext()
-
-  const { uppy } = useUserImageUpload({
-    callbacks: {
-      onSuccess: () => invalidate({ id: user.id }),
-    },
-    userId: user.id,
-  })
-
-  const image = user.usersImages?.[0]?.image
+  const image = user?.usersImages?.[0]?.image
   const hasImage = !!image
 
   const { imageUrl } = useImageUrl({
@@ -63,19 +49,6 @@ const ProfileImage = (props: ProfileImageProps) => {
           />
         )}
       </Flex>
-
-      {!!uppy && (
-        <FileUploadButton
-          buttonProps={{
-            colorScheme: 'gray',
-            marginTop: 2,
-            size: 'sm',
-            zIndex: '1',
-          }}
-          buttonText={hasImage ? 'Change Photo' : 'Add Photo'}
-          uppy={uppy}
-        />
-      )}
     </Flex>
   )
 }
