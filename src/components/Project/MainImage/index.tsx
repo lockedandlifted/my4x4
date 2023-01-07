@@ -64,7 +64,10 @@ const MainImage = (props: MainImageProps) => {
             {project?.title}
           </Text>
 
-          <OwnerProfile user={project?.projectsUsers?.[0]?.user} />
+          <OwnerProfile
+            invertTextColor={!hasImage}
+            user={project?.projectsUsers?.[0]?.user}
+          />
         </Flex>
       </Flex>
     </Flex>

@@ -53,7 +53,7 @@ const Field = (props: FieldProps) => {
     <Flex className={styles.root} flexDirection="column" width="100%" {...restProps}>
       <Flex alignItems="center" width="100%">
         <Text color="#3B5249" fontSize={14} width="auto">
-          {required && `* `}{label}
+          {required && '* '}{label}
         </Text>
 
         <Flex marginLeft="auto">
@@ -63,16 +63,17 @@ const Field = (props: FieldProps) => {
 
       <Flex flexDirection="column" marginTop="1" width="100%">
         {React.cloneElement(children as React.ReactElement, {
-          autoComplete: "off",
+          autoComplete: 'off',
           color: (!field.value) ? 'gray.400' : 'gray.900',
           id: name,
-          variant: "outline",
-          size: "md",
+          variant: 'outline',
+          size: 'md',
           style: {
             ...children?.props?.style,
             borderColor: hasError ? 'orange' : undefined,
           },
           ...field,
+          onChange: children?.props?.onChange ?? field.onChange,
         })}
       </Flex>
     </Flex>

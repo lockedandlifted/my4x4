@@ -3,14 +3,17 @@ import NextImage from 'next/image'
 import NextLink from 'next/link'
 import { FaUser } from 'react-icons/fa'
 
+import type { User } from '@prisma/client'
+
 import useImageUrl from '@hooks/useImageUrl'
 
 type OwnerProfileProps = {
-  children: React.ReactNode,
+  invertTextColor: boolean,
+  user: User,
 }
 
 const OwnerProfile = (props: OwnerProfileProps) => {
-  const { user } = props
+  const { invertTextColor = false, user } = props
 
   const image = user?.usersImages?.[0]?.image
   const hasImage = !!image
@@ -57,7 +60,7 @@ const OwnerProfile = (props: OwnerProfileProps) => {
       </Flex>
 
       <NextLink href={`/users/${user?.username}`}>
-        <Flex direction="column" color="white" justifyContent="center" marginLeft={4}>
+        <Flex direction="column" color={invertTextColor ? 'black' : 'white'} justifyContent="center" marginLeft={4}>
           <Text fontSize="md" fontWeight="bold">{user.name}</Text>
           <Text fontSize="sm">{user.username}</Text>
         </Flex>

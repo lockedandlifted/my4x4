@@ -45,6 +45,7 @@ const mapCreateProjectsAttributes = (
 const projectsRouter = router({
   createProject: publicProcedure
     .input(z.object({
+      createdByOwner: z.boolean().optional(),
       manufacturerModelId: z.string(),
       projectsAttributes: z.array(z.object({
         key: z.string(),
@@ -56,6 +57,7 @@ const projectsRouter = router({
     }))
     .mutation(({ ctx, input }) => {
       const data: Prisma.ProjectCreateArgs['data'] = {
+        createdByOwner: input.createdByOwner,
         manufacturerModelId: input.manufacturerModelId,
         slug: input.slug,
         temporaryUserId: input.temporaryUserId,
@@ -381,6 +383,7 @@ const projectsRouter = router({
   updateProjectById: publicProcedure
     .input(z.object({
       id: z.string(),
+      createdByOwner: z.boolean().optional(),
       description: z.string(),
       manufacturerModelId: z.string(),
       projectsAttributes: z.array(z.object({
@@ -403,6 +406,7 @@ const projectsRouter = router({
           id: input.id,
         },
         data: {
+          createdByOwner: input.createdByOwner,
           description: input.description,
           manufacturerModelId: input.manufacturerModelId,
           slug: input.slug,

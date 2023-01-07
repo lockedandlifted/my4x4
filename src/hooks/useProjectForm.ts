@@ -94,6 +94,7 @@ type DefaultState = {
     model_series: string,
     year_manufactured: string,
   },
+  createdByOwner: boolean,
   description: string,
   manufacturerId: string,
   manufacturerModelId: string,
@@ -108,6 +109,7 @@ const defaultState: DefaultState = {
     model_series: '',
     year_manufactured: '',
   },
+  createdByOwner: false,
   description: '',
   manufacturerId: '',
   manufacturerModelId: '',
@@ -157,6 +159,7 @@ function useProjectForm(options: UseProjectFormOptions) {
   })
 
   const { setValue, watch } = formPayload
+  const createdByOwner = watch('createdByOwner')
   const manufacturerId = watch('manufacturerId')
   const manufacturerModelId = watch('manufacturerModelId')
   const modelSeries = watch('attributes.model_series')
@@ -230,6 +233,7 @@ function useProjectForm(options: UseProjectFormOptions) {
       createProject: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation, temporaryUserId }),
       updateProject: (data: typeof defaultState) => updateProject({ data, mutation: updateProjectMutation, project }),
     },
+    createdByOwner,
     formPayload,
     manufacturerId,
     manufacturerModelId,

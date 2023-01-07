@@ -4,6 +4,7 @@ import {
 } from '@chakra-ui/react'
 import { FaPen } from 'react-icons/fa'
 
+import AddedByCommunityNotice from '@components/Project/AddedByCommunityNotice'
 import Form from '@components/Form'
 import Paragraph from '@components/Paragraph'
 
@@ -23,7 +24,7 @@ const Description = (props: DescriptionProps) => {
     setEditing(false)
   }, [project?.updatedAt])
 
-  if (!editMode && !project?.description) {
+  if (!editMode && !project?.description && project?.createdByOwner) {
     return null
   }
 
@@ -32,6 +33,8 @@ const Description = (props: DescriptionProps) => {
       <Flex justifyContent="space-between">
         <Heading size="md" marginBottom="4">About the Build</Heading>
       </Flex>
+
+      <AddedByCommunityNotice project={project} />
 
       {editing && (
         <Form.Field label="Description" name="description">
