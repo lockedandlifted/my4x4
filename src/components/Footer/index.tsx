@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Flex, Text } from '@chakra-ui/react'
-import Link from 'next/link'
+import NextLink from 'next/link'
 
 import LogoUrl from './assets/logo.svg'
 import Instagram from './assets/instagram.svg'
@@ -15,28 +15,38 @@ const Footer = () => (
     paddingX={[4]}
   >
     <Flex>
-      <Link href="/">
+      <NextLink href="/">
         <Image src={LogoUrl} width={60} alt="Locked and Lifted Logo" />
-      </Link>
+      </NextLink>
     </Flex>
 
     <Flex flexDirection="row" paddingTop="2" justifyContent="space-between">
       <Flex>
-        <Link href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
+        <NextLink href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
           <Text fontSize="xs" color="gray.400">Got a suggestion?</Text>
-        </Link>
+        </NextLink>
 
-        <Text fontSize="xs" color="gray.400" marginLeft="1">My4x4.info © 2021</Text>
+        <Text fontSize="xs" color="gray.400" marginLeft={1}>
+          MY4X4.info © 2023
+        </Text>
+
+        <Text fontSize="xs" color="gray.400" marginLeft={1}>
+          |
+        </Text>
+
+        <NextLink href="/privacyPolicy">
+          <Text fontSize="xs" color="gray.600" marginLeft={1}>Privacy Policy</Text>
+        </NextLink>
       </Flex>
 
       <Flex flexDirection="row">
-        <Link href="https://www.instagram.com/locked.and.lifted/">
+        <NextLink href="https://www.instagram.com/locked.and.lifted/">
           <Image src={Instagram} width={14} alt="Instagram Account" />
-        </Link>
+        </NextLink>
 
-        <Link href="https://www.tiktok.com/@lockedandlifted" style={{ marginLeft: '8px' }}>
+        <NextLink href="https://www.tiktok.com/@lockedandlifted" style={{ marginLeft: '8px' }}>
           <Image src={TikTok} width={14} alt="Tik Tok Account" />
-        </Link>
+        </NextLink>
       </Flex>
     </Flex>
   </Flex>
