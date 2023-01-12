@@ -18,6 +18,26 @@ const seedFn = (prisma: PrismaClient, categoryTypes: CategoryType[]) => {
       categoryTypeId: partCategoryType?.id,
     },
     {
+      key: 'barwork',
+      title: 'Bars & Protection',
+      categoryTypeId: partCategoryType?.id,
+    },
+    {
+      key: 'camp',
+      title: 'Camping & Shelter',
+      categoryTypeId: partCategoryType?.id,
+    },
+    {
+      key: 'communications',
+      title: 'Communications',
+      categoryTypeId: partCategoryType?.id,
+    },
+    {
+      key: 'driveline',
+      title: 'Driveline',
+      categoryTypeId: partCategoryType?.id,
+    },
+    {
       key: 'electronics',
       title: 'Electronics',
       categoryTypeId: partCategoryType?.id,
@@ -25,6 +45,21 @@ const seedFn = (prisma: PrismaClient, categoryTypes: CategoryType[]) => {
     {
       key: 'engine',
       title: 'Engine',
+      categoryTypeId: partCategoryType?.id,
+    },
+    {
+      key: 'lighting',
+      title: 'Lighting',
+      categoryTypeId: partCategoryType?.id,
+    },
+    {
+      key: 'recovery',
+      title: 'Recover Gear',
+      categoryTypeId: partCategoryType?.id,
+    },
+    {
+      key: 'roof',
+      title: 'Roof',
       categoryTypeId: partCategoryType?.id,
     },
     {

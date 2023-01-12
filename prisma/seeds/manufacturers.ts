@@ -7,6 +7,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
 
   const partManufacturers: Prisma.ManufacturerCreateArgs['data'][] = [
     {
+      key: 'afn',
+      title: 'AFN',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'airbag_man',
       title: 'Airbag Man',
       manufacturerTypeId: partManufacturerType?.id,
@@ -22,6 +27,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'black_bear',
+      title: 'Black Bear',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'black_duck',
       title: 'Black Duck',
       manufacturerTypeId: partManufacturerType?.id,
@@ -32,8 +42,23 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'bush_company',
+      title: 'The Bush Company',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'bushranger',
       title: 'Bushranger',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'bushwakka',
+      title: 'Bushwakka',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'campboss',
+      title: 'Camp Boss',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -44,6 +69,16 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     {
       key: 'clearview',
       title: 'Clearview',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'custom',
+      title: 'Custom Made (By Owner)',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'customfab',
+      title: 'Fabrication (Custom)',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -62,8 +97,18 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'drifta',
+      title: 'Drifta',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'drivetech_4x4',
       title: 'Drivetech 4x4',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'ec_offroad',
+      title: 'EC Offroad',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -74,6 +119,17 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     {
       key: 'enerdrive',
       title: 'Enerdrive',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+
+    {
+      key: 'bushranger',
+      title: 'Bushranger',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'evc',
+      title: 'EVC',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -102,8 +158,18 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'harrop',
+      title: 'Harrop',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'hema',
       title: 'Hema',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'hpd',
+      title: 'High Performance Diesel',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -127,13 +193,33 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'maxtrax',
+      title: 'Maxtrax',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'mean_mother',
       title: 'Mean Mother',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'mccormacks4wd',
+      title: 'McCormacks 4WD',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'msa',
       title: 'MSA',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'mycoolman',
+      title: 'myCoolman',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'norweld',
+      title: 'Norweld',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -172,6 +258,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'pvs',
+      title: 'PVS Automotive',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'redarc',
       title: 'Redarc',
       manufacturerTypeId: partManufacturerType?.id,
@@ -179,6 +270,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     {
       key: 'rhino_rack',
       title: 'Rhino-Rack',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'roh',
+      title: 'ROH Wheels',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -199,6 +295,16 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     {
       key: 'smittybilt',
       title: 'Smittybilt',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'stedi',
+      title: 'Stedi',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'supafit',
+      title: 'Supafit',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -227,13 +333,23 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
-      key: 'warn',
-      title: 'WARN',
+      key: 'uniden',
+      title: 'Uniden',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
       key: 'ultimate_9',
       title: 'Ultimate 9',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'warn',
+      title: 'WARN',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'xtm',
+      title: 'XTM',
       manufacturerTypeId: partManufacturerType?.id,
     },
 
