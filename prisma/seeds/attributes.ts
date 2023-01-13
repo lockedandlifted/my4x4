@@ -24,7 +24,7 @@ const attributes: Prisma.AttributeCreateArgs['data'][] = [
   },
   {
     key: 'tyre_size',
-    title: 'Tyres',
+    title: 'Tyre Size',
   },
   {
     key: 'build_goal',
