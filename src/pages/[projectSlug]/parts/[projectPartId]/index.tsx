@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { Flex, Heading, Text } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 
 import { trpc } from '@utils/trpc'
 
@@ -10,6 +10,7 @@ import Description from '@components/ProjectsPart/Description'
 import Links from '@components/ProjectsPart/Links'
 import Overview from '@components/ProjectsPart/Overview'
 import ProjectsWithPart from '@components/ProjectsPart/ProjectsWithPart'
+import TaggedImages from '@components/ProjectsPart/TaggedImages'
 
 const ProjectPartsPage = () => {
   const { query: { projectSlug, projectPartId } } = useRouter()
@@ -42,6 +43,7 @@ const ProjectPartsPage = () => {
         <Overview projectsPart={projectsPart} />
         <Description projectsPart={projectsPart} />
         <Links projectsPart={projectsPart} />
+        <TaggedImages project={project} projectsPart={projectsPart} />
         <ProjectsWithPart projectsPart={projectsPart} />
       </Flex>
     </MobileLayout>

@@ -7,14 +7,18 @@ import type { Project } from '@prisma/client'
 
 type BackToProjectButtonProps = {
   editMode: boolean,
+  path?: string,
   project: Project,
 }
 
 const BackToProjectButton = (props: BackToProjectButtonProps) => {
-  const { editMode = false, project } = props
+  const { editMode = false, path = '', project } = props
+
+  const baseHref = editMode ? `/projects/${project?.id}/edit` : `/${project?.slug}`
+  const href = `${baseHref}${path}`
 
   return (
-    <NextLink href={editMode ? `/projects/${project?.id}/edit` : `/${project?.slug}`}>
+    <NextLink href={href}>
       <Flex
         alignItems="center"
         borderBottomWidth={1}

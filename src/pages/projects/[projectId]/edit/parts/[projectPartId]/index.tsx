@@ -12,6 +12,7 @@ import BackToProjectButton from '@components/Project/BackToProjectButton'
 import Description from '@components/ProjectsPart/Description'
 import Links from '@components/ProjectsPart/Links'
 import Overview from '@components/ProjectsPart/Overview'
+import TaggedImages from '@components/ProjectsPart/TaggedImages'
 
 const showModal = (setState, payload?: object) => {
   setState(state => ({
@@ -69,6 +70,7 @@ const EditProjectsPartPage = () => {
       <Overview editMode projectsPart={projectsPart} />
       <Description editMode projectsPart={projectsPart} />
       <Links callbacks={callbacks(undefined, setState)} editMode projectsPart={projectsPart} />
+      <TaggedImages editMode project={project} projectsPart={projectsPart} />
 
       <CreateOrEditProjectPartExternalLinkModal
         callbacks={callbacks('CreateOrEditProjectPartExternalLinkModal', setState)}

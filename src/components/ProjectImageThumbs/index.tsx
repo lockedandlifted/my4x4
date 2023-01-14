@@ -9,14 +9,14 @@ import useProjectImageUpload from '@hooks/useProjectImageUpload'
 
 import FileUploadButton from '@components/FileUploadButton'
 
-import ProjectImageThumb from './ProjectImageThumb'
+import ImageThumb from '@components/Image/ImageThumb'
 
-type ProjectImageThumbsProps = {
+type ImageThumbsProps = {
   editMode: boolean,
   project: Project,
 }
 
-const ProjectImageThumbs = (props: ProjectImageThumbsProps) => {
+const ImageThumbs = (props: ImageThumbsProps) => {
   const { editMode = false, project } = props
 
   const { projectsImages: { getProjectsImages: { invalidate } } } = trpc.useContext()
@@ -45,7 +45,7 @@ const ProjectImageThumbs = (props: ProjectImageThumbsProps) => {
         const { id, image } = projectsImage
 
         return (
-          <ProjectImageThumb
+          <ImageThumb
             href={editMode
               ? `/projects/${project?.id}/edit/images/${id}`
               : `/${project?.slug}/images`}
@@ -75,4 +75,4 @@ const ProjectImageThumbs = (props: ProjectImageThumbsProps) => {
   )
 }
 
-export default ProjectImageThumbs
+export default ImageThumbs

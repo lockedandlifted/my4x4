@@ -16,16 +16,14 @@ const countries: Prisma.CountryCreateArgs['data'][] = [
   },
 ]
 
-const seedFn = (prisma: PrismaClient) => {
-  return countries.map(async (data: Prisma.CountryCreateArgs['data']) => {
-    const record = await prisma.country.upsert({
-      where: { key: data.key },
-      update: data,
-      create: data,
-    })
-
-    return record
+const seedFn = (prisma: PrismaClient) => countries.map(async (data: Prisma.CountryCreateArgs['data']) => {
+  const record = await prisma.country.upsert({
+    where: { key: data.key },
+    update: data,
+    create: data,
   })
-}
+
+  return record
+})
 
 export default seedFn
