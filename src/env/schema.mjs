@@ -10,6 +10,8 @@ export const serverSchema = z.object({
   AUTH0_CLIENT_SECRET: z.string(),
   AUTH0_ISSUER: z.string(),
   DATABASE_URL: z.string().url(),
+  FACEBOOK_CLIENT_ID: z.string(),
+  FACEBOOK_CLIENT_SECRET: z.string(),
   INSTAGRAM_CLIENT_ID: z.string(),
   INSTAGRAM_CLIENT_SECRET: z.string(),
   NODE_ENV: z.enum(['development', 'test', 'production']),
