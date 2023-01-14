@@ -18,12 +18,12 @@ const seedFn = (prisma: PrismaClient, categoryTypes: CategoryType[]) => {
       categoryTypeId: partCategoryType?.id,
     },
     {
-      key: 'barwork',
+      key: 'protection',
       title: 'Bars & Protection',
       categoryTypeId: partCategoryType?.id,
     },
     {
-      key: 'camp',
+      key: 'camping_gear',
       title: 'Camping & Shelter',
       categoryTypeId: partCategoryType?.id,
     },

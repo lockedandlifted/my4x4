@@ -57,7 +57,7 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
-      key: 'campboss',
+      key: 'camp_boss',
       title: 'Camp Boss',
       manufacturerTypeId: partManufacturerType?.id,
     },
@@ -72,12 +72,12 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
-      key: 'custom',
+      key: 'custom_owner',
       title: 'Custom Made (By Owner)',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
-      key: 'customfab',
+      key: 'custom_fabrication',
       title: 'Fabrication (Custom)',
       manufacturerTypeId: partManufacturerType?.id,
     },
@@ -168,7 +168,7 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
-      key: 'hpd',
+      key: 'high_performance_diesel',
       title: 'High Performance Diesel',
       manufacturerTypeId: partManufacturerType?.id,
     },
@@ -203,7 +203,7 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
-      key: 'mccormacks4wd',
+      key: 'mccormacks_4wd',
       title: 'McCormacks 4WD',
       manufacturerTypeId: partManufacturerType?.id,
     },
@@ -258,7 +258,7 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
-      key: 'pvs',
+      key: 'pvs_automotive',
       title: 'PVS Automotive',
       manufacturerTypeId: partManufacturerType?.id,
     },
@@ -273,7 +273,7 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
-      key: 'roh',
+      key: 'roh_wheels',
       title: 'ROH Wheels',
       manufacturerTypeId: partManufacturerType?.id,
     },

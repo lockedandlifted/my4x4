@@ -23,12 +23,13 @@ const attributes: Prisma.AttributeCreateArgs['data'][] = [
     title: 'Diff',
   },
   {
-    key: 'tyre_size',
-    title: 'Tyre Size',
+    key: 'tyres',
+    title: 'Tyres',
   },
+
   {
-    key: 'build_goal',
-    title: 'Purpose',
+    key: 'build_type',
+    title: 'Type',
   },
 ]
 
