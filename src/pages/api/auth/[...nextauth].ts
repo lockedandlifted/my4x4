@@ -1,6 +1,7 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import Auth0Provider from 'next-auth/providers/auth0'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import FacebookProvider from 'next-auth/providers/facebook'
 import InstagramProvider from 'next-auth/providers/instagram'
 
 import { env } from '../../../env/server.mjs'
@@ -26,6 +27,10 @@ export const authOptions: NextAuthOptions = {
       clientId: env.AUTH0_CLIENT_ID,
       clientSecret: env.AUTH0_CLIENT_SECRET,
       issuer: env.AUTH0_ISSUER,
+    }),
+    FacebookProvider({
+      clientId: env.FACEBOOK_CLIENT_ID,
+      clientSecret: env.FACEBOOK_CLIENT_SECRET,
     }),
     InstagramProvider({
       clientId: env.INSTAGRAM_CLIENT_ID,

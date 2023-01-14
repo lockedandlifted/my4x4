@@ -2,7 +2,7 @@ import {
   Button, Flex, Heading, VStack,
 } from '@chakra-ui/react'
 import { signIn } from 'next-auth/react'
-import { SiAuth0, SiInstagram } from 'react-icons/si'
+import { SiAuth0, SiFacebook } from 'react-icons/si'
 
 import MobileLayout from '@layouts/MobileLayout'
 
@@ -17,11 +17,11 @@ const UserLoginPage = () => (
 
       <VStack alignItems="flex-start" marginTop={8}>
         <Button
-          leftIcon={<SiInstagram />}
-          onClick={() => signIn('instagram', { callbackUrl: CALLBACK_URL })}
+          leftIcon={<SiFacebook />}
+          onClick={() => signIn('facebook', { callbackUrl: CALLBACK_URL })}
           width="100%"
         >
-          Login with Instagram
+          Login with Facebook
         </Button>
 
         <Button
