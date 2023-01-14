@@ -3,11 +3,12 @@ import prisma from '../src/server/db/client.js'
 import attributeSeedFn from './seeds/attributes.js'
 import categorySeedFn from './seeds/categories.js'
 import categoryTypeSeedFn from './seeds/categoryTypes.js'
+import countrySeedFn from './seeds/countries.js'
 import externalLinkTypeSeedFn from './seeds/externalLinkTypes.js'
+import logBookEntryTypeSeedFn from './seeds/logBookEntryTypes.js'
 import manufacturerModelSeedFn from './seeds/manufacturerModels.js'
 import manufacturerSeedFn from './seeds/manufacturers.js'
 import manufacturerTypeSeedFn from './seeds/manufacturerTypes.js'
-import countrySeedFn from './seeds/countries.js'
 
 const seedDatabase = async () => {
   try {
@@ -30,6 +31,10 @@ const seedDatabase = async () => {
     // External Link Types
     const externalLinkTypes = await Promise.all(externalLinkTypeSeedFn(prisma))
     console.log('--- Seeded External Link Types ---', externalLinkTypes)
+
+    // Log Book Entry Types
+    const logBookEntryTypes = await Promise.all(logBookEntryTypeSeedFn(prisma))
+    console.log('--- Seeded Log Book Entry Types ---', logBookEntryTypes)
 
     // Manufacturer Types
     const manufacturerTypes = await Promise.all(manufacturerTypeSeedFn(prisma))

@@ -32,6 +32,24 @@ model Account {
   @@map("accounts")
 }
 
+model Attachment {
+  id               String  @id @default(uuid())
+  fileKey          String  @map("file_key")
+  filename         String
+  originalFilename String  @map("original_filename")
+  user             User?   @relation(fields: [userId], references: [id])
+  userId           String? @map("user_id")
+  title            String?
+  description      String? @db.Text()
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  logBookEntriesAttachments LogBookEntriesAttachment[]
+
+  @@map("attachments")
+}
+
 model Attribute {
   id    String @id @default(uuid())
   key   String @unique
@@ -162,6 +180,53 @@ model ImageTag {
   y       Decimal @db.Decimal(8, 3)
 
   projectPartsImageTags ProjectPartsImageTag[]
+
+  @@map("image_tags")
+}
+
+model LogBookEntry {
+  id                 String           @id @default(uuid())
+  project            Project          @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId          String           @map("project_id")
+  logBookEntryType   LogBookEntryType @relation(fields: [logBookEntryTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  logBookEntryTypeId String           @map("log_book_entry_type_id")
+  title              String?
+  description        String?          @db.Text()
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  logBookEntriesAttachments LogBookEntriesAttachment[]
+
+  @@map("log_book_entries")
+}
+
+model LogBookEntriesAttachment {
+  id             String       @id @default(uuid())
+  logBookEntry   LogBookEntry @relation(fields: [logBookEntryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  logBookEntryId String       @map("log_book_entry_id")
+  attachment     Attachment   @relation(fields: [attachmentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  attachmentId   String       @map("attachment_id")
+  sort           Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([logBookEntryId, attachmentId])
+  @@map("log_book_entries_attachments")
+}
+
+model LogBookEntryType {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  logBookEntries LogBookEntry[]
+
+  @@map("log_book_entry_types")
 }
 
 model Manufacturer {
@@ -242,6 +307,7 @@ model Project {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
+  logBookEntries        LogBookEntry[]
   projectPageViews      ProjectPageView[]
   projectsAttributes    ProjectsAttribute[]
   projectsExternalLinks ProjectsExternalLink[]
@@ -389,6 +455,7 @@ model User {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   accounts           Account[]
+  attachments        Attachment[]
   sessions           Session[]
   images             Image[]
   projectsUsers      ProjectsUser[]

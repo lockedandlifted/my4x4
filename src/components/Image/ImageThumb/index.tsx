@@ -6,12 +6,12 @@ import type { Image } from '@prisma/client'
 
 import useImageUrl from '@hooks/useImageUrl'
 
-type ProjectImageThumbProps = {
+type ImageThumbProps = {
   href?: string,
   image: Image,
 }
 
-const ProjectImageThumb = (props: ProjectImageThumbProps) => {
+const ImageThumb = (props: ImageThumbProps) => {
   const { href, image } = props
 
   const { imageUrl } = useImageUrl({
@@ -46,4 +46,4 @@ const ProjectImageThumb = (props: ProjectImageThumbProps) => {
   )
 }
 
-export default ProjectImageThumb
+export default ImageThumb

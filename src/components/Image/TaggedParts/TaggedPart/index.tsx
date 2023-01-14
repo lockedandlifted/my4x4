@@ -39,6 +39,7 @@ type TaggedPartProps = {
   callbacks?: {
     deleteProjectsPart?: VoidFunction,
   },
+  editMode?: boolean,
   href?: string,
   iconContent?: React.ReactNode,
   manufacturerPart: ManufacturerPartWithManufacturer,
@@ -46,7 +47,7 @@ type TaggedPartProps = {
 
 const TaggedPart = (props: TaggedPartProps) => {
   const {
-    callbacks, href, iconContent, manufacturerPart,
+    callbacks, editMode = false, href, iconContent, manufacturerPart,
   } = props
   const { deleteProjectsPart } = callbacks || {}
 
@@ -85,9 +86,11 @@ const TaggedPart = (props: TaggedPartProps) => {
             </Flex>
 
             <Flex marginLeft="auto">
-              <Text color="gray.300" fontSize="xl" _hover={{ color: 'gray' }}>
-                {deleteProjectsPart && <FiTrash2 onClick={onOpen} style={{ cursor: 'pointer' }} />}
-              </Text>
+              {editMode && (
+                <Text color="gray.300" fontSize="xl" _hover={{ color: 'gray' }}>
+                  {deleteProjectsPart && <FiTrash2 onClick={onOpen} style={{ cursor: 'pointer' }} />}
+                </Text>
+              )}
 
               <Text color="gray.300" fontSize="xl">
                 {!!href && <FaAngleRight />}

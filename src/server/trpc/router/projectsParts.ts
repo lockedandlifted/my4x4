@@ -110,6 +110,43 @@ const projectsPartsRouter = router({
       })
     }),
 
+  getTaggedImages: publicProcedure
+    .input(z.object({
+      projectsPartId: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.image.findMany({
+      where: {
+        imageTags: {
+          some: {
+            projectPartsImageTags: {
+              some: {
+                projectPartId: input.projectsPartId,
+              },
+            },
+          },
+        },
+      },
+      include: {
+        imageTags: {
+          where: {
+            projectPartsImageTags: {
+              some: {
+                projectPartId: input.projectsPartId,
+              },
+            },
+          },
+          include: {
+            projectPartsImageTags: {
+              where: {
+                projectPartId: input.projectsPartId,
+              },
+            },
+          },
+        },
+        projectsImages: true,
+      },
+    })),
+
   createProjectsPart: publicProcedure
     .input(createProjectsPartValidationSchema)
     .mutation(({ ctx, input }) => ctx.prisma.projectsPart.create({

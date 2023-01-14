@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { Flex, Heading, Text } from '@chakra-ui/react'
+import NextLink from 'next/link'
 
 import { trpc } from '@utils/trpc'
 
@@ -32,11 +33,13 @@ const BuildImagesPage = () => {
       <BackToProjectButton project={project} />
 
       {projectsImages.map((projectsImage) => {
-        const { image } = projectsImage
+        const { id, image } = projectsImage
 
         return (
           <>
-            <ImageTile boxProps={{ marginBottom: 4 }} key={image.id} image={image} />
+            <NextLink href={`/${projectSlug}/images/${id}`}>
+              <ImageTile boxProps={{ marginBottom: 4 }} key={image.id} image={image} />
+            </NextLink>
 
             {(!!image.title || !!image.description) && (
               <Flex
@@ -49,8 +52,12 @@ const BuildImagesPage = () => {
                 }}
                 marginBottom={12}
               >
-                <Flex direction="column">
-                  {!!image.title && <Heading size="sm">{image.title}</Heading>}
+                <Flex direction="column" maxWidth="100%">
+                  {!!image.title && (
+                    <Heading noOfLines={1} size="sm">
+                      {image.title}
+                    </Heading>
+                  )}
                   {!!image.description && <Text>{image.description}</Text>}
                 </Flex>
               </Flex>
