@@ -52,8 +52,12 @@ const BuildImagesPage = () => {
                 }}
                 marginBottom={12}
               >
-                <Flex direction="column">
-                  {!!image.title && <Heading size="sm">{image.title}</Heading>}
+                <Flex direction="column" maxWidth="100%">
+                  {!!image.title && (
+                    <Heading noOfLines={1} size="sm">
+                      {image.title}
+                    </Heading>
+                  )}
                   {!!image.description && <Text>{image.description}</Text>}
                 </Flex>
               </Flex>
