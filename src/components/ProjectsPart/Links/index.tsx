@@ -38,7 +38,7 @@ const Links = (props: LinksProps) => {
   )
   const { data: projectPartsExternalLinks = [] } = projectPartsExternalLinksQuery
 
-  if (projectPartsExternalLinks.length === 0) {
+  if (!editMode && projectPartsExternalLinks.length === 0) {
     return null
   }
 
