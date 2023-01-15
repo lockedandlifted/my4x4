@@ -1,5 +1,13 @@
 import {
-  GiSpring, GiSwordSpade, GiCarBattery, GiCarWheel, GiGearStickPattern, GiHealingShield, GiCampingTent, GiRadioTower, GiSkippingRope,
+  GiCampingTent,
+  GiCarBattery,
+  GiCarWheel,
+  GiGearStickPattern,
+  GiHealingShield,
+  GiRadioTower,
+  GiSkippingRope,
+  GiSpring,
+  GiSwordSpade,
 } from 'react-icons/gi'
 import { TbEngine, TbArrowAutofitUp } from 'react-icons/tb'
 import { FaTruckMonster } from 'react-icons/fa'
@@ -8,13 +16,13 @@ import { MdOutlineRotate90DegreesCcw, MdWbTwighlight } from 'react-icons/md'
 const Icons = {
   accessories: GiSwordSpade,
   body: FaTruckMonster,
-  barwork: GiHealingShield,
   camp: GiCampingTent,
   communications: GiRadioTower,
   driveline: MdOutlineRotate90DegreesCcw,
   electronics: GiCarBattery,
   engine: TbEngine,
   lighting: MdWbTwighlight,
+  protection: GiHealingShield,
   recovery: GiSkippingRope,
   roof: TbArrowAutofitUp,
   suspension: GiSpring,
@@ -29,11 +37,11 @@ type PartIconProps = {
 const PartIcon = (props: PartIconProps) => {
   const { categoryKey } = props
 
-  if (!categoryKey) {
+  const IconComponent = Icons[categoryKey]
+
+  if (!categoryKey || !IconComponent) {
     return <TbEngine />
   }
-
-  const IconComponent = Icons[categoryKey]
 
   return <IconComponent />
 }

@@ -54,7 +54,7 @@ const seedFn = (prisma: PrismaClient, categoryTypes: CategoryType[]) => {
     },
     {
       key: 'recovery',
-      title: 'Recover Gear',
+      title: 'Recovery Gear',
       categoryTypeId: partCategoryType?.id,
     },
     {
