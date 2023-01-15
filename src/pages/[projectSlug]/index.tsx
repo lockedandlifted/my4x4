@@ -13,6 +13,7 @@ import MobileLayout from '@layouts/MobileLayout'
 import Actions from '@components/Project/Actions'
 import Attributes from '@components/Project/Attributes'
 import Description from '@components/Project/Description'
+import Links from '@components/Project/Links'
 import MainImage from '@components/Project/MainImage'
 import Parts from '@components/Project/Parts'
 import ProjectImageThumbs from '@components/ProjectImageThumbs'
@@ -50,6 +51,7 @@ const BuildPage = (props: { temporaryUserId: string }) => {
         <MainImage project={project} />
         <ProjectImageThumbs project={project} />
         <Description project={project} />
+        <Links project={project} />
         <Attributes project={project} />
         <Parts project={project} />
 

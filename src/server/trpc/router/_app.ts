@@ -12,6 +12,7 @@ import manufacturersRouter from './manufacturers'
 import projectPageViewsRouter from './projectPageViews'
 import projectPartsExternalLinksRouter from './projectPartsExternalLinks'
 import projectPartsImageTagsRouter from './projectPartsImageTags'
+import projectsExternalLinksRouter from './projectsExternalLinks'
 import projectsImagesRouter from './projectsImages'
 import projectsPartsRouter from './projectsParts'
 import projectsRouter from './projects'
@@ -33,6 +34,7 @@ export const appRouters = {
   projectPartsExternalLinks: projectPartsExternalLinksRouter,
   projectPartsImageTags: projectPartsImageTagsRouter,
   projects: projectsRouter,
+  projectsExternalLinks: projectsExternalLinksRouter,
   projectsImages: projectsImagesRouter,
   projectsParts: projectsPartsRouter,
   users: usersRouter,
