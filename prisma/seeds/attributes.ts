@@ -14,18 +14,33 @@ const attributes: Prisma.AttributeCreateArgs['data'][] = [
     key: 'model_series',
     title: 'Series',
   },
+  {
+    key: 'engine',
+    title: 'Engine',
+  },
+  {
+    key: 'differentials',
+    title: 'Diff',
+  },
+  {
+    key: 'tyres',
+    title: 'Tyres',
+  },
+
+  {
+    key: 'build_type',
+    title: 'Type',
+  },
 ]
 
-const seedFn = (prisma: PrismaClient) => {
-  return attributes.map(async (data: Prisma.AttributeCreateArgs['data']) => {
-    const record = await prisma.attribute.upsert({
-      where: { key: data.key },
-      update: data,
-      create: data,
-    })
-
-    return record
+const seedFn = (prisma: PrismaClient) => attributes.map(async (data: Prisma.AttributeCreateArgs['data']) => {
+  const record = await prisma.attribute.upsert({
+    where: { key: data.key },
+    update: data,
+    create: data,
   })
-}
+
+  return record
+})
 
 export default seedFn

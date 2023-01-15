@@ -1,14 +1,22 @@
 import {
-  GiSpring, GiSwordSpade, GiCarBattery, GiCarWheel, GiGearStickPattern,
+  GiSpring, GiSwordSpade, GiCarBattery, GiCarWheel, GiGearStickPattern, GiHealingShield, GiCampingTent, GiRadioTower, GiSkippingRope,
 } from 'react-icons/gi'
-import { TbEngine } from 'react-icons/tb'
+import { TbEngine, TbArrowAutofitUp } from 'react-icons/tb'
 import { FaTruckMonster } from 'react-icons/fa'
+import { MdOutlineRotate90DegreesCcw, MdWbTwighlight } from 'react-icons/md'
 
 const Icons = {
   accessories: GiSwordSpade,
   body: FaTruckMonster,
+  barwork: GiHealingShield,
+  camp: GiCampingTent,
+  communications: GiRadioTower,
+  driveline: MdOutlineRotate90DegreesCcw,
   electronics: GiCarBattery,
   engine: TbEngine,
+  lighting: MdWbTwighlight,
+  recovery: GiSkippingRope,
+  roof: TbArrowAutofitUp,
   suspension: GiSpring,
   transmission: GiGearStickPattern,
   wheels_types: GiCarWheel,

@@ -29,7 +29,7 @@ const AddedByCommunityNotice = (props: AddedByCommunityNoticeProps) => {
 
       <AlertDescription>
         This build was added by someone in our community.
-        If this build is yours please contact us to claim it.
+        If this build is yours please contact us on social media to claim it.
       </AlertDescription>
     </Alert>
   )
