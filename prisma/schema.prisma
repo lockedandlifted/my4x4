@@ -51,16 +51,34 @@ model Attachment {
 }
 
 model Attribute {
-  id    String @id @default(uuid())
-  key   String @unique
+  id    String  @id @default(uuid())
+  key   String  @unique
   title String
+  sort  Int?
+  type  String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  attributeValues    AttributeValue[]
+  projectsAttributes ProjectsAttribute[]
+
+  @@map("attributes")
+}
+
+model AttributeValue {
+  id          String    @id @default(uuid())
+  key         String    @unique
+  title       String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  attributeId String    @map("attribute_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
   projectsAttributes ProjectsAttribute[]
 
-  @@map("attributes")
+  @@map("attribute_values")
 }
 
 model Category {
@@ -332,12 +350,14 @@ model ProjectsExternalLink {
 }
 
 model ProjectsAttribute {
-  id          String    @id @default(uuid())
-  project     Project   @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  projectId   String    @map("project_id")
-  attribute   Attribute @relation(fields: [attributeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  attributeId String    @map("attribute_id")
-  value       String
+  id               String          @id @default(uuid())
+  project          Project         @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId        String          @map("project_id")
+  attribute        Attribute       @relation(fields: [attributeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  attributeId      String          @map("attribute_id")
+  attributeValue   AttributeValue? @relation(fields: [attributeValueId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  attributeValueId String?         @map("attribute_value_id")
+  value            String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")

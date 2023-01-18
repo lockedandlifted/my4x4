@@ -163,6 +163,7 @@ function useProjectForm(options: UseProjectFormOptions) {
   const manufacturerId = watch('manufacturerId')
   const manufacturerModelId = watch('manufacturerModelId')
   const modelSeries = watch('attributes.model_series')
+  const projectSlug = watch('slug')
   const yearManufactured = watch('attributes.year_manufactured')
 
   // Load Manufacturers
@@ -244,6 +245,7 @@ function useProjectForm(options: UseProjectFormOptions) {
       updateProject: updateProjectMutation,
     },
     project,
+    projectSlug,
   }
 }
 

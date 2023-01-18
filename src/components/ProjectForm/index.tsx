@@ -1,4 +1,7 @@
-import { Button, Flex, Heading } from '@chakra-ui/react'
+import {
+  Button, Flex, Heading, Text,
+} from '@chakra-ui/react'
+import { FaGlobeAsia } from 'react-icons/fa'
 
 import type { Project } from '@prisma/client'
 
@@ -35,6 +38,7 @@ const ProjectForm = (props: ProjectFormProps) => {
         isLoading,
       },
     },
+    projectSlug,
   } = projectFormPayload
 
   return (
@@ -149,6 +153,34 @@ const ProjectForm = (props: ProjectFormProps) => {
             >
               <input />
             </Form.Field>
+          </>
+        )}
+
+        {!!project?.id && (
+          <>
+            <Form.Field
+              label="Build Url"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="slug"
+              validationRules={{ required: true }}
+            >
+              <input />
+            </Form.Field>
+
+            <Flex
+              alignItems="center"
+              // backgroundColor="gray.100"
+              borderWidth="1px"
+              borderRadius="md"
+              marginTop="2"
+              padding="2"
+            >
+              <FaGlobeAsia />
+
+              <Text color="gray.400" fontSize={14} fontWeight="bold" marginLeft="2">
+                www.my4x4.info/{projectSlug}
+              </Text>
+            </Flex>
           </>
         )}
 
