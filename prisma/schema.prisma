@@ -51,16 +51,32 @@ model Attachment {
 }
 
 model Attribute {
-  id    String @id @default(uuid())
-  key   String @unique
+  id    String  @id @default(uuid())
+  key   String  @unique
   title String
+  sort  Int?
+  type  String?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
+  attributeValues    AttributeValue[]
   projectsAttributes ProjectsAttribute[]
 
   @@map("attributes")
+}
+
+model AttributeValue {
+  id          String    @id @default(uuid())
+  key         String    @unique
+  title       String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  attributeId String    @map("attribute_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("attribute_values")
 }
 
 model Category {

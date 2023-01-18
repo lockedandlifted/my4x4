@@ -1,6 +1,7 @@
 import prisma from '../src/server/db/client.js'
 
 import attributeSeedFn from './seeds/attributes.js'
+import attributeValueSeedFn from './seeds/attributeValues.js'
 import categorySeedFn from './seeds/categories.js'
 import categoryTypeSeedFn from './seeds/categoryTypes.js'
 import countrySeedFn from './seeds/countries.js'
@@ -15,6 +16,9 @@ const seedDatabase = async () => {
     // Attributes
     const attributes = await Promise.all(attributeSeedFn(prisma))
     console.log('--- Seeded Attributes ---', attributes)
+
+    const attributeValues = await Promise.all(attributeValueSeedFn(prisma, attributes))
+    console.log('--- Seeded Attribute Values ---', attributeValues)
 
     // Category Types
     const categoryTypes = await Promise.all(categoryTypeSeedFn(prisma))
