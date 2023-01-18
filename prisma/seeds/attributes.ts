@@ -3,33 +3,32 @@ import type { Prisma, PrismaClient } from '@prisma/client'
 // Attributes
 const attributes: Prisma.AttributeCreateArgs['data'][] = [
   {
+    key: 'build_type',
+    title: 'Type',
+  },
+  {
     key: 'colour',
     title: 'Colour',
-  },
-  {
-    key: 'year_manufactured',
-    title: 'Year',
-  },
-  {
-    key: 'model_series',
-    title: 'Series',
-  },
-  {
-    key: 'engine',
-    title: 'Engine',
   },
   {
     key: 'differentials',
     title: 'Diff',
   },
   {
+    key: 'engine',
+    title: 'Engine',
+  },
+  {
+    key: 'model_series',
+    title: 'Series',
+  },
+  {
     key: 'tyres',
     title: 'Tyres',
   },
-
   {
-    key: 'build_type',
-    title: 'Type',
+    key: 'year_manufactured',
+    title: 'Year',
   },
 ]
 

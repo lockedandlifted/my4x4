@@ -9,7 +9,7 @@ import styles from './styles.module.scss'
 type FieldProps = {
   children: React.ReactNode,
   defaultValue?: string | number,
-  label: string,
+  label?: string,
   labelRight?: React.ReactNode,
   name: string,
   marginTop?: number,
@@ -51,15 +51,17 @@ const Field = (props: FieldProps) => {
 
   return (
     <Flex className={styles.root} flexDirection="column" width="100%" {...restProps}>
-      <Flex alignItems="center" width="100%">
-        <Text color="#3B5249" fontSize={14} width="auto">
-          {required && '* '}{label}
-        </Text>
+      {!!label && (
+        <Flex alignItems="center" width="100%">
+          <Text color="#3B5249" fontSize={14} width="auto">
+            {required && '* '}{label}
+          </Text>
 
-        <Flex marginLeft="auto">
-          {labelRight}
+          <Flex marginLeft="auto">
+            {labelRight}
+          </Flex>
         </Flex>
-      </Flex>
+      )}
 
       <Flex flexDirection="column" marginTop="1" width="100%">
         {React.cloneElement(children as React.ReactElement, {
