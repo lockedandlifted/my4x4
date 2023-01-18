@@ -76,6 +76,8 @@ model AttributeValue {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
+  projectsAttributes ProjectsAttribute[]
+
   @@map("attribute_values")
 }
 
@@ -348,12 +350,14 @@ model ProjectsExternalLink {
 }
 
 model ProjectsAttribute {
-  id          String    @id @default(uuid())
-  project     Project   @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  projectId   String    @map("project_id")
-  attribute   Attribute @relation(fields: [attributeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  attributeId String    @map("attribute_id")
-  value       String
+  id               String          @id @default(uuid())
+  project          Project         @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId        String          @map("project_id")
+  attribute        Attribute       @relation(fields: [attributeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  attributeId      String          @map("attribute_id")
+  attributeValue   AttributeValue? @relation(fields: [attributeValueId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  attributeValueId String?         @map("attribute_value_id")
+  value            String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
