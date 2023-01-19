@@ -240,6 +240,22 @@ const ProjectForm = (props: ProjectFormProps) => {
             >
               <input />
             </Form.Field>
+
+            <Form.Field
+              label="Body Type"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="bodyType"
+              validationRules={{ required: false }}
+            >
+              <select>
+                <option value="">Please Select...</option>
+                {attributes.bodyType.map(attributes => (
+                  <option key={attributes.bodyType.id} value={attributes.bodyType.id}>
+                    {attributes.bodyType.title}
+                  </option>
+                ))}
+              </select>
+            </Form.Field>
           </>
         )}
 
