@@ -97,11 +97,11 @@ type DefaultState = {
     kilometers: string,
     tyre_size: string,
     model_badge: string,
-    build_type: { key: string, value: string }[],
-    engine_aspiration: { key: string, value: string }[],
-    diff_lockers: { key: string, value: string }[],
-    tyre_terrain: { key: string, value: string }[],
-    body_type: { key: string, value: string }[],
+    build_type: object,
+    engine_aspiration: object,
+    diff_lockers: object,
+    tyre_terrain: object,
+    body_type: object,
 
   },
   createdByOwner: boolean,
@@ -122,11 +122,11 @@ const defaultState: DefaultState = {
     kilometers: '',
     tyre_size: '',
     model_badge: '',
-    build_type: '',
-    engine_aspiration: '',
-    diff_lockers: '',
-    tyre_terrain: '',
-    body_type: '',
+    build_type: {},
+    engine_aspiration: {},
+    diff_lockers: {},
+    tyre_terrain: {},
+    body_type: {},
   },
   createdByOwner: false,
   description: '',
@@ -186,13 +186,13 @@ function useProjectForm(options: UseProjectFormOptions) {
   const yearManufactured = watch('attributes.year_manufactured')
   const engine = watch('attributes.engine')
   const kilometers = watch('attributes.kilometers')
-  const tyre_size = watch('attributes.tyre_size')
-  const model_badge = watch('attributes.model_badge')
-  const build_type = watch('attributes.build_type')
-  const engine_aspiration = watch('attributes.engine_aspiration')
-  const diff_lockers = watch('attributes.diff_lockers')
-  const tyre_terrain = watch('attributes.tyre_terrain')
-  const body_type = watch('attributes.body_type')
+  const tyreSize = watch('attributes.tyre_size')
+  const modelBadge = watch('attributes.model_badge')
+  const buildType = watch('attributes.build_type')
+  const engineAspiration = watch('attributes.engine_aspiration')
+  const diffLockers = watch('attributes.diff_lockers')
+  const tyreTerrain = watch('attributes.tyre_terrain')
+  const bodyType = watch('attributes.body_type')
 
   // Load Manufacturers
   const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerType: 'vehicle' })
@@ -262,18 +262,27 @@ function useProjectForm(options: UseProjectFormOptions) {
       createProject: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation, temporaryUserId }),
       updateProject: (data: typeof defaultState) => updateProject({ data, mutation: updateProjectMutation, project }),
     },
+    buildType,
+    bodyType,
     createdByOwner,
+    diffLockers,
+    engine,
+    engineAspiration,
     formPayload,
+    kilometers,
     manufacturerId,
     manufacturerModelId,
     manufacturers,
     manufacturerModels,
+    modelBadge,
     mutations: {
       createProject: createProjectMutation,
       updateProject: updateProjectMutation,
     },
     project,
     projectSlug,
+    tyreSize,
+    tyreTerrain,
   }
 }
 
