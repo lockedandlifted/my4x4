@@ -93,6 +93,16 @@ type DefaultState = {
     colour: string,
     model_series: string,
     year_manufactured: string,
+    engine: string,
+    kilometers: string,
+    tyre_size: string,
+    model_badge: string,
+    build_type: { key: string, value: string }[],
+    engine_aspiration: { key: string, value: string }[],
+    diff_lockers: { key: string, value: string }[],
+    tyre_terrain: { key: string, value: string }[],
+    body_type: { key: string, value: string }[],
+
   },
   createdByOwner: boolean,
   description: string,
@@ -108,6 +118,15 @@ const defaultState: DefaultState = {
     colour: '',
     model_series: '',
     year_manufactured: '',
+    engine: '',
+    kilometers: '',
+    tyre_size: '',
+    model_badge: '',
+    build_type: '',
+    engine_aspiration: '',
+    diff_lockers: '',
+    tyre_terrain: '',
+    body_type: '',
   },
   createdByOwner: false,
   description: '',
@@ -165,6 +184,15 @@ function useProjectForm(options: UseProjectFormOptions) {
   const modelSeries = watch('attributes.model_series')
   const projectSlug = watch('slug')
   const yearManufactured = watch('attributes.year_manufactured')
+  const engine = watch('attributes.engine')
+  const kilometers = watch('attributes.kilometers')
+  const tyre_size = watch('attributes.tyre_size')
+  const model_badge = watch('attributes.model_badge')
+  const build_type = watch('attributes.build_type')
+  const engine_aspiration = watch('attributes.engine_aspiration')
+  const diff_lockers = watch('attributes.diff_lockers')
+  const tyre_terrain = watch('attributes.tyre_terrain')
+  const body_type = watch('attributes.body_type')
 
   // Load Manufacturers
   const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerType: 'vehicle' })

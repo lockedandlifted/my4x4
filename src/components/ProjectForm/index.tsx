@@ -29,6 +29,7 @@ const ProjectForm = (props: ProjectFormProps) => {
     formPayload: {
       setValue,
     },
+    attributes,
     manufacturers,
     manufacturerModels,
     manufacturerModelId,
@@ -40,6 +41,8 @@ const ProjectForm = (props: ProjectFormProps) => {
     },
     projectSlug,
   } = projectFormPayload
+
+  console.log('attributes')
 
   return (
     <Flex marginTop={8} width="100%">
@@ -194,7 +197,6 @@ const ProjectForm = (props: ProjectFormProps) => {
         )}
 
         {/* Additional Attributes: Should we do click to reveal 'add more details' button for these? */}
-
         {!!project?.id && (
           <>
             <Flex align="center" marginTop="2">
@@ -228,12 +230,12 @@ const ProjectForm = (props: ProjectFormProps) => {
             </Form.Field>
 
             <Form.Field
-              label="Odometer"
+              label="Badge"
               labelRight={(
                 <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
               )}
               marginTop={Form.Field.MARGIN_TOP}
-              name="attributes.kilometers"
+              name="attributes.model_badge"
               validationRules={{ required: false }}
             >
               <input />
