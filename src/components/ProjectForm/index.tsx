@@ -1,5 +1,5 @@
 import {
-  Button, Flex, Heading, Text,
+  Alert, AlertDescription, Button, Divider, Flex, Heading, Text,
 } from '@chakra-ui/react'
 import { FaGlobeAsia } from 'react-icons/fa'
 
@@ -50,12 +50,11 @@ const ProjectForm = (props: ProjectFormProps) => {
         formPayload={formPayload}
       >
         <Heading fontWeight="medium" size="lg">
-          {project?.id ? 'Edit' : 'Add'} a Build
+          {project?.id ? 'Edit' : 'Add'} {createdByOwner ? 'your' : 'this'} Build
         </Heading>
 
         <Paragraph marginTop={Form.Field.MARGIN_TOP}>
-          My 4x4 was built to give everyone a place to add their builds,
-          parts and car history to show it off, or keep a record for yourself.
+          You can upload your own builds, or builds you like.
         </Paragraph>
 
         <Form.Field
@@ -70,6 +69,44 @@ const ProjectForm = (props: ProjectFormProps) => {
             <option value="true">Yes</option>
           </select>
         </Form.Field>
+
+        {/* Want to only show alert if createByOwner is not Yes. Help my please */}
+
+        {typeof createdByOwner === 'boolean' && (
+        <Alert
+          borderRadius="xl"
+          marginTop={4}
+          marginBottom={4}
+          padding={8}
+          status="warning"
+          variant="subtle"
+        >
+          <Flex alignItems="flex-start" direction="column">
+            <AlertDescription>
+              If you upload a build on behalf of someone else you
+              <strong>may lose the ability to edit </strong>
+              it if the owner claims the build and verifies with us they are the owner.
+            </AlertDescription>
+          </Flex>
+        </Alert>
+        )}
+
+        <Flex align="center" marginTop="2">
+          <Divider />
+          <Text padding="4" fontSize="xs" color="gray.500">VEHICLE</Text>
+          <Divider />
+        </Flex>
+
+        <Paragraph marginTop={Form.Field.MARGIN_TOP}>
+          The build details will help other users search for similar cars.
+          {project?.id ? ' Edit' : ' Add'} {createdByOwner ? 'your ' : 'this '}
+          builds details to accurately reflect the current details.
+        </Paragraph>
+
+        <Paragraph marginTop={Form.Field.MARGIN_TOP}>
+          If you're changing to a new car you don't need to change these details,
+          just create a new build so the history of the old build remains available for others to view.
+        </Paragraph>
 
         {typeof createdByOwner === 'boolean' && (
           <Form.Field
@@ -156,8 +193,62 @@ const ProjectForm = (props: ProjectFormProps) => {
           </>
         )}
 
+        {/* Additional Attributes: Should we do click to reveal 'add more details' button for these? */}
+
         {!!project?.id && (
           <>
+            <Flex align="center" marginTop="2">
+              <Divider />
+              <Text padding="4" fontSize="xs" color="gray.500">DETAILS</Text>
+              <Divider />
+            </Flex>
+
+            <Form.Field
+              label="Tyre Size"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              marginTop={Form.Field.MARGIN_TOP}
+              name="attributes.tyre_size"
+              validationRules={{ required: false }}
+            >
+              <input />
+            </Form.Field>
+
+            <Form.Field
+              label="Odometer"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              marginTop={Form.Field.MARGIN_TOP}
+              name="attributes.kilometers"
+              validationRules={{ required: false }}
+            >
+              <input />
+            </Form.Field>
+
+            <Form.Field
+              label="Odometer"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              marginTop={Form.Field.MARGIN_TOP}
+              name="attributes.kilometers"
+              validationRules={{ required: false }}
+            >
+              <input />
+            </Form.Field>
+          </>
+        )}
+
+        {!!project?.id && (
+          <>
+            <Flex align="center" marginTop="2">
+              <Divider />
+              <Text padding="4" fontSize="xs" color="gray.500">SHARING</Text>
+              <Divider />
+            </Flex>
+
             <Form.Field
               label="Build Url"
               marginTop={Form.Field.MARGIN_TOP}
