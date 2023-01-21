@@ -93,16 +93,7 @@ type DefaultState = {
     colour: string,
     model_series: string,
     year_manufactured: string,
-    engine: string,
-    kilometers: string,
-    tyre_size: string,
-    model_badge: string,
-    build_type: object,
-    engine_aspiration: object,
-    diff_lockers: object,
-    tyre_terrain: object,
-    body_type: object,
-
+    [key: string]: string,
   },
   createdByOwner: boolean,
   description: string,
@@ -118,15 +109,6 @@ const defaultState: DefaultState = {
     colour: '',
     model_series: '',
     year_manufactured: '',
-    engine: '',
-    kilometers: '',
-    tyre_size: '',
-    model_badge: '',
-    build_type: {},
-    engine_aspiration: {},
-    diff_lockers: {},
-    tyre_terrain: {},
-    body_type: {},
   },
   createdByOwner: false,
   description: '',
@@ -184,15 +166,6 @@ function useProjectForm(options: UseProjectFormOptions) {
   const modelSeries = watch('attributes.model_series')
   const projectSlug = watch('slug')
   const yearManufactured = watch('attributes.year_manufactured')
-  const engine = watch('attributes.engine')
-  const kilometers = watch('attributes.kilometers')
-  const tyreSize = watch('attributes.tyre_size')
-  const modelBadge = watch('attributes.model_badge')
-  const buildType = watch('attributes.build_type')
-  const engineAspiration = watch('attributes.engine_aspiration')
-  const diffLockers = watch('attributes.diff_lockers')
-  const tyreTerrain = watch('attributes.tyre_terrain')
-  const bodyType = watch('attributes.body_type')
 
   // Load Manufacturers
   const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerType: 'vehicle' })
@@ -204,6 +177,10 @@ function useProjectForm(options: UseProjectFormOptions) {
     { enabled: !!manufacturerId },
   )
   const { data: manufacturerModels = [] } = manufacturerModelsQuery
+
+  // Load Attributes
+  const attributesQuery = trpc.attributes.getAttributes.useQuery()
+  const { data: attributes = [] } = attributesQuery
 
   // Selected Entities
   const selectedManufacturer = manufacturers.find(manufacturer => manufacturer.id === manufacturerId)
@@ -258,31 +235,23 @@ function useProjectForm(options: UseProjectFormOptions) {
   })
 
   return {
+    attributes,
     callbacks: {
       createProject: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation, temporaryUserId }),
       updateProject: (data: typeof defaultState) => updateProject({ data, mutation: updateProjectMutation, project }),
     },
-    buildType,
-    bodyType,
     createdByOwner,
-    diffLockers,
-    engine,
-    engineAspiration,
     formPayload,
-    kilometers,
     manufacturerId,
     manufacturerModelId,
     manufacturers,
     manufacturerModels,
-    modelBadge,
     mutations: {
       createProject: createProjectMutation,
       updateProject: updateProjectMutation,
     },
     project,
     projectSlug,
-    tyreSize,
-    tyreTerrain,
   }
 }
 

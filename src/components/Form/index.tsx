@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
 
 import Actions from './Actions'
+import DynamicField from './DynamicField'
 import Field from './Field'
 
 const showInvalidFormWarning = (data: FieldValues) => {
@@ -54,6 +55,7 @@ const Form = (props: FormProps) => {
 }
 
 Form.Actions = Actions
+Form.DynamicField = DynamicField
 Form.Field = Field
 
 export default Form
