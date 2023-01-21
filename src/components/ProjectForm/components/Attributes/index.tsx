@@ -27,7 +27,6 @@ const Attributes = (props: AttributesProps) => {
         } = attribute
 
         const isVisible = index + 1 <= limit
-        console.log(isVisible)
 
         return (
           <Form.DynamicField

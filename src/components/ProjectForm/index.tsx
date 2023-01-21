@@ -45,8 +45,6 @@ const ProjectForm = (props: ProjectFormProps) => {
     projectSlug,
   } = projectFormPayload
 
-  console.log(attributes)
-
   return (
     <Flex marginTop={8} width="100%">
       <Form
