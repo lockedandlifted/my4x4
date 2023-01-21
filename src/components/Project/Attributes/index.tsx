@@ -9,6 +9,7 @@ type ProjectWithAttributes = Prisma.ProjectGetPayload<{
     projectsAttributes: {
       include: {
         attribute: true,
+        attributeValue: true,
       },
     },
   },
@@ -36,11 +37,19 @@ const Attributes = (props: AttributesProps) => {
         padding={4}
       >
         {projectsAttributes.map((projectsAttribute, index) => {
-          const { attribute, id, value } = projectsAttribute
+          const {
+            attribute, attributeValue, id, value,
+          } = projectsAttribute
+
           const last = projectsAttributes.length === (index + 1)
 
           return (
-            <Attribute key={id} attribute={attribute} last={last} value={value} />
+            <Attribute
+              key={id}
+              attribute={attribute}
+              last={last}
+              value={attributeValue?.title || value}
+            />
           )
         })}
       </Flex>

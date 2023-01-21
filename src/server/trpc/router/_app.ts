@@ -1,5 +1,6 @@
 import { router } from '../trpc'
 
+import attributesRouter from './attributes'
 import authRouter from './auth'
 import awsRouter from './aws'
 import categoriesRouter from './categories'
@@ -21,6 +22,7 @@ import usersImagesRouter from './usersImages'
 import usersRouter from './users'
 
 export const appRouters = {
+  attributes: attributesRouter,
   auth: authRouter,
   aws: awsRouter,
   categories: categoriesRouter,
