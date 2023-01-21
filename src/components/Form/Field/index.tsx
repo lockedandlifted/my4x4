@@ -6,7 +6,7 @@ import LabelRight from './LabelRight'
 
 import styles from './styles.module.scss'
 
-type FieldProps = {
+export type FieldProps = {
   children: React.ReactNode,
   defaultValue?: string | number,
   label?: string,

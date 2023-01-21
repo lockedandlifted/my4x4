@@ -33,16 +33,46 @@ const attributes: Prisma.AttributeCreateArgs['data'][] = [
     sort: 4,
   },
   {
-    key: 'diff_lockers',
-    title: 'Diff Lockers',
+    key: 'engine_aspiration',
+    title: 'Aspiration',
     type: 'select',
     sort: 5,
   },
   {
-    key: 'tyres',
-    title: 'Tyres',
+    key: 'kilometers',
+    title: 'KM',
     type: 'input',
     sort: 6,
+  },
+  {
+    key: 'diff_lockers',
+    title: 'Diff Locks',
+    type: 'select',
+    sort: 7,
+  },
+  {
+    key: 'tyre_terrain',
+    title: 'Tyre Type',
+    type: 'select',
+    sort: 8,
+  },
+  {
+    key: 'tyre_size',
+    title: 'Tyre Size',
+    type: 'input',
+    sort: 9,
+  },
+  {
+    key: 'model_badge',
+    title: 'Badge',
+    type: 'input',
+    sort: 10,
+  },
+  {
+    key: 'body_type',
+    title: 'Body',
+    type: 'select',
+    sort: 11,
   },
 ]
 

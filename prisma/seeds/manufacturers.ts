@@ -87,6 +87,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'dirty_life',
+      title: 'Dirty Life',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'dobinsons',
       title: 'Dobinsons',
       manufacturerTypeId: partManufacturerType?.id,
@@ -117,14 +122,13 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
-      key: 'enerdrive',
-      title: 'Enerdrive',
+      key: 'egr',
+      title: 'EGR',
       manufacturerTypeId: partManufacturerType?.id,
     },
-
     {
-      key: 'bushranger',
-      title: 'Bushranger',
+      key: 'enerdrive',
+      title: 'Enerdrive',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -155,6 +159,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     {
       key: 'hamer',
       title: 'Hamer',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'hardkorr',
+      title: 'Hardkorr',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -195,6 +204,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     {
       key: 'maxtrax',
       title: 'Maxtrax',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'maxxis',
+      title: 'Maxxis',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {

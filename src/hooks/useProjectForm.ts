@@ -93,6 +93,7 @@ type DefaultState = {
     colour: string,
     model_series: string,
     year_manufactured: string,
+    [key: string]: string,
   },
   createdByOwner: boolean,
   description: string,
@@ -177,6 +178,10 @@ function useProjectForm(options: UseProjectFormOptions) {
   )
   const { data: manufacturerModels = [] } = manufacturerModelsQuery
 
+  // Load Attributes
+  const attributesQuery = trpc.attributes.getAttributes.useQuery()
+  const { data: attributes = [] } = attributesQuery
+
   // Selected Entities
   const selectedManufacturer = manufacturers.find(manufacturer => manufacturer.id === manufacturerId)
   const selectedManufacturerModel = manufacturerModels.find(model => model.id === manufacturerModelId)
@@ -230,6 +235,7 @@ function useProjectForm(options: UseProjectFormOptions) {
   })
 
   return {
+    attributes,
     callbacks: {
       createProject: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation, temporaryUserId }),
       updateProject: (data: typeof defaultState) => updateProject({ data, mutation: updateProjectMutation, project }),

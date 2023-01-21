@@ -1,24 +1,16 @@
 import { z } from 'zod'
 
-import type { Prisma } from '@prisma/client'
+import type { AttributeValue, Prisma } from '@prisma/client'
 
 import { router, publicProcedure, protectedProcedure } from '../trpc'
-
-type ProjectsAttribute = {
-  attribute: {
-    connect: {
-      key: string,
-    },
-  },
-  value?: string,
-}
 
 const mapCreateProjectsAttributes = (
   input: {
     projectsAttributes: { key: string, value: string }[],
   },
+  attributeValues: AttributeValue[],
 ) => {
-  const projectsAttributes: ProjectsAttribute[] = []
+  const projectsAttributes: Prisma.ProjectsAttributeCreateWithoutProjectInput[] = []
 
   if (!input.projectsAttributes) {
     return projectsAttributes
@@ -28,14 +20,26 @@ const mapCreateProjectsAttributes = (
     const { key, value } = projectsAttribute
 
     if (key && value) {
-      projectsAttributes.push({
+      const matchedAttributeValue = attributeValues.find(attributeValue => attributeValue.key === value)
+
+      const data: Prisma.ProjectsAttributeCreateWithoutProjectInput = {
         attribute: {
           connect: {
             key,
           },
         },
         value,
-      })
+      }
+
+      if (matchedAttributeValue) {
+        data.attributeValue = {
+          connect: {
+            key: matchedAttributeValue.key,
+          },
+        }
+      }
+
+      projectsAttributes.push(data)
     }
   })
 
@@ -55,7 +59,9 @@ const projectsRouter = router({
       title: z.string(),
       temporaryUserId: z.string(),
     }))
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
+      const attributeValues = await ctx.prisma.attributeValue.findMany()
+
       const data: Prisma.ProjectCreateArgs['data'] = {
         createdByOwner: input.createdByOwner,
         manufacturerModelId: input.manufacturerModelId,
@@ -63,7 +69,7 @@ const projectsRouter = router({
         temporaryUserId: input.temporaryUserId,
         title: input.title,
         projectsAttributes: {
-          create: mapCreateProjectsAttributes(input),
+          create: mapCreateProjectsAttributes(input, attributeValues),
         },
       }
 
@@ -85,6 +91,7 @@ const projectsRouter = router({
           projectsAttributes: {
             include: {
               attribute: true,
+              attributeValue: true,
             },
           },
           projectsUsers: {
@@ -301,6 +308,12 @@ const projectsRouter = router({
         projectsAttributes: {
           include: {
             attribute: true,
+            attributeValue: true,
+          },
+          orderBy: {
+            attribute: {
+              sort: 'asc',
+            },
           },
         },
         projectsImages: {
@@ -349,6 +362,12 @@ const projectsRouter = router({
         projectsAttributes: {
           include: {
             attribute: true,
+            attributeValue: true,
+          },
+          orderBy: {
+            attribute: {
+              sort: 'asc',
+            },
           },
         },
         projectsImages: {
@@ -393,54 +412,59 @@ const projectsRouter = router({
       slug: z.string(),
       title: z.string(),
     }))
-    .mutation(({ ctx, input }) => ctx.prisma.$transaction([
+    .mutation(async ({ ctx, input }) => {
+      const attributeValues = await ctx.prisma.attributeValue.findMany()
+
+      return ctx.prisma.$transaction([
       // Delete existing attributes
-      ctx.prisma.projectsAttribute.deleteMany({
-        where: {
-          projectId: input.id,
-        },
-      }),
-      // Update project
-      ctx.prisma.project.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          createdByOwner: input.createdByOwner,
-          description: input.description,
-          manufacturerModelId: input.manufacturerModelId,
-          slug: input.slug,
-          title: input.title,
-          projectsAttributes: {
-            create: mapCreateProjectsAttributes(input),
+        ctx.prisma.projectsAttribute.deleteMany({
+          where: {
+            projectId: input.id,
           },
-        },
-        include: {
-          projectsAttributes: {
-            include: {
-              attribute: true,
+        }),
+        // Update project
+        ctx.prisma.project.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            createdByOwner: input.createdByOwner,
+            description: input.description,
+            manufacturerModelId: input.manufacturerModelId,
+            slug: input.slug,
+            title: input.title,
+            projectsAttributes: {
+              create: mapCreateProjectsAttributes(input, attributeValues),
             },
           },
-          projectsUsers: {
-            include: {
-              user: {
-                include: {
-                  usersImages: {
-                    include: {
-                      image: true,
+          include: {
+            projectsAttributes: {
+              include: {
+                attribute: true,
+                attributeValue: true,
+              },
+            },
+            projectsUsers: {
+              include: {
+                user: {
+                  include: {
+                    usersImages: {
+                      include: {
+                        image: true,
+                      },
+                      orderBy: {
+                        sort: 'asc',
+                      },
+                      take: 1,
                     },
-                    orderBy: {
-                      sort: 'asc',
-                    },
-                    take: 1,
                   },
                 },
               },
             },
           },
-        },
-      }),
-    ])),
+        }),
+      ])
+    }),
 })
 
 export default projectsRouter

@@ -1,5 +1,5 @@
 import {
-  Button, Flex, Heading, Text,
+  Alert, AlertDescription, AlertIcon, Button, Divider, Flex, Heading, Text,
 } from '@chakra-ui/react'
 import { FaGlobeAsia } from 'react-icons/fa'
 
@@ -7,8 +7,11 @@ import type { Project } from '@prisma/client'
 
 import Form from '@components/Form'
 import Paragraph from '@components/Paragraph'
+import SectionDivider from '@components/SectionDivider'
 
 import useProjectForm from '@hooks/useProjectForm'
+
+import Attributes from './components/Attributes'
 
 type ProjectFormProps = {
   project?: Project,
@@ -20,6 +23,7 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const projectFormPayload = useProjectForm({ project, temporaryUserId })
   const {
+    attributes,
     callbacks: {
       createProject: createFn,
       updateProject: updateFn,
@@ -50,13 +54,29 @@ const ProjectForm = (props: ProjectFormProps) => {
         formPayload={formPayload}
       >
         <Heading fontWeight="medium" size="lg">
-          {project?.id ? 'Edit' : 'Add'} a Build
+          {project?.id ? 'Edit' : 'Add'} {createdByOwner ? 'your' : 'this'} Build
         </Heading>
 
         <Paragraph marginTop={Form.Field.MARGIN_TOP}>
-          My 4x4 was built to give everyone a place to add their builds,
-          parts and car history to show it off, or keep a record for yourself.
+          You can upload your own builds, or builds you like.
         </Paragraph>
+
+        {!createdByOwner && (
+          <Alert
+            borderRadius="xl"
+            marginTop={4}
+            padding={8}
+            status="warning"
+            variant="subtle"
+          >
+            <AlertIcon />
+
+            <AlertDescription>
+              If you upload a build on behalf of someone else you <strong>may lose the ability to edit</strong> it if
+              the owner claims the build and verifies it.
+            </AlertDescription>
+          </Alert>
+        )}
 
         <Form.Field
           label="Are you the Owner?"
@@ -70,6 +90,24 @@ const ProjectForm = (props: ProjectFormProps) => {
             <option value="true">Yes</option>
           </select>
         </Form.Field>
+
+        <SectionDivider>VEHICLE</SectionDivider>
+
+        <Alert
+          borderRadius="xl"
+          padding={8}
+          status="info"
+          variant="subtle"
+        >
+          <AlertIcon />
+
+          <AlertDescription>
+            These details will help other users find your build.
+
+            If you change to a new vehicle you don&apos;t need to change these details,
+            simply create a new build so that the current build history is retained.
+          </AlertDescription>
+        </Alert>
 
         {typeof createdByOwner === 'boolean' && (
           <Form.Field
@@ -108,42 +146,25 @@ const ProjectForm = (props: ProjectFormProps) => {
         )}
 
         {!!manufacturerModelId && (
+          <Attributes projectFormPayload={projectFormPayload} />
+        )}
+
+        {!!project?.id && (
           <>
-            <Form.Field
-              label="Series"
-              labelRight={(
-                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
-              )}
-              marginTop={Form.Field.MARGIN_TOP}
-              name="attributes.model_series"
-              validationRules={{ required: false }}
-            >
-              <input />
-            </Form.Field>
+            <SectionDivider>SHARING</SectionDivider>
 
-            <Form.Field
-              label="Year"
-              labelRight={(
-                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
-              )}
-              marginTop={Form.Field.MARGIN_TOP}
-              name="attributes.year_manufactured"
-              validationRules={{ required: false }}
+            <Alert
+              borderRadius="xl"
+              padding={8}
+              status="info"
+              variant="subtle"
             >
-              <input type="number" min="1950" max="2099" step="1" />
-            </Form.Field>
+              <AlertIcon />
 
-            <Form.Field
-              label="Colour"
-              labelRight={(
-                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
-              )}
-              marginTop={Form.Field.MARGIN_TOP}
-              name="attributes.colour"
-              validationRules={{ required: false }}
-            >
-              <input />
-            </Form.Field>
+              <AlertDescription>
+                Reserve a unique url so that people can easily find your build.
+              </AlertDescription>
+            </Alert>
 
             <Form.Field
               label="Title"
@@ -153,11 +174,7 @@ const ProjectForm = (props: ProjectFormProps) => {
             >
               <input />
             </Form.Field>
-          </>
-        )}
 
-        {!!project?.id && (
-          <>
             <Form.Field
               label="Build Url"
               marginTop={Form.Field.MARGIN_TOP}
@@ -169,7 +186,6 @@ const ProjectForm = (props: ProjectFormProps) => {
 
             <Flex
               alignItems="center"
-              // backgroundColor="gray.100"
               borderWidth="1px"
               borderRadius="md"
               marginTop="2"
