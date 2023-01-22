@@ -1,7 +1,7 @@
 import type { Project } from '@prisma/client'
 
 function useProjectOgImage(project: Project) {
-  const baseUrl = 'http://localhost:3001'
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
 
   const projectImage = project?.projectsImages?.[0]?.image
 
