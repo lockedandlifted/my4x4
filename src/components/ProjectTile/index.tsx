@@ -42,7 +42,7 @@ const ProjectTile = (props: ProjectTileProps) => {
         style={{ aspectRatio: '4 / 5' }}
         {...boxProps}
       >
-        {hasImage && (
+        {hasImage && !!imageUrl && (
           <Image alt="Project Main Image" fill src={imageUrl} style={{ objectFit: 'cover' }} />
         )}
 
