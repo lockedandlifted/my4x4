@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Flex } from '@chakra-ui/react'
 
@@ -6,6 +7,7 @@ import type { GetServerSideProps } from 'next'
 import { trpc } from '@utils/trpc'
 import setTemporaryUserIdCookie from '@utils/setTemporaryUserIdCookie'
 
+import useProjectOgImage from '@hooks/useProjectOgImage'
 import useValidateProjectOwner from '@hooks/useValidateProjectOwner'
 
 import MobileLayout from '@layouts/MobileLayout'
@@ -45,8 +47,19 @@ const BuildPage = (props: { temporaryUserId: string }) => {
     temporaryUserId,
   })
 
+  const { ogImageUrl } = useProjectOgImage(project)
+
   return (
     <MobileLayout>
+      <Head>
+        <title>{project?.title} | MY4X4</title>
+        <meta name="description" content="Add your build. Find and research similar builds to get inspiration." />
+        <meta
+          property="og:image"
+          content={ogImageUrl}
+        />
+      </Head>
+
       <Flex direction="column">
         <MainImage project={project} />
         <ProjectImageThumbs project={project} />
