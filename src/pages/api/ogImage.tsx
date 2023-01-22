@@ -30,7 +30,7 @@ async function OGImage(req: NextRequest) {
   const userImageKey = searchParams.get('userImageKey')
   const username = searchParams.get('username')
 
-  const imageUrl = projectImageKey ? imageKit.url({
+  const imageUrl = projectImageKey !== 'undefined' ? imageKit.url({
     path: projectImageKey,
     transformation: [{
       focus: 'auto',
@@ -61,21 +61,23 @@ async function OGImage(req: NextRequest) {
           width: '100%',
         }}
       >
-        <img
-          width="440px"
-          height="566px"
-          src={imageUrl}
-          style={{
-            borderRadius: 50,
-          }}
-        />
+        {!!imageUrl && (
+          <img
+            width="440px"
+            height="566px"
+            src={imageUrl}
+            style={{
+              borderRadius: 50,
+              marginRight: '32px',
+            }}
+          />
+        )}
 
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-start',
-            marginLeft: '32px',
             width: '664px',
             height: '566px',
           }}
