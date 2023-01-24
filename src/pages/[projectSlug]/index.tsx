@@ -54,10 +54,15 @@ const BuildPage = (props: { temporaryUserId: string }) => {
       <Head>
         <title>{project?.title} | MY4X4</title>
         <meta name="description" content="Add your build. Find and research similar builds to get inspiration." />
+        <meta property="fb:app_id" content="100089112092156" />
+        <meta property="og:description" content={project?.description || 'Checkout this build on MY4X4.info'} />
         <meta
           property="og:image"
           content={ogImageUrl}
         />
+        <meta property="og:title" content={project?.title} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://www.my4x4.info/${project?.slug}`} />
       </Head>
 
       <Flex direction="column">
