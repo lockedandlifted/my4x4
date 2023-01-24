@@ -4,10 +4,13 @@ import { useRouter } from 'next/router'
 import processCallback from '@utils/processCallback'
 import { trpc } from '@utils/trpc'
 
+import useProjectsPartForm from '@hooks/useProjectsPartForm'
+
 import MobileLayout from '@layouts/MobileLayout'
 
 import CreateOrEditProjectPartExternalLinkModal from '@modals/CreateOrEditProjectPartExternalLinkModal'
 
+import Actions from '@components/ProjectsPart/Actions'
 import BackToProjectButton from '@components/Project/BackToProjectButton'
 import Description from '@components/ProjectsPart/Description'
 import Links from '@components/ProjectsPart/Links'
@@ -63,6 +66,13 @@ const EditProjectsPartPage = () => {
   }, { enabled: !!projectPartId })
   const { data: projectsPart } = projectsPartQuery
 
+  const projectsPartFormPayload = useProjectsPartForm({ projectsPart })
+  const {
+    callbacks: {
+      deleteProjectsPart,
+    },
+  } = projectsPartFormPayload
+
   return (
     <MobileLayout>
       <BackToProjectButton editMode project={project} />
@@ -71,6 +81,14 @@ const EditProjectsPartPage = () => {
       <Description editMode projectsPart={projectsPart} />
       <Links callbacks={callbacks(undefined, setState)} editMode projectsPart={projectsPart} />
       <TaggedImages editMode project={project} projectsPart={projectsPart} />
+      <Actions
+        boxProps={{
+          marginTop: 8,
+        }}
+        callbacks={{
+          deleteProjectsPart: () => deleteProjectsPart(),
+        }}
+      />
 
       <CreateOrEditProjectPartExternalLinkModal
         callbacks={callbacks('CreateOrEditProjectPartExternalLinkModal', setState)}
