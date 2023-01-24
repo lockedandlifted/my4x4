@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -16,6 +17,18 @@ const defaultState = {
   partNumber: '',
   projectId: '',
   title: '',
+}
+
+type DeleteProjectsPartParams = {
+  mutation: {
+    mutate: (data: { id: string }) => void,
+  },
+  projectsPart: ProjectsPart,
+}
+
+const deleteProjectsPart = (params: DeleteProjectsPartParams) => {
+  const { mutation, projectsPart } = params
+  return mutation.mutate({ id: projectsPart.id })
 }
 
 type CreateProjectsPartParams = {
@@ -50,6 +63,8 @@ type UseProjectPartFormOptions = {
 
 function useProjectsPartForm(options: UseProjectPartFormOptions) {
   const { projectsPart } = options
+
+  const router = useRouter()
 
   const formPayload = useForm({
     defaultValues: projectsPart ? setupProjectPartInitialState(projectsPart) : defaultState,
@@ -99,10 +114,20 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   //   }
   // })
 
+  // Delete Mutation
+  const deleteProjectsPartMutation = trpc.projectsParts.deleteProjectsPartById.useMutation({
+    onSuccess: () => {
+      router.replace(`/projects/${projectsPart.projectId}/edit`)
+    },
+  })
+
   return {
     callbacks: {
       createProjectsPart: (data: typeof defaultState) => (
         createProjectsPart({ data, mutation: createProjectsPartMutation })
+      ),
+      deleteProjectsPart: () => (
+        deleteProjectsPart({ projectsPart, mutation: deleteProjectsPartMutation })
       ),
     },
     categories,
