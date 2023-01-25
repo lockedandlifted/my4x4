@@ -2,9 +2,9 @@ import { Button, Flex, Heading } from '@chakra-ui/react'
 
 import type { Project } from '@prisma/client'
 
-import { trpc } from '@utils/trpc'
+import useProjectParts from '@hooks/useProjectParts'
 
-import Part from './Part'
+import CategoryGroup from './CategoryGroup'
 
 type PartsProps = {
   callbacks?: {
@@ -25,21 +25,8 @@ const Parts = (props: PartsProps) => {
 
   const { CreateOrEditProjectPartModal } = callbacks || {}
 
-  const projectsPartsQuery = trpc.projectsParts.getProjectsParts.useQuery(
-    {
-      projectId: project?.id,
-      include: {
-        manufacturerPart: {
-          include: {
-            category: true,
-            manufacturer: true,
-          },
-        },
-      },
-    },
-    { enabled: !!project?.id },
-  )
-  const { data: projectsParts = [] } = projectsPartsQuery
+  const projectPartsPayload = useProjectParts(project)
+  const { groupedParts, projectsParts } = projectPartsPayload
 
   if (!editMode && !projectsParts.length) {
     return null
@@ -49,14 +36,14 @@ const Parts = (props: PartsProps) => {
     <Flex flexDirection="column" marginTop={8}>
       <Heading size="md">Parts</Heading>
 
-      {projectsParts.map((projectsPart) => {
-        const { id, manufacturerPart } = projectsPart
+      {groupedParts.map((group) => {
+        const { category, key, projectsParts } = group
 
         return (
-          <Part
-            href={editMode ? `/projects/${project?.id}/edit/parts/${id}` : `/${project?.slug}/parts/${id}`}
-            key={id}
-            manufacturerPart={manufacturerPart}
+          <CategoryGroup
+            category={category}
+            key={key}
+            projectsParts={projectsParts}
           />
         )
       })}

@@ -14,38 +14,23 @@ type ManufacturerPartWithManufacturer = Prisma.ManufacturerPartGetPayload<{
 
 type PartProps = {
   href?: string,
+  last: boolean,
   manufacturerPart: ManufacturerPartWithManufacturer,
 }
 
 const Part = (props: PartProps) => {
-  const { href, manufacturerPart } = props
+  const { href, last, manufacturerPart } = props
 
   return (
     <Flex
       alignItems="center"
       as={href ? 'a' : 'div'}
-      borderWidth={1}
-      borderRadius="xl"
+      borderBottomWidth={last ? 0 : 1}
       href={href}
-      marginTop={4}
-      padding={2}
+      padding={4}
     >
-      <Flex
-        alignItems="center"
-        backgroundColor="gray.50"
-        borderRadius="xl"
-        flexShrink={0}
-        height={16}
-        justifyContent="center"
-        width={16}
-      >
-        <Text color="gray.400" fontSize="2xl">
-          <PartIcon categoryKey={manufacturerPart?.category?.key} />
-        </Text>
-      </Flex>
-
-      <Flex justifyContent="center" flexDirection="column" marginLeft={4}>
-        <Heading size="small">
+      <Flex justifyContent="center" flexDirection="column">
+        <Heading size="xs">
           {manufacturerPart.manufacturer?.title}
         </Heading>
 
