@@ -10,6 +10,7 @@ import logBookEntryTypeSeedFn from './seeds/logBookEntryTypes.js'
 import manufacturerModelSeedFn from './seeds/manufacturerModels.js'
 import manufacturerSeedFn from './seeds/manufacturers.js'
 import manufacturerTypeSeedFn from './seeds/manufacturerTypes.js'
+import serviceSeedFn from './seeds/services.js'
 
 const seedDatabase = async () => {
   try {
@@ -51,6 +52,10 @@ const seedDatabase = async () => {
     // Manufacturer Models
     const manufacturerModels = await Promise.all(manufacturerModelSeedFn(prisma, manufacturers))
     console.log('--- Seeded Manufacturer Models ---', manufacturerModels)
+
+    // Services
+    const services = await Promise.all(serviceSeedFn(prisma))
+    console.log('--- Seeded Services ---', services)
   } catch (error) {
     console.warn('Please define your seed data.')
     console.error(error)

@@ -81,6 +81,56 @@ model AttributeValue {
   @@map("attribute_values")
 }
 
+model Business {
+  id      String  @id @default(uuid())
+  title   String
+  website String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  businessLocations  BusinessLocation[]
+  businessesServices BusinessesService[]
+
+  @@map("businesses")
+}
+
+model BusinessLocation {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  businessId String   @map("business_id")
+
+  email String?
+  phone String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  businessLocationsServices BusinessLocationsService[]
+
+  @@map("business_locations")
+}
+
+model BusinessLocationsService {
+  id                 String           @id @default(uuid())
+  businessLocation   BusinessLocation @relation(fields: [businessLocationId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  businessLocationId String           @map("business_location_id")
+  service            Service          @relation(fields: [serviceId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  serviceId          String           @map("service_id")
+
+  @@map("business_locations_services")
+}
+
+model BusinessesService {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  businessId String   @map("business_id")
+  service    Service  @relation(fields: [serviceId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  serviceId  String   @map("service_id")
+
+  @@map("businesses_services")
+}
+
 model Category {
   id             String        @id @default(uuid())
   key            String        @unique
@@ -341,7 +391,7 @@ model ProjectsExternalLink {
   project        Project      @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   projectId      String       @map("project_id")
   externalLink   ExternalLink @relation(fields: [externalLinkId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  externalLinkId String       @map("externalLink_id")
+  externalLinkId String       @map("external_link_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
@@ -450,6 +500,20 @@ model ProjectsUser {
 
   @@unique([projectId, userId])
   @@map("projects_users")
+}
+
+model Service {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  businessesServices        BusinessesService[]
+  businessLocationsServices BusinessLocationsService[]
+
+  @@map("services")
 }
 
 model Session {
