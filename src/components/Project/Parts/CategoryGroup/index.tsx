@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Flex, Heading, Text } from '@chakra-ui/react'
-import { FaAngleDown, FaAngleRight, FaAngleUp } from 'react-icons/fa'
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa'
 
 import type { Category, Project, ProjectsPart } from '@prisma/client'
 

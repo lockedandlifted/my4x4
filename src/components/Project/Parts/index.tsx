@@ -42,6 +42,7 @@ const Parts = (props: PartsProps) => {
         return (
           <CategoryGroup
             category={category}
+            editMode={editMode}
             key={key}
             project={project}
             projectsParts={projectsParts}
