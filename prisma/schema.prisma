@@ -82,9 +82,10 @@ model AttributeValue {
 }
 
 model Business {
-  id      String  @id @default(uuid())
-  title   String
-  website String?
+  id             String  @id @default(uuid())
+  title          String
+  website        String?
+  createdByOwner Boolean @default(true) @map("created_by_owner")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
