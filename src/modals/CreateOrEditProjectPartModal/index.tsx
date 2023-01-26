@@ -38,6 +38,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
     },
     categories,
     formPayload: {
+      reset,
       setValue,
     },
     formPayload,
@@ -50,7 +51,10 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
 
   const processCallbackPayload = {
     action: saveFn,
-    afterAction: closeModal,
+    afterAction: () => {
+      closeModal()
+      reset()
+    },
   }
 
   return (
