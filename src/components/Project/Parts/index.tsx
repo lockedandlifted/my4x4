@@ -43,6 +43,7 @@ const Parts = (props: PartsProps) => {
           <CategoryGroup
             category={category}
             key={key}
+            project={project}
             projectsParts={projectsParts}
           />
         )
