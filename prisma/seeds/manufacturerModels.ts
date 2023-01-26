@@ -2,9 +2,8 @@ import type { Prisma, PrismaClient, Manufacturer } from '@prisma/client'
 
 // Manufacturer Models
 const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
-
   // Ford
-  const ford = manufacturers.find((manufacturer) => manufacturer.key === 'ford')
+  const ford = manufacturers.find(manufacturer => manufacturer.key === 'ford')
 
   const fordModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -28,6 +27,11 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
       manufacturerId: ford.id,
     },
     {
+      key: 'ford_f150_raptor',
+      title: 'F-150 Raptor',
+      manufacturerId: ford.id,
+    },
+    {
       key: 'ford_f250',
       title: 'F-250',
       manufacturerId: ford.id,
@@ -45,7 +49,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Isuzu
-  const isuzu = manufacturers.find((manufacturer) => manufacturer.key === 'isuzu')
+  const isuzu = manufacturers.find(manufacturer => manufacturer.key === 'isuzu')
 
   const isuzuModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -80,9 +84,8 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
     },
   ]
 
-
   // Jeep
-  const jeep = manufacturers.find((manufacturer) => manufacturer.key === 'jeep')
+  const jeep = manufacturers.find(manufacturer => manufacturer.key === 'jeep')
 
   const jeepModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -103,7 +106,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Mazda
-  const mazda = manufacturers.find((manufacturer) => manufacturer.key === 'mazda')
+  const mazda = manufacturers.find(manufacturer => manufacturer.key === 'mazda')
 
   const mazdaModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -114,7 +117,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Mitsubishi
-  const mitsubishi = manufacturers.find((manufacturer) => manufacturer.key === 'mitsubishi')
+  const mitsubishi = manufacturers.find(manufacturer => manufacturer.key === 'mitsubishi')
 
   const mitsubishiModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -141,7 +144,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Nissan
-  const nissan = manufacturers.find((manufacturer) => manufacturer.key === 'nissan')
+  const nissan = manufacturers.find(manufacturer => manufacturer.key === 'nissan')
 
   const nissanModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -163,7 +166,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Toyota
-  const toyota = manufacturers.find((manufacturer) => manufacturer.key === 'toyota')
+  const toyota = manufacturers.find(manufacturer => manufacturer.key === 'toyota')
 
   const toyotaModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -204,7 +207,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Volkswagen
-  const volkswagen = manufacturers.find((manufacturer) => manufacturer.key === 'volkswagen')
+  const volkswagen = manufacturers.find(manufacturer => manufacturer.key === 'volkswagen')
 
   const volkswagenModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -215,7 +218,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Suzuki
-  const suzuki = manufacturers.find((manufacturer) => manufacturer.key === 'suzuki')
+  const suzuki = manufacturers.find(manufacturer => manufacturer.key === 'suzuki')
 
   const suzukiModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -236,7 +239,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Chevrolet
-  const chevrolet = manufacturers.find((manufacturer) => manufacturer.key === 'chevrolet')
+  const chevrolet = manufacturers.find(manufacturer => manufacturer.key === 'chevrolet')
 
   const chevroletModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -247,7 +250,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Land Rover
-  const landRover = manufacturers.find((manufacturer) => manufacturer.key === 'land_rover')
+  const landRover = manufacturers.find(manufacturer => manufacturer.key === 'land_rover')
 
   const landRoverModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -263,7 +266,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // GMC
-  const gmc = manufacturers.find((manufacturer) => manufacturer.key === 'gmc')
+  const gmc = manufacturers.find(manufacturer => manufacturer.key === 'gmc')
 
   const gmcModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -274,7 +277,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Ram
-  const ram = manufacturers.find((manufacturer) => manufacturer.key === 'ram')
+  const ram = manufacturers.find(manufacturer => manufacturer.key === 'ram')
 
   const ramModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -300,7 +303,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Daihatsu
-  const daihatsu = manufacturers.find((manufacturer) => manufacturer.key === 'daihatsu')
+  const daihatsu = manufacturers.find(manufacturer => manufacturer.key === 'daihatsu')
 
   const daihatsuModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
@@ -311,7 +314,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
   ]
 
   // Holden
-  const holden = manufacturers.find((manufacturer) => manufacturer.key === 'holden')
+  const holden = manufacturers.find(manufacturer => manufacturer.key === 'holden')
 
   const holdenModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {

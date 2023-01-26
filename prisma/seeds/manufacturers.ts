@@ -27,6 +27,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'bfgoodrich',
+      title: 'BFGoodrich',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'black_bear',
       title: 'Black Bear',
       manufacturerTypeId: partManufacturerType?.id,
@@ -147,6 +152,16 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'fuel_offroad',
+      title: 'Fuel Offroad',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'geiser_offroad',
+      title: 'Geiser Offroad',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'gme',
       title: 'GME',
       manufacturerTypeId: partManufacturerType?.id,
@@ -187,6 +202,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
+      key: 'jmacx',
+      title: 'JMACX',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
       key: 'kaymar',
       title: 'Kaymar',
       manufacturerTypeId: partManufacturerType?.id,
@@ -199,6 +219,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     {
       key: 'manta',
       title: 'Manta',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'marks_4wd',
+      title: 'Marks4WD',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -229,6 +254,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     {
       key: 'mycoolman',
       title: 'myCoolman',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'nitto_tire',
+      title: 'Nitto Tire',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
@@ -284,6 +314,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
     {
       key: 'rhino_rack',
       title: 'Rhino-Rack',
+      manufacturerTypeId: partManufacturerType?.id,
+    },
+    {
+      key: 'rigid_industries',
+      title: 'Rigid Industries',
       manufacturerTypeId: partManufacturerType?.id,
     },
     {
