@@ -74,6 +74,18 @@ const attributes: Prisma.AttributeCreateArgs['data'][] = [
     type: 'select',
     sort: 11,
   },
+  {
+    key: 'lift_front',
+    title: 'Lift (Front)',
+    type: 'input',
+    sort: 12,
+  },
+  {
+    key: 'lift_rear',
+    title: 'Lift (Rear)',
+    type: 'input',
+    sort: 13,
+  },
 ]
 
 const seedFn = (prisma: PrismaClient) => attributes.map(async (data: Prisma.AttributeCreateArgs['data']) => {
