@@ -1,10 +1,12 @@
 import {
-  Alert, AlertDescription, AlertIcon, Button, Flex, Heading, Text,
+  Alert, AlertDescription, AlertIcon, Button, Checkbox, Flex, Heading, Text, VStack,
 } from '@chakra-ui/react'
 
 import type { Business } from '@prisma/client'
 
 import useBusinessForm from '@hooks/useBusinessForm'
+
+import toggleArray from '@utils/toggleArray'
 
 import Form from '@components/Form'
 import Paragraph from '@components/Paragraph'
@@ -24,6 +26,8 @@ const BusinessForm = (props: BusinessFormProps) => {
     formPayload: {
       setValue,
     },
+    serviceKeys,
+    services,
   } = businessFormPayload
   console.log(businessFormPayload)
 
@@ -116,6 +120,28 @@ const BusinessForm = (props: BusinessFormProps) => {
         </Form.Field>
 
         <SectionDivider>SERVICES</SectionDivider>
+
+        <VStack alignItems="flex-start">
+          {services.map((service) => {
+            const { key, title } = service
+
+            return (
+              <Checkbox
+                key={key}
+                onChange={(e) => {
+                  setValue('serviceKeys', toggleArray({
+                    array: serviceKeys,
+                    value: e.target.value,
+                  }))
+                }}
+                name={key}
+                value={key}
+              >
+                {title}
+              </Checkbox>
+            )
+          })}
+        </VStack>
       </Form>
     </Flex>
   )
