@@ -3,7 +3,9 @@ import { router } from '../trpc'
 import attributesRouter from './attributes'
 import authRouter from './auth'
 import awsRouter from './aws'
+import businessesRouter from './businesses'
 import categoriesRouter from './categories'
+import countriesRouter from './countries'
 import externalLinkViewsRouter from './externalLinkViews'
 import externalLinksRouter from './externalLinks'
 import imagesRouter from './images'
@@ -26,6 +28,8 @@ export const appRouters = {
   attributes: attributesRouter,
   auth: authRouter,
   aws: awsRouter,
+  businesses: businessesRouter,
+  countries: countriesRouter,
   categories: categoriesRouter,
   externalLinkViews: externalLinkViewsRouter,
   externalLinks: externalLinksRouter,

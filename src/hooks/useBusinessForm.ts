@@ -31,13 +31,37 @@ const createBusiness = (params: CreateBusinessParams) => {
 }
 
 type DefaultState = {
+  address: {
+    countryId: string,
+    stateName: string,
+    streetName: string,
+    streetNumber: string,
+    suburbName: string,
+    unitNumber?: string,
+  },
   createdByOwner: boolean,
+  location: {
+    email: string,
+    phone: string,
+  },
   serviceKeys: string[],
   title: string,
 }
 
 const defaultState: DefaultState = {
+  address: {
+    countryId: '',
+    stateName: '',
+    streetName: '',
+    streetNumber: '',
+    suburbName: '',
+    unitNumber: '',
+  },
   createdByOwner: false,
+  location: {
+    email: '',
+    phone: '',
+  },
   serviceKeys: [],
   title: '',
 }
@@ -59,22 +83,28 @@ function useBusinessForm(options: UseBusinessFormOptions) {
   const createdByOwner = watch('createdByOwner')
   const serviceKeys = watch('serviceKeys')
 
+  // Load Countries
+  const countriesQuery = trpc.countries.getCountries.useQuery()
+  const { data: countries = [] } = countriesQuery
+
   // Load Services
   const servicesQuery = trpc.services.getServices.useQuery()
   const { data: services = [] } = servicesQuery
 
   // Create Mutation
-  const createBusinessMutation = trpc.projects.createProject.useMutation({
+  const createBusinessMutation = trpc.businesses.createBusiness.useMutation({
     onSuccess: (data) => {
       const { id } = data
-      router.push(`/projects/${id}/edit`)
+      router.push(`/businesses/${id}/edit`)
     },
   })
 
   return {
     callbacks: {
       createBusiness: (data: typeof defaultState) => createBusiness({ data, mutation: createBusinessMutation }),
+      updateBusiness: () => console.log('update'),
     },
+    countries,
     createdByOwner,
     formPayload,
     mutations: {

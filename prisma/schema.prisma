@@ -32,6 +32,24 @@ model Account {
   @@map("accounts")
 }
 
+model Address {
+  id           String   @id @default(uuid())
+  unitNumber   String?  @map("unit_number")
+  streetNumber String?  @map("street_number")
+  streetName   String?  @map("street_name")
+  suburbName   String?  @map("suburb_name")
+  stateName    String?  @map("state_name")
+  country      Country? @relation(fields: [countryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  countryId    String?  @map("country_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  businessLocationsAddresses BusinessLocationsAddress[]
+
+  @@map("addresses")
+}
+
 model Attachment {
   id               String  @id @default(uuid())
   fileKey          String  @map("file_key")
@@ -107,9 +125,23 @@ model BusinessLocation {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  businessLocationsServices BusinessLocationsService[]
+  businessLocationsAddresses BusinessLocationsAddress[]
+  businessLocationsServices  BusinessLocationsService[]
 
   @@map("business_locations")
+}
+
+model BusinessLocationsAddress {
+  id                 String           @id @default(uuid())
+  address            Address          @relation(fields: [addressId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  addressId          String           @map("address_id")
+  businessLocation   BusinessLocation @relation(fields: [businessLocationId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  businessLocationId String           @map("business_location_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("business_locations_addresses")
 }
 
 model BusinessLocationsService {
@@ -172,6 +204,7 @@ model Country {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
+  addresses         Address[]
   manufacturerParts ManufacturerPart[]
 
   @@map("countries")

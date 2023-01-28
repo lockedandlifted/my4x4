@@ -21,10 +21,19 @@ const BusinessForm = (props: BusinessFormProps) => {
 
   const businessFormPayload = useBusinessForm({ business })
   const {
+    callbacks: {
+      createBusiness: createFn,
+    },
+    countries,
     createdByOwner,
     formPayload,
     formPayload: {
       setValue,
+    },
+    mutations: {
+      createBusiness: {
+        isLoading,
+      },
     },
     serviceKeys,
     services,
@@ -35,7 +44,7 @@ const BusinessForm = (props: BusinessFormProps) => {
     <Flex marginTop={8} width="100%">
       <Form
         callbacks={{
-          // submitForm: business?.id ? updateFn : createFn,
+          submitForm: business?.id ? updateFn : createFn,
         }}
         formPayload={formPayload}
       >
@@ -103,8 +112,69 @@ const BusinessForm = (props: BusinessFormProps) => {
         <SectionDivider>LOCATION</SectionDivider>
 
         <Form.Field
+          label="Unit"
+          name="address.unitNumber"
+          validationRules={{ required: false }}
+        >
+          <input type="text" />
+        </Form.Field>
+
+        <Form.Field
+          label="Street Number"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="address.streetNumber"
+          validationRules={{ required: true }}
+        >
+          <input type="text" />
+        </Form.Field>
+
+        <Form.Field
+          label="Street"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="address.streetName"
+          validationRules={{ required: true }}
+        >
+          <input type="text" />
+        </Form.Field>
+
+        <Form.Field
+          label="Suburb"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="address.suburbName"
+          validationRules={{ required: true }}
+        >
+          <input type="text" />
+        </Form.Field>
+
+        <Form.Field
+          label="State"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="address.stateName"
+          validationRules={{ required: true }}
+        >
+          <input type="text" />
+        </Form.Field>
+
+        <Form.Field
+          label="Country"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="address.countryId"
+          validationRules={{ required: true }}
+        >
+          <select>
+            <option value="">Please Select...</option>
+            {countries.map(country => (
+              <option key={country.id} value={country.id}>
+                {country.title}
+              </option>
+            ))}
+          </select>
+        </Form.Field>
+
+        <Form.Field
           label="Email"
-          name="email"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="location.email"
           validationRules={{ required: false }}
         >
           <input type="text" />
@@ -113,7 +183,7 @@ const BusinessForm = (props: BusinessFormProps) => {
         <Form.Field
           label="Phone"
           marginTop={Form.Field.MARGIN_TOP}
-          name="phone"
+          name="location.phone"
           validationRules={{ required: false }}
         >
           <input type="text" />
@@ -142,6 +212,17 @@ const BusinessForm = (props: BusinessFormProps) => {
             )
           })}
         </VStack>
+
+        <Button
+          colorScheme="green"
+          isDisabled={isLoading}
+          isLoading={isLoading}
+          marginTop="4"
+          size="lg"
+          type="submit"
+        >
+          {business?.id ? 'Save Details' : 'Create Business'}
+        </Button>
       </Form>
     </Flex>
   )
