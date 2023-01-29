@@ -12,6 +12,8 @@ import Form from '@components/Form'
 import Paragraph from '@components/Paragraph'
 import SectionDivider from '@components/SectionDivider'
 
+import ProfileImage from './components/ProfileImage'
+
 type BusinessFormProps = {
   business?: Business,
 }
@@ -23,6 +25,7 @@ const BusinessForm = (props: BusinessFormProps) => {
   const {
     callbacks: {
       createBusiness: createFn,
+      updateBusiness: updateFn,
     },
     countries,
     createdByOwner,
@@ -38,7 +41,6 @@ const BusinessForm = (props: BusinessFormProps) => {
     serviceKeys,
     services,
   } = businessFormPayload
-  console.log(businessFormPayload)
 
   return (
     <Flex marginTop={8} width="100%">
@@ -47,13 +49,20 @@ const BusinessForm = (props: BusinessFormProps) => {
           submitForm: business?.id ? updateFn : createFn,
         }}
         formPayload={formPayload}
+        formProps={{
+          style: {
+            width: '100%',
+          },
+        }}
       >
+        {!!business?.id && <ProfileImage business={business} />}
+
         <Heading fontWeight="medium" size="lg">
-          {business?.id ? 'Edit' : 'Add'} {createdByOwner ? 'your' : 'a'} Business
+          {business?.id ? 'Edit' : 'Add'} Business
         </Heading>
 
         <Paragraph marginTop={Form.Field.MARGIN_TOP}>
-          You can upload your own business, or businesses you&apos;ve used.
+          You can add your own business, or businesses you&apos;ve used.
         </Paragraph>
 
         {!createdByOwner && (
@@ -109,85 +118,89 @@ const BusinessForm = (props: BusinessFormProps) => {
           </>
         )}
 
-        <SectionDivider>LOCATION</SectionDivider>
+        {!business?.id && (
+          <>
+            <SectionDivider>LOCATION</SectionDivider>
 
-        <Form.Field
-          label="Unit"
-          name="address.unitNumber"
-          validationRules={{ required: false }}
-        >
-          <input type="text" />
-        </Form.Field>
+            <Form.Field
+              label="Unit"
+              name="address.unitNumber"
+              validationRules={{ required: false }}
+            >
+              <input type="text" />
+            </Form.Field>
 
-        <Form.Field
-          label="Street Number"
-          marginTop={Form.Field.MARGIN_TOP}
-          name="address.streetNumber"
-          validationRules={{ required: true }}
-        >
-          <input type="text" />
-        </Form.Field>
+            <Form.Field
+              label="Street Number"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="address.streetNumber"
+              validationRules={{ required: true }}
+            >
+              <input type="text" />
+            </Form.Field>
 
-        <Form.Field
-          label="Street"
-          marginTop={Form.Field.MARGIN_TOP}
-          name="address.streetName"
-          validationRules={{ required: true }}
-        >
-          <input type="text" />
-        </Form.Field>
+            <Form.Field
+              label="Street"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="address.streetName"
+              validationRules={{ required: true }}
+            >
+              <input type="text" />
+            </Form.Field>
 
-        <Form.Field
-          label="Suburb"
-          marginTop={Form.Field.MARGIN_TOP}
-          name="address.suburbName"
-          validationRules={{ required: true }}
-        >
-          <input type="text" />
-        </Form.Field>
+            <Form.Field
+              label="Suburb"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="address.suburbName"
+              validationRules={{ required: true }}
+            >
+              <input type="text" />
+            </Form.Field>
 
-        <Form.Field
-          label="State"
-          marginTop={Form.Field.MARGIN_TOP}
-          name="address.stateName"
-          validationRules={{ required: true }}
-        >
-          <input type="text" />
-        </Form.Field>
+            <Form.Field
+              label="State"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="address.stateName"
+              validationRules={{ required: true }}
+            >
+              <input type="text" />
+            </Form.Field>
 
-        <Form.Field
-          label="Country"
-          marginTop={Form.Field.MARGIN_TOP}
-          name="address.countryId"
-          validationRules={{ required: true }}
-        >
-          <select>
-            <option value="">Please Select...</option>
-            {countries.map(country => (
-              <option key={country.id} value={country.id}>
-                {country.title}
-              </option>
-            ))}
-          </select>
-        </Form.Field>
+            <Form.Field
+              label="Country"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="address.countryId"
+              validationRules={{ required: true }}
+            >
+              <select>
+                <option value="">Please Select...</option>
+                {countries.map(country => (
+                  <option key={country.id} value={country.id}>
+                    {country.title}
+                  </option>
+                ))}
+              </select>
+            </Form.Field>
 
-        <Form.Field
-          label="Email"
-          marginTop={Form.Field.MARGIN_TOP}
-          name="location.email"
-          validationRules={{ required: false }}
-        >
-          <input type="text" />
-        </Form.Field>
+            <Form.Field
+              label="Email"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="location.email"
+              validationRules={{ required: false }}
+            >
+              <input type="text" />
+            </Form.Field>
 
-        <Form.Field
-          label="Phone"
-          marginTop={Form.Field.MARGIN_TOP}
-          name="location.phone"
-          validationRules={{ required: false }}
-        >
-          <input type="text" />
-        </Form.Field>
+            <Form.Field
+              label="Phone"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="location.phone"
+              validationRules={{ required: false }}
+            >
+              <input type="text" />
+            </Form.Field>
+          </>
+        )}
 
         <SectionDivider>SERVICES</SectionDivider>
 

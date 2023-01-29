@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 import type { Prisma } from '@prisma/client'
 
 import { createBusinessValidationSchema } from '@validationSchemas/business'
@@ -33,8 +35,8 @@ const mapBusinessServices = (
 const businessesRouter = router({
   createBusiness: publicProcedure
     .input(createBusinessValidationSchema)
-    .mutation(({ ctx, input }) => {
-      const data = {
+    .mutation(({ ctx, input }) => ctx.prisma.business.create({
+      data: {
         businessLocations: {
           create: {
             businessLocationsAddresses: {
@@ -47,8 +49,7 @@ const businessesRouter = router({
             businessLocationsServices: {
               create: mapBusinessServices(input),
             },
-            email: input.email,
-            phone: input.phone,
+            ...input.location,
           },
         },
         businessesServices: {
@@ -56,14 +57,28 @@ const businessesRouter = router({
         },
         title: input.title,
         website: input.website,
-      }
+      },
+    })),
 
-      console.log(JSON.stringify(data))
+  getBusinessById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.business.findFirst({
+      where: {
+        id: input.id,
+      },
+      include: {
+        businessLocations: {
+          include: {
+            businessLocationsAddresses: true,
+            businessLocationsServices: true,
+          },
+        },
+        businessesServices: true,
+      },
+    })),
 
-      // return ctx.prisma.business.create({
-      //   data: data,
-      // })
-    }),
 })
 
 export default businessesRouter

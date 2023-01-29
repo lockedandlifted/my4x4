@@ -25,6 +25,7 @@ type FormProps = {
   children: React.ReactNode,
   id?: string,
   formPayload: UseFormReturn,
+  formProps?: object,
 }
 
 const Form = (props: FormProps) => {
@@ -38,6 +39,7 @@ const Form = (props: FormProps) => {
     formPayload: {
       handleSubmit,
     },
+    formProps,
   } = props
 
   return (
@@ -45,6 +47,7 @@ const Form = (props: FormProps) => {
       <form
         id={id}
         onSubmit={e => handleSubmit(submitForm, showInvalidFormWarning)(e).catch(e => console.log(e.message))}
+        {...formProps}
       >
         <Flex flexDirection="column" width="100%">
           {children}
