@@ -109,9 +109,25 @@ model Business {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   businessLocations  BusinessLocation[]
+  businessesImages   BusinessesImage[]
   businessesServices BusinessesService[]
 
   @@map("businesses")
+}
+
+model BusinessesImage {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  businessId String   @map("business_id")
+  image      Image    @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  imageId    String   @map("image_id")
+  sort       Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([businessId, imageId])
+  @@map("businesses_images")
 }
 
 model BusinessLocation {
@@ -267,9 +283,10 @@ model Image {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  imageTags      ImageTag[]
-  projectsImages ProjectsImage[]
-  usersImages    UsersImage[]
+  businessesImages BusinessesImage[]
+  imageTags        ImageTag[]
+  projectsImages   ProjectsImage[]
+  usersImages      UsersImage[]
 
   @@map("images")
 }

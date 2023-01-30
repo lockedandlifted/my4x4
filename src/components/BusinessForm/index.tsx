@@ -210,6 +210,7 @@ const BusinessForm = (props: BusinessFormProps) => {
 
             return (
               <Checkbox
+                isChecked={serviceKeys.includes(key)}
                 key={key}
                 onChange={(e) => {
                   setValue('serviceKeys', toggleArray({

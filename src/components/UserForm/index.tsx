@@ -45,7 +45,9 @@ const UserForm = (props: UserFormProps) => {
         <ProfileImage user={user} />
 
         <Flex justifyContent="space-between" marginTop={8}>
-          <Heading size="md" marginBottom="4">Profile</Heading>
+          <Heading fontWeight="medium" size="lg" marginBottom="4">
+            Profile
+          </Heading>
         </Flex>
 
         <Form.Field

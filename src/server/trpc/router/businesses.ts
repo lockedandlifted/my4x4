@@ -75,7 +75,11 @@ const businessesRouter = router({
             businessLocationsServices: true,
           },
         },
-        businessesServices: true,
+        businessesServices: {
+          include: {
+            service: true,
+          },
+        },
       },
     })),
 

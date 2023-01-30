@@ -1,10 +1,38 @@
 import { useForm } from 'react-hook-form'
 
-import type { Business } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 
 import setupInitialEntityState from '@utils/setupInitialEntityState'
+
+type BusinessWithIncludes = Prisma.BusinessGetPayload<{
+  include: {
+    businessLocations: {
+      include: {
+        businessLocationsAddresses: true,
+        businessLocationsServices: true,
+      },
+    },
+    businessesServices: {
+      include: {
+        service: true,
+      },
+    },
+  },
+}>
+
+const setupBusinessInitialState = (currentState: object, business: BusinessWithIncludes) => {
+  const initialState = {
+    ...currentState,
+  }
+
+  if (business.businessesServices) {
+    initialState.serviceKeys = business.businessesServices.map(businessesService => businessesService.service?.key)
+  }
+
+  return initialState
+}
 
 type CreateBusinessParams = {
   data: typeof defaultState,
@@ -15,19 +43,7 @@ type CreateBusinessParams = {
 
 const createBusiness = (params: CreateBusinessParams) => {
   const { data, mutation } = params
-
-  const updatedData = {
-    ...data,
-  }
-
-  // if (data.attributes) {
-  //   updatedData.projectsAttributes = Object.keys(data.attributes).map(attributeKey => ({
-  //     key: attributeKey,
-  //     value: data.attributes[attributeKey],
-  //   }))
-  // }
-
-  return mutation.mutate(updatedData)
+  return mutation.mutate(data)
 }
 
 type DefaultState = {
@@ -39,6 +55,7 @@ type DefaultState = {
     suburbName: string,
     unitNumber?: string,
   },
+  businessServices: { service: { key: string } }[],
   createdByOwner: boolean,
   location: {
     email: string,
@@ -46,6 +63,7 @@ type DefaultState = {
   },
   serviceKeys: string[],
   title: string,
+  website: string,
 }
 
 const defaultState: DefaultState = {
@@ -64,10 +82,11 @@ const defaultState: DefaultState = {
   },
   serviceKeys: [],
   title: '',
+  website: '',
 }
 
 type UseBusinessFormOptions = {
-  business?: Business,
+  business?: BusinessWithIncludes,
   temporaryUserId?: string,
 }
 
@@ -75,7 +94,9 @@ function useBusinessForm(options: UseBusinessFormOptions) {
   const { business } = options || {}
 
   const formPayload = useForm({
-    defaultValues: business?.id ? setupInitialEntityState(defaultState, business) : defaultState,
+    defaultValues: business?.id
+      ? setupInitialEntityState(defaultState, business, { addtionalSetupFn: setupBusinessInitialState })
+      : defaultState,
     mode: 'onChange',
   })
 

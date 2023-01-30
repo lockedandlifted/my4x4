@@ -15,8 +15,6 @@ const EditBusinessDetailsPage = () => {
   })
   const { data: business } = businessQuery
 
-  console.log(business)
-
   return (
     <MobileLayout>
       <BackToBusinessButton editMode business={business} />

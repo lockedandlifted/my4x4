@@ -1,12 +1,11 @@
-import { Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import { trpc } from '@utils/trpc'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-import BackToBusinessButton from '@components/Business/BackToBusinessButton'
 import BusinessForm from '@components/BusinessForm'
+import Locations from '@components/Business/Locations'
 
 const EditBusinessPage = () => {
   const { query: { businessId } } = useRouter()
@@ -16,11 +15,10 @@ const EditBusinessPage = () => {
   })
   const { data: business } = businessQuery
 
-  console.log(business)
-
   return (
     <MobileLayout>
       <BusinessForm business={business} />
+      <Locations business={business} />
     </MobileLayout>
   )
 }
