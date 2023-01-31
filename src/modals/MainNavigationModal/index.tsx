@@ -59,6 +59,12 @@ const MainNavigationModal = (props: MainNavigationModalProps) => {
           {!!sessionData && (
             <>
               <NavigationItem
+                href="/businesses/new"
+                icon={<FaPlusCircle />}
+                title="Add a Business"
+              />
+
+              <NavigationItem
                 href="/users/account"
                 icon={<FaUserEdit />}
                 title="Account"
