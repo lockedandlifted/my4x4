@@ -52,7 +52,7 @@ const BuildPage = (props: { temporaryUserId: string }) => {
   return (
     <MobileLayout>
       <Head>
-        <title>{project?.title} | MY4X4</title>
+        <title>{`${project?.title} | MY4X4`}</title>
         <meta name="description" content="Add your build. Find and research similar builds to get inspiration." />
         <meta property="fb:app_id" content="100089112092156" />
         <meta property="og:description" content={project?.description || 'Checkout this build on MY4X4.info'} />

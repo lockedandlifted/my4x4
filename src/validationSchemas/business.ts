@@ -12,6 +12,7 @@ export const createBusinessValidationSchema = z.object({
   location: z.object({
     email: z.string().email(),
     phone: z.string(),
+    title: z.string(),
   }),
   serviceKeys: z.array(z.string()),
   title: z.string(),

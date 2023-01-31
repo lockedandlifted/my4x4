@@ -43,7 +43,16 @@ type CreateBusinessParams = {
 
 const createBusiness = (params: CreateBusinessParams) => {
   const { data, mutation } = params
-  return mutation.mutate(data)
+
+  const updatedData = {
+    ...data,
+    location: {
+      ...data.location,
+      title: data.title,
+    },
+  }
+
+  return mutation.mutate(updatedData)
 }
 
 type DefaultState = {
@@ -60,6 +69,7 @@ type DefaultState = {
   location: {
     email: string,
     phone: string,
+    title: string,
   },
   serviceKeys: string[],
   title: string,
@@ -79,6 +89,7 @@ const defaultState: DefaultState = {
   location: {
     email: '',
     phone: '',
+    title: '',
   },
   serviceKeys: [],
   title: '',

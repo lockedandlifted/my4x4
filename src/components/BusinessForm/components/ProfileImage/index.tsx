@@ -5,8 +5,8 @@ import type { Business } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 
+import useBusinessImageUpload from '@hooks/useBusinessImageUpload'
 import useImageUrl from '@hooks/useImageUrl'
-import useUserImageUpload from '@hooks/useUserImageUpload'
 
 import FileUploadButton from '@components/FileUploadButton'
 
@@ -19,11 +19,11 @@ const ProfileImage = (props: ProfileImageProps) => {
 
   const { businesses: { getBusinessById: { invalidate } } } = trpc.useContext()
 
-  const { uppy } = useUserImageUpload({
+  const { uppy } = useBusinessImageUpload({
+    businessId: business.id,
     callbacks: {
       onSuccess: () => invalidate({ id: business.id }),
     },
-    userId: business.id,
   })
 
   const image = business.businessesImages?.[0]?.image

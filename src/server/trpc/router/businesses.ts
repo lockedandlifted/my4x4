@@ -69,6 +69,15 @@ const businessesRouter = router({
         id: input.id,
       },
       include: {
+        businessesImages: {
+          include: {
+            image: true,
+          },
+          orderBy: {
+            sort: 'asc',
+          },
+          take: 1,
+        },
         businessLocations: {
           include: {
             businessLocationsAddresses: true,

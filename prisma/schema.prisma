@@ -135,6 +135,7 @@ model BusinessLocation {
   business   Business @relation(fields: [businessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   businessId String   @map("business_id")
 
+  title String?
   email String?
   phone String?
 
