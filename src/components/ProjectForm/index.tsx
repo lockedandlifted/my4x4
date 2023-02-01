@@ -1,5 +1,5 @@
 import {
-  Alert, AlertDescription, AlertIcon, Button, Divider, Flex, Heading, Text,
+  Alert, AlertDescription, AlertIcon, Button, Flex, Heading, Text,
 } from '@chakra-ui/react'
 import { FaGlobeAsia } from 'react-icons/fa'
 
@@ -23,7 +23,6 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const projectFormPayload = useProjectForm({ project, temporaryUserId })
   const {
-    attributes,
     callbacks: {
       createProject: createFn,
       updateProject: updateFn,
@@ -54,11 +53,11 @@ const ProjectForm = (props: ProjectFormProps) => {
         formPayload={formPayload}
       >
         <Heading fontWeight="medium" size="lg">
-          {project?.id ? 'Edit' : 'Add'} {createdByOwner ? 'your' : 'this'} Build
+          {project?.id ? 'Edit' : 'Add'} {createdByOwner ? 'your' : 'a'} Build
         </Heading>
 
         <Paragraph marginTop={Form.Field.MARGIN_TOP}>
-          You can upload your own builds, or builds you like.
+          You can add your own builds, or builds you like.
         </Paragraph>
 
         {!createdByOwner && (
@@ -72,8 +71,8 @@ const ProjectForm = (props: ProjectFormProps) => {
             <AlertIcon />
 
             <AlertDescription>
-              If you upload a build on behalf of someone else you <strong>may lose the ability to edit</strong> it if
-              the owner claims the build and verifies it.
+              If you create a build on behalf of someone else you <strong>may lose the ability to edit</strong> it if
+              the owner claims and verifies it.
             </AlertDescription>
           </Alert>
         )}

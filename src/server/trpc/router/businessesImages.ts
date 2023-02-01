@@ -2,10 +2,10 @@ import { z } from 'zod'
 
 import { router, publicProcedure } from '../trpc'
 
-const usersImagesRouter = router({
-  createUsersImage: publicProcedure
+const businessesImagesRouter = router({
+  createBusinessesImage: publicProcedure
     .input(z.object({
-      userId: z.string(),
+      businessId: z.string(),
       image: z.object({
         fileKey: z.string(),
         filename: z.string(),
@@ -19,19 +19,19 @@ const usersImagesRouter = router({
       // Clear Existing Images - Limit to 1 image at this stage
       await ctx.prisma.image.deleteMany({
         where: {
-          usersImages: {
+          businessesImages: {
             some: {
-              userId: input.userId,
+              businessId: input.businessId,
             },
           },
         },
       })
 
-      return ctx.prisma.usersImage.create({
+      return ctx.prisma.businessesImage.create({
         data: {
-          user: {
+          business: {
             connect: {
-              id: input.userId,
+              id: input.businessId,
             },
           },
           image: {
@@ -45,4 +45,4 @@ const usersImagesRouter = router({
     }),
 })
 
-export default usersImagesRouter
+export default businessesImagesRouter

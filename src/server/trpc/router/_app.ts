@@ -3,7 +3,11 @@ import { router } from '../trpc'
 import attributesRouter from './attributes'
 import authRouter from './auth'
 import awsRouter from './aws'
+import businessLocationsRouter from './businessLocations'
+import businessesImagesRouter from './businessesImages'
+import businessesRouter from './businesses'
 import categoriesRouter from './categories'
+import countriesRouter from './countries'
 import externalLinkViewsRouter from './externalLinkViews'
 import externalLinksRouter from './externalLinks'
 import imagesRouter from './images'
@@ -17,6 +21,7 @@ import projectsExternalLinksRouter from './projectsExternalLinks'
 import projectsImagesRouter from './projectsImages'
 import projectsPartsRouter from './projectsParts'
 import projectsRouter from './projects'
+import servicesRouter from './services'
 import usersExternalLinksRouter from './usersExternalLinks'
 import usersImagesRouter from './usersImages'
 import usersRouter from './users'
@@ -25,7 +30,11 @@ export const appRouters = {
   attributes: attributesRouter,
   auth: authRouter,
   aws: awsRouter,
+  businessLocations: businessLocationsRouter,
+  businesses: businessesRouter,
+  businessesImages: businessesImagesRouter,
   categories: categoriesRouter,
+  countries: countriesRouter,
   externalLinkViews: externalLinkViewsRouter,
   externalLinks: externalLinksRouter,
   images: imagesRouter,
@@ -39,6 +48,7 @@ export const appRouters = {
   projectsExternalLinks: projectsExternalLinksRouter,
   projectsImages: projectsImagesRouter,
   projectsParts: projectsPartsRouter,
+  services: servicesRouter,
   users: usersRouter,
   usersExternalLinks: usersExternalLinksRouter,
   usersImages: usersImagesRouter,

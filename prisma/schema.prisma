@@ -32,6 +32,24 @@ model Account {
   @@map("accounts")
 }
 
+model Address {
+  id           String   @id @default(uuid())
+  unitNumber   String?  @map("unit_number")
+  streetNumber String?  @map("street_number")
+  streetName   String?  @map("street_name")
+  suburbName   String?  @map("suburb_name")
+  stateName    String?  @map("state_name")
+  country      Country? @relation(fields: [countryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  countryId    String?  @map("country_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  businessLocationsAddresses BusinessLocationsAddress[]
+
+  @@map("addresses")
+}
+
 model Attachment {
   id               String  @id @default(uuid())
   fileKey          String  @map("file_key")
@@ -82,17 +100,35 @@ model AttributeValue {
 }
 
 model Business {
-  id      String  @id @default(uuid())
-  title   String
-  website String?
+  id             String  @id @default(uuid())
+  title          String
+  website        String?
+  createdByOwner Boolean @default(true) @map("created_by_owner")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
   businessLocations  BusinessLocation[]
+  businessesImages   BusinessesImage[]
   businessesServices BusinessesService[]
+  businessesUsers    BusinessesUser[]
 
   @@map("businesses")
+}
+
+model BusinessesImage {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  businessId String   @map("business_id")
+  image      Image    @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  imageId    String   @map("image_id")
+  sort       Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([businessId, imageId])
+  @@map("businesses_images")
 }
 
 model BusinessLocation {
@@ -100,15 +136,30 @@ model BusinessLocation {
   business   Business @relation(fields: [businessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   businessId String   @map("business_id")
 
+  title String?
   email String?
   phone String?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  businessLocationsServices BusinessLocationsService[]
+  businessLocationsAddresses BusinessLocationsAddress[]
+  businessLocationsServices  BusinessLocationsService[]
 
   @@map("business_locations")
+}
+
+model BusinessLocationsAddress {
+  id                 String           @id @default(uuid())
+  address            Address          @relation(fields: [addressId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  addressId          String           @map("address_id")
+  businessLocation   BusinessLocation @relation(fields: [businessLocationId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  businessLocationId String           @map("business_location_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("business_locations_addresses")
 }
 
 model BusinessLocationsService {
@@ -129,6 +180,21 @@ model BusinessesService {
   serviceId  String   @map("service_id")
 
   @@map("businesses_services")
+}
+
+model BusinessesUser {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  businessId String   @map("business_id")
+  user       User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId     String   @map("user_id")
+  sort       Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([businessId, userId])
+  @@map("businesses_users")
 }
 
 model Category {
@@ -171,6 +237,7 @@ model Country {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
+  addresses         Address[]
   manufacturerParts ManufacturerPart[]
 
   @@map("countries")
@@ -233,9 +300,10 @@ model Image {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  imageTags      ImageTag[]
-  projectsImages ProjectsImage[]
-  usersImages    UsersImage[]
+  businessesImages BusinessesImage[]
+  imageTags        ImageTag[]
+  projectsImages   ProjectsImage[]
+  usersImages      UsersImage[]
 
   @@map("images")
 }
@@ -540,11 +608,12 @@ model User {
 
   accounts           Account[]
   attachments        Attachment[]
-  sessions           Session[]
+  businessesUser     BusinessesUser[]
   images             Image[]
   projectsUsers      ProjectsUser[]
-  usersImages        UsersImage[]
+  sessions           Session[]
   usersExternalLinks UsersExternalLink[]
+  usersImages        UsersImage[]
 
   @@map("users")
 }
