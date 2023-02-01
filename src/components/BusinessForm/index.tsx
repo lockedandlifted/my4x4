@@ -43,7 +43,7 @@ const BusinessForm = (props: BusinessFormProps) => {
   } = businessFormPayload
 
   return (
-    <Flex width="100%">
+    <Flex marginTop={business?.id ? 0 : 8} width="100%">
       <Form
         callbacks={{
           submitForm: business?.id ? updateFn : createFn,

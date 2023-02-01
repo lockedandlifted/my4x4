@@ -23,7 +23,6 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const projectFormPayload = useProjectForm({ project, temporaryUserId })
   const {
-    attributes,
     callbacks: {
       createProject: createFn,
       updateProject: updateFn,
@@ -58,7 +57,7 @@ const ProjectForm = (props: ProjectFormProps) => {
         </Heading>
 
         <Paragraph marginTop={Form.Field.MARGIN_TOP}>
-          You can upload your own builds, or builds you like.
+          You can add your own builds, or builds you like.
         </Paragraph>
 
         {!createdByOwner && (
@@ -72,7 +71,7 @@ const ProjectForm = (props: ProjectFormProps) => {
             <AlertIcon />
 
             <AlertDescription>
-              If you upload a build on behalf of someone else you <strong>may lose the ability to edit</strong> it if
+              If you create a build on behalf of someone else you <strong>may lose the ability to edit</strong> it if
               the owner claims and verifies it.
             </AlertDescription>
           </Alert>

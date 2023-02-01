@@ -111,6 +111,7 @@ model Business {
   businessLocations  BusinessLocation[]
   businessesImages   BusinessesImage[]
   businessesServices BusinessesService[]
+  businessesUsers    BusinessesUser[]
 
   @@map("businesses")
 }
@@ -179,6 +180,21 @@ model BusinessesService {
   serviceId  String   @map("service_id")
 
   @@map("businesses_services")
+}
+
+model BusinessesUser {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  businessId String   @map("business_id")
+  user       User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId     String   @map("user_id")
+  sort       Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([businessId, userId])
+  @@map("businesses_users")
 }
 
 model Category {
@@ -592,11 +608,12 @@ model User {
 
   accounts           Account[]
   attachments        Attachment[]
-  sessions           Session[]
+  businessesUser     BusinessesUser[]
   images             Image[]
   projectsUsers      ProjectsUser[]
-  usersImages        UsersImage[]
+  sessions           Session[]
   usersExternalLinks UsersExternalLink[]
+  usersImages        UsersImage[]
 
   @@map("users")
 }

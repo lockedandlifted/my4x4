@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 
 import { createBusinessValidationSchema } from '@validationSchemas/business'
 
-import { router, publicProcedure } from '../trpc'
+import { router, protectedProcedure, publicProcedure } from '../trpc'
 
 const mapBusinessServices = (
   input: {
@@ -33,7 +33,7 @@ const mapBusinessServices = (
 }
 
 const businessesRouter = router({
-  createBusiness: publicProcedure
+  createBusiness: protectedProcedure
     .input(createBusinessValidationSchema)
     .mutation(({ ctx, input }) => ctx.prisma.business.create({
       data: {
@@ -54,6 +54,15 @@ const businessesRouter = router({
         },
         businessesServices: {
           create: mapBusinessServices(input),
+        },
+        businessesUsers: {
+          create: {
+            user: {
+              connect: {
+                id: ctx.session.user.id,
+              },
+            },
+          },
         },
         title: input.title,
         website: input.website,
@@ -91,6 +100,59 @@ const businessesRouter = router({
         },
       },
     })),
+
+  getBusinesses: publicProcedure
+    .input(z.object({
+      limit: z.number().optional(),
+      userId: z.string().uuid().optional(),
+    }))
+    .query(({ ctx, input }) => {
+      const filters: Prisma.BusinessWhereInput = {}
+
+      if (input.userId) {
+        filters.businessesUsers = {
+          some: {
+            userId: input.userId,
+          },
+        }
+      }
+
+      return ctx.prisma.business.findMany({
+        where: filters,
+        include: {
+          businessesImages: {
+            include: {
+              image: true,
+            },
+            orderBy: {
+              sort: 'asc',
+            },
+            take: 1,
+          },
+          businessesUsers: {
+            include: {
+              user: {
+                include: {
+                  usersImages: {
+                    include: {
+                      image: true,
+                    },
+                    orderBy: {
+                      sort: 'asc',
+                    },
+                    take: 1,
+                  },
+                },
+              },
+            },
+          },
+        },
+        take: input.limit || undefined,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      })
+    }),
 
 })
 

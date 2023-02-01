@@ -13,6 +13,7 @@ import MobileLayout from '@layouts/MobileLayout'
 import CreateOrEditUsersExternalLinkModal from '@modals/CreateOrEditUsersExternalLinkModal'
 
 import Account from '@components/User/Account'
+import Businesses from '@components/User/Businesses'
 import Links from '@components/User/Links'
 import Projects from '@components/User/Projects'
 import UserForm from '@components/UserForm'
@@ -66,6 +67,8 @@ const UserAccountPage = (props: { temporaryUserId: string }) => {
         <Links callbacks={callbacks(undefined, setState)} editMode user={user} />
 
         <Projects editMode temporaryUserId={temporaryUserId} user={user} />
+
+        <Businesses editMode user={user} />
 
         <Account />
       </Flex>
