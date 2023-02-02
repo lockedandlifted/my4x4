@@ -13,18 +13,13 @@ const Hero = () => (
 
     <Paragraph marginTop={8}>
       Add your 4x4 and parts as you build out your ride.
-      Make a detailed history of your vehicle.
+      Create a detailed history of your vehicle.
       Find other vehicles that have fitted the parts you are considering to do your research.
-    </Paragraph>
-
-    <Paragraph marginTop={8}>
-      Browse other peoples builds and research parts for your own build or add other builds you
-      know all the info about.
     </Paragraph>
 
     <Button
       as="a"
-      colorScheme="teal"
+      colorScheme="gray"
       href="/projects/new"
       marginTop={8}
       size="lg"

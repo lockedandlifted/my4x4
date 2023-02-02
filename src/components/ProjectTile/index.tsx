@@ -1,5 +1,5 @@
 import {
-  Flex, LinkBox, LinkOverlay, Text, Badge,
+  Badge, Flex, LinkBox, LinkOverlay, Text,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 
@@ -97,7 +97,7 @@ const ProjectTile = (props: ProjectTileProps) => {
               {project?.manufacturerModel && (
                 <Text
                   color={hasImage ? 'white' : 'black'}
-                  fontSize={compact ? 'xs' : 's'}
+                  fontSize="s"
                   lineHeight={1.3}
                   marginBottom={4}
                   noOfLines={compact ? 2 : undefined}
