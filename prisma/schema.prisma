@@ -112,6 +112,7 @@ model Business {
   businessesImages   BusinessesImage[]
   businessesServices BusinessesService[]
   businessesUsers    BusinessesUser[]
+  projectsParts      ProjectsPart[]
 
   @@map("businesses")
 }
@@ -511,12 +512,14 @@ model ProjectPageView {
 }
 
 model ProjectsPart {
-  id                 String           @id @default(uuid())
-  manufacturerPart   ManufacturerPart @relation(fields: [manufacturerPartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  manufacturerPartId String           @map("manufacturer_part_id")
-  project            Project          @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  projectId          String           @map("project_id")
-  description        String?
+  id                    String           @id @default(uuid())
+  manufacturerPart      ManufacturerPart @relation(fields: [manufacturerPartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerPartId    String           @map("manufacturer_part_id")
+  project               Project          @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId             String           @map("project_id")
+  description           String?
+  installedByBusiness   Business?        @relation(fields: [installedByBusinessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  installedByBusinessId String?          @map("installed_by_business_id")
 
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @map("updated_at")
