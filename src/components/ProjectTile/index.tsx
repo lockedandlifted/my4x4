@@ -1,5 +1,5 @@
 import {
-  Flex, LinkBox, LinkOverlay, Text,
+  Flex, LinkBox, LinkOverlay, Text, Badge,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 
@@ -60,17 +60,53 @@ const ProjectTile = (props: ProjectTileProps) => {
         >
           <Flex alignItems="center">
             <LinkOverlay href={`/${project?.slug}`}>
+              {project?.createdByOwner && (
+                <Badge
+                  colorScheme="teal"
+                  fontSize={compact ? '2xs' : 'xs'}
+                  lineHeight={1.4}
+                  marginBottom={2}
+                >
+                  Verified
+                </Badge>
+              )}
+
+              {!project?.createdByOwner && (
+                <Badge
+                  fontSize={compact ? '2xs' : 'xs'}
+                  lineHeight={1.4}
+                  marginBottom={2}
+                  variant="subtle"
+                >
+                  Community Build
+                </Badge>
+              )}
+
               <Text
                 color={hasImage ? 'white' : 'black'}
-                fontSize={compact ? 'xl' : '3xl'}
+                fontSize={compact ? '2xl' : '3xl'}
                 fontWeight="bold"
                 lineHeight={1.3}
-                marginBottom={4}
+                marginBottom={1}
                 noOfLines={compact ? 2 : undefined}
                 width={compact ? '100%' : '75%'}
               >
                 {project?.title}
               </Text>
+
+              {project?.manufacturerModel && (
+                <Text
+                  color={hasImage ? 'white' : 'black'}
+                  fontSize={compact ? 'xs' : 's'}
+                  lineHeight={1.3}
+                  marginBottom={4}
+                  noOfLines={compact ? 2 : undefined}
+                  width={compact ? '100%' : '75%'}
+                >
+                  {project?.manufacturerModel?.manufacturer?.title} {project?.manufacturerModel?.title}
+                </Text>
+              )}
+
             </LinkOverlay>
           </Flex>
         </Flex>
