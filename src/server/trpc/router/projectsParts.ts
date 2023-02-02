@@ -149,8 +149,8 @@ const projectsPartsRouter = router({
 
   createProjectsPart: publicProcedure
     .input(createProjectsPartValidationSchema)
-    .mutation(({ ctx, input }) => ctx.prisma.projectsPart.create({
-      data: {
+    .mutation(({ ctx, input }) => {
+      const data: Prisma.ProjectsPartCreateInput = {
         description: input.description,
         installedAt: input.installedAt,
         project: {
@@ -171,16 +171,33 @@ const projectsPartsRouter = router({
             },
           },
         },
-      },
-      include: {
-        manufacturerPart: {
-          include: {
-            category: true,
-            manufacturer: true,
+      }
+
+      if (input.installedByBusinessName) {
+        data.installedByBusiness = {
+          connectOrCreate: {
+            where: {
+              id: input.installedByBusinessId || 'new-record',
+            },
+            create: {
+              title: input.installedByBusinessName,
+            },
+          },
+        }
+      }
+
+      return ctx.prisma.projectsPart.create({
+        data,
+        include: {
+          manufacturerPart: {
+            include: {
+              category: true,
+              manufacturer: true,
+            },
           },
         },
-      },
-    })),
+      })
+    }),
 
   deleteProjectsPartById: publicProcedure
     .input(z.object({

@@ -9,9 +9,12 @@ import { trpc } from '@utils/trpc'
 import { createProjectsPartValidationSchema } from '@validationSchemas/projectsPart'
 
 const defaultState = {
+  businessName: '',
   categoryId: undefined,
   description: undefined,
   installedAt: undefined,
+  installedByBusinessId: undefined,
+  installedByNusinessName: undefined,
   manufacturerId: '',
   manufacturerPartId: '',
   partNumber: '',
@@ -73,6 +76,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   })
 
   const { watch } = formPayload
+  const installedByBusinessName = watch('installedByBusinessName')
   const manufacturerId = watch('manufacturerId')
   const title = watch('title')
 
@@ -132,6 +136,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
     },
     categories,
     formPayload,
+    installedByBusinessName,
     manufacturerId,
     manufacturers,
     mutations: {

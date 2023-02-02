@@ -42,6 +42,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
       setValue,
     },
     formPayload,
+    installedByBusinessName,
     manufacturerId,
     manufacturers,
     title,
@@ -139,6 +140,33 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
               validationRules={{ required: false }}
             >
               <textarea />
+            </Form.Field>
+
+            <Form.Field
+              label="Installed By"
+              labelRight={(
+                <Form.Field.LabelRight>Optional</Form.Field.LabelRight>
+              )}
+              name="installedByBusinessId"
+              marginTop={4}
+              validationRules={{ required: false }}
+            >
+              <AutocompleteField
+                callbacks={{
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                    setValue('installedByBusinessName', e.target?.value)
+                  },
+                  selectItem: (result: ManufacturerPart) => {
+                    setValue('installedByBusinessId', result.id)
+                    setValue('installedByBusinessName', result.title || '')
+                  },
+                }}
+                inputProps={{
+                  value: installedByBusinessName || '',
+                }}
+                routerKey="businesses"
+                queryKey="getBusinesses"
+              />
             </Form.Field>
 
             <Form.Field

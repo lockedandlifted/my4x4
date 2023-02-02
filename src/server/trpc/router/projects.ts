@@ -166,6 +166,11 @@ const projectsRouter = router({
       return ctx.prisma.project.findMany({
         where: filters,
         include: {
+          manufacturerModel: {
+            include: {
+              manufacturer: true,
+            },
+          },
           projectsImages: {
             include: {
               image: true,
@@ -206,6 +211,11 @@ const projectsRouter = router({
     }))
     .query(({ ctx, input }) => ctx.prisma.project.findMany({
       include: {
+        manufacturerModel: {
+          include: {
+            manufacturer: true,
+          },
+        },
         projectsImages: {
           include: {
             image: true,
@@ -257,6 +267,11 @@ const projectsRouter = router({
           },
         },
         include: {
+          manufacturerModel: {
+            include: {
+              manufacturer: true,
+            },
+          },
           projectsImages: {
             include: {
               image: true,

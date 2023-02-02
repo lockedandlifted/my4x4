@@ -5,13 +5,15 @@ import Paragraph from '@components/Paragraph'
 const Hero = () => (
   <Flex direction="column" alignItems="flex-start" marginTop={8}>
     <Heading fontWeight="normal" whiteSpace="pre-line" size="xl">
-      {`Add Your Vehicle,
-      Find and Research Parts,
-      Flex.`}
+      {`Interested in 4x4 Builds?
+      Add your build or browse other
+      builds below.
+      `}
     </Heading>
 
     <Paragraph marginTop={8}>
       Add your 4x4 and parts as you build out your ride.
+      Create a detailed history of your vehicle.
       Find other vehicles that have fitted the parts you are considering to do your research.
     </Paragraph>
 
@@ -23,7 +25,7 @@ const Hero = () => (
       size="lg"
       width="auto"
     >
-      Get Started
+      Add your Build
     </Button>
   </Flex>
 )
