@@ -114,8 +114,6 @@ Run Ngrok on the local host port you're using
 ngrok http 3001
 ```
 
-Each time you restart Ngrok you'll need to copy the url in the Ngrok Terminal window and add it to your environment variable.
-
 ---
 
 ## Additional Details
