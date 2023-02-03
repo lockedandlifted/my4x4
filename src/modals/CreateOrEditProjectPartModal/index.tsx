@@ -9,7 +9,7 @@ import {
   DrawerOverlay,
 } from '@chakra-ui/react'
 
-import type { ManufacturerPart, Project } from '@prisma/client'
+import type { Manufacturer, ManufacturerPart, Project } from '@prisma/client'
 
 import useProjectsPartForm from '@hooks/useProjectsPartForm'
 
@@ -44,7 +44,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
     formPayload,
     installedByBusinessName,
     manufacturerId,
-    manufacturers,
+    manufacturerName,
     title,
   } = projectsPartFormPayload
 
@@ -77,14 +77,21 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
             id="project-part-form"
           >
             <Form.Field label="Manufacturer" name="manufacturerId" validationRules={{ required: true }}>
-              <select>
-                <option value="">Please Select...</option>
-                {manufacturers.map(manufacturer => (
-                  <option key={manufacturer.id} value={manufacturer.id}>
-                    {manufacturer.title}
-                  </option>
-                ))}
-              </select>
+              <AutocompleteField
+                callbacks={{
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => setValue('manufacturerName', e.target?.value),
+                  selectItem: (result: Manufacturer) => {
+                    setValue('manufacturerId', result.id)
+                    setValue('manufacturerName', result.title || '')
+                  },
+                }}
+                inputProps={{
+                  value: manufacturerName,
+                }}
+                routerKey="manufacturers"
+                queryKey="getManufacturers"
+                queryParams={{ limit: 10 }}
+              />
             </Form.Field>
 
             <Form.Field label="Title" name="title" marginTop={4} validationRules={{ required: true }}>

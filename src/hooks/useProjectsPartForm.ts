@@ -16,6 +16,7 @@ const defaultState = {
   installedByBusinessId: undefined,
   installedByNusinessName: undefined,
   manufacturerId: '',
+  manufacturerName: '',
   manufacturerPartId: '',
   partNumber: '',
   projectId: '',
@@ -78,15 +79,12 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   const { watch } = formPayload
   const installedByBusinessName = watch('installedByBusinessName')
   const manufacturerId = watch('manufacturerId')
+  const manufacturerName = watch('manufacturerName')
   const title = watch('title')
 
   // Load Categories
   const categoriesQuery = trpc.categories.getCategories.useQuery({ categoryType: 'part' })
   const { data: categories = [] } = categoriesQuery
-
-  // Load Manufacturers
-  const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerType: 'part' })
-  const { data: manufacturers = [] } = manufacturersQuery
 
   // Create Mutation
   const { projectsParts: { getProjectsParts: { setData: setGetProjectsPartsData } } } = trpc.useContext()
@@ -138,7 +136,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
     formPayload,
     installedByBusinessName,
     manufacturerId,
-    manufacturers,
+    manufacturerName,
     mutations: {
       createProjectsPart: createProjectsPartMutation,
     },

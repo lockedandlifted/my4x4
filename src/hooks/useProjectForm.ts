@@ -168,7 +168,7 @@ function useProjectForm(options: UseProjectFormOptions) {
   const yearManufactured = watch('attributes.year_manufactured')
 
   // Load Manufacturers
-  const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerType: 'vehicle' })
+  const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerTypeKey: 'vehicle' })
   const { data: manufacturers = [] } = manufacturersQuery
 
   // Load Models

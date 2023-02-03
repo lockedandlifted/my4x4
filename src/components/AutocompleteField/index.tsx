@@ -75,13 +75,14 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
           backgroundColor="white"
           borderRadius={5}
           borderWidth={1}
-          boxShadow="1px"
+          boxShadow="1px 2px 5px -3px rgba(0, 0, 0, 0.2)"
           flexDirection="column"
           marginTop={1}
           overflow="hidden"
           position="absolute"
           top="100%"
           width="100%"
+          zIndex={10}
         >
           {mappedResults.map((result: { id: string, title: string }) => {
             const { id, title } = result
