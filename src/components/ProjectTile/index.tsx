@@ -84,7 +84,7 @@ const ProjectTile = (props: ProjectTileProps) => {
 
               <Text
                 color={hasImage ? 'white' : 'black'}
-                fontSize={compact ? '2xl' : '3xl'}
+                fontSize={compact ? 'xl' : '3xl'}
                 fontWeight="bold"
                 lineHeight={1.3}
                 marginBottom={1}
@@ -94,14 +94,12 @@ const ProjectTile = (props: ProjectTileProps) => {
                 {project?.title}
               </Text>
 
-              {project?.manufacturerModel && (
+              {!compact && project?.manufacturerModel && (
                 <Text
                   color={hasImage ? 'white' : 'black'}
                   fontSize="s"
                   lineHeight={1.3}
                   marginBottom={4}
-                  noOfLines={compact ? 2 : undefined}
-                  width={compact ? '100%' : '75%'}
                 >
                   {project?.manufacturerModel?.manufacturer?.title} {project?.manufacturerModel?.title}
                 </Text>
