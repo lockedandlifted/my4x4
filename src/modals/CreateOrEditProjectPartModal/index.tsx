@@ -42,9 +42,9 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
       setValue,
     },
     formPayload,
-    installedByBusinessName,
+    installedByBusinessTitle,
     manufacturerId,
-    manufacturerName,
+    manufacturerTitle,
     title,
   } = projectsPartFormPayload
 
@@ -79,14 +79,14 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
             <Form.Field label="Manufacturer" name="manufacturerId" validationRules={{ required: true }}>
               <AutocompleteField
                 callbacks={{
-                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => setValue('manufacturerName', e.target?.value),
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => setValue('manufacturerTitle', e.target?.value),
                   selectItem: (result: Manufacturer) => {
-                    setValue('manufacturerId', result.id)
-                    setValue('manufacturerName', result.title || '')
+                    setValue('manufacturerId', result?.id)
+                    setValue('manufacturerTitle', result?.title || '')
                   },
                 }}
                 inputProps={{
-                  value: manufacturerName,
+                  value: manufacturerTitle,
                 }}
                 routerKey="manufacturers"
                 queryKey="getManufacturers"
@@ -110,7 +110,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
                 }}
                 routerKey="manufacturerParts"
                 queryKey="getManufacturerParts"
-                queryParams={{ manufacturerId }}
+                queryParams={{ manufacturerId, manufacturerTitle }}
               />
             </Form.Field>
 
@@ -161,15 +161,15 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
               <AutocompleteField
                 callbacks={{
                   onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-                    setValue('installedByBusinessName', e.target?.value)
+                    setValue('installedByBusinessTitle', e.target?.value)
                   },
                   selectItem: (result: ManufacturerPart) => {
                     setValue('installedByBusinessId', result.id)
-                    setValue('installedByBusinessName', result.title || '')
+                    setValue('installedByBusinessTitle', result.title || '')
                   },
                 }}
                 inputProps={{
-                  value: installedByBusinessName || '',
+                  value: installedByBusinessTitle || '',
                 }}
                 routerKey="businesses"
                 queryKey="getBusinesses"

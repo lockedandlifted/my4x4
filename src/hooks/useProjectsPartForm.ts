@@ -9,15 +9,14 @@ import { trpc } from '@utils/trpc'
 import { createProjectsPartValidationSchema } from '@validationSchemas/projectsPart'
 
 const defaultState = {
-  businessName: '',
   categoryId: undefined,
   description: undefined,
   installedAt: undefined,
   installedByBusinessId: undefined,
-  installedByNusinessName: undefined,
+  installedByBusinessTitle: undefined,
   manufacturerId: '',
-  manufacturerName: '',
   manufacturerPartId: '',
+  manufacturerTitle: '',
   partNumber: '',
   projectId: '',
   title: '',
@@ -77,9 +76,9 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   })
 
   const { watch } = formPayload
-  const installedByBusinessName = watch('installedByBusinessName')
+  const installedByBusinessTitle = watch('installedByBusinessTitle')
   const manufacturerId = watch('manufacturerId')
-  const manufacturerName = watch('manufacturerName')
+  const manufacturerTitle = watch('manufacturerTitle')
   const title = watch('title')
 
   // Load Categories
@@ -134,9 +133,9 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
     },
     categories,
     formPayload,
-    installedByBusinessName,
+    installedByBusinessTitle,
     manufacturerId,
-    manufacturerName,
+    manufacturerTitle,
     mutations: {
       createProjectsPart: createProjectsPartMutation,
     },

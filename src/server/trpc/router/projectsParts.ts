@@ -2,6 +2,8 @@ import { z } from 'zod'
 
 import type { Prisma } from '@prisma/client'
 
+import { snakeCase } from '@utils/string'
+
 import { createProjectsPartValidationSchema, getSimilarProjectsValidationSchema } from '@validationSchemas/projectsPart'
 
 import { router, publicProcedure } from '../trpc'
@@ -161,11 +163,30 @@ const projectsPartsRouter = router({
         manufacturerPart: {
           connectOrCreate: {
             where: {
-              id: input.manufacturerPartId || 'new-record',
+              id: input.manufacturerPartId || 'new-manufacturer-part',
             },
             create: {
-              categoryId: input.categoryId,
-              manufacturerId: input.manufacturerId,
+              category: {
+                connect: {
+                  id: input.categoryId,
+                },
+              },
+              manufacturer: {
+                connectOrCreate: {
+                  where: {
+                    id: input.manufacturerId || 'new-manufacturer',
+                  },
+                  create: {
+                    key: snakeCase(input.manufacturerTitle),
+                    manufacturerType: {
+                      connect: {
+                        key: 'part',
+                      },
+                    },
+                    title: input.manufacturerTitle,
+                  },
+                },
+              },
               partNumber: input.partNumber,
               title: input.title,
             },
@@ -173,14 +194,14 @@ const projectsPartsRouter = router({
         },
       }
 
-      if (input.installedByBusinessName) {
+      if (input.installedByBusinessTitle) {
         data.installedByBusiness = {
           connectOrCreate: {
             where: {
               id: input.installedByBusinessId || 'new-record',
             },
             create: {
-              title: input.installedByBusinessName,
+              title: input.installedByBusinessTitle,
             },
           },
         }
