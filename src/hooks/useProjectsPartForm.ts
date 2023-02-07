@@ -9,14 +9,14 @@ import { trpc } from '@utils/trpc'
 import { createProjectsPartValidationSchema } from '@validationSchemas/projectsPart'
 
 const defaultState = {
-  businessName: '',
   categoryId: undefined,
   description: undefined,
   installedAt: undefined,
   installedByBusinessId: undefined,
-  installedByNusinessName: undefined,
+  installedByBusinessTitle: undefined,
   manufacturerId: '',
   manufacturerPartId: '',
+  manufacturerTitle: '',
   partNumber: '',
   projectId: '',
   title: '',
@@ -76,17 +76,14 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   })
 
   const { watch } = formPayload
-  const installedByBusinessName = watch('installedByBusinessName')
+  const installedByBusinessTitle = watch('installedByBusinessTitle')
   const manufacturerId = watch('manufacturerId')
+  const manufacturerTitle = watch('manufacturerTitle')
   const title = watch('title')
 
   // Load Categories
   const categoriesQuery = trpc.categories.getCategories.useQuery({ categoryType: 'part' })
   const { data: categories = [] } = categoriesQuery
-
-  // Load Manufacturers
-  const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerType: 'part' })
-  const { data: manufacturers = [] } = manufacturersQuery
 
   // Create Mutation
   const { projectsParts: { getProjectsParts: { setData: setGetProjectsPartsData } } } = trpc.useContext()
@@ -136,9 +133,9 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
     },
     categories,
     formPayload,
-    installedByBusinessName,
+    installedByBusinessTitle,
     manufacturerId,
-    manufacturers,
+    manufacturerTitle,
     mutations: {
       createProjectsPart: createProjectsPartMutation,
     },

@@ -9,7 +9,7 @@ import {
   DrawerOverlay,
 } from '@chakra-ui/react'
 
-import type { ManufacturerPart, Project } from '@prisma/client'
+import type { Manufacturer, ManufacturerPart, Project } from '@prisma/client'
 
 import useProjectsPartForm from '@hooks/useProjectsPartForm'
 
@@ -42,9 +42,9 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
       setValue,
     },
     formPayload,
-    installedByBusinessName,
+    installedByBusinessTitle,
     manufacturerId,
-    manufacturers,
+    manufacturerTitle,
     title,
   } = projectsPartFormPayload
 
@@ -77,14 +77,21 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
             id="project-part-form"
           >
             <Form.Field label="Manufacturer" name="manufacturerId" validationRules={{ required: true }}>
-              <select>
-                <option value="">Please Select...</option>
-                {manufacturers.map(manufacturer => (
-                  <option key={manufacturer.id} value={manufacturer.id}>
-                    {manufacturer.title}
-                  </option>
-                ))}
-              </select>
+              <AutocompleteField
+                callbacks={{
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) => setValue('manufacturerTitle', e.target?.value),
+                  selectItem: (result: Manufacturer) => {
+                    setValue('manufacturerId', result?.id)
+                    setValue('manufacturerTitle', result?.title || '')
+                  },
+                }}
+                inputProps={{
+                  value: manufacturerTitle,
+                }}
+                routerKey="manufacturers"
+                queryKey="getManufacturers"
+                queryParams={{ limit: 10 }}
+              />
             </Form.Field>
 
             <Form.Field label="Title" name="title" marginTop={4} validationRules={{ required: true }}>
@@ -103,7 +110,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
                 }}
                 routerKey="manufacturerParts"
                 queryKey="getManufacturerParts"
-                queryParams={{ manufacturerId }}
+                queryParams={{ manufacturerId, manufacturerTitle }}
               />
             </Form.Field>
 
@@ -154,15 +161,15 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
               <AutocompleteField
                 callbacks={{
                   onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-                    setValue('installedByBusinessName', e.target?.value)
+                    setValue('installedByBusinessTitle', e.target?.value)
                   },
                   selectItem: (result: ManufacturerPart) => {
                     setValue('installedByBusinessId', result.id)
-                    setValue('installedByBusinessName', result.title || '')
+                    setValue('installedByBusinessTitle', result.title || '')
                   },
                 }}
                 inputProps={{
-                  value: installedByBusinessName || '',
+                  value: installedByBusinessTitle || '',
                 }}
                 routerKey="businesses"
                 queryKey="getBusinesses"
