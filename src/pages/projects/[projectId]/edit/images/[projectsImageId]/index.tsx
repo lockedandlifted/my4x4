@@ -29,6 +29,7 @@ const EditProjectImagePage = () => {
   const {
     callbacks: {
       deleteProjectsImage,
+      setImageAsDefault,
     },
   } = projectsImageFormPayload
 
@@ -61,6 +62,7 @@ const EditProjectImagePage = () => {
         }}
         callbacks={{
           deleteImage: () => deleteProjectsImage(),
+          setImageAsDefault: () => setImageAsDefault(),
         }}
       />
     </MobileLayout>

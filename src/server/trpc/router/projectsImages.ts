@@ -68,6 +68,41 @@ const projectsImagesRouter = router({
       include: input.include,
     })),
 
+  setImageAsDefault: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const projectsImage = await ctx.prisma.projectsImage.findFirst({
+        where: { id: input.id },
+      })
+
+      const projectsImages = await ctx.prisma.projectsImage.findMany({
+        where: { projectId: projectsImage?.projectId },
+        orderBy: {
+          sort: 'asc',
+        },
+        select: {
+          id: true,
+        },
+      })
+
+      const currentIndex = projectsImages.findIndex(p => p.id === projectsImage?.id)
+      projectsImages.splice(currentIndex, 1)
+      projectsImages.splice(0, 0, { id: projectsImage?.id })
+
+      const queries = projectsImages.map((p, index) => ctx.prisma.projectsImage.update({
+        where: {
+          id: p.id,
+        },
+        data: {
+          sort: index,
+        },
+      }))
+
+      return ctx.prisma.$transaction(queries)
+    }),
+
   deleteProjectsImageById: publicProcedure
     .input(z.object({
       id: z.string(),

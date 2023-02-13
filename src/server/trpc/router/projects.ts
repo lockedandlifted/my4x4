@@ -431,7 +431,7 @@ const projectsRouter = router({
       const attributeValues = await ctx.prisma.attributeValue.findMany()
 
       return ctx.prisma.$transaction([
-      // Delete existing attributes
+        // Delete existing attributes
         ctx.prisma.projectsAttribute.deleteMany({
           where: {
             projectId: input.id,
