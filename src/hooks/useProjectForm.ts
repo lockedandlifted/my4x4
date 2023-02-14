@@ -126,7 +126,7 @@ const setupProjectInitialState = (project: Project) => {
   }, { ...defaultState })
 
   if (project.manufacturerModel?.manufacturer) {
-    initialState.manufacturerId = project.manufacturerModel?.manufacturer.id
+    initialState.manufacturerId = project.manufacturerModel.manufacturer.id
   }
 
   if (project.projectsAttributes) {
@@ -237,15 +237,27 @@ function useProjectForm(options: UseProjectFormOptions) {
   return {
     attributes,
     callbacks: {
-      createProject: (data: typeof defaultState) => createProject({ data, mutation: createProjectMutation, temporaryUserId }),
-      updateProject: (data: typeof defaultState) => updateProject({ data, mutation: updateProjectMutation, project }),
+      createProject: (data: typeof defaultState) => (
+        createProject({
+          data,
+          mutation: createProjectMutation,
+          temporaryUserId,
+        })
+      ),
+      updateProject: (data: typeof defaultState) => (
+        updateProject({
+          data,
+          mutation: updateProjectMutation,
+          project,
+        })
+      ),
     },
     createdByOwner,
     formPayload,
     manufacturerId,
     manufacturerModelId,
-    manufacturers,
     manufacturerModels,
+    manufacturers,
     mutations: {
       createProject: createProjectMutation,
       updateProject: updateProjectMutation,
