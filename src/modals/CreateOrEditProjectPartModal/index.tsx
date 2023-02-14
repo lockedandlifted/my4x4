@@ -90,7 +90,7 @@ const CreateOrEditProjectPartModal = (props: CreateOrEditProjectPartModalProps) 
                 }}
                 routerKey="manufacturers"
                 queryKey="getManufacturers"
-                queryParams={{ limit: 10 }}
+                queryParams={{ limit: 10, manufacturerTypeKey: 'part' }}
               />
             </Form.Field>
 

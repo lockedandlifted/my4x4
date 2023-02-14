@@ -15,7 +15,9 @@ const manufacturersRouter = router({
       const filters: Prisma.ManufacturerWhereInput = {}
 
       if (input.manufacturerTypeKey) {
-        filters.key = input.manufacturerTypeKey
+        filters.manufacturerType = {
+          key: input.manufacturerTypeKey,
+        }
       }
 
       if (input.string) {
