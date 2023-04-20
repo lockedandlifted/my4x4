@@ -64,5 +64,6 @@
   "eslint.alwaysShowStatus": true,
   "editor.wordWrap": "on",
   "diffEditor.ignoreTrimWhitespace": false,
-  "editor.acceptSuggestionOnCommitCharacter": false
+"editor.acceptSuggestionOnCommitCharacter": false,
+"typescript.tsdk": "node_modules/typescript/lib"
 }
