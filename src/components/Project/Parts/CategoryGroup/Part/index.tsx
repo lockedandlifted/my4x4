@@ -3,8 +3,6 @@ import { FaAngleRight } from 'react-icons/fa'
 
 import type { Prisma } from '@prisma/client'
 
-import PartIcon from '@components/Icons/PartIcon'
-
 type ManufacturerPartWithManufacturer = Prisma.ManufacturerPartGetPayload<{
   include: {
     category: true,

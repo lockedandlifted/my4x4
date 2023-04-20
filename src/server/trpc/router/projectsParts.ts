@@ -207,17 +207,27 @@ const projectsPartsRouter = router({
         }
       }
 
-      return ctx.prisma.projectsPart.create({
-        data,
-        include: {
-          manufacturerPart: {
-            include: {
-              category: true,
-              manufacturer: true,
+      return ctx.prisma.$transaction([
+        ctx.prisma.projectsPart.create({
+          data,
+          include: {
+            manufacturerPart: {
+              include: {
+                category: true,
+                manufacturer: true,
+              },
             },
           },
-        },
-      })
+        }),
+        ctx.prisma.project.update({
+          where: {
+            id: input.projectId,
+          },
+          data: {
+            updatedAt: new Date(),
+          },
+        }),
+      ])
     }),
 
   deleteProjectsPartById: publicProcedure

@@ -74,6 +74,8 @@ const CategoryGroup = (props: CategoryGroupProps) => {
           {projectsParts.map((projectsPart, index) => {
             const { id, manufacturerPart } = projectsPart
 
+            if (!manufacturerPart) return null
+
             return (
               <Part
                 href={editMode ? `/projects/${project?.id}/edit/parts/${id}` : `/${project?.slug}/parts/${id}`}

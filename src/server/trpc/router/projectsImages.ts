@@ -23,22 +23,32 @@ const projectsImagesRouter = router({
         },
       })) || {}
 
-      return ctx.prisma.projectsImage.create({
-        data: {
-          project: {
-            connect: {
-              id: input.projectId,
+      return ctx.prisma.$transaction([
+        ctx.prisma.projectsImage.create({
+          data: {
+            project: {
+              connect: {
+                id: input.projectId,
+              },
             },
-          },
-          image: {
-            create: {
-              title: input.image.originalFilename,
-              ...input.image,
+            image: {
+              create: {
+                title: input.image.originalFilename,
+                ...input.image,
+              },
             },
+            sort: sort ? sort + 1 : 1,
           },
-          sort: sort ? sort + 1 : 1,
-        },
-      })
+        }),
+        ctx.prisma.project.update({
+          where: {
+            id: input.projectId,
+          },
+          data: {
+            updatedAt: new Date(),
+          },
+        }),
+      ])
     }),
 
   getProjectsImageById: publicProcedure
