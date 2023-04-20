@@ -54,7 +54,7 @@
   },
   "workbench.startupEditor": "newUntitledFile",
   "javascript.updateImportsOnFileMove.enabled": "never",
-  "window.zoomLevel": 0,
+  "window.zoomLevel": 1,
   "javascript.suggest.autoImports": false,
   "typescript.suggest.autoImports": false,
   "editor.codeActionsOnSave": {

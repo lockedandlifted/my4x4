@@ -150,11 +150,26 @@ const projectsRouter = router({
   getProjects: publicProcedure
     .input(z.object({
       limit: z.number().optional(),
+      manufacturerId: z.string().optional(),
+      manufacturerModelId: z.string().optional(),
       userId: z.string().uuid().optional(),
     }))
     .query(({ ctx, input }) => {
       const filters: Prisma.ProjectWhereInput = {}
 
+      // Manufacturer
+      if (input.manufacturerId) {
+        filters.manufacturerModel = {
+          manufacturerId: input.manufacturerId,
+        }
+      }
+
+      // Model
+      if (input.manufacturerModelId) {
+        filters.manufacturerModelId = input.manufacturerModelId
+      }
+
+      // User
       if (input.userId) {
         filters.projectsUsers = {
           some: {
