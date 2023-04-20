@@ -245,7 +245,7 @@ const projectsRouter = router({
       },
       take: input.limit || undefined,
       orderBy: {
-        createdAt: 'desc',
+        updatedAt: 'desc',
       },
     })),
 
@@ -451,6 +451,7 @@ const projectsRouter = router({
             projectsAttributes: {
               create: mapCreateProjectsAttributes(input, attributeValues),
             },
+            updatedAt: new Date(),
           },
           include: {
             projectsAttributes: {
