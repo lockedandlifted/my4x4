@@ -22,7 +22,7 @@ const Link = (props: LinkProps) => {
       marginTop={4}
       padding={2}
       target="_blank"
-      rel="noopener noreferrer"
+      rel="nofollow noopener noreferrer"
     >
       <Flex
         alignItems="center"

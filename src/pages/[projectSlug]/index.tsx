@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Flex } from '@chakra-ui/react'
+import { NextSeo } from 'next-seo'
 
 import type { GetServerSideProps } from 'next'
 
@@ -51,19 +52,25 @@ const BuildPage = (props: { temporaryUserId: string }) => {
 
   return (
     <MobileLayout>
-      <Head>
-        <title>{`${project?.title} | MY4X4`}</title>
-        <meta name="description" content="Add your build. Find and research similar builds to get inspiration." />
-        <meta property="fb:app_id" content="100089112092156" />
-        <meta property="og:description" content={project?.description || 'Checkout this build on MY4X4.info'} />
-        <meta
-          property="og:image"
-          content={ogImageUrl}
-        />
-        <meta property="og:title" content={project?.title} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://www.my4x4.info/${project?.slug}`} />
-      </Head>
+      <NextSeo
+        title={`MY4X4 | ${project?.title}`}
+        description={`View detailed specs and info for ${project?.title} on MY4X4.`}
+        facebook={{
+          appId: '100089112092156',
+        }}
+        openGraph={{
+          description: project?.description || 'Checkout this build on MY4X4.info',
+          images: [
+            {
+              url: ogImageUrl,
+              alt: `Main Image for ${project?.title}`,
+            },
+          ],
+          title: project?.title,
+          type: 'website',
+          url: `https://www.my4x4.info/${project?.slug}`,
+        }}
+      />
 
       <Flex direction="column">
         <MainImage project={project} />
