@@ -54,6 +54,7 @@ const MainImage = (props: MainImageProps) => {
       >
         <Flex direction="column" justifyContent="center">
           <Text
+            as="h1"
             color={hasImage ? 'white' : 'black'}
             fontSize="3xl"
             fontWeight="bold"

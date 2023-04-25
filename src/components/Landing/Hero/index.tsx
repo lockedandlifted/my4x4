@@ -4,7 +4,7 @@ import Paragraph from '@components/Paragraph'
 
 const Hero = () => (
   <Flex direction="column" alignItems="flex-start" marginTop={8}>
-    <Heading fontWeight="normal" whiteSpace="pre-line" size="xl">
+    <Heading as="h1" fontWeight="normal" whiteSpace="pre-line" size="xl">
       {`Interested in 4x4 Builds?
       Add your build or browse other builds below.`}
     </Heading>
