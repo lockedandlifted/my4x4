@@ -1,5 +1,6 @@
 import { Flex } from '@chakra-ui/react'
-import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { DefaultSeo } from 'next-seo'
 import { motion } from 'framer-motion'
 
 import Footer from '@components/Footer'
@@ -12,13 +13,21 @@ interface MobileLayoutProps {
 const MobileLayout = (props: MobileLayoutProps) => {
   const { children } = props
 
+  const { asPath } = useRouter()
+
   return (
     <Flex justifyContent="center">
-      <Head>
-        <title>MY4X4 | Detailed info and specs of your favourite 4wds</title>
-        <meta name="description" content="Add your build. Find and research similar builds to get inspiration." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <DefaultSeo
+        title="MY4X4 | Detailed info and specs of your favourite 4wds"
+        description="Add your build. Find and research similar builds to get inspiration."
+        canonical={`https://www.my4x4.info${asPath}`}
+        additionalLinkTags={[
+          {
+            rel: 'icon',
+            href: '/favicon.ico',
+          },
+        ]}
+      />
 
       <Flex flexDirection="column" width={['100%', 600]}>
         <Header />

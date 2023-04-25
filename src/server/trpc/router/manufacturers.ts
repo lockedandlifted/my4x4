@@ -35,6 +35,16 @@ const manufacturersRouter = router({
         take: input.limit || undefined,
       })
     }),
+
+  getManufacturerById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.manufacturer.findUnique({
+      where: {
+        id: input.id,
+      },
+    })),
 })
 
 export default manufacturersRouter
