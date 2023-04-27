@@ -22,6 +22,7 @@ import Links from '@components/Project/Links'
 import MainImage from '@components/ProjectForm/components/MainImage'
 import Parts from '@components/Project/Parts'
 import ProjectImageThumbs from '@components/ProjectImageThumbs'
+import PublishProject from '@components/Project/PublishProject'
 
 const showModal = (modalKey: string, setState, payload?: object) => {
   setState(state => ({
@@ -71,13 +72,14 @@ const EditProjectPage = () => {
   const { data: project } = projectQuery
 
   const projectFormPayload = useProjectForm({ project })
-  const { callbacks: { updateProject }, formPayload } = projectFormPayload
+  const { callbacks: { updateProject, publishProject }, formPayload } = projectFormPayload
 
   return (
     <MobileLayout>
       <Form callbacks={{ submitForm: updateProject }} formPayload={formPayload} id="project-form">
         <CreateAccountNotice project={project} />
         <MainImage project={project} />
+        <PublishProject callbacks={{ publishProject }} project={project} />
         <ProjectImageThumbs editMode project={project} />
         <Description editMode project={project} />
         <Links callbacks={callbacks(undefined, setState)} editMode project={project} />

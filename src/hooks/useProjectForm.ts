@@ -88,6 +88,18 @@ const updateProject = (params: UpdateProjectParams) => {
   return mutation.mutate(updatedData)
 }
 
+type PublishProjectParams = {
+  mutation: {
+    mutate: (data: { id: string }) => void,
+  },
+  project: Project,
+}
+
+const publishProject = (params: PublishProjectParams) => {
+  const { mutation, project } = params
+  return mutation.mutate({ id: project.id })
+}
+
 type DefaultState = {
   attributes: {
     colour: string,
@@ -234,6 +246,14 @@ function useProjectForm(options: UseProjectFormOptions) {
     },
   })
 
+  // Publish Mutation
+  const publishProjectMutation = trpc.projects.publishProjectById.useMutation({
+    onSuccess: (data) => {
+      const [_, project] = data
+      invalidateGetProjectById({ id: project?.id })
+    },
+  })
+
   return {
     attributes,
     callbacks: {
@@ -248,6 +268,12 @@ function useProjectForm(options: UseProjectFormOptions) {
         updateProject({
           data,
           mutation: updateProjectMutation,
+          project,
+        })
+      ),
+      publishProject: () => (
+        publishProject({
+          mutation: publishProjectMutation,
           project,
         })
       ),
