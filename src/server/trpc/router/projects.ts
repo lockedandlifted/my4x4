@@ -155,7 +155,9 @@ const projectsRouter = router({
       userId: z.string().uuid().optional(),
     }))
     .query(({ ctx, input }) => {
-      const filters: Prisma.ProjectWhereInput = {}
+      const filters: Prisma.ProjectWhereInput = {
+        published: true,
+      }
 
       // Manufacturer
       if (input.manufacturerId) {
@@ -225,6 +227,9 @@ const projectsRouter = router({
       limit: z.number().optional(),
     }))
     .query(({ ctx, input }) => ctx.prisma.project.findMany({
+      where: {
+        published: true,
+      },
       include: {
         manufacturerModel: {
           include: {
@@ -277,6 +282,7 @@ const projectsRouter = router({
       return ctx.prisma.project.findMany({
         where: {
           manufacturerModelId: project?.manufacturerModelId,
+          published: true,
           NOT: {
             id: project?.id,
           },
@@ -496,6 +502,19 @@ const projectsRouter = router({
         }),
       ])
     }),
+
+  publishProjectById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => ctx.prisma.project.update({
+      where: {
+        id: input.id,
+      },
+      data: {
+        published: true,
+      },
+    })),
 })
 
 export default projectsRouter
