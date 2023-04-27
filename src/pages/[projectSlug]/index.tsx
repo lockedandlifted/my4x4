@@ -1,6 +1,5 @@
-import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Flex } from '@chakra-ui/react'
+import { Box, Flex, Text } from '@chakra-ui/react'
 import { NextSeo } from 'next-seo'
 
 import type { GetServerSideProps } from 'next'
@@ -83,6 +82,39 @@ const BuildPage = (props: { temporaryUserId: string }) => {
         <SimilarProjects project={project} />
 
         {isValidOwner && <Actions project={project} />}
+
+        <Flex
+          borderTop="1px solid"
+          borderColor="gray.200"
+          color="gray.400"
+          direction="column"
+          paddingTop="4"
+          marginTop="4"
+        >
+          {!!project?.createdAt && (
+            <Flex direction="column" fontSize="sm" marginBottom="2">
+              <Text fontWeight="bold">
+                Build Added
+              </Text>
+
+              <Text>
+                {project.createdAt.toDateString()} at {project.createdAt.toTimeString()}
+              </Text>
+            </Flex>
+          )}
+
+          {!!project?.updatedAt && (
+            <Flex direction="column" fontSize="sm">
+              <Text fontWeight="bold">
+                Last Updated
+              </Text>
+
+              <Text>
+                {project.updatedAt.toDateString()} at {project.updatedAt.toTimeString()}
+              </Text>
+            </Flex>
+          )}
+        </Flex>
       </Flex>
     </MobileLayout>
   )

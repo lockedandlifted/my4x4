@@ -22,31 +22,35 @@ const Header = () => {
         paddingX={[4]}
         width="100%"
       >
-        <Link onClick={onOpen} fontSize={28} width="28px">
-          <FiMenu />
-        </Link>
+        <Flex width="60px">
+          <Link onClick={onOpen} fontSize={28} width="28px">
+            <FiMenu />
+          </Link>
+        </Flex>
 
         <Link href="/" marginX="auto">
           <Image priority src={LogoUrl} width={82} alt="MY4X4 Logo" />
         </Link>
 
-        <Flex
-          as="a"
-          alignItems="center"
-          justifyContent="center"
-          border="1px solid"
-          borderColor="gray.200"
-          borderRadius="100%"
-          fontSize="sm"
-          height="28px"
-          href="/search"
-          marginRight="1"
-          width="28px"
-        >
-          <FiSearch />
-        </Flex>
+        <Flex>
+          <Flex
+            as="a"
+            alignItems="center"
+            justifyContent="center"
+            border="1px solid"
+            borderColor="gray.200"
+            borderRadius="100%"
+            fontSize="sm"
+            height="28px"
+            href="/search"
+            marginRight="1"
+            width="28px"
+          >
+            <FiSearch />
+          </Flex>
 
-        <LoggedInUser />
+          <LoggedInUser />
+        </Flex>
       </Flex>
 
       <MainNavigationModal

@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/provider'
 import { Toaster } from 'react-hot-toast'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { AnimatePresence } from 'framer-motion'
+import { Analytics } from '@vercel/analytics/react'
 
 import type { AppType } from 'next/app'
 import type { Session } from 'next-auth'
@@ -39,6 +40,7 @@ const MyApp: AppType<{ session: Session | null }> = (props) => {
           <ReactQueryDevtools initialIsOpen={false} />
         </ImageKitContextProvider>
         <Toaster />
+        <Analytics />
       </ChakraProvider>
     </SessionProvider>
   )
