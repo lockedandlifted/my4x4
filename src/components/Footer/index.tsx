@@ -23,19 +23,27 @@ const Footer = () => (
     <Flex flexDirection="row" paddingTop="2" justifyContent="space-between">
       <Flex>
         <NextLink href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
-          <Text fontSize="xs" color="gray.400">Got a suggestion?</Text>
+          <Text fontSize="sm" color="gray.400">Got a suggestion?</Text>
         </NextLink>
 
-        <Text fontSize="xs" color="gray.400" marginLeft={1}>
+        <Text fontSize="sm" color="gray.400" marginLeft={1}>
           MY4X4.info © 2023
         </Text>
 
-        <Text fontSize="xs" color="gray.400" marginLeft={1}>
+        <Text fontSize="sm" color="gray.400" marginLeft={1}>
           |
         </Text>
 
         <NextLink href="/privacyPolicy">
-          <Text fontSize="xs" color="gray.600" marginLeft={1}>Privacy Policy</Text>
+          <Text fontSize="sm" color="gray.600" marginLeft={1}>Privacy Policy</Text>
+        </NextLink>
+
+        <Text fontSize="sm" color="gray.400" marginLeft={1}>
+          |
+        </Text>
+
+        <NextLink href="https://www.kengreeff.com">
+          <Text fontSize="sm" color="gray.600" marginLeft={1}>Site by Ken Greeff</Text>
         </NextLink>
       </Flex>
 

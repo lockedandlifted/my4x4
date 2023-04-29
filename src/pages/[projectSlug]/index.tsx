@@ -42,6 +42,13 @@ const BuildPage = (props: { temporaryUserId: string }) => {
 
   const { data: project } = projectQuery
 
+  const projectViewQuery = trpc.projectPageViews.getViewCountForProjectSlug.useQuery(
+    { slug: projectSlug },
+    { enabled: !!projectSlug },
+  )
+
+  const { data: projectViewCount } = projectViewQuery
+
   const { isValidOwner } = useValidateProjectOwner({
     project,
     temporaryUserId,
@@ -91,6 +98,16 @@ const BuildPage = (props: { temporaryUserId: string }) => {
           paddingTop="4"
           marginTop="4"
         >
+          <Flex direction="column" fontSize="sm" marginBottom="2">
+            <Text fontWeight="bold">
+              Build Viewed
+            </Text>
+
+            <Text>
+              {projectViewCount} {projectViewCount === 1 ? 'Time' : 'Times'}
+            </Text>
+          </Flex>
+
           {!!project?.createdAt && (
             <Flex direction="column" fontSize="sm" marginBottom="2">
               <Text fontWeight="bold">
