@@ -16,6 +16,18 @@ const projectPageViewsRouter = router({
         },
       },
     })),
+
+  getViewCountForProjectSlug: publicProcedure
+    .input(z.object({
+      slug: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.projectPageView.count({
+      where: {
+        project: {
+          slug: input.slug,
+        },
+      },
+    })),
 })
 
 export default projectPageViewsRouter
