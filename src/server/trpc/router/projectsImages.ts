@@ -76,6 +76,9 @@ const projectsImagesRouter = router({
         projectId: input.projectId,
       },
       include: input.include,
+      orderBy: {
+        sort: 'asc',
+      },
     })),
 
   setImageAsDefault: publicProcedure

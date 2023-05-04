@@ -19,6 +19,7 @@ const Projects = (props: ProjectsProps) => {
 
   // Query
   const projectsQuery = trpc.projects.getProjects.useQuery({
+    includeUnpublished: true,
     userId: user?.id,
   }, { enabled: !!user?.id })
 
@@ -30,7 +31,22 @@ const Projects = (props: ProjectsProps) => {
   return (
     <Flex flexDirection="column" marginTop={8}>
       <Flex justifyContent="space-between">
-        <Heading size="md" marginBottom="4">Builds</Heading>
+        <Heading size="md" marginBottom="4">Unpublished Builds</Heading>
+      </Flex>
+
+      <SimpleGrid
+        columns={2}
+        gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"
+        marginBottom={8}
+        spacing="4"
+      >
+        {projects.filter(p => !p.published).map(project => (
+          <ProjectTile compact key={project.id} project={project} />
+        ))}
+      </SimpleGrid>
+
+      <Flex justifyContent="space-between">
+        <Heading size="md" marginBottom="4">Published Builds</Heading>
       </Flex>
 
       <SimpleGrid
@@ -38,7 +54,7 @@ const Projects = (props: ProjectsProps) => {
         gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"
         spacing="4"
       >
-        {projects.map(project => (
+        {projects.filter(p => p.published).map(project => (
           <ProjectTile compact key={project.id} project={project} />
         ))}
       </SimpleGrid>

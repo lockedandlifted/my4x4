@@ -149,14 +149,18 @@ const projectsRouter = router({
 
   getProjects: publicProcedure
     .input(z.object({
+      includeUnpublished: z.boolean().optional(),
       limit: z.number().optional(),
       manufacturerId: z.string().optional(),
       manufacturerModelId: z.string().optional(),
       userId: z.string().uuid().optional(),
     }))
     .query(({ ctx, input }) => {
-      const filters: Prisma.ProjectWhereInput = {
-        published: true,
+      const filters: Prisma.ProjectWhereInput = {}
+
+      /// Published
+      if (!input.includeUnpublished) {
+        filters.published = true
       }
 
       // Manufacturer
