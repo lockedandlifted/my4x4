@@ -70,9 +70,9 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   const router = useRouter()
 
   const formPayload = useForm({
-    defaultValues: projectsPart ? setupProjectPartInitialState(projectsPart) : defaultState,
     mode: 'onChange',
     resolver: zodResolver(createProjectsPartValidationSchema, undefined),
+    values: projectsPart ? setupProjectPartInitialState(projectsPart) : defaultState,
   })
 
   const { watch } = formPayload
@@ -86,22 +86,10 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   const { data: categories = [] } = categoriesQuery
 
   // Create Mutation
-  const { projectsParts: { getProjectsParts: { setData: setGetProjectsPartsData } } } = trpc.useContext()
+  const { projectsParts: { getProjectsParts: { invalidate } } } = trpc.useContext()
 
   const createProjectsPartMutation = trpc.projectsParts.createProjectsPart.useMutation({
-    onSuccess: (data) => {
-      setGetProjectsPartsData({
-        projectId: data.projectId,
-        include: {
-          manufacturerPart: {
-            include: {
-              category: true,
-              manufacturer: true,
-            },
-          },
-        },
-      }, prevData => (prevData ? [...prevData, data] : [data]))
-    },
+    onSuccess: () => invalidate({ projectId: projectsPart?.projectId }),
   })
 
   // Update Mutation
