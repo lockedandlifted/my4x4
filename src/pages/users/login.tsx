@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import {
   Button, Flex, Heading, VStack,
 } from '@chakra-ui/react'
@@ -8,32 +9,39 @@ import MobileLayout from '@layouts/MobileLayout'
 
 const CALLBACK_URL = '/users/account'
 
-const UserLoginPage = () => (
-  <MobileLayout>
-    <Flex direction="column" marginTop={8}>
-      <Heading fontWeight="medium" size="lg">
-        Login or Sign Up
-      </Heading>
+const UserLoginPage = () => {
+  const routerPayload = useRouter()
+  const { query } = routerPayload
 
-      <VStack alignItems="flex-start" marginTop={8}>
-        <Button
-          leftIcon={<SiFacebook />}
-          onClick={() => signIn('facebook', { callbackUrl: CALLBACK_URL })}
-          width="100%"
-        >
-          Login with Facebook
-        </Button>
+  const callbackUrl = query?.redirect || CALLBACK_URL
 
-        <Button
-          leftIcon={<SiAuth0 />}
-          onClick={() => signIn('auth0', { callbackUrl: CALLBACK_URL })}
-          width="100%"
-        >
-          Login with Auth0
-        </Button>
-      </VStack>
-    </Flex>
-  </MobileLayout>
-)
+  return (
+    <MobileLayout>
+      <Flex direction="column" marginTop={8}>
+        <Heading fontWeight="medium" size="lg">
+          Login or Sign Up
+        </Heading>
+
+        <VStack alignItems="flex-start" marginTop={8}>
+          <Button
+            leftIcon={<SiFacebook />}
+            onClick={() => signIn('facebook', { callbackUrl })}
+            width="100%"
+          >
+            Login with Facebook
+          </Button>
+
+          <Button
+            leftIcon={<SiAuth0 />}
+            onClick={() => signIn('auth0', { callbackUrl })}
+            width="100%"
+          >
+            Login with Auth0
+          </Button>
+        </VStack>
+      </Flex>
+    </MobileLayout>
+  )
+}
 
 export default UserLoginPage
