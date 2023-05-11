@@ -14,7 +14,10 @@ const Attribute = (props: AttributeProps) => {
       alignItems="center"
       marginBottom={last ? 0 : 2}
     >
-      <Heading color="blackAlpha.500" size="sm" width="140px">{attribute.title}</Heading>
+      <Heading color="blackAlpha.500" flexShrink={0} size="sm" width="140px">
+        {attribute.title}
+      </Heading>
+
       <Text color="black">{value}</Text>
     </Flex>
   )
