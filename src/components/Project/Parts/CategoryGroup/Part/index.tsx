@@ -24,15 +24,16 @@ const Part = (props: PartProps) => {
       alignItems="center"
       as={href ? 'a' : 'div'}
       borderBottomWidth={last ? 0 : 1}
+      borderBottomStyle="dashed"
       href={href}
-      padding={4}
+      paddingY={2}
     >
       <Flex justifyContent="center" flexDirection="column">
-        <Heading size="xs">
+        <Text fontSize="sm" noOfLines={1}>{manufacturerPart.title}</Text>
+
+        <Heading color="gray" fontWeight="normal" marginTop="2" size="xs">
           {manufacturerPart.manufacturer?.title}
         </Heading>
-
-        <Text fontSize="sm" noOfLines={1}>{manufacturerPart.title}</Text>
       </Flex>
 
       <Text color="gray.300" fontSize="xl" marginLeft="auto">

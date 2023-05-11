@@ -11,20 +11,11 @@ const Attribute = (props: AttributeProps) => {
 
   return (
     <Flex
-      direction="column"
       alignItems="center"
-      marginBottom={last ? 0 : 4}
-      _after={{
-        display: last ? 'none' : 'block',
-        content: '""',
-        backgroundColor: 'whiteAlpha.300',
-        height: '1px',
-        marginTop: 4,
-        width: '50px',
-      }}
+      marginBottom={last ? 0 : 2}
     >
-      <Heading color="whiteAlpha.700" size="xs">{attribute.title}</Heading>
-      <Text color="white">{value}</Text>
+      <Heading color="blackAlpha.500" size="sm" width="140px">{attribute.title}</Heading>
+      <Text color="black">{value}</Text>
     </Flex>
   )
 }
