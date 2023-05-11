@@ -58,6 +58,16 @@ const projectsPartsRouter = router({
       })
     }),
 
+  getProjectsPartsCount: publicProcedure
+    .input(z.object({
+      projectId: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.projectsPart.count({
+      where: {
+        projectId: input.projectId,
+      },
+    })),
+
   getProjectsPartById: publicProcedure
     .input(z.object({
       id: z.string(),

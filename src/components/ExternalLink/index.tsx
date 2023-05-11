@@ -28,6 +28,7 @@ const Link = (props: LinkProps) => {
         alignItems="center"
         backgroundColor="gray.50"
         borderRadius="xl"
+        flexShrink={0}
         height={14}
         justifyContent="center"
         width={14}
@@ -40,7 +41,9 @@ const Link = (props: LinkProps) => {
           {externalLink.title}
         </Heading>
 
-        <Text color="gray.500" fontSize="sm" fontStyle="italic">{externalLink.url}</Text>
+        <Text color="gray.500" fontSize="sm" fontStyle="italic" noOfLines={1}>
+          {externalLink.url}
+        </Text>
       </Flex>
     </Flex>
   )

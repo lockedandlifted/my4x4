@@ -1,95 +1,39 @@
-import { useEffect, useState } from 'react'
-import {
-  Button, Flex, Heading, Text,
-} from '@chakra-ui/react'
-import { FaPen } from 'react-icons/fa'
+import { useState } from 'react'
+import { Flex, Heading, Link } from '@chakra-ui/react'
 
-import AddedByCommunityNotice from '@components/Project/AddedByCommunityNotice'
-import Form from '@components/Form'
 import Paragraph from '@components/Paragraph'
 
 import type { Project } from '@prisma/client'
 
+import Tags from '../Tags'
+
 type DescriptionProps = {
-  editMode: boolean,
   project: Project,
 }
 
 const Description = (props: DescriptionProps) => {
-  const { editMode = false, project } = props
+  const { project } = props
 
-  const [editing, setEditing] = useState(false)
-
-  useEffect(() => {
-    setEditing(false)
-  }, [project?.updatedAt])
-
-  if (!editMode && !project?.description && project?.createdByOwner) {
-    return null
-  }
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <Flex flexDirection="column" marginTop={8}>
-      <Flex justifyContent="space-between">
-        <Heading size="md" marginBottom="4">About the Build</Heading>
-      </Flex>
+    <Flex direction="column" marginTop="8">
+      <Heading size="sm">Build Details</Heading>
 
-      <AddedByCommunityNotice project={project} />
+      <Heading as="h1" marginTop="4" size="lg">{project?.title}</Heading>
 
-      {editing && (
-        <Form.Field label="Description" name="description">
-          <textarea style={{ height: 200 }} />
-        </Form.Field>
-      )}
+      <Tags project={project} />
 
-      {!editing && !!project?.description && (
+      {!!project?.description && (
         <>
-          <Paragraph>
-            {project?.description}
+          <Paragraph marginTop="4" noOfLines={isExpanded ? undefined : 4}>
+            {project.description}
           </Paragraph>
 
-          {editMode && (
-            <Text
-              alignItems="center"
-              as="span"
-              color="blue.500"
-              cursor="pointer"
-              display="flex"
-              fontWeight="bold"
-              onClick={() => setEditing(!editing)}
-              marginTop={4}
-            >
-              <FaPen style={{ marginRight: 8 }} /> Edit Description
-            </Text>
-          )}
+          <Link color="teal.500" fontWeight="bold" marginTop="2" onClick={() => setIsExpanded(!isExpanded)}>
+            Read {isExpanded ? 'Less' : 'More'}
+          </Link>
         </>
-      )}
-
-      {editMode && !editing && !project?.description && (
-        <Flex alignItems="center" borderWidth={1} borderRadius="xl" flexDirection="column" padding={4}>
-          <Text>No description added yet.</Text>
-          <Text cursor="pointer" fontWeight="bold" onClick={() => setEditing(!editing)}>Add One!</Text>
-        </Flex>
-      )}
-
-      {editing && (
-        <Form.Actions>
-          <Button
-            onClick={() => setEditing(!editing)}
-            marginRight={2}
-            size="sm"
-          >
-            Cancel
-          </Button>
-
-          <Button
-            colorScheme="green"
-            size="sm"
-            type="submit"
-          >
-            Save
-          </Button>
-        </Form.Actions>
       )}
     </Flex>
   )

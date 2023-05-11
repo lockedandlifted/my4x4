@@ -34,21 +34,23 @@ const Parts = (props: PartsProps) => {
 
   return (
     <Flex flexDirection="column" marginTop={8}>
-      <Heading size="md">Parts</Heading>
+      <Heading size="sm">Parts</Heading>
 
-      {groupedParts.map((group) => {
-        const { category, key, projectsParts } = group
+      <Flex borderWidth="1px" borderColor="gray.200" borderRadius="lg" direction="column" marginTop="4" padding="4">
+        {groupedParts.map((group) => {
+          const { category, key, projectsParts } = group
 
-        return (
-          <CategoryGroup
-            category={category}
-            editMode={editMode}
-            key={key}
-            project={project}
-            projectsParts={projectsParts}
-          />
-        )
-      })}
+          return (
+            <CategoryGroup
+              category={category}
+              editMode={editMode}
+              key={key}
+              project={project}
+              projectsParts={projectsParts}
+            />
+          )
+        })}
+      </Flex>
 
       {editMode && (
         <Button

@@ -15,11 +15,13 @@ import MobileLayout from '@layouts/MobileLayout'
 import Actions from '@components/Project/Actions'
 import Attributes from '@components/Project/Attributes'
 import Description from '@components/Project/Description'
+import EditProjectBanner from '@components/Project/EditProjectBanner'
 import Links from '@components/Project/Links'
 import MainImage from '@components/Project/MainImage'
 import Parts from '@components/Project/Parts'
-import ProjectImageThumbs from '@components/ProjectImageThumbs'
+import ProjectOwner from '@components/Project/ProjectOwner'
 import SimilarProjects from '@components/Project/SimilarProjects'
+import SocialActions from '@components/Project/SocialActions'
 
 const BuildPage = (props: { temporaryUserId: string }) => {
   const { temporaryUserId } = props
@@ -79,16 +81,17 @@ const BuildPage = (props: { temporaryUserId: string }) => {
       />
 
       <Flex direction="column">
+        {isValidOwner && <EditProjectBanner project={project} projectViewCount={projectViewCount} />}
         <MainImage project={project} />
-        <ProjectImageThumbs project={project} />
+        <SocialActions project={project} />
         <Description project={project} />
-        <Links project={project} />
         <Attributes project={project} />
         <Parts project={project} />
-
+        <ProjectOwner user={project?.projectsUsers?.[0]?.user} />
+        <Links project={project} />
         <SimilarProjects project={project} />
 
-        {isValidOwner && <Actions project={project} />}
+        <Actions project={project} />
 
         <Flex
           borderTop="1px solid"

@@ -446,6 +446,7 @@ model Project {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   logBookEntries        LogBookEntry[]
+  projectLikes          ProjectLike[]
   projectPageViews      ProjectPageView[]
   projectsAttributes    ProjectsAttribute[]
   projectsExternalLinks ProjectsExternalLink[]
@@ -499,6 +500,20 @@ model ProjectsImage {
 
   @@unique([projectId, imageId])
   @@map("projects_images")
+}
+
+model ProjectLike {
+  id        String  @id @default(uuid())
+  project   Project @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId String  @map("project_id")
+  user      User    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId    String  @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([projectId, userId])
+  @@map("project_likes")
 }
 
 model ProjectPageView {
@@ -614,6 +629,7 @@ model User {
   attachments        Attachment[]
   businessesUser     BusinessesUser[]
   images             Image[]
+  projectLikes       ProjectLike[]
   projectsUsers      ProjectsUser[]
   sessions           Session[]
   usersExternalLinks UsersExternalLink[]
