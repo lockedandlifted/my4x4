@@ -33,7 +33,7 @@ const Links = (props: LinksProps) => {
 
   return (
     <Flex direction="column" marginTop="8">
-      <Heading size="md">
+      <Heading size="sm">
         Links
       </Heading>
 

@@ -1,10 +1,20 @@
-import { Flex, Heading, SimpleGrid } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertDescription,
+  Button,
+  Flex,
+  Heading,
+  SimpleGrid,
+} from '@chakra-ui/react'
 
 import type { Project } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 
+import Paragraph from '@components/Paragraph'
 import ProjectTile from '@components/ProjectTile'
+
+import Tags from '../Tags'
 
 type SimilarProjectsProps = {
   project: Project,
@@ -19,19 +29,34 @@ const SimilarProjects = (props: SimilarProjectsProps) => {
 
   const { data: similarProjects = [] } = similarProjectsQuery
 
-  if (!similarProjects.length) {
-    return null
-  }
-
   return (
     <Flex direction="column" marginTop="8">
-      <Heading size="md" marginBottom="4">
+      <Heading size="sm">
         Similar Builds
       </Heading>
+
+      <Tags marginTop="4" project={project} />
+
+      {!similarProjects.length && (
+        <Alert
+          borderRadius="xl"
+          marginTop={4}
+          padding={8}
+          status="success"
+          variant="subtle"
+        >
+          <Flex alignItems="flex-start" direction="column">
+            <AlertDescription>
+              We don&apos;t have any similar builds to show. Have you got a {project?.manufacturerModel?.manufacturer?.title} {project?.manufacturerModel?.title} or know someone with one you want the details of? If so, Add a New Build below.
+            </AlertDescription>
+          </Flex>
+        </Alert>
+      )}
 
       <SimpleGrid
         columns={2}
         gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"
+        marginTop="4"
         spacing="4"
       >
         {similarProjects.map(similarProject => (

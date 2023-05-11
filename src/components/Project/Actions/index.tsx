@@ -11,16 +11,26 @@ const Actions = (props: ActionsProps) => {
 
   return (
     <>
-      <Heading size="md" marginTop={8} marginBottom={4}>
+      <Heading size="sm" marginTop={8} marginBottom={4}>
         Actions
       </Heading>
 
       <Button
         as="a"
-        href={`/projects/${project?.id}/edit/details`}
+        colorScheme="blue"
+        href="/projects/new"
         size="lg"
       >
-        Edit Build Details
+        Add a Build
+      </Button>
+
+      <Button
+        as="a"
+        href="/search"
+        marginTop={2}
+        size="lg"
+      >
+        Browse Builds
       </Button>
     </>
 

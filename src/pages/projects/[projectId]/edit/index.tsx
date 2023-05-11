@@ -17,7 +17,8 @@ import Form from '@components/Form'
 import Actions from '@components/Project/Actions'
 import Attributes from '@components/Project/Attributes'
 import CreateAccountNotice from '@components/Project/CreateAccountNotice'
-import Description from '@components/Project/Description'
+import EditProjectBanner from '@components/Project/EditProjectBanner'
+import LegacyDescription from '@components/Project/LegacyDescription'
 import Links from '@components/Project/Links'
 import MainImage from '@components/ProjectForm/components/MainImage'
 import Parts from '@components/Project/Parts'
@@ -71,6 +72,13 @@ const EditProjectPage = () => {
   const projectQuery = trpc.projects.getProjectById.useQuery({ id: projectId })
   const { data: project } = projectQuery
 
+  const projectViewQuery = trpc.projectPageViews.getViewCountForProjectSlug.useQuery(
+    { slug: project?.slug },
+    { enabled: !!project?.slug },
+  )
+
+  const { data: projectViewCount } = projectViewQuery
+
   const projectFormPayload = useProjectForm({ project })
   const { callbacks: { updateProject, publishProject }, formPayload } = projectFormPayload
 
@@ -78,10 +86,11 @@ const EditProjectPage = () => {
     <MobileLayout>
       <Form callbacks={{ submitForm: updateProject }} formPayload={formPayload} id="project-form">
         <CreateAccountNotice project={project} />
+        <EditProjectBanner editMode project={project} projectViewCount={projectViewCount} />
         <MainImage project={project} />
         <PublishProject callbacks={{ publishProject }} project={project} />
         <ProjectImageThumbs editMode project={project} />
-        <Description editMode project={project} />
+        <LegacyDescription editMode project={project} />
         <Links callbacks={callbacks(undefined, setState)} editMode project={project} />
         <Attributes editMode project={project} />
         <Parts editMode callbacks={callbacks(undefined, setState)} project={project} />
