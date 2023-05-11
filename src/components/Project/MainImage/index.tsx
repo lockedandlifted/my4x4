@@ -15,6 +15,8 @@ const MainImage = (props: MainImageProps) => {
   const image = project?.projectsImages?.[0]?.image
   const hasImage = !!image
 
+  const imageCount = project?.projectsImages?.length
+
   const { imageUrl } = useImageUrl({
     enabled: hasImage,
     path: image?.fileKey,
@@ -47,7 +49,7 @@ const MainImage = (props: MainImageProps) => {
           href={`/${project?.slug}/images`}
           leftIcon={<FaImages />}
         >
-          19 Images
+          {imageCount} {imageCount === 1 ? 'Image' : 'Images'}
         </Button>
       </Flex>
     </Flex>
