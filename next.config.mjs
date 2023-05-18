@@ -9,6 +9,18 @@ import { withSuperjson } from 'next-superjson'
 
 /** @type {import("next").NextConfig} */
 const config = {
+  async rewrites() {
+    return [
+      {
+        source: '/robots.txt',
+        destination: '/api/robots',
+      },
+      {
+        source: '/sitemap.txt',
+        destination: '/api/sitemap',
+      },
+    ]
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
