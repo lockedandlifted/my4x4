@@ -5,6 +5,8 @@ import type { Project } from '@prisma/client'
 
 import useImageUrl from '@hooks/useImageUrl'
 
+import { trpc } from '@utils/trpc'
+
 type MainImageProps = {
   project: Project,
 }
@@ -15,7 +17,11 @@ const MainImage = (props: MainImageProps) => {
   const image = project?.projectsImages?.[0]?.image
   const hasImage = !!image
 
-  const imageCount = project?.projectsImages?.length
+  const imageCountQuery = trpc.projectsImages.getProjectsImagesCount.useQuery(
+    { slug: project?.slug },
+    { enabled: !!project?.slug },
+  )
+  const { data: imageCount } = imageCountQuery
 
   const { imageUrl } = useImageUrl({
     enabled: hasImage,

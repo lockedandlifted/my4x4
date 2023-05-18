@@ -1,6 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react'
-import Link from 'next/link'
-import Image from 'next/image'
+import NextImage from 'next/image'
 import { ProgressBar } from '@uppy/react'
 
 import type { Project } from '@prisma/client'
@@ -11,6 +10,8 @@ import useImageUrl from '@hooks/useImageUrl'
 import useProjectImageUpload from '@hooks/useProjectImageUpload'
 
 import FileUploadButton from '@components/FileUploadButton'
+
+import PlaceholderUrl from './assets/placeholder.png'
 
 type MainImageProps = {
   project: Project,
@@ -52,7 +53,15 @@ const MainImage = (props: MainImageProps) => {
         maxWidth="100%"
         style={{ aspectRatio: '4 / 5' }}
       >
-        {hasImage && <Image alt="Project Main Image" fill src={imageUrl} style={{ objectFit: 'cover' }} />}
+        {hasImage && <NextImage alt="Project Main Image" fill src={imageUrl} style={{ objectFit: 'cover' }} />}
+        {!hasImage && (
+          <NextImage
+            alt="Image Placeholder"
+            fill
+            src={PlaceholderUrl}
+            style={{ marginTop: 'auto', objectFit: 'cover', opacity: 0.3 }}
+          />
+        )}
 
         <Flex
           background={
@@ -81,17 +90,13 @@ const MainImage = (props: MainImageProps) => {
           {!hasImage && !!uppy && (
             <FileUploadButton
               buttonProps={{
-                backgroundColor: hasImage ? 'whiteAlpha.300' : 'blackAlpha.300',
-                colorScheme: hasImage ? 'whiteAlpha' : 'blackAlpha',
+                colorScheme: 'blue',
                 marginTop: 'auto',
                 size: 'lg',
                 zIndex: '1',
                 width: '100%',
-                _hover: {
-                  backgroundColor: hasImage ? 'whiteAlpha.400' : 'blackAlpha.400',
-                },
               }}
-              buttonText="Add Photos"
+              buttonText="Upload a Photo"
               uppy={uppy}
             />
           )}

@@ -41,7 +41,7 @@ const Projects = (props: ProjectsProps) => {
         spacing="4"
       >
         {projects.filter(p => !p.published).map(project => (
-          <ProjectTile compact key={project.id} project={project} />
+          <ProjectTile compact editMode={editMode} key={project.id} project={project} />
         ))}
       </SimpleGrid>
 
@@ -55,29 +55,19 @@ const Projects = (props: ProjectsProps) => {
         spacing="4"
       >
         {projects.filter(p => p.published).map(project => (
-          <ProjectTile compact key={project.id} project={project} />
+          <ProjectTile compact editMode={editMode} key={project.id} project={project} />
         ))}
       </SimpleGrid>
 
       {editMode && (
-        <>
-          <Button
-            onClick={() => claimProjects({ temporaryUserId })}
-            marginTop={2}
-            size="lg"
-          >
-            Claim Builds
-          </Button>
-
-          <Button
-            as="a"
-            href="/projects/new"
-            marginTop={2}
-            size="lg"
-          >
-            New Build
-          </Button>
-        </>
+        <Button
+          as="a"
+          href="/projects/new"
+          marginTop={2}
+          size="lg"
+        >
+          New Build
+        </Button>
       )}
     </Flex>
   )

@@ -27,8 +27,9 @@ const Parts = (props: PartsProps) => {
 
   const projectPartsPayload = useProjectParts(project)
   const { groupedParts, projectsParts } = projectPartsPayload
+  const hasParts = projectsParts.length > 0
 
-  if (!editMode && !projectsParts.length) {
+  if (!editMode && !hasParts) {
     return null
   }
 
@@ -36,21 +37,23 @@ const Parts = (props: PartsProps) => {
     <Flex flexDirection="column" marginTop={8}>
       <Heading size="sm">Parts</Heading>
 
-      <Flex borderWidth="1px" borderColor="gray.200" borderRadius="lg" direction="column" marginTop="4" padding="4">
-        {groupedParts.map((group) => {
-          const { category, key, projectsParts } = group
+      {hasParts && (
+        <Flex borderWidth="1px" borderColor="gray.200" borderRadius="lg" direction="column" marginTop="4" padding="4">
+          {groupedParts.map((group) => {
+            const { category, key, projectsParts } = group
 
-          return (
-            <CategoryGroup
-              category={category}
-              editMode={editMode}
-              key={key}
-              project={project}
-              projectsParts={projectsParts}
-            />
-          )
-        })}
-      </Flex>
+            return (
+              <CategoryGroup
+                category={category}
+                editMode={editMode}
+                key={key}
+                project={project}
+                projectsParts={projectsParts}
+              />
+            )
+          })}
+        </Flex>
+      )}
 
       {editMode && (
         <Button
@@ -60,7 +63,7 @@ const Parts = (props: PartsProps) => {
           size="lg"
           width="auto"
         >
-          Add Part
+          Add a Part
         </Button>
       )}
     </Flex>

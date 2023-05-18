@@ -14,7 +14,6 @@ import CreateOrEditProjectExternalLinkModal from '@modals/CreateOrEditProjectExt
 
 import Form from '@components/Form'
 
-import Actions from '@components/Project/Actions'
 import Attributes from '@components/Project/Attributes'
 import CreateAccountNotice from '@components/Project/CreateAccountNotice'
 import EditProjectBanner from '@components/Project/EditProjectBanner'
@@ -24,6 +23,7 @@ import MainImage from '@components/ProjectForm/components/MainImage'
 import Parts from '@components/Project/Parts'
 import ProjectImageThumbs from '@components/ProjectImageThumbs'
 import PublishProject from '@components/Project/PublishProject'
+import Share from '@components/Project/Share'
 
 const showModal = (modalKey: string, setState, payload?: object) => {
   setState(state => ({
@@ -91,10 +91,10 @@ const EditProjectPage = () => {
         <PublishProject callbacks={{ publishProject }} project={project} />
         <ProjectImageThumbs editMode project={project} />
         <LegacyDescription editMode project={project} />
-        <Links callbacks={callbacks(undefined, setState)} editMode project={project} />
-        <Attributes editMode project={project} />
         <Parts editMode callbacks={callbacks(undefined, setState)} project={project} />
-        <Actions editMode project={project} />
+        <Share editMode project={project} />
+        <Attributes editMode project={project} />
+        <Links callbacks={callbacks(undefined, setState)} editMode project={project} />
       </Form>
 
       <CreateOrEditProjectAttributeModal

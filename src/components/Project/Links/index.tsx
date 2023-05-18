@@ -61,7 +61,7 @@ const Links = (props: LinksProps) => {
           size="lg"
           width="auto"
         >
-          Add Link
+          Add a Link
         </Button>
       )}
     </Flex>

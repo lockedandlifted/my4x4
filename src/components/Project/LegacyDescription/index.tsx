@@ -31,7 +31,7 @@ const LegacyDescription = (props: LegacyDescriptionProps) => {
   return (
     <Flex flexDirection="column" marginTop={8}>
       <Flex justifyContent="space-between">
-        <Heading size="md" marginBottom="4">About the Build</Heading>
+        <Heading size="sm" marginBottom="4">Build Details</Heading>
       </Flex>
 
       <AddedByCommunityNotice project={project} />

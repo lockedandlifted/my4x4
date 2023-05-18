@@ -81,6 +81,18 @@ const projectsImagesRouter = router({
       },
     })),
 
+  getProjectsImagesCount: publicProcedure
+    .input(z.object({
+      slug: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.projectsImage.count({
+      where: {
+        project: {
+          slug: input.slug,
+        },
+      },
+    })),
+
   setImageAsDefault: publicProcedure
     .input(z.object({
       id: z.string(),
