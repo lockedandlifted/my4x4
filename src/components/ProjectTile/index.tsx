@@ -1,20 +1,28 @@
 import {
   Badge, Flex, LinkBox, LinkOverlay, Text,
 } from '@chakra-ui/react'
-import Image from 'next/image'
+import NextImage from 'next/image'
 
 import type { Project } from '@prisma/client'
 
 import useImageUrl from '@hooks/useImageUrl'
 
+import PlaceholderUrl from './assets/placeholder.png'
+
 type ProjectTileProps = {
   boxProps?: object,
   compact?: boolean,
+  editMode?: boolean,
   project: Project,
 }
 
 const ProjectTile = (props: ProjectTileProps) => {
-  const { boxProps, compact = false, project } = props
+  const {
+    boxProps,
+    compact = false,
+    editMode = false,
+    project,
+  } = props
 
   const image = project?.projectsImages?.[0]?.image
   const hasImage = !!image
@@ -43,7 +51,15 @@ const ProjectTile = (props: ProjectTileProps) => {
         {...boxProps}
       >
         {hasImage && !!imageUrl && (
-          <Image alt="Project Main Image" fill src={imageUrl} style={{ objectFit: 'cover' }} />
+          <NextImage alt="Project Main Image" fill src={imageUrl} style={{ objectFit: 'cover' }} />
+        )}
+        {!hasImage && (
+          <NextImage
+            alt="Image Placeholder"
+            fill
+            src={PlaceholderUrl}
+            style={{ objectFit: 'cover', opacity: 0.3 }}
+          />
         )}
 
         <Flex
@@ -59,7 +75,7 @@ const ProjectTile = (props: ProjectTileProps) => {
           zIndex="1"
         >
           <Flex alignItems="center">
-            <LinkOverlay href={`/${project?.slug}`}>
+            <LinkOverlay href={editMode ? `/projects/${project?.id}/edit` : `/${project?.slug}`}>
               {project?.createdByOwner && (
                 <Badge
                   colorScheme="teal"

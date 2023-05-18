@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { Box, Flex, Text } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
 import { NextSeo } from 'next-seo'
 
 import type { GetServerSideProps } from 'next'
@@ -34,7 +34,9 @@ const BuildPage = (props: { temporaryUserId: string }) => {
     { slug: projectSlug },
     {
       enabled: !!projectSlug,
-      onSuccess() {
+      onSuccess(data) {
+        if (!data?.published) return
+
         createPageViewFn({
           slug: projectSlug,
         })

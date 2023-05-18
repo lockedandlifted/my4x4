@@ -90,6 +90,57 @@ const ProjectForm = (props: ProjectFormProps) => {
           </select>
         </Form.Field>
 
+        {!!project?.id && (
+          <>
+            <SectionDivider>SHARING</SectionDivider>
+
+            <Alert
+              borderRadius="xl"
+              padding={8}
+              status="info"
+              variant="subtle"
+            >
+              <AlertIcon />
+
+              <AlertDescription>
+                Reserve a unique url so that people can easily find your build.
+              </AlertDescription>
+            </Alert>
+
+            <Form.Field
+              label="Title"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="title"
+              validationRules={{ required: true }}
+            >
+              <input />
+            </Form.Field>
+
+            <Form.Field
+              label="Build Url"
+              marginTop={Form.Field.MARGIN_TOP}
+              name="slug"
+              validationRules={{ required: true }}
+            >
+              <input />
+            </Form.Field>
+
+            <Flex
+              alignItems="center"
+              borderWidth="1px"
+              borderRadius="md"
+              marginTop="2"
+              padding="2"
+            >
+              <FaGlobeAsia />
+
+              <Text color="gray.400" fontSize={14} fontWeight="bold" marginLeft="2">
+                www.my4x4.info/{projectSlug}
+              </Text>
+            </Flex>
+          </>
+        )}
+
         <SectionDivider>VEHICLE</SectionDivider>
 
         <Alert
@@ -146,57 +197,6 @@ const ProjectForm = (props: ProjectFormProps) => {
 
         {!!manufacturerModelId && (
           <Attributes projectFormPayload={projectFormPayload} />
-        )}
-
-        {!!project?.id && (
-          <>
-            <SectionDivider>SHARING</SectionDivider>
-
-            <Alert
-              borderRadius="xl"
-              padding={8}
-              status="info"
-              variant="subtle"
-            >
-              <AlertIcon />
-
-              <AlertDescription>
-                Reserve a unique url so that people can easily find your build.
-              </AlertDescription>
-            </Alert>
-
-            <Form.Field
-              label="Title"
-              marginTop={Form.Field.MARGIN_TOP}
-              name="title"
-              validationRules={{ required: true }}
-            >
-              <input />
-            </Form.Field>
-
-            <Form.Field
-              label="Build Url"
-              marginTop={Form.Field.MARGIN_TOP}
-              name="slug"
-              validationRules={{ required: true }}
-            >
-              <input />
-            </Form.Field>
-
-            <Flex
-              alignItems="center"
-              borderWidth="1px"
-              borderRadius="md"
-              marginTop="2"
-              padding="2"
-            >
-              <FaGlobeAsia />
-
-              <Text color="gray.400" fontSize={14} fontWeight="bold" marginLeft="2">
-                www.my4x4.info/{projectSlug}
-              </Text>
-            </Flex>
-          </>
         )}
 
         <Button

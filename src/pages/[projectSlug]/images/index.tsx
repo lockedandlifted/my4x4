@@ -1,8 +1,11 @@
 import { useRouter } from 'next/router'
 import { Flex, Heading, Text } from '@chakra-ui/react'
+import { NextSeo } from 'next-seo'
 import NextLink from 'next/link'
 
 import { trpc } from '@utils/trpc'
+
+import useProjectOgImage from '@hooks/useProjectOgImage'
 
 import MobileLayout from '@layouts/MobileLayout'
 
@@ -28,8 +31,30 @@ const BuildImagesPage = () => {
 
   const { data: projectsImages = [] } = projectsImagesQuery
 
+  const { ogImageUrl } = useProjectOgImage(project)
+
   return (
     <MobileLayout>
+      <NextSeo
+        title={`MY4X4 | Images of ${project?.title}`}
+        description={`View images and info for ${project?.title} on MY4X4.`}
+        facebook={{
+          appId: '100089112092156',
+        }}
+        openGraph={{
+          description: project?.description || 'Checkout build images on MY4X4.info',
+          images: [
+            {
+              url: ogImageUrl,
+              alt: `Main Image for ${project?.title}`,
+            },
+          ],
+          title: project?.title,
+          type: 'website',
+          url: `https://www.my4x4.info/${project?.slug}`,
+        }}
+      />
+
       <BackToProjectButton project={project} />
 
       {projectsImages.map((projectsImage) => {
