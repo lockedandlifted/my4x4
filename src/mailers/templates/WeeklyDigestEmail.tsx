@@ -6,7 +6,7 @@ import {
 import type { Project } from '@prisma/client'
 
 const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
+  ? 'https://www.my4x4.info'
   : 'http://localhost:3001'
 
 const defaultProject = {
