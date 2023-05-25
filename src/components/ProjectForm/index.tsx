@@ -138,6 +138,20 @@ const ProjectForm = (props: ProjectFormProps) => {
                 www.my4x4.info/{projectSlug}
               </Text>
             </Flex>
+
+            <SectionDivider>NOTIFICATIONS</SectionDivider>
+
+            <Form.Field
+              label="Weekly Email Updates"
+              name="notificationsEnabled"
+              validationRules={{ required: false }}
+            >
+              <select onChange={e => setValue('notificationsEnabled', e.target.value === 'true')}>
+                <option value="">Please Select...</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </Form.Field>
           </>
         )}
 

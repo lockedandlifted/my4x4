@@ -445,6 +445,7 @@ const projectsRouter = router({
       createdByOwner: z.boolean().optional(),
       description: z.string(),
       manufacturerModelId: z.string(),
+      notificationsEnabled: z.boolean().optional(),
       projectsAttributes: z.array(z.object({
         key: z.string(),
         value: z.string(),
@@ -471,6 +472,7 @@ const projectsRouter = router({
             createdByOwner: input.createdByOwner,
             description: input.description,
             manufacturerModelId: input.manufacturerModelId,
+            notificationsEnabled: input.notificationsEnabled,
             slug: input.slug,
             title: input.title,
             projectsAttributes: {

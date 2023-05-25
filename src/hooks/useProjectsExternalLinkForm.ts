@@ -42,11 +42,11 @@ function useProjectsExternalLinkForm(options: UseProjectsExternalLinkFormOptions
   const { projectsExternalLink } = options
 
   const formPayload = useForm({
-    defaultValues: projectsExternalLink
-      ? setupProjectsExternalLinkInitialState(projectsExternalLink)
-      : defaultState,
     mode: 'onChange',
     resolver: zodResolver(createProjectsExternalLinkValidationSchema, undefined),
+    values: projectsExternalLink
+      ? setupProjectsExternalLinkInitialState(projectsExternalLink)
+      : defaultState,
   })
 
   // Create Mutation

@@ -3,7 +3,7 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
+  previewFeatures = ["filteredRelationCount", "jsonProtocol"]
 }
 
 datasource db {
@@ -431,13 +431,15 @@ model ManufacturerType {
 }
 
 model Project {
-  id              String  @id @default(uuid())
-  title           String
-  slug            String  @unique
-  description     String?
-  published       Boolean @default(false)
-  temporaryUserId String? @map("temporary_user_id")
-  createdByOwner  Boolean @default(true) @map("created_by_owner")
+  id                   String  @id @default(uuid())
+  title                String
+  slug                 String  @unique
+  description          String?
+  published            Boolean @default(false)
+  temporaryUserId      String? @map("temporary_user_id")
+  createdByOwner       Boolean @default(true) @map("created_by_owner")
+  notificationsEnabled Boolean @default(false) @map("notifications_enabled")
+  authToken            String? @map("auth_token")
 
   manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   manufacturerModelId String            @map("manufacturer_model_id")
