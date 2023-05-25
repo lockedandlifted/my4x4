@@ -11,7 +11,7 @@ type ImageKitContextProviderProps = {
   children: React.ReactNode,
 }
 
-const imageKit = new ImageKit({
+export const imageKit = new ImageKit({
   urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT_URL || '',
 })
 

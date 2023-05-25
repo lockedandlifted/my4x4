@@ -10,14 +10,16 @@ const baseUrl = process.env.VERCEL_URL
   : 'http://localhost:3001'
 
 const defaultProject = {
+  manufacturerModelId: '74773060-9352-4b6a-85a5-20784c41ad56',
   title: '2023 Ford Ranger Raptor Next Gen',
 }
 
-type WeeklyDigestMailerProps = {
+type WeeklyDigestEmailProps = {
   daysSinceCreation: number,
   generationDate: string,
   project: Project,
   projectImageUrl: string,
+  manufacturerId: string,
   newLikeCount: number,
   newViewCount: number,
   totalViewCount: number,
@@ -26,17 +28,18 @@ type WeeklyDigestMailerProps = {
   userEmail: string,
 }
 
-const WeeklyDigestMailer = (props: WeeklyDigestMailerProps) => {
+const WeeklyDigestEmail = (props: WeeklyDigestEmailProps) => {
   const {
     daysSinceCreation = 124,
     generationDate = '12th May 2023',
     project = defaultProject,
     projectImageUrl = 'https://ik.imagekit.io/lockedandlifted/development/tr:fo-auto,h-200,w-200/images/7d150f97-28dd-44d0-9854-7ba4af307316.png',
+    manufacturerId = 'b451a6e2-a95e-431f-bc10-4463111aba3f',
     newLikeCount = 4,
     newViewCount = 46,
     totalViewCount = 1253,
     totalLikeCount = 23,
-    similarNewProjectsCount = 4,
+    similarNewProjectsCount = 0,
     userEmail = 'name@email.com',
   } = props
 
@@ -74,21 +77,35 @@ const WeeklyDigestMailer = (props: WeeklyDigestMailerProps) => {
               </Heading>
 
               <Text className="flex items-center border rounded border-solid border-[#eaeaea] p-2 mb-0 mt-4">
-                <Img className="mr-2" height="14" width="16" alt="Heart" src={`${baseUrl}/heart.png`} /> +{newLikeCount} Likes
+                <Img className="mr-2" height="14" width="16" alt="Heart" src={`${baseUrl}/heart.png`} />
+                +{newLikeCount}<span>&nbsp;</span>Likes
               </Text>
 
               <Text className="flex items-center border rounded border-solid border-[#eaeaea] p-2 mt-2">
-                <Img className="mr-2" height="14" width="18" alt="Eye" src={`${baseUrl}/eye.png`} /> +{newViewCount} Views
+                <Img className="mr-2" height="14" width="18" alt="Eye" src={`${baseUrl}/eye.png`} />
+                +{newViewCount}<span>&nbsp;</span>Views
               </Text>
             </Section>
 
             <Section className="mt-0">
-              <Text>Your build has been on the site for {daysSinceCreation} days.</Text>
-              <Text>In that time you've received a total of {totalViewCount} views and {totalLikeCount} likes.</Text>
-              <Text>In the last week there have been {similarNewProjectsCount} new builds matching your make & model uploaded.</Text>
+              <>
+                <Text>Your build has been on the site for {daysSinceCreation} days.</Text>
+                <Text>
+                  In that time you have received a total of {totalViewCount} views and {totalLikeCount} likes.
+                </Text>
 
-              <Button className="bg-[#000000] rounded text-white text-[16px] mt-4 py-4 px-8" href="/">
-                View New Builds
+                {similarNewProjectsCount > 0 && (
+                  <Text>
+                    In the last week there have been {similarNewProjectsCount} new builds matching your make & model uploaded.
+                  </Text>
+                )}
+              </>
+
+              <Button
+                className="bg-[#000000] rounded text-white text-[16px] mt-4 py-4 px-8"
+                href={`${baseUrl}/search?manufacturerId=${manufacturerId}&manufacturerModelId=${project.manufacturerModelId}`}
+              >
+                View Similar Builds
               </Button>
             </Section>
           </Container>
@@ -104,4 +121,4 @@ const WeeklyDigestMailer = (props: WeeklyDigestMailerProps) => {
   )
 }
 
-export default WeeklyDigestMailer
+export default WeeklyDigestEmail
