@@ -34,7 +34,7 @@ const MobileLayout = (props: MobileLayoutProps) => {
           description: 'Add your build. Find and research similar builds to get inspiration.',
           images: [
             {
-              url: '/og-image.jpg',
+              url: 'https://www.my4x4.info/og-image.jpg',
             },
           ],
           title: 'MY4X4 | Detailed info and specs of your favourite 4wds',
