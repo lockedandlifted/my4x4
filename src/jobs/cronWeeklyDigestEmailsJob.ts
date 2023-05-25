@@ -14,6 +14,7 @@ const cronWeeklyDigestEmailsJob = inngestClient.createFunction(
       where: {
         AND: {
           createdByOwner: true,
+          notificationsEnabled: true,
           published: true,
         },
         OR: [

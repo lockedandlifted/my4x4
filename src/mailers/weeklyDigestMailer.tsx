@@ -11,8 +11,6 @@ import WeeklyDigestEmail from './templates/WeeklyDigestEmail'
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
-// TODO - Check that owner hasn't disabled weekly digest emails
-
 const currentDate = new Date()
 const sevenDaysAgo = new Date(currentDate.getTime() - (7 * 24 * 60 * 60 * 1000))
 

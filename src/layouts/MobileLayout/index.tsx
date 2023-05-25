@@ -27,6 +27,20 @@ const MobileLayout = (props: MobileLayoutProps) => {
             href: '/favicon.ico',
           },
         ]}
+        facebook={{
+          appId: '100089112092156',
+        }}
+        openGraph={{
+          description: 'Add your build. Find and research similar builds to get inspiration.',
+          images: [
+            {
+              url: '/og-image.jpg',
+            },
+          ],
+          title: 'MY4X4 | Detailed info and specs of your favourite 4wds',
+          type: 'website',
+          url: `https://www.my4x4.info${asPath}`,
+        }}
       />
 
       <Flex flexDirection="column" width={['100%', 600]}>

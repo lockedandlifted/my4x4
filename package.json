@@ -74,7 +74,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-next": "13.1.4",
-    "prisma": "^4.13.0",
+    "prisma": "^4.14.1",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4"
   },

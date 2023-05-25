@@ -112,7 +112,7 @@ const WeeklyDigestEmail = (props: WeeklyDigestEmailProps) => {
 
           <Container className="w-[465px] mb-8">
             <Text className="text-[12px] leading-snug">
-              This message was sent to {userEmail}. If you don't want to receive these emails from MY4X4 in the future, you can edit your profile or <Link href={`/unsubscribe?email=${userEmail}&type=weekly_digest`}>unsubscribe</Link>.
+              This message was sent to {userEmail}. If you don't want to receive these emails from MY4X4 in the future, you can edit your profile or <Link href={`${baseUrl}/api/projects/${project.id}/disableNotifications?token=${project.authToken}`}>unsubscribe</Link>.
             </Text>
           </Container>
         </Body>
