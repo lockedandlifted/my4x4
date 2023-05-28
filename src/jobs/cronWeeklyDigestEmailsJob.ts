@@ -4,7 +4,7 @@ import { prisma } from '@server/db/client'
 
 const cronWeeklyDigestEmailsJob = inngestClient.createFunction(
   { name: 'Weekly Digest Emails' },
-  { cron: '0 17 * * 5' }, // every Friday at 5pm
+  { cron: 'TZ=Australia/Sydney 0 17 * * 5' }, // every Friday at 5pm
   async ({ step }) => {
     // Fetch all projects that were interacted with in the last week
     const date = new Date()
