@@ -469,11 +469,13 @@ model ManufacturerType {
 }
 
 model Post {
-  id     String @id @default(uuid())
-  title  String
-  body   String @db.Text()
-  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  userId String @map("user_id")
+  id         String   @id @default(uuid())
+  title      String
+  body       String   @db.Text()
+  postType   PostType @relation(fields: [postTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postTypeId String   @map("post_type_id")
+  user       User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId     String   @map("user_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
@@ -579,6 +581,19 @@ model PostsProject {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   @@map("posts_projects")
+}
+
+model PostType {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  posts Post[]
+
+  @@map("post_types")
 }
 
 model Project {
