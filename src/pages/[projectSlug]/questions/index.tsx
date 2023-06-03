@@ -32,7 +32,7 @@ const ProjectQuestionsPage = (props: ProjectQuestionsPageProps) => {
   )
 
   const { data: posts } = projectPostsQuery
-  console.log({ posts })
+
   const postsWithComments = posts ? posts.filter(post => post._count.postsComments > 0) : []
   const postsWithoutComments = posts ? posts.filter(post => post._count.postsComments === 0) : []
 
@@ -48,14 +48,24 @@ const ProjectQuestionsPage = (props: ProjectQuestionsPageProps) => {
         <Heading color="gray.500" size="xs" marginTop={8}>Answered Questions</Heading>
         <Flex direction="column">
           {postsWithComments.map(post => (
-            <Question hasComments key={post.id} post={post} />
+            <Question
+              hasComments
+              key={post.id}
+              post={post}
+              project={project}
+            />
           ))}
         </Flex>
 
         <Heading color="gray.500" size="xs" marginTop={8}>Unanswered Questions</Heading>
         <Flex direction="column">
           {postsWithoutComments.map(post => (
-            <Question hasComments={false} key={post.id} post={post} />
+            <Question
+              hasComments={false}
+              key={post.id}
+              post={post}
+              project={project}
+            />
           ))}
         </Flex>
       </Flex>

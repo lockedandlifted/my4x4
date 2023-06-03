@@ -2,7 +2,7 @@ import {
   Flex, Heading, Link, Text,
 } from '@chakra-ui/react'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma, Project } from '@prisma/client'
 
 type PostWithComments = Prisma.PostGetPayload<{
   include: {
@@ -26,25 +26,29 @@ type PostWithComments = Prisma.PostGetPayload<{
 type QuestionProps = {
   hasComments: boolean,
   post: PostWithComments,
+  project: Project,
 }
 
 const Question = (props: QuestionProps) => {
-  const { hasComments, post } = props
+  const { hasComments, post, project } = props
 
   const commentCount = post._count?.postsComments
   const firstComment = post.postsComments?.[0]?.comment
-  console.log({ firstComment })
+
   return (
     <Flex borderBottomWidth="1px" direction="column" marginTop="4" paddingBottom="4">
-      <Heading size="sm">{post.title}</Heading>
+      <Heading size="sm">{post.body}</Heading>
 
       <Text fontSize="sm" marginTop="2">{firstComment?.body}</Text>
 
-      <Flex fontSize="sm" justifyContent="space-between" marginTop="2">
-        <Text>
+      <Flex fontSize="sm" fontWeight="bold" justifyContent="space-between" marginTop="2">
+        <Text color={hasComments ? 'gray.500' : 'gray.300'}>
           {commentCount} {commentCount === 1 ? 'Comment' : 'Comments'}
         </Text>
-        <Link>Read More</Link>
+
+        <Link href={`/${project?.slug}/questions/${post?.id}`}>
+          {hasComments ? 'Read More' : 'Reply'}
+        </Link>
       </Flex>
     </Flex>
   )

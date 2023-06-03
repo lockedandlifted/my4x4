@@ -130,6 +130,82 @@ const postsRouter = router({
       })
     }),
 
+  getPost: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.post.findUnique({
+      where: {
+        id: input.id,
+      },
+      include: {
+        postsComments: {
+          include: {
+            comment: {
+              include: {
+                _count: {
+                  select: {
+                    commentLikes: true,
+                  },
+                },
+                subComments: {
+                  include: {
+                    _count: {
+                      select: {
+                        commentLikes: true,
+                      },
+                    },
+                    user: {
+                      include: {
+                        usersImages: {
+                          include: {
+                            image: true,
+                          },
+                          orderBy: {
+                            sort: 'asc',
+                          },
+                          take: 1,
+                        },
+                      },
+                    },
+                  },
+                },
+                user: {
+                  include: {
+                    usersImages: {
+                      include: {
+                        image: true,
+                      },
+                      orderBy: {
+                        sort: 'asc',
+                      },
+                      take: 1,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
+        postLikes: true,
+        user: {
+          include: {
+            usersImages: {
+              include: {
+                image: true,
+              },
+              orderBy: {
+                sort: 'asc',
+              },
+              take: 1,
+            },
+          },
+        },
+      },
+    })),
 })
 
 export default postsRouter
