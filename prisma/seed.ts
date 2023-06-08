@@ -8,6 +8,7 @@ import countrySeedFn from './seeds/countries.js'
 import externalLinkTypeSeedFn from './seeds/externalLinkTypes.js'
 import logBookEntryTypeSeedFn from './seeds/logBookEntryTypes.js'
 import manufacturerModelSeedFn from './seeds/manufacturerModels.js'
+import manufacturerModelSeriesSeedFn from './seeds/manufacturerModelSeries.js'
 import manufacturerSeedFn from './seeds/manufacturers.js'
 import manufacturerTypeSeedFn from './seeds/manufacturerTypes.js'
 import serviceSeedFn from './seeds/services.js'
@@ -52,6 +53,10 @@ const seedDatabase = async () => {
     // Manufacturer Models
     const manufacturerModels = await Promise.all(manufacturerModelSeedFn(prisma, manufacturers))
     console.log('--- Seeded Manufacturer Models ---', manufacturerModels)
+
+    // Manufacture Model Series
+    const manufacturerModelSeries = await Promise.all(manufacturerModelSeriesSeedFn(prisma, manufacturerModels))
+    console.log('--- Seeded Manufacturer Model Series ---', manufacturerModelSeries)
 
     // Services
     const services = await Promise.all(serviceSeedFn(prisma))
