@@ -14,6 +14,10 @@ export type FieldProps = {
   name: string,
   marginTop?: number,
   validationRules?: {
+    pattern?: {
+      value: RegExp,
+      message?: string,
+    },
     required: boolean,
   },
 }

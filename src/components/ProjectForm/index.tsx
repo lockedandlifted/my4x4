@@ -120,7 +120,13 @@ const ProjectForm = (props: ProjectFormProps) => {
               label="Build Url"
               marginTop={Form.Field.MARGIN_TOP}
               name="slug"
-              validationRules={{ required: true }}
+              validationRules={{
+                pattern: {
+                  value: /^[a-z0-9\-]+$/,
+                  message: 'Only lowercase letters, numbers and dashes are allowed.',
+                },
+                required: true,
+              }}
             >
               <input />
             </Form.Field>
