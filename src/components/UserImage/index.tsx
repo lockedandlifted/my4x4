@@ -29,8 +29,6 @@ type UserImageProps = {
 const UserImage = (props: UserImageProps) => {
   const { height = 40, user, width = 40 } = props
 
-  console.log({ user })
-
   const image = user?.usersImages?.[0]?.image
   const hasImage = !!image
 

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useRouter } from 'next/router'
 import {
   Button, Flex, Heading, Link, Text,
@@ -6,11 +5,14 @@ import {
 
 import { trpc } from '@utils/trpc'
 
+import usePostComments from '@hooks/usePostComments'
+
 import MobileLayout from '@layouts/MobileLayout'
 
 import AddCommentBox from '@components/AddCommentBox'
 import BackToProjectButton from '@components/Project/BackToProjectButton'
 import Comment from '@components/Comment'
+import LikeButton from '@components/Post/LikeButton'
 import UserImage from '@components/UserImage'
 
 type ProjectQuestionPageProps = {
@@ -37,7 +39,16 @@ const ProjectQuestionPage = (props: ProjectQuestionPageProps) => {
   const { data: post } = postQuery
   const user = post?.user
 
-  const [comment, setComment] = useState('')
+  const postCommentsPayload = usePostComments({ post })
+  const {
+    callbacks: {
+      createPostsComment,
+      invalidatePost,
+      setInputValue,
+    },
+    inputValue,
+    isLoading,
+  } = postCommentsPayload
 
   return (
     <MobileLayout>
@@ -63,16 +74,17 @@ const ProjectQuestionPage = (props: ProjectQuestionPageProps) => {
         </Heading>
 
         <Flex borderBottomWidth="1px" borderTopWidth="1px" marginTop="4" paddingY="4">
-          <Button as="a">Like</Button>
+          <LikeButton post={post} />
         </Flex>
 
         <Flex marginTop="4" width="100%">
           <AddCommentBox
             callbacks={{
-              addComment: value => console.log('Add Comment', value),
-              setValue: value => setComment(value),
+              addComment: (commentBody: string) => createPostsComment({ body: commentBody }),
+              setInputValue,
             }}
-            value={comment}
+            inputValue={inputValue}
+            isLoading={isLoading}
           />
         </Flex>
 
@@ -83,8 +95,11 @@ const ProjectQuestionPage = (props: ProjectQuestionPageProps) => {
 
             return (
               <Comment
-                key={comment.id}
+                callbacks={{
+                  invalidate: invalidatePost,
+                }}
                 comment={comment}
+                key={comment.id}
                 user={commentUser}
               />
             )

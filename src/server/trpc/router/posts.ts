@@ -1,13 +1,97 @@
 import { z } from 'zod'
 
-import type { AttributeValue, Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
 import { router, publicProcedure, protectedProcedure } from '../trpc'
 
-const postsRouter = router({
-  // createPost: protectedProcedure({
+const relatedEntityKeys = {
+  projectId: 'postsProjects',
+  manufacturerId: 'postsManufacturers',
+  manufacturerModelId: 'postsManufacturerModels',
+  manufacturerPartId: 'postsManufacturerParts',
+  imageId: 'postsImages',
+}
 
-  // }),
+const atLeastOneDefined = (
+  obj: Record<string | number | symbol, unknown>,
+) => Object.values(obj).some(v => v !== undefined)
+
+const postsRouter = router({
+  createPost: protectedProcedure
+    .input(z.object({
+      body: z.string(),
+      title: z.string(),
+      postTypeKey: z.string(),
+      relatedEntities: z.array(
+        z.object({
+          projectId: z.string().optional(),
+          manufacturerId: z.string().optional(),
+          manufacturerModelId: z.string().optional(),
+          manufacturerPartId: z.string().optional(),
+          imageId: z.string().optional(),
+        })
+          .refine(atLeastOneDefined),
+      ).optional(),
+    }))
+    .mutation(({ ctx, input }) => {
+      const data: Prisma.PostCreateInput = {
+        body: input.body,
+        postType: {
+          connect: {
+            key: input.postTypeKey,
+          },
+        },
+        postsProjects: {
+          createMany: {
+            data: [
+              { projectId: 'a' },
+            ],
+          },
+        },
+        title: input.title,
+        user: {
+          connect: {
+            id: ctx.session.user.id,
+          },
+        },
+      }
+
+      // Related Entities
+      let relatedEntityData = {}
+
+      if (input.relatedEntities) {
+        relatedEntityData = input.relatedEntities.reduce((acc, relatedEntity) => {
+          const firstKey = Object.keys(relatedEntity)[0]
+          const key = relatedEntityKeys[firstKey]
+
+          // Setup Object if it doesnt exist
+          if (!acc[key]) {
+            // acc[postsProjects]
+            acc[key] = {
+              createMany: {
+                data: [],
+              },
+            }
+          }
+
+          // acc[postsProjects].createMany.data.push({ projectId: 'a' })
+          acc[key].createMany.data.push({
+            [firstKey]: relatedEntity[firstKey],
+          })
+
+          return acc
+        }, {})
+      }
+
+      const mergedData = {
+        ...data,
+        ...relatedEntityData,
+      }
+
+      return ctx.prisma.post.create({
+        data: mergedData,
+      })
+    }),
 
   getPosts: publicProcedure
     .input(z.object({
@@ -126,6 +210,22 @@ const postsRouter = router({
             },
             take: 1,
           },
+          user: {
+            include: {
+              usersImages: {
+                include: {
+                  image: true,
+                },
+                orderBy: {
+                  sort: 'asc',
+                },
+                take: 1,
+              },
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
       })
     }),
@@ -187,7 +287,7 @@ const postsRouter = router({
             },
           },
           orderBy: {
-            createdAt: 'asc',
+            createdAt: 'desc',
           },
         },
         postLikes: true,

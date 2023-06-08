@@ -3,8 +3,12 @@ import { Button, Flex, Text } from '@chakra-ui/react'
 
 import type { Comment as CommentType, Prisma } from '@prisma/client'
 
+import useSubComments from '@hooks/useSubComments'
+
 import AddCommentBox from '@components/AddCommentBox'
 import UserImage from '@components/UserImage'
+
+import LikeButton from './LikeButton'
 
 type UserWithImage = Prisma.UserGetPayload<{
   include: {
@@ -21,14 +25,45 @@ type UserWithImage = Prisma.UserGetPayload<{
 }>
 
 type CommentProps = {
+  allowSubComments?: boolean,
+  callbacks: {
+    invalidate: VoidFunction,
+  },
   comment: CommentType,
   user: UserWithImage,
 }
 
 const Comment = (props: CommentProps) => {
-  const { comment, user } = props
+  const {
+    allowSubComments = true,
+    callbacks: {
+      invalidate,
+    },
+    comment,
+    user,
+  } = props
 
-  const [showAddComment, setShowAddComment] = useState(false)
+  const subCommentsPayload = useSubComments({
+    callbacks: {
+      invalidate,
+    },
+    parentComment: comment,
+  })
+
+  const {
+    callbacks: {
+      createComment,
+      setInputValue,
+      setShowAddComment,
+    },
+    hasSubComments,
+    inputValue,
+    isLoading,
+    showAddComment,
+    subComments,
+  } = subCommentsPayload
+
+  const commentCount = comment?._count?.commentLikes || 0
 
   return (
     <Flex marginBottom="4" width="100%">
@@ -50,45 +85,71 @@ const Comment = (props: CommentProps) => {
             {comment?.body}
           </Text>
 
-          <Flex
-            backgroundColor="blue.400"
-            borderRadius="lg"
-            color="white"
-            fontSize="xs"
-            paddingY="1"
-            paddingX="2"
-            position="absolute"
-            right="10px"
-            bottom="-12px"
-          >
-            <Text>2 Likes</Text>
-          </Flex>
+          {commentCount > 0 && (
+            <Flex
+              backgroundColor="blue.400"
+              borderRadius="lg"
+              color="white"
+              fontSize="xs"
+              paddingY="1"
+              paddingX="2"
+              position="absolute"
+              right="10px"
+              bottom="-12px"
+            >
+              <Text>
+                {commentCount} {commentCount === 1 ? 'Like' : 'Likes'}
+              </Text>
+            </Flex>
+          )}
         </Flex>
 
         <Flex marginTop="1">
-          <Button as="a" variant="link">Like</Button>
-          <Button
-            as="a"
-            marginLeft="2"
-            onClick={() => setShowAddComment(!showAddComment)}
-            variant="link"
-          >
-            Reply
-          </Button>
+          <LikeButton callbacks={{ invalidate }} comment={comment} />
+
+          {allowSubComments && (
+            <Button
+              as="a"
+              marginLeft="2"
+              onClick={() => setShowAddComment(!showAddComment)}
+              variant="link"
+            >
+              Reply
+            </Button>
+          )}
         </Flex>
 
         {showAddComment && (
           <Flex marginTop="4" width="100%">
             <AddCommentBox
               callbacks={{
-                addComment: value => console.log('Add Comment', value),
-                setValue: value => console.log(value),
+                addComment: (commentBody: string) => createComment({ body: commentBody }),
+                setInputValue,
               }}
-              value=""
+              compact
+              inputValue={inputValue}
+              isLoading={isLoading}
             />
           </Flex>
         )}
 
+        {hasSubComments && (
+          <Flex direction="column" marginTop="4" width="100%">
+            {subComments?.map((subComment) => {
+              const subCommentUser = subComment?.user
+
+              return (
+                <Comment
+                  allowSubComments={false}
+                  callbacks={{ invalidate }}
+                  key={subComment.id}
+                  comment={subComment}
+                  user={subCommentUser}
+                />
+              )
+            })}
+          </Flex>
+        )}
       </Flex>
     </Flex>
   )

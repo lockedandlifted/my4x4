@@ -1,40 +1,27 @@
-import { useRouter } from 'next/router'
 import { Flex, Heading } from '@chakra-ui/react'
 
-import { trpc } from '@utils/trpc'
+import useProjectQuestions from '@hooks/useProjectQuestions'
 
 import MobileLayout from '@layouts/MobileLayout'
 
 import BackToProjectButton from '@components/Project/BackToProjectButton'
 
+import AddQuestionBox from '@components/ProjectQuestions/AddQuestionBox'
 import Question from '@components/ProjectQuestions/Question'
 
-type ProjectQuestionsPageProps = {
-  children: React.ReactNode,
-}
-
-const ProjectQuestionsPage = (props: ProjectQuestionsPageProps) => {
-  const { query: { projectSlug } } = useRouter()
-
-  const projectQuery = trpc.projects.getProjectBySlug.useQuery(
-    { slug: projectSlug },
-    { enabled: !!projectSlug },
-  )
-
-  const { data: project } = projectQuery
-
-  const projectPostsQuery = trpc.posts.getPosts.useQuery(
-    {
-      postTypeKey: 'question',
-      projectSlug: projectSlug as string,
+const ProjectQuestionsPage = () => {
+  const projectQuestionsPayload = useProjectQuestions()
+  const {
+    callbacks: {
+      createPost,
+      setInputValue,
     },
-    { enabled: !!projectSlug },
-  )
-
-  const { data: posts } = projectPostsQuery
-
-  const postsWithComments = posts ? posts.filter(post => post._count.postsComments > 0) : []
-  const postsWithoutComments = posts ? posts.filter(post => post._count.postsComments === 0) : []
+    inputValue,
+    isLoading,
+    postsWithComments,
+    postsWithoutComments,
+    project,
+  } = projectQuestionsPayload
 
   return (
     <MobileLayout>
@@ -42,10 +29,25 @@ const ProjectQuestionsPage = (props: ProjectQuestionsPageProps) => {
 
       <Flex direction="column" marginTop={8} width="100%">
         <Heading as="h1" fontWeight="medium" size="lg">
-          Questions
+          Questions & Answers
         </Heading>
 
-        <Heading color="gray.500" size="xs" marginTop={8}>Answered Questions</Heading>
+        <Heading color="gray.500" size="xs" marginTop={4}>
+          Ask a Question about {project?.title}
+        </Heading>
+
+        <AddQuestionBox
+          callbacks={{
+            createPost: postBody => createPost({
+              body: postBody,
+            }),
+            setInputValue,
+          }}
+          inputValue={inputValue}
+          isLoading={isLoading}
+        />
+
+        {/* <Heading color="gray.500" size="xs" marginTop={8}>Answered Questions</Heading> */}
         <Flex direction="column">
           {postsWithComments.map(post => (
             <Question
@@ -57,7 +59,7 @@ const ProjectQuestionsPage = (props: ProjectQuestionsPageProps) => {
           ))}
         </Flex>
 
-        <Heading color="gray.500" size="xs" marginTop={8}>Unanswered Questions</Heading>
+        {/* <Heading color="gray.500" size="xs" marginTop={8}>Unanswered Questions</Heading> */}
         <Flex direction="column">
           {postsWithoutComments.map(post => (
             <Question

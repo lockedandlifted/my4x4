@@ -18,7 +18,16 @@ const Actions = (props: ActionsProps) => {
       <Button
         as="a"
         colorScheme="blue"
+        href={`/${project?.slug}/questions`}
+        size="lg"
+      >
+        Ask a Question
+      </Button>
+
+      <Button
+        as="a"
         href="/projects/new"
+        marginTop={2}
         size="lg"
       >
         Add a Build
