@@ -231,6 +231,40 @@ model CategoryType {
   @@map("category_types")
 }
 
+model Comment {
+  id     String @id @default(uuid())
+  body   String @db.Text()
+  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId String @map("user_id")
+
+  parentCommentId String?   @map("parent_comment_id")
+  parentComment   Comment?  @relation("CommentSubComments", fields: [parentCommentId], references: [id])
+  subComments     Comment[] @relation("CommentSubComments")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  commentLikes     CommentLike[]
+  postsComments    PostsComment[]
+  projectsComments ProjectsComment[]
+
+  @@map("comments")
+}
+
+model CommentLike {
+  id        String  @id @default(uuid())
+  comment   Comment @relation(fields: [commentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  commentId String  @map("comment_id")
+  user      User    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId    String  @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([commentId, userId])
+  @@map("comment_likes")
+}
+
 model Country {
   id    String @id @default(uuid())
   key   String @unique
@@ -304,6 +338,7 @@ model Image {
 
   businessesImages BusinessesImage[]
   imageTags        ImageTag[]
+  postsImages      PostsImage[]
   projectsImages   ProjectsImage[]
   usersImages      UsersImage[]
 
@@ -379,6 +414,7 @@ model Manufacturer {
 
   manufacturerModels ManufacturerModel[]
   manufacturerParts  ManufacturerPart[]
+  postsManufacturers PostsManufacturer[]
 
   @@map("manufacturers")
 }
@@ -393,7 +429,8 @@ model ManufacturerModel {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  projects Project[]
+  postsManufacturerModels PostsManufacturerModel[]
+  projects                Project[]
 
   @@map("manufacturer_models")
 }
@@ -412,7 +449,8 @@ model ManufacturerPart {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  projectsParts ProjectsPart[]
+  postsManufacturerParts PostsManufacturerPart[]
+  projectsParts          ProjectsPart[]
 
   @@map("manufacturer_parts")
 }
@@ -428,6 +466,134 @@ model ManufacturerType {
   manufacturers Manufacturer[]
 
   @@map("manufacturer_types")
+}
+
+model Post {
+  id         String   @id @default(uuid())
+  title      String
+  body       String   @db.Text()
+  postType   PostType @relation(fields: [postTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postTypeId String   @map("post_type_id")
+  user       User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId     String   @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  postLikes               PostLike[]
+  postsComments           PostsComment[]
+  postsImages             PostsImage[]
+  postsManufacturerModels PostsManufacturerModel[]
+  postsManufacturerParts  PostsManufacturerPart[]
+  postsManufacturers      PostsManufacturer[]
+  postsProjects           PostsProject[]
+
+  @@map("posts")
+}
+
+model PostsComment {
+  id        String  @id @default(uuid())
+  comment   Comment @relation(fields: [commentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  commentId String  @map("comment_id")
+  post      Post    @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId    String  @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("posts_comments")
+}
+
+model PostLike {
+  id     String @id @default(uuid())
+  post   Post   @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId String @map("post_id")
+  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId String @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([postId, userId])
+  @@map("post_likes")
+}
+
+model PostsImage {
+  id      String @id @default(uuid())
+  image   Image  @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  imageId String @map("image_id")
+  post    Post   @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId  String @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("posts_images")
+}
+
+model PostsManufacturer {
+  id             String       @id @default(uuid())
+  manufacturer   Manufacturer @relation(fields: [manufacturerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerId String       @map("manufacturer_id")
+  post           Post         @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId         String       @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("posts_manufacturers")
+}
+
+model PostsManufacturerPart {
+  id                 String           @id @default(uuid())
+  manufacturerPart   ManufacturerPart @relation(fields: [manufacturerPartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerPartId String           @map("manufacturer_part_id")
+  post               Post             @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId             String           @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("posts_manufacturer_parts")
+}
+
+model PostsManufacturerModel {
+  id                  String            @id @default(uuid())
+  manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerModelId String            @map("manufacturer_model_id")
+  post                Post              @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId              String            @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("posts_manufacturer_models")
+}
+
+model PostsProject {
+  id        String  @id @default(uuid())
+  project   Project @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId String  @map("project_id")
+  post      Post    @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId    String  @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("posts_projects")
+}
+
+model PostType {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  posts Post[]
+
+  @@map("post_types")
 }
 
 model Project {
@@ -448,15 +614,32 @@ model Project {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   logBookEntries        LogBookEntry[]
+  postsProjects         PostsProject[]
   projectLikes          ProjectLike[]
   projectPageViews      ProjectPageView[]
   projectsAttributes    ProjectsAttribute[]
+  projectsComments      ProjectsComment[]
   projectsExternalLinks ProjectsExternalLink[]
   projectsImages        ProjectsImage[]
   projectsParts         ProjectsPart[]
   projectsUsers         ProjectsUser[]
 
   @@map("projects")
+}
+
+model ProjectsComment {
+  id        String  @id @default(uuid())
+  project   Project @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectId String  @map("project_id")
+  comment   Comment @relation(fields: [commentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  commentId String  @map("comment_id")
+  sort      Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([projectId, commentId])
+  @@map("projects_comments")
 }
 
 model ProjectsExternalLink {
@@ -630,7 +813,11 @@ model User {
   accounts           Account[]
   attachments        Attachment[]
   businessesUser     BusinessesUser[]
+  commentLikes       CommentLike[]
+  comments           Comment[]
   images             Image[]
+  postLikes          PostLike[]
+  posts              Post[]
   projectLikes       ProjectLike[]
   projectsUsers      ProjectsUser[]
   sessions           Session[]

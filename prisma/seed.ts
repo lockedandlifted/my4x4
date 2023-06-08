@@ -10,6 +10,7 @@ import logBookEntryTypeSeedFn from './seeds/logBookEntryTypes.js'
 import manufacturerModelSeedFn from './seeds/manufacturerModels.js'
 import manufacturerSeedFn from './seeds/manufacturers.js'
 import manufacturerTypeSeedFn from './seeds/manufacturerTypes.js'
+import postTypeSeedFn from './seeds/postTypes.js'
 import serviceSeedFn from './seeds/services.js'
 
 const seedDatabase = async () => {
@@ -52,6 +53,10 @@ const seedDatabase = async () => {
     // Manufacturer Models
     const manufacturerModels = await Promise.all(manufacturerModelSeedFn(prisma, manufacturers))
     console.log('--- Seeded Manufacturer Models ---', manufacturerModels)
+
+    // Post Types
+    const postTypes = await Promise.all(postTypeSeedFn(prisma))
+    console.log('--- Seeded Post Types ---', postTypes)
 
     // Services
     const services = await Promise.all(serviceSeedFn(prisma))
