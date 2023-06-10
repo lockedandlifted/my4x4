@@ -25,7 +25,6 @@ const Questions = (props: QuestionsProps) => {
   const { data: posts } = projectPostsQuery
 
   const filteredPosts = posts?.slice(0, 3)
-  console.log(posts)
 
   return (
     <>

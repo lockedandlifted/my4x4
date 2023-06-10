@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import inngestClient from '@utils/inngestClient'
+
 import type { Prisma } from '@prisma/client'
 
 import { router, publicProcedure, protectedProcedure } from '../trpc'
@@ -33,7 +35,7 @@ const postsRouter = router({
           .refine(atLeastOneDefined),
       ).optional(),
     }))
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const data: Prisma.PostCreateInput = {
         body: input.body,
         postType: {
@@ -88,9 +90,30 @@ const postsRouter = router({
         ...relatedEntityData,
       }
 
-      return ctx.prisma.post.create({
+      const post = await ctx.prisma.post.create({
         data: mergedData,
+        include: {
+          postType: true,
+          postsProjects: {
+            include: {
+              project: true,
+            },
+          },
+        },
       })
+
+      // Queue Notification Email - Questions
+      if (post.postType.key === 'question' && post.postsProjects[0]?.project) {
+        inngestClient.send({
+          name: 'mailers/new-project-question-email',
+          data: {
+            projectId: post.postsProjects[0]?.projectId,
+            postId: post.id,
+          },
+        })
+      }
+
+      return post
     }),
 
   getPosts: publicProcedure
