@@ -47,7 +47,6 @@ type QuestionProps = {
 const Question = (props: QuestionProps) => {
   const { hasComments, post, project } = props
 
-  console.log({ post })
   const user = post?.user
 
   const commentCount = post._count?.postsComments

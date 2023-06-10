@@ -21,7 +21,6 @@ const ProjectsPartsButton = (props: ProjectsPartsButtonProps) => {
     <Button
       colorScheme="gray"
       leftIcon={<FaWrench fontSize={24} />}
-      // onClick={() => console.log('launch add part modal')}
       size="lg"
       width="100%"
     >
