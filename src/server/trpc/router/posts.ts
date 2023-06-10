@@ -104,7 +104,7 @@ const postsRouter = router({
 
       // Queue Notification Email - Questions
       if (post.postType.key === 'question' && post.postsProjects[0]?.project) {
-        inngestClient.send({
+        await inngestClient.send({
           name: 'mailers/new-project-question-email',
           data: {
             projectId: post.postsProjects[0]?.projectId,
