@@ -2,6 +2,8 @@ import { z } from 'zod'
 
 import inngestClient from '@utils/inngestClient'
 
+import createActivityItem from '@utils/createActivityItem'
+
 import type { Prisma } from '@prisma/client'
 
 import { router, publicProcedure, protectedProcedure } from '../trpc'
@@ -100,6 +102,15 @@ const postsRouter = router({
             },
           },
         },
+      })
+
+      // Create Activity
+      await createActivityItem({
+        eventType: 'posts.created',
+        ownerId: ctx.session?.user?.id || '',
+        ownerType: 'User',
+        subjectId: post.id,
+        subjectType: 'Post',
       })
 
       // Queue Notification Email - Questions

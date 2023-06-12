@@ -33,6 +33,22 @@ model Account {
   @@map("accounts")
 }
 
+model ActivityItem {
+  id        String @id @default(uuid())
+  ownerId   String @map("owner_id")
+  ownerType String @map("owner_type")
+
+  eventType String @map("event_type")
+
+  subjectId   String @map("subject_id")
+  subjectType String @map("subject_type")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("activity_items")
+}
+
 model Address {
   id           String   @id @default(uuid())
   unitNumber   String?  @map("unit_number")
