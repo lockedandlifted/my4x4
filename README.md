@@ -1,6 +1,21 @@
-# MY4X4 - How to get locked and lifted...
+![MY4X4 Logo](./readme-dark.png#gh-dark-mode-only)
+![MY4X4 Logo](./readme-light.png##gh-light-mode-only)
 
-This is the repo for Locked & Lifted (MY4X4). Follow the instructions below to get it running on your local machine. If you have any questions keep them to yourself.
+# MY4X4 - Community Project Directory
+
+MY4X4 is a community page for four wheel drive enthusiasts to post their cars, show off all the parts, help new four wheel drivers research what to buy and communicate, discuss and educate the four wheel drive community.
+
+Follow the instructions below to get it running on your local machine. If you have any questions keep them to yourself.
+
+# Follow the entire process
+
+Live coding the entire MY4X4 Project:
+
+[Build MY4X4 - Youtube Playlist](https://youtube.com/playlist?list=PLCWWDssV3NgwUs9j3B48kCSHEI4fZGHLb)
+
+Subscribe to
+
+[Ken Greeff on Youtube](https://www.youtube.com/channel/UCYlF_e4J0EV3-iAX2Qp1OGA?sub_confirmation=1)
 
 # Getting it started
 
@@ -39,7 +54,7 @@ brew services start
 ## Pull Down Repo
 Copy URL from github and grab the repo via URL:
 
-[https://github.com/kengreeff/my4x4.git](https://github.com/kengreeff/my4x4.git)
+[https://github.com/lockedandlifted/my4x4](https://github.com/lockedandlifted/my4x4)
 
 Open terminal cd into your my4x4 local folder eg. ```.../my4x4```
 
