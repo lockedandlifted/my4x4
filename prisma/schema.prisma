@@ -33,6 +33,22 @@ model Account {
   @@map("accounts")
 }
 
+model ActivityItem {
+  id        String @id @default(uuid())
+  ownerId   String @map("owner_id")
+  ownerType String @map("owner_type")
+
+  eventType String @map("event_type")
+
+  subjectId   String @map("subject_id")
+  subjectType String @map("subject_type")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("activity_items")
+}
+
 model Address {
   id           String   @id @default(uuid())
   unitNumber   String?  @map("unit_number")
@@ -721,6 +737,8 @@ model ProjectsPart {
   description           String?
   installedByBusiness   Business?        @relation(fields: [installedByBusinessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   installedByBusinessId String?          @map("installed_by_business_id")
+  user                  User?            @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId                String?          @map("user_id")
 
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @map("updated_at")
@@ -819,6 +837,7 @@ model User {
   postLikes          PostLike[]
   posts              Post[]
   projectLikes       ProjectLike[]
+  projectsParts      ProjectsPart[]
   projectsUsers      ProjectsUser[]
   sessions           Session[]
   usersExternalLinks UsersExternalLink[]

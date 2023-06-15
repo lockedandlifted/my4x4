@@ -1,5 +1,6 @@
 import { router } from '../trpc'
 
+import activityItemsRouter from './activityItems'
 import attributesRouter from './attributes'
 import authRouter from './auth'
 import awsRouter from './aws'
@@ -33,6 +34,7 @@ import usersImagesRouter from './usersImages'
 import usersRouter from './users'
 
 export const appRouters = {
+  activityItems: activityItemsRouter,
   attributes: attributesRouter,
   auth: authRouter,
   aws: awsRouter,

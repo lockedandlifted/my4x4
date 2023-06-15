@@ -27,6 +27,7 @@ const ProjectImagePage = () => {
       <BackToProjectButton path="/images" project={project} />
 
       <Preview
+        enabledTagging={false}
         image={projectsImage?.image}
         projectsImage={projectsImage}
       />

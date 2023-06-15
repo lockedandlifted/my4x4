@@ -2,6 +2,8 @@ import { z } from 'zod'
 
 import type { AttributeValue, Prisma } from '@prisma/client'
 
+import createActivityItem from '@utils/createActivityItem'
+
 import { router, publicProcedure, protectedProcedure } from '../trpc'
 
 const mapCreateProjectsAttributes = (
@@ -85,7 +87,7 @@ const projectsRouter = router({
         }
       }
 
-      return ctx.prisma.project.create({
+      const project = await ctx.prisma.project.create({
         data,
         include: {
           projectsAttributes: {
@@ -113,6 +115,8 @@ const projectsRouter = router({
           },
         },
       })
+
+      return project
     }),
 
   claimProjectsByTemporaryUserId: protectedProcedure
@@ -513,14 +517,27 @@ const projectsRouter = router({
     .input(z.object({
       id: z.string(),
     }))
-    .mutation(async ({ ctx, input }) => ctx.prisma.project.update({
-      where: {
-        id: input.id,
-      },
-      data: {
-        published: true,
-      },
-    })),
+    .mutation(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          published: true,
+        },
+      })
+
+      // Create Activity
+      await createActivityItem({
+        eventType: 'projects.published',
+        ownerId: ctx.session?.user?.id || '',
+        ownerType: 'User',
+        subjectId: project.id,
+        subjectType: 'Project',
+      })
+
+      return project
+    }),
 })
 
 export default projectsRouter

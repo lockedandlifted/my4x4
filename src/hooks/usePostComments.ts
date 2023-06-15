@@ -13,7 +13,7 @@ function usePostComments(options: UsePostCommentsParams) {
 
   const [inputValue, setInputValue] = useState('')
 
-  const { posts: { getPost: { invalidate } } } = trpc.useContext()
+  const { posts: { getPostById: { invalidate } } } = trpc.useContext()
 
   const createPostsCommentMutation = trpc.postsComments.createPostsComment.useMutation({
     onSuccess: () => {

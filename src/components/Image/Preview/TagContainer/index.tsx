@@ -60,6 +60,7 @@ const selectItem = (params) => {
 
 type TagContainerProps = {
   containerRef: React.RefObject<HTMLDivElement>,
+  enableTagging?: boolean,
   height: number,
   projectsImage: ProjectsImage,
   scale: number,
@@ -68,7 +69,7 @@ type TagContainerProps = {
 
 const TagContainer = (props: TagContainerProps) => {
   const {
-    containerRef, height, projectsImage, scale, width,
+    containerRef, enableTagging = false, height, projectsImage, scale, width,
   } = props
 
   const [clickLocation, setClickLocation] = useState(defaultState)
@@ -123,9 +124,9 @@ const TagContainer = (props: TagContainerProps) => {
 
   return (
     <Flex
-      onClick={e => handleClick({
+      onClick={enableTagging ? e => handleClick({
         containerRef, e, inputRef, scale, setClickLocation,
-      })}
+      }) : undefined}
       position="absolute"
       width={width}
       height={height}

@@ -5,14 +5,11 @@ import Paragraph from '@components/Paragraph'
 const Hero = () => (
   <Flex direction="column" alignItems="flex-start" marginTop={8}>
     <Heading as="h1" fontWeight="normal" whiteSpace="pre-line" size="xl">
-      {`Interested in 4x4 Builds?
-      Add your build or browse other builds below.`}
+      Welcome to MY4X4
     </Heading>
 
     <Paragraph marginTop={8}>
-      Add your 4x4 and parts as you build out your ride.
-      Create a detailed history of your vehicle.
-      Find other vehicles that have fitted the parts you are considering to do your research.
+      Built for the community by four wheel drive enthusiasts to gather creators, builders, travellers and lovers of mud, parts and progress. We're collecting all the best information and builds to make it easier to learn, research and share anything related to four wheel driving. Add your build today to start contributing.
     </Paragraph>
 
     <Button
