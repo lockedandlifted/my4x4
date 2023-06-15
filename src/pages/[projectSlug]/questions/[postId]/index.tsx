@@ -31,7 +31,7 @@ const ProjectQuestionPage = (props: ProjectQuestionPageProps) => {
 
   const { data: project } = projectQuery
 
-  const postQuery = trpc.posts.getPost.useQuery(
+  const postQuery = trpc.posts.getPostById.useQuery(
     { id: postId as string },
     { enabled: !!postId },
   )

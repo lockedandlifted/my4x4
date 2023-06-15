@@ -737,6 +737,8 @@ model ProjectsPart {
   description           String?
   installedByBusiness   Business?        @relation(fields: [installedByBusinessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   installedByBusinessId String?          @map("installed_by_business_id")
+  user                  User?            @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId                String?          @map("user_id")
 
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @map("updated_at")
@@ -835,6 +837,7 @@ model User {
   postLikes          PostLike[]
   posts              Post[]
   projectLikes       ProjectLike[]
+  projectsParts      ProjectsPart[]
   projectsUsers      ProjectsUser[]
   sessions           Session[]
   usersExternalLinks UsersExternalLink[]

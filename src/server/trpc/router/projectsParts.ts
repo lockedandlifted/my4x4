@@ -2,11 +2,12 @@ import { z } from 'zod'
 
 import type { Prisma } from '@prisma/client'
 
+import createActivityItem from '@utils/createActivityItem'
 import { snakeCase } from '@utils/string'
 
 import { createProjectsPartValidationSchema, getSimilarProjectsValidationSchema } from '@validationSchemas/projectsPart'
 
-import { router, publicProcedure } from '../trpc'
+import { router, publicProcedure, protectedProcedure } from '../trpc'
 
 const projectsPartsRouter = router({
   getProjectsParts: publicProcedure
@@ -81,6 +82,20 @@ const projectsPartsRouter = router({
           include: {
             category: true,
             manufacturer: true,
+          },
+        },
+        project: true,
+        user: {
+          include: {
+            usersImages: {
+              include: {
+                image: true,
+              },
+              orderBy: {
+                sort: 'asc',
+              },
+              take: 1,
+            },
           },
         },
       },
@@ -159,9 +174,9 @@ const projectsPartsRouter = router({
       },
     })),
 
-  createProjectsPart: publicProcedure
+  createProjectsPart: protectedProcedure
     .input(createProjectsPartValidationSchema)
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const data: Prisma.ProjectsPartCreateInput = {
         description: input.description,
         installedAt: input.installedAt,
@@ -202,6 +217,11 @@ const projectsPartsRouter = router({
             },
           },
         },
+        user: {
+          connect: {
+            id: ctx.session?.user?.id || 'unauthenticated',
+          },
+        },
       }
 
       if (input.installedByBusinessTitle) {
@@ -217,7 +237,7 @@ const projectsPartsRouter = router({
         }
       }
 
-      return ctx.prisma.$transaction([
+      const result = await ctx.prisma.$transaction([
         ctx.prisma.projectsPart.create({
           data,
           include: {
@@ -238,17 +258,42 @@ const projectsPartsRouter = router({
           },
         }),
       ])
+
+      const [projectsPart] = result
+
+      // Create Activity
+      await createActivityItem({
+        eventType: 'projects_manufacturer_parts.created',
+        ownerId: ctx.session?.user?.id || '',
+        ownerType: 'User',
+        subjectId: projectsPart.id,
+        subjectType: 'ProjectsPart',
+      })
+
+      return result
     }),
 
   deleteProjectsPartById: publicProcedure
     .input(z.object({
       id: z.string(),
     }))
-    .mutation(({ ctx, input }) => ctx.prisma.projectsPart.delete({
-      where: {
-        id: input.id,
-      },
-    })),
+    .mutation(async ({ ctx, input }) => {
+      const result = await ctx.prisma.projectsPart.delete({
+        where: {
+          id: input.id,
+        },
+      })
+
+      // Delete Activity
+      await ctx.prisma.activityItem.deleteMany({
+        where: {
+          subjectId: input.id,
+          subjectType: 'ProjectsPart',
+        },
+      })
+
+      return result
+    }),
 })
 
 export default projectsPartsRouter
