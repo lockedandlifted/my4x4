@@ -29,10 +29,10 @@ const Part = (props: PartProps) => {
       paddingY={2}
     >
       <Flex justifyContent="center" flexDirection="column">
-        <Text fontSize="sm" noOfLines={1}>{manufacturerPart.title}</Text>
+        <Text fontSize="sm" noOfLines={1}>{manufacturerPart?.title}</Text>
 
         <Heading color="gray" fontWeight="normal" marginTop="2" size="xs">
-          {manufacturerPart.manufacturer?.title}
+          {manufacturerPart?.manufacturer?.title}
         </Heading>
       </Flex>
 

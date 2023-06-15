@@ -21,11 +21,41 @@ const imagesRouter = router({
     .input(z.object({
       id: z.string(),
     }))
-    .mutation(({ ctx, input }) => ctx.prisma.image.delete({
-      where: {
-        id: input?.id,
-      },
-    })),
+    .mutation(async ({ ctx, input }) => {
+      // Projects Image
+      const projectsImages = await ctx.prisma.projectsImage.findMany({
+        where: {
+          imageId: input.id,
+        },
+      })
+
+      // Delete Image
+      const result = await ctx.prisma.image.delete({
+        where: {
+          id: input?.id,
+        },
+      })
+
+      // Delete Activity
+      const projectsImagesSubjects = projectsImages.map(projectsImage => ({
+        subjectId: projectsImage.id,
+        subjectType: 'ProjectsImage',
+      }))
+
+      await ctx.prisma.activityItem.deleteMany({
+        where: {
+          OR: [
+            {
+              subjectId: input.id,
+              subjectType: 'Image',
+            },
+            ...projectsImagesSubjects,
+          ],
+        },
+      })
+
+      return result
+    }),
 })
 
 export default imagesRouter

@@ -264,7 +264,7 @@ const postsRouter = router({
       })
     }),
 
-  getPost: publicProcedure
+  getPostById: publicProcedure
     .input(z.object({
       id: z.string(),
     }))
@@ -273,6 +273,12 @@ const postsRouter = router({
         id: input.id,
       },
       include: {
+        _count: {
+          select: {
+            postsComments: true,
+            postLikes: true,
+          },
+        },
         postsComments: {
           include: {
             comment: {
@@ -325,6 +331,12 @@ const postsRouter = router({
           },
         },
         postLikes: true,
+        postsProjects: {
+          include: {
+            project: true,
+          },
+        },
+        postType: true,
         user: {
           include: {
             usersImages: {
