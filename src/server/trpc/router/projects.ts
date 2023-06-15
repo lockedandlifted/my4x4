@@ -116,15 +116,6 @@ const projectsRouter = router({
         },
       })
 
-      // Create Activity
-      await createActivityItem({
-        eventType: 'projects.created',
-        ownerId: ctx.session?.user?.id || '',
-        ownerType: 'User',
-        subjectId: project.id,
-        subjectType: 'Project',
-      })
-
       return project
     }),
 
@@ -526,14 +517,27 @@ const projectsRouter = router({
     .input(z.object({
       id: z.string(),
     }))
-    .mutation(async ({ ctx, input }) => ctx.prisma.project.update({
-      where: {
-        id: input.id,
-      },
-      data: {
-        published: true,
-      },
-    })),
+    .mutation(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          published: true,
+        },
+      })
+
+      // Create Activity
+      await createActivityItem({
+        eventType: 'projects.published',
+        ownerId: ctx.session?.user?.id || '',
+        ownerType: 'User',
+        subjectId: project.id,
+        subjectType: 'Project',
+      })
+
+      return project
+    }),
 })
 
 export default projectsRouter

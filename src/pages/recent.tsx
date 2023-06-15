@@ -4,7 +4,7 @@ import MobileLayout from '@layouts/MobileLayout'
 
 import ProjectTile from '@components/ProjectTile'
 
-const Feed = () => {
+const RecentPage = () => {
   const projectsQuery = trpc.projects.getRecentProjects.useQuery({
     limit: 10,
   })
@@ -19,4 +19,4 @@ const Feed = () => {
   )
 }
 
-export default Feed
+export default RecentPage

@@ -38,6 +38,7 @@ const EditProjectImagePage = () => {
       <BackToProjectButton editMode project={project} />
 
       <Preview
+        enableTagging
         image={projectsImage?.image}
         projectsImage={projectsImage}
       />

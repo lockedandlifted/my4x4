@@ -1,16 +1,17 @@
-import React, { Suspense } from 'react'
-import { Flex } from '@chakra-ui/react'
+import React from 'react'
 
 import type { ActivityItem as ActivityItemType } from '@prisma/client'
 
-import useActivityItem from '@hooks/useActivityItem'
-
 import PostCreated from './components/PostCreated'
-import ProjectCreated from './components/ProjectCreated'
+import ProjectPublished from './components/ProjectPublished'
+import ProjectsImageCreated from './components/ProjectsImageCreated'
+import ProjectsPartCreated from './components/ProjectsPartCreated'
 
 const components = {
   'posts.created': PostCreated,
-  'projects.created': ProjectCreated,
+  'projects.published': ProjectPublished,
+  'projects_images.created': ProjectsImageCreated,
+  'projects_manufacturer_parts.created': ProjectsPartCreated,
 } as const
 
 type ActivityItemProps = {
@@ -20,17 +21,13 @@ type ActivityItemProps = {
 const ActivityItem = (props: ActivityItemProps) => {
   const { activityItem } = props
 
-  const activityItemPayload = useActivityItem({ activityItem })
-
   const Component = components[activityItem.eventType]
   if (!Component) return null
 
   return (
-    <Suspense>
-      <Component
-        {...activityItemPayload}
-      />
-    </Suspense>
+    <Component
+      activityItem={activityItem}
+    />
   )
 }
 

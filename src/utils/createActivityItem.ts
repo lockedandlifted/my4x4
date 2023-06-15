@@ -3,10 +3,9 @@ import { prisma } from '@server/db/client'
 const eventTypes = [
   'posts.created',
   'posts_comments.created',
-  'projects.created',
+  'projects.published',
   'projects_images.created',
   'projects_manufacturer_parts.created',
-  'projects.updated',
 ] as const
 
 type EventType = typeof eventTypes[number]

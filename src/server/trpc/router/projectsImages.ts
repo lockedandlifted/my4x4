@@ -1,9 +1,11 @@
 import { z } from 'zod'
 
-import { router, publicProcedure } from '../trpc'
+import createActivityItem from '@utils/createActivityItem'
+
+import { router, publicProcedure, protectedProcedure } from '../trpc'
 
 const projectsImagesRouter = router({
-  createProjectsImage: publicProcedure
+  createProjectsImage: protectedProcedure
     .input(z.object({
       projectId: z.string(),
       image: z.object({
@@ -23,7 +25,7 @@ const projectsImagesRouter = router({
         },
       })) || {}
 
-      return ctx.prisma.$transaction([
+      const result = await ctx.prisma.$transaction([
         ctx.prisma.projectsImage.create({
           data: {
             project: {
@@ -34,6 +36,7 @@ const projectsImagesRouter = router({
             image: {
               create: {
                 title: input.image.originalFilename,
+                userId: ctx.session?.user?.id || '',
                 ...input.image,
               },
             },
@@ -49,6 +52,19 @@ const projectsImagesRouter = router({
           },
         }),
       ])
+
+      const [projectsImage] = result
+
+      // Create Activity
+      await createActivityItem({
+        eventType: 'projects_images.created',
+        ownerId: ctx.session?.user?.id || '',
+        ownerType: 'User',
+        subjectId: projectsImage.id,
+        subjectType: 'ProjectsImage',
+      })
+
+      return result
     }),
 
   getProjectsImageById: publicProcedure
@@ -60,7 +76,24 @@ const projectsImagesRouter = router({
         id: input.id,
       },
       include: {
-        image: true,
+        image: {
+          include: {
+            user: {
+              include: {
+                usersImages: {
+                  include: {
+                    image: true,
+                  },
+                  orderBy: {
+                    sort: 'asc',
+                  },
+                  take: 1,
+                },
+              },
+            },
+          },
+        },
+        project: true,
       },
     })),
 
@@ -132,11 +165,23 @@ const projectsImagesRouter = router({
     .input(z.object({
       id: z.string(),
     }))
-    .mutation(({ ctx, input }) => ctx.prisma.projectsImage.delete({
-      where: {
-        id: input.id,
-      },
-    })),
+    .mutation(async ({ ctx, input }) => {
+      const result = await ctx.prisma.projectsImage.delete({
+        where: {
+          id: input.id,
+        },
+      })
+
+      // Delete Activity
+      await ctx.prisma.activityItem.deleteMany({
+        where: {
+          subjectId: input.id,
+          subjectType: 'ProjectsImage',
+        },
+      })
+
+      return result
+    }),
 })
 
 export default projectsImagesRouter

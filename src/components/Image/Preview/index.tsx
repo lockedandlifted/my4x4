@@ -13,12 +13,13 @@ const defaultState = {
 }
 
 type PreviewProps = {
+  enableTagging?: boolean,
   image: Image,
   projectsImage: ProjectsImage,
 }
 
 const Preview = (props: PreviewProps) => {
-  const { image, projectsImage } = props
+  const { enableTagging = false, image, projectsImage } = props
 
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -58,6 +59,7 @@ const Preview = (props: PreviewProps) => {
 
       <TagContainer
         containerRef={containerRef}
+        enableTagging={enableTagging}
         height={scaledHeight}
         projectsImage={projectsImage}
         scale={scale}
