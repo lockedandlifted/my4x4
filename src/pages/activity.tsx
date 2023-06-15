@@ -11,7 +11,6 @@ const ActivityPage = () => {
     limit: 20,
   })
   const { data: activityItems } = activityItemsQuery
-  console.log(activityItems)
 
   return (
     <MobileLayout>
