@@ -43,6 +43,15 @@ model ActivityItem {
   subjectId   String @map("subject_id")
   subjectType String @map("subject_type")
 
+  parentSubjectId   String? @map("parent_subject_id")
+  parentSubjectType String? @map("parent_subject_type")
+
+  parentItemId String?        @map("parent_item_id")
+  parentItem   ActivityItem?  @relation("ItemSubItems", fields: [parentItemId], references: [id])
+  subItems     ActivityItem[] @relation("ItemSubItems")
+
+  isGroup Boolean @default(false) @map("is_group")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
@@ -696,6 +705,9 @@ model ProjectsImage {
   imageId   String  @map("image_id")
   sort      Int?
 
+  user   User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId String? @map("user_id")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
@@ -837,6 +849,7 @@ model User {
   postLikes          PostLike[]
   posts              Post[]
   projectLikes       ProjectLike[]
+  projectsImages     ProjectsImage[]
   projectsParts      ProjectsPart[]
   projectsUsers      ProjectsUser[]
   sessions           Session[]

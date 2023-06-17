@@ -2,6 +2,8 @@ import { z } from 'zod'
 
 import { updateImageByIdValidationSchema } from '@validationSchemas/image'
 
+import deleteActivityItem from '@utils/deleteActivityItem'
+
 import { router, publicProcedure } from '../trpc'
 
 const imagesRouter = router({
@@ -42,16 +44,14 @@ const imagesRouter = router({
         subjectType: 'ProjectsImage',
       }))
 
-      await ctx.prisma.activityItem.deleteMany({
-        where: {
-          OR: [
-            {
-              subjectId: input.id,
-              subjectType: 'Image',
-            },
-            ...projectsImagesSubjects,
-          ],
-        },
+      deleteActivityItem({
+        subjects: [
+          {
+            subjectId: input.id,
+            subjectType: 'Image',
+          },
+          ...projectsImagesSubjects,
+        ],
       })
 
       return result

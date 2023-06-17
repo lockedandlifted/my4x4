@@ -8,6 +8,12 @@ const activityItemsRouter = router({
       limit: z.number().optional(),
     }))
     .query(({ ctx, input }) => ctx.prisma.activityItem.findMany({
+      where: {
+        parentItemId: null,
+      },
+      include: {
+        subItems: true,
+      },
       orderBy: {
         createdAt: 'desc',
       },

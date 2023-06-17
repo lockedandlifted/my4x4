@@ -1,6 +1,9 @@
 import { z } from 'zod'
 
 import createActivityItem from '@utils/createActivityItem'
+import deleteActivityItem from '@utils/deleteActivityItem'
+
+import type { Prisma } from '@prisma/client'
 
 import { router, publicProcedure, protectedProcedure } from '../trpc'
 
@@ -41,6 +44,11 @@ const projectsImagesRouter = router({
               },
             },
             sort: sort ? sort + 1 : 1,
+            user: {
+              connect: {
+                id: ctx.session?.user?.id || '',
+              },
+            },
           },
         }),
         ctx.prisma.project.update({
@@ -53,13 +61,15 @@ const projectsImagesRouter = router({
         }),
       ])
 
-      const [projectsImage] = result
+      const [projectsImage, project] = result
 
       // Create Activity
       await createActivityItem({
         eventType: 'projects_images.created',
         ownerId: ctx.session?.user?.id || '',
         ownerType: 'User',
+        parentSubjectId: project.id,
+        parentSubjectType: 'Project',
         subjectId: projectsImage.id,
         subjectType: 'ProjectsImage',
       })
@@ -99,20 +109,32 @@ const projectsImagesRouter = router({
 
   getProjectsImages: publicProcedure
     .input(z.object({
+      ids: z.array(z.string()).optional(),
       include: z.object({
         image: z.boolean().optional(),
+        project: z.boolean().optional(),
       }).optional(),
       projectId: z.string(),
     }))
-    .query(({ ctx, input }) => ctx.prisma.projectsImage.findMany({
-      where: {
+    .query(({ ctx, input }) => {
+      const filters: Prisma.ProjectsImageWhereInput = {
         projectId: input.projectId,
-      },
-      include: input.include,
-      orderBy: {
-        sort: 'asc',
-      },
-    })),
+      }
+
+      if (input.ids) {
+        filters.id = {
+          in: input.ids,
+        }
+      }
+
+      return ctx.prisma.projectsImage.findMany({
+        where: filters,
+        include: input.include,
+        orderBy: {
+          sort: 'asc',
+        },
+      })
+    }),
 
   getProjectsImagesCount: publicProcedure
     .input(z.object({
@@ -173,11 +195,9 @@ const projectsImagesRouter = router({
       })
 
       // Delete Activity
-      await ctx.prisma.activityItem.deleteMany({
-        where: {
-          subjectId: input.id,
-          subjectType: 'ProjectsImage',
-        },
+      await deleteActivityItem({
+        subjectId: input.id,
+        subjectType: 'ProjectsImage',
       })
 
       return result
