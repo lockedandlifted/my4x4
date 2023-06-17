@@ -50,7 +50,7 @@ const ProjectsImageCreatedGrouped = (props: ProjectsImageCreatedGroupedProps) =>
       />
 
       <ActivityContainer.Text>
-        Images were added to a {project?.title}.
+        New images were added to a {project?.title}.
         <Link fontWeight="bold" href={`/${project?.slug}/images`} marginLeft="1">Read More</Link>
       </ActivityContainer.Text>
 
