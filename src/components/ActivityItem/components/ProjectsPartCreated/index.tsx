@@ -1,4 +1,4 @@
-import { Flex, Link } from '@chakra-ui/react'
+import { Link, Text } from '@chakra-ui/react'
 
 import { trpc } from '@utils/trpc'
 
@@ -36,8 +36,10 @@ const ProjectsPartCreated = (props: ProjectsPartCreatedProps) => {
       />
 
       <ActivityContainer.Text>
-        A new part was added to {project?.title}.
-        <Link fontWeight="bold" href={`/${project?.slug}/parts/${projectsPart?.id}`} marginLeft="1">Read More</Link>
+        A new part was added.
+        <Link fontWeight="bold" href={`/${project?.slug}/parts/${projectsPart?.id}`} marginLeft="1">
+          {projectsPart?.manufacturerPart?.manufacturer?.title} {projectsPart?.manufacturerPart?.title} installed on {project?.title}
+        </Link>
       </ActivityContainer.Text>
 
       <ActivityContainer.Body>

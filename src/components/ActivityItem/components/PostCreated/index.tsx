@@ -48,7 +48,7 @@ const PostCreated = (props: PostCreatedProps) => {
 
       <ActivityContainer.Text>
         {activityText}
-        <Link fontWeight="bold" href={postUrl} marginLeft="1">Read More</Link>
+        <Link fontWeight="bold" href={postUrl} marginLeft="1">Read Post</Link>
       </ActivityContainer.Text>
 
       <ActivityContainer.Body>
