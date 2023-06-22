@@ -44,7 +44,6 @@
     "@vercel/og": "0.0.27",
     "cookies-next": "^2.1.1",
     "cuid": "^2.1.8",
-    "framer-motion": "^8.5.0",
     "imagekit-javascript": "^1.5.4",
     "inngest": "^1.9.0",
     "next": "13.4.2",

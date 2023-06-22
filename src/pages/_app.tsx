@@ -2,7 +2,6 @@ import { SessionProvider } from 'next-auth/react'
 import { ChakraProvider } from '@chakra-ui/provider'
 import { Toaster } from 'react-hot-toast'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { AnimatePresence } from 'framer-motion'
 import { Analytics } from '@vercel/analytics/react'
 
 import type { AppType } from 'next/app'
@@ -29,14 +28,7 @@ const MyApp: AppType<{ session: Session | null }> = (props) => {
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
         <ImageKitContextProvider>
-          <AnimatePresence
-            exitBeforeEnter
-            mode="wait"
-            initial={false}
-            popLayout
-          >
-            <Component key={router.asPath} {...pageProps} />
-          </AnimatePresence>
+          <Component key={router.asPath} {...pageProps} />
           <ReactQueryDevtools initialIsOpen={false} />
         </ImageKitContextProvider>
         <Toaster />
