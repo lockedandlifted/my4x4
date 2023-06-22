@@ -58,6 +58,8 @@
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.7.1",
     "sass": "^1.57.1",
+    "slate": "^0.94.1",
+    "slate-react": "^0.97.1",
     "superjson": "1.12.2",
     "ts-node": "^10.9.1",
     "use-debounce": "^9.0.2",
