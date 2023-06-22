@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/provider'
 import { Toaster } from 'react-hot-toast'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Analytics } from '@vercel/analytics/react'
+import { TrackingHeadScript } from '@phntms/next-gtm'
 
 import type { AppType } from 'next/app'
 import type { Session } from 'next-auth'
@@ -17,6 +18,8 @@ import '@uppy/drag-drop/dist/style.min.css'
 import '@uppy/file-input/dist/style.min.css'
 import '@uppy/progress-bar/dist/style.min.css'
 
+const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID || ''
+
 const MyApp: AppType<{ session: Session | null }> = (props) => {
   const {
     Component,
@@ -28,6 +31,7 @@ const MyApp: AppType<{ session: Session | null }> = (props) => {
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
         <ImageKitContextProvider>
+          <TrackingHeadScript id={GA_TRACKING_ID} />
           <Component key={router.asPath} {...pageProps} />
           <ReactQueryDevtools initialIsOpen={false} />
         </ImageKitContextProvider>
