@@ -6,13 +6,20 @@ import ProjectTile from '@components/ProjectTile'
 
 const RecentProjects = () => {
   const projectsQuery = trpc.projects.getRecentProjects.useQuery({
-    limit: 10,
+    limit: 4,
   })
   const { data: projects } = projectsQuery
 
   return (
-    <Flex direction="column" marginTop={16}>
-      <Heading size="md" marginBottom={4}>
+    <Flex
+      borderTopWidth="1px"
+      borderStyle="dashed"
+      direction="column"
+      marginTop="8"
+      paddingTop="8"
+      width="100%"
+    >
+      <Heading as="h1" fontWeight="medium" marginBottom="8" size="lg">
         Recently Updated
       </Heading>
 

@@ -30,8 +30,10 @@ const ProjectPublished = (props: ProjectPublishedProps) => {
       />
 
       <ActivityContainer.Text>
-        {project?.title} has been published.
-        <Link fontWeight="bold" href={`/${project?.slug}`} marginLeft="1">Read More</Link>
+        A new project was published.
+        <Link fontWeight="bold" href={`/${project?.slug}`} marginLeft="1">
+          View details of {project?.title}
+        </Link>
       </ActivityContainer.Text>
 
       <ActivityContainer.Body>

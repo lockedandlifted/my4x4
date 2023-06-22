@@ -250,9 +250,10 @@ function useProjectForm(options: UseProjectFormOptions) {
 
   // Publish Mutation
   const publishProjectMutation = trpc.projects.publishProjectById.useMutation({
-    onSuccess: (data) => {
-      const [_, project] = data
-      invalidateGetProjectById({ id: project?.id })
+    onSuccess: () => {
+      if (project?.id) {
+        invalidateGetProjectById({ id: project.id })
+      }
     },
   })
 

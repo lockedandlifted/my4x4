@@ -69,7 +69,10 @@ const EditProjectPage = () => {
     showCreateOrEditProjectPartModal,
   } = state
 
-  const projectQuery = trpc.projects.getProjectById.useQuery({ id: projectId })
+  const projectQuery = trpc.projects.getProjectById.useQuery(
+    { id: projectId },
+    { enabled: !!projectId },
+  )
   const { data: project } = projectQuery
 
   const projectViewQuery = trpc.projectPageViews.getViewCountForProjectSlug.useQuery(
