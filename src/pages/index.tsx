@@ -1,5 +1,6 @@
 import MobileLayout from '@layouts/MobileLayout'
 
+import About from '@components/Landing/About'
 import BrowseManufacturers from '@components/Landing/BrowseManufacturers'
 import Hero from '@components/Landing/Hero'
 import RecentActivity from '@components/Landing/RecentActivity'
@@ -11,6 +12,7 @@ const HomePage = () => (
     <RecentProjects />
     <BrowseManufacturers />
     <RecentActivity />
+    <About />
   </MobileLayout>
 )
 
