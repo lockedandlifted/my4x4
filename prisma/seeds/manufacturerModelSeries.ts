@@ -237,6 +237,152 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     },
   ]
 
+  // Toyota LandCruiser
+  const toyotaLandCruiser = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'toyota_land_cruiser')
+
+  const toyotaLandCruiserSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'toyota_land_cruiser_75',
+      title: '75',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+    {
+      key: 'toyota_land_cruiser_76',
+      title: '76',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+    {
+      key: 'toyota_land_cruiser_78',
+      title: '78',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+    {
+      key: 'toyota_land_cruiser_79',
+      title: '79',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+    {
+      key: 'toyota_land_cruiser_80',
+      title: '80',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+    {
+      key: 'toyota_land_cruiser_45',
+      title: '45',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+    {
+      key: 'toyota_land_cruiser_100',
+      title: '100',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+    {
+      key: 'toyota_land_cruiser_105',
+      title: '105',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+    {
+      key: 'toyota_land_cruiser_200',
+      title: '200',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+    {
+      key: 'toyota_land_cruiser_300',
+      title: '300',
+      manufacturerModelId: toyotaLandCruiser.id,
+    },
+  ]
+
+  // Toyota Hilux
+  const toyotaHilux = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'toyota_hilux')
+
+  const toyotaHiluxSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'toyota_hilux_n50',
+      title: 'n50/ln106',
+      manufacturerModelId: toyotaHilux.id,
+    },
+    {
+      key: 'toyota_hilux_n60',
+      title: 'n60/ln110/rn110/ln167/ln166/kzn165/kun26r',
+      manufacturerModelId: toyotaHilux.id,
+    },
+    {
+      key: 'toyota_hilux_n70',
+      title: 'n70',
+      manufacturerModelId: toyotaHilux.id,
+    },
+    {
+      key: 'toyota_hilux_n80',
+      title: 'n80',
+      manufacturerModelId: toyotaHilux.id,
+    },
+  ]
+
+  // Toyota Prado
+  const toyotaPrado = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'toyota_prado')
+
+  const toyotaPradoSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'toyota_prado_150',
+      title: '150',
+      manufacturerModelId: toyotaPrado.id,
+    },
+  ]
+
+  // Suzuki Jimny
+  const suzukiJimny = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'suzuki_jimny')
+
+  const suzukiJimnySeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'suzuki_jimny_jb74',
+      title: 'jb74',
+      manufacturerModelId: suzukiJimny.id,
+    },
+  ]
+
+  // Land Rover Defender
+  const landRoverDefender = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'land_rover_defender')
+
+  const landRoverDefenderSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'land_rover_defender_110',
+      title: '110',
+      manufacturerModelId: landRoverDefender.id,
+    },
+    {
+      key: 'land_rover_defender_130',
+      title: 'TD5/130',
+      manufacturerModelId: landRoverDefender.id,
+    },
+  ]
+
+  // Holden Rodeo
+  const holdenRodeo = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'holden_rodeo')
+
+  const holdenRodeoSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'holden_rodeo_tf',
+      title: 'tf',
+      manufacturerModelId: holdenRodeo.id,
+    },
+  ]
+
+  // Holden Colorado
+  const holdenColorado = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'holden_colorado')
+
+  const holdenColoradoSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'holden_colorado_rc',
+      title: 'rc',
+      manufacturerModelId: holdenColorado.id,
+    },
+    {
+      key: 'holden_colorado_rg',
+      title: 'rg',
+      manufacturerModelId: holdenColorado.id,
+    },
+  ]
 
   // Merge Series
   const mergedSeries = [
@@ -253,8 +399,14 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     ...mitsubishiPajeroSeries,
     ...nissanPatrolSeries,
     ...nissanNavaraSeries,
-  ]
-
+    ...toyotaLandCruiserSeries,
+    ...toyotaHiluxSeries,
+    ...toyotaPradoSeries,
+    ...suzukiJimnySeries,
+    ...landRoverDefenderSeries,
+    ...holdenRodeoSeries,
+    ...holdenColoradoSeries,
+]
   const queries = mergedSeries.map(async (data: Prisma.ManufacturerModelSeriesCreateArgs['data']) => {
     const record = await prisma.manufacturerModelSeries.upsert({
       where: { key: data.key },
