@@ -1,7 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { DefaultSeo } from 'next-seo'
-import { motion } from 'framer-motion'
 
 import Footer from '@components/Footer'
 import Header from '@components/Header'
@@ -47,18 +46,7 @@ const MobileLayout = (props: MobileLayoutProps) => {
         <Header />
 
         <Flex flexDirection="column" paddingX="4" width="100%">
-          <motion.div
-            initial={{ x: 200, opacity: 0.5 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 200, opacity: 0.5 }}
-            transition={{
-              type: 'tween',
-              ease: 'easeInOut',
-              duration: 0.3,
-            }}
-          >
-            {children}
-          </motion.div>
+          {children}
         </Flex>
 
         <Footer />
