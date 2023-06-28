@@ -259,13 +259,15 @@ const projectsPartsRouter = router({
         }),
       ])
 
-      const [projectsPart] = result
+      const [projectsPart, project] = result
 
       // Create Activity
       await createActivityItem({
         eventType: 'projects_manufacturer_parts.created',
         ownerId: ctx.session?.user?.id || '',
         ownerType: 'User',
+        parentSubjectId: project.id,
+        parentSubjectType: 'Project',
         subjectId: projectsPart.id,
         subjectType: 'ProjectsPart',
       })
