@@ -29,10 +29,22 @@ const groupPartsByCategory = (params: GroupPartsByCategoryParams) => {
   return Object.values(groups)
 }
 
-function useProjectParts(project: Project) {
+type UseProjectPartsOptions = {
+  queryOptions?: {
+    ids?: string[],
+    include?: {
+      project?: boolean,
+    },
+  },
+}
+
+function useProjectParts(
+  project: Project,
+  options: UseProjectPartsOptions = {},
+) {
   const projectsPartsQuery = trpc.projectsParts.getProjectsParts.useQuery(
     {
-      projectId: project?.id,
+      ids: options?.queryOptions?.ids,
       include: {
         manufacturerPart: {
           include: {
@@ -40,7 +52,9 @@ function useProjectParts(project: Project) {
             manufacturer: true,
           },
         },
+        ...options?.queryOptions?.include,
       },
+      projectId: project?.id,
     },
     { enabled: !!project?.id },
   )

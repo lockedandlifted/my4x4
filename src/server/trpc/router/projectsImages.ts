@@ -64,15 +64,17 @@ const projectsImagesRouter = router({
       const [projectsImage, project] = result
 
       // Create Activity
-      await createActivityItem({
-        eventType: 'projects_images.created',
-        ownerId: ctx.session?.user?.id || '',
-        ownerType: 'User',
-        parentSubjectId: project.id,
-        parentSubjectType: 'Project',
-        subjectId: projectsImage.id,
-        subjectType: 'ProjectsImage',
-      })
+      if (project.published) {
+        await createActivityItem({
+          eventType: 'projects_images.created',
+          ownerId: ctx.session?.user?.id || '',
+          ownerType: 'User',
+          parentSubjectId: project.id,
+          parentSubjectType: 'Project',
+          subjectId: projectsImage.id,
+          subjectType: 'ProjectsImage',
+        })
+      }
 
       return result
     }),

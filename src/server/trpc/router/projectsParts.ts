@@ -12,6 +12,7 @@ import { router, publicProcedure, protectedProcedure } from '../trpc'
 const projectsPartsRouter = router({
   getProjectsParts: publicProcedure
     .input(z.object({
+      ids: z.array(z.string()).optional(),
       include: z.object({
         manufacturerPart: z.object({
           include: z.object({
@@ -19,12 +20,19 @@ const projectsPartsRouter = router({
             manufacturer: z.boolean().default(false),
           }).optional(),
         }).optional(),
+        project: z.boolean().optional(),
       }).optional(),
       projectId: z.string(),
       string: z.string().optional(),
     }))
     .query(({ ctx, input }) => {
       const filters: Prisma.ProjectsPartWhereInput = {}
+
+      if (input.ids) {
+        filters.id = {
+          in: input.ids,
+        }
+      }
 
       if (input.projectId) {
         filters.projectId = input.projectId
@@ -259,16 +267,20 @@ const projectsPartsRouter = router({
         }),
       ])
 
-      const [projectsPart] = result
+      const [projectsPart, project] = result
 
-      // Create Activity
-      await createActivityItem({
-        eventType: 'projects_manufacturer_parts.created',
-        ownerId: ctx.session?.user?.id || '',
-        ownerType: 'User',
-        subjectId: projectsPart.id,
-        subjectType: 'ProjectsPart',
-      })
+      // Create Activity - if project published
+      if (project.published) {
+        await createActivityItem({
+          eventType: 'projects_manufacturer_parts.created',
+          ownerId: ctx.session?.user?.id || '',
+          ownerType: 'User',
+          parentSubjectId: project.id,
+          parentSubjectType: 'Project',
+          subjectId: projectsPart.id,
+          subjectType: 'ProjectsPart',
+        })
+      }
 
       return result
     }),

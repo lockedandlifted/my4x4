@@ -15,6 +15,7 @@ const eventTypes = [
 
 const groupableEventTypes = [
   'projects_images.created',
+  'projects_manufacturer_parts.created',
 ] as const
 
 type EventType = typeof eventTypes[number]

@@ -10,7 +10,20 @@ import { prisma } from '../../../server/db/client'
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    async signIn({ account }: any) {
+    async signIn({ account, user }: any) {
+      const { id, username } = user
+
+      if (!username) {
+        await prisma.user.update({
+          where: {
+            id,
+          },
+          data: {
+            username: `user-${id}`,
+          },
+        })
+      }
+
       delete account.user_id
       return true
     },
