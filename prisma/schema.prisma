@@ -629,7 +629,7 @@ model Project {
   published            Boolean @default(false)
   temporaryUserId      String? @map("temporary_user_id")
   createdByOwner       Boolean @default(true) @map("created_by_owner")
-  notificationsEnabled Boolean @default(false) @map("notifications_enabled")
+  notificationsEnabled Boolean @default(true) @map("notifications_enabled")
   authToken            String? @map("auth_token")
 
   manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
