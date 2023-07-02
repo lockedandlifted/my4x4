@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ account, user }: any) {
       const { id, username } = user
 
-      if (!username) {
+      if (id && !username) {
         await prisma.user.update({
           where: {
             id,
