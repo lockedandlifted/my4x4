@@ -11,9 +11,15 @@ export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
     async signIn({ account, user }: any) {
-      const { id, username } = user
+      const { id } = user
 
-      if (id && !username) {
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          id,
+        },
+      })
+
+      if (existingUser && !existingUser.username) {
         await prisma.user.update({
           where: {
             id,
