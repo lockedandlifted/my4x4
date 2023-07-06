@@ -2,8 +2,8 @@ import { Flex, SimpleGrid } from '@chakra-ui/react'
 
 import { Project } from '@prisma/client'
 
-import ProjectsPartsButton from '../ProjectsPartsButton'
 import LikeButton from '../LikeButton'
+import ShareButton from '../ShareButton'
 
 type SocialActionsProps = {
   project: Project,
@@ -20,7 +20,7 @@ const SocialActions = (props: SocialActionsProps) => {
       spacing="4"
     >
       <LikeButton project={project} />
-      <ProjectsPartsButton project={project} />
+      <ShareButton project={project} />
     </SimpleGrid>
   )
 }

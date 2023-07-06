@@ -49,12 +49,12 @@ const Results = (props: ResultsProps) => {
 
   return (
     <Flex direction="column" marginTop="4">
-      <Text color="gray.600" fontSize="sm" fontWeight="bold">
+      <Text color="gray.600" fontSize="sm" fontWeight="bold" marginBottom="2">
         Results
       </Text>
 
       {!projects?.length && (
-        <Flex border="1px solid" borderColor="gray.200" borderRadius="lg" marginTop="2" padding="4">
+        <Flex border="1px solid" borderColor="gray.200" borderRadius="lg" padding="4">
           <Text color="gray.600" fontSize="sm">
             No results found.
           </Text>
