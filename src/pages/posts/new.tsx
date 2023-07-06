@@ -4,10 +4,18 @@ import {
   createEditor, BaseEditor, Descendant, Editor, Element, Transforms,
 } from 'slate'
 import {
-  Slate, Editable, withReact, ReactEditor,
+  Slate, Editable, withReact, ReactEditor, useSlateStatic,
 } from 'slate-react'
 
-type CustomElement = { type: 'code' | 'paragraph', children: CustomText[] }
+import withEmbeds from '@utils/withEmbeds'
+
+import ProjectEmbed from '@components/Post/Editor/ProjectEmbed'
+import YouTubeVideo from '@components/Post/Editor/YouTubeVideo'
+
+type CustomElement = {
+  type: 'code' | 'paragraph' | 'youtube',
+  children: CustomText[],
+}
 type CustomText = { text: string }
 
 declare module 'slate' {
@@ -23,9 +31,59 @@ const initialValue = [
     type: 'paragraph',
     children: [{ text: 'A line of text in a paragraph.' }],
   },
+  {
+    type: 'youtube',
+    youtubeId: '72_QrqUNXW4',
+    children: [{ text: '' }],
+  },
+  {
+    type: 'my4x4-project',
+    projectId: '10796cdc-3063-4244-bd17-d157c2561306',
+    children: [{ text: '' }],
+  },
+]
+
+const embedRegexes = [
+  {
+    regex: /https:\/\/www\.youtube\.com\/watch\?v=(\w+)/,
+    type: 'youtube',
+  },
 ]
 
 const CustomEditor = {
+  handleEmbed(editor, event) {
+    const text = event.clipboardData.getData('text/plain')
+
+    embedRegexes.some(({ regex, type }) => {
+      const match = text.match(regex)
+      if (match) {
+        event.preventDefault()
+
+        Transforms.insertNodes(editor, [
+          {
+            children: [{ text: '' }],
+            type,
+            youtubeId: match[1],
+          },
+          {
+            children: [{ text: 'hello' }],
+            type: 'paragraphs',
+          },
+        ])
+
+        return true
+      }
+
+      return false
+    })
+  },
+
+  handlePaste(editor, event) {
+    CustomEditor.handleEmbed(editor, event)
+
+    console.log('onPaste', event.clipboardData.getData('text/plain'))
+  },
+
   isBoldMarkActive(editor) {
     const marks = Editor.marks(editor)
     return marks ? marks.bold === true : false
@@ -59,9 +117,13 @@ const CustomEditor = {
 }
 
 const CodeElement = props => (
-  <pre {...props.attributes} style={{ backgroundColor: 'black', color: 'white' }}>
+  <pre {...props.attributes} style={{ backgroundColor: 'grey', color: 'white' }}>
     <code>{props.children}</code>
   </pre>
+)
+
+const CustomImage = props => (
+  <img {...props.attributes} src={props.element.url} alt="img" />
 )
 
 const DefaultElement = props => <p {...props.attributes}>{props.children}</p>
@@ -76,12 +138,18 @@ const Leaf = props => (
 )
 
 const NewPostPage = () => {
-  const [editor] = useState(() => withReact(createEditor()))
+  const [editor] = useState(() => withEmbeds(withReact(createEditor())))
 
   const renderElement = useCallback((props) => {
     switch (props.element.type) {
       case 'code':
         return <CodeElement {...props} />
+      case 'image':
+        return <CustomImage {...props} />
+      case 'my4x4-project':
+        return <ProjectEmbed {...props} />
+      case 'youtube':
+        return <YouTubeVideo {...props} />
       default:
         return <DefaultElement {...props} />
     }
@@ -90,7 +158,7 @@ const NewPostPage = () => {
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" padding="4">
       <Slate
         editor={editor}
         initialValue={initialValue}
@@ -123,7 +191,67 @@ const NewPostPage = () => {
             }}
             marginLeft="1"
           >
-            Code Block
+            Italic
+          </Button>
+
+          <Button
+            onMouseDown={(event) => {
+              event.preventDefault()
+              CustomEditor.toggleCodeBlock(editor)
+            }}
+            marginLeft="1"
+          >
+            Link
+          </Button>
+
+          <Button
+            onMouseDown={(event) => {
+              event.preventDefault()
+              CustomEditor.toggleCodeBlock(editor)
+            }}
+            marginLeft="1"
+          >
+            Numbered List
+          </Button>
+
+          <Button
+            onMouseDown={(event) => {
+              event.preventDefault()
+              CustomEditor.toggleCodeBlock(editor)
+            }}
+            marginLeft="1"
+          >
+            Bullets
+          </Button>
+
+          <Button
+            onMouseDown={(event) => {
+              event.preventDefault()
+              CustomEditor.toggleCodeBlock(editor)
+            }}
+            marginLeft="1"
+          >
+            H1
+          </Button>
+
+          <Button
+            onMouseDown={(event) => {
+              event.preventDefault()
+              CustomEditor.toggleCodeBlock(editor)
+            }}
+            marginLeft="1"
+          >
+            H2
+          </Button>
+
+          <Button
+            onMouseDown={(event) => {
+              event.preventDefault()
+              CustomEditor.toggleCodeBlock(editor)
+            }}
+            marginLeft="1"
+          >
+            Image
           </Button>
 
           <Button
@@ -160,6 +288,9 @@ const NewPostPage = () => {
                 break
               }
             }
+          }}
+          onPaste={(event) => {
+            CustomEditor.handlePaste(editor, event)
           }}
           renderElement={renderElement}
           renderLeaf={renderLeaf}

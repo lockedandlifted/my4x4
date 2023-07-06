@@ -57,6 +57,7 @@
     "react-hook-form": "^7.41.5",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.7.1",
+    "react-youtube": "^10.1.0",
     "sass": "^1.57.1",
     "slate": "^0.94.1",
     "slate-react": "^0.97.1",
