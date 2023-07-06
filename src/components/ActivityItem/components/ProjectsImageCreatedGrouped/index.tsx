@@ -1,10 +1,10 @@
-import { Flex, Link, SimpleGrid } from '@chakra-ui/react'
+import { Link, SimpleGrid } from '@chakra-ui/react'
 
 import { trpc } from '@utils/trpc'
 
 import type { Prisma } from '@prisma/client'
 
-import Preview from '@components/Image/Preview'
+import ImageThumb from '@components/Image/ImageThumb'
 
 import ActivityContainer from '../ActivityContainer'
 
@@ -62,17 +62,24 @@ const ProjectsImageCreatedGrouped = (props: ProjectsImageCreatedGroupedProps) =>
           gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"
           spacing="2"
         >
-          {projectsImages?.map(projectsImage => (
-            <Flex borderRadius="xl" key={projectsImage.id} overflow="hidden" width="100%">
-              <Preview
-                enableTagging={false}
-                image={projectsImage.image}
-                projectsImage={projectsImage}
-              />
-            </Flex>
-          ))}
-        </SimpleGrid>
+          {projectsImages?.map((projectsImage) => {
+            const { id, image } = projectsImage
 
+            return (
+              <ImageThumb
+                boxProps={{
+                  height: '100%',
+                  width: '100%',
+                }}
+                height={280}
+                href={`/${project?.slug}/images/${id}`}
+                image={image}
+                key={id}
+                width={280}
+              />
+            )
+          })}
+        </SimpleGrid>
       </ActivityContainer.Body>
     </ActivityContainer>
   )

@@ -12,17 +12,10 @@ const RecentProjects = () => {
 
   return (
     <Flex
-      borderTopWidth="1px"
-      borderStyle="dashed"
       direction="column"
-      marginTop="8"
-      paddingTop="8"
+      paddingTop="4"
       width="100%"
     >
-      <Heading as="h1" fontWeight="medium" marginBottom="8" size="lg">
-        Recently Updated
-      </Heading>
-
       <SimpleGrid
         columns={2}
         gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"
