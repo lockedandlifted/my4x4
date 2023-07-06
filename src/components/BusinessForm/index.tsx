@@ -186,7 +186,7 @@ const BusinessForm = (props: BusinessFormProps) => {
               label="Email"
               marginTop={Form.Field.MARGIN_TOP}
               name="location.email"
-              validationRules={{ required: false }}
+              validationRules={{ required: true }}
             >
               <input type="text" />
             </Form.Field>

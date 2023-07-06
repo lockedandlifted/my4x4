@@ -1,25 +1,19 @@
-import type { GetServerSideProps } from 'next'
-
 import MobileLayout from '@layouts/MobileLayout'
 
+import About from '@components/Landing/About'
+import BrowseManufacturers from '@components/Landing/BrowseManufacturers'
 import Hero from '@components/Landing/Hero'
+import RecentActivity from '@components/Landing/RecentActivity'
 import RecentProjects from '@components/Landing/RecentProjects'
 
-const Home = () => (
+const HomePage = () => (
   <MobileLayout>
     <Hero />
-
     <RecentProjects />
+    <BrowseManufacturers />
+    <RecentActivity />
+    <About />
   </MobileLayout>
 )
 
-export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=3600, stale-while-revalidate=59',
-  )
-
-  return { props: {} }
-}
-
-export default Home
+export default HomePage

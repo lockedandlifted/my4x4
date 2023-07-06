@@ -45,7 +45,7 @@ const MainNavigationModal = (props: MainNavigationModalProps) => {
           />
 
           <NavigationItem
-            href="/feed"
+            href="/recent"
             icon={<FaTruckMonster />}
             title="Latest Builds"
           />

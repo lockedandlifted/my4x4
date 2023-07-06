@@ -1,5 +1,6 @@
 import { router } from '../trpc'
 
+import activityItemsRouter from './activityItems'
 import attributesRouter from './attributes'
 import authRouter from './auth'
 import awsRouter from './aws'
@@ -7,6 +8,8 @@ import businessLocationsRouter from './businessLocations'
 import businessesImagesRouter from './businessesImages'
 import businessesRouter from './businesses'
 import categoriesRouter from './categories'
+import commentLikesRouter from './commentLikes'
+import commentsRouter from './comments'
 import countriesRouter from './countries'
 import externalLinkViewsRouter from './externalLinkViews'
 import externalLinksRouter from './externalLinks'
@@ -14,6 +17,9 @@ import imagesRouter from './images'
 import manufacturerModelsRouter from './manufacturerModels'
 import manufacturerPartsRouter from './manufacturerParts'
 import manufacturersRouter from './manufacturers'
+import postLikesRouter from './postLikes'
+import postsCommentsRouter from './postsComments'
+import postsRouter from './posts'
 import projectLikesRouter from './projectLikes'
 import projectPageViewsRouter from './projectPageViews'
 import projectPartsExternalLinksRouter from './projectPartsExternalLinks'
@@ -28,6 +34,7 @@ import usersImagesRouter from './usersImages'
 import usersRouter from './users'
 
 export const appRouters = {
+  activityItems: activityItemsRouter,
   attributes: attributesRouter,
   auth: authRouter,
   aws: awsRouter,
@@ -35,6 +42,8 @@ export const appRouters = {
   businesses: businessesRouter,
   businessesImages: businessesImagesRouter,
   categories: categoriesRouter,
+  commentLikes: commentLikesRouter,
+  comments: commentsRouter,
   countries: countriesRouter,
   externalLinkViews: externalLinkViewsRouter,
   externalLinks: externalLinksRouter,
@@ -42,6 +51,9 @@ export const appRouters = {
   manufacturerModels: manufacturerModelsRouter,
   manufacturerParts: manufacturerPartsRouter,
   manufacturers: manufacturersRouter,
+  postLikes: postLikesRouter,
+  posts: postsRouter,
+  postsComments: postsCommentsRouter,
   projectLikes: projectLikesRouter,
   projectPageViews: projectPageViewsRouter,
   projectPartsExternalLinks: projectPartsExternalLinksRouter,

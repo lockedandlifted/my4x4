@@ -154,6 +154,19 @@ const businessesRouter = router({
       })
     }),
 
+  deleteBusinessById: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const result = ctx.prisma.business.delete({
+        where: {
+          id: input.id,
+        },
+      })
+
+      return result
+    }),
 })
 
 export default businessesRouter
