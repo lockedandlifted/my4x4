@@ -24,6 +24,7 @@ const SimilarProjects = (props: SimilarProjectsProps) => {
   const { project } = props
 
   const similarProjectsQuery = trpc.projects.getSimilarProjects.useQuery({
+    limit: 4,
     projectId: project?.id,
   }, { enabled: !!project?.id })
 
