@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertDescription,
-  Button,
   Flex,
   Heading,
   SimpleGrid,
@@ -11,7 +10,6 @@ import type { Project } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 
-import Paragraph from '@components/Paragraph'
 import ProjectTile from '@components/ProjectTile'
 
 import Tags from '../Tags'

@@ -24,14 +24,16 @@ const ImageThumb = (props: ImageThumbProps) => {
   } = props
 
   const { imageUrl } = useImageUrl({
-    enabled: !!image.id,
-    path: image.fileKey,
+    enabled: !!image?.id,
+    path: image?.fileKey,
     transformation: [{
       focus: 'auto',
       height: height * 2,
       width: width * 2,
     }],
   })
+
+  if (!image?.id) return null
 
   return (
     <NextLink href={href}>
