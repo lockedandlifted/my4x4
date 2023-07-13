@@ -20,18 +20,18 @@ const buildProjectSlug = (
 type BuildProjectTitleParams = {
   manufacturer: Manufacturer,
   manufacturerModel: ManufacturerModel,
-  modelSeries?: string,
+  manufacturerModelSeriesTitle?: string,
   yearManufactured?: string,
 }
 
 const buildProjectTitle = (params: BuildProjectTitleParams) => {
   const {
-    manufacturer, manufacturerModel, modelSeries, yearManufactured,
+    manufacturer, manufacturerModel, manufacturerModelSeriesTitle, yearManufactured,
   } = params
 
   let title = `${manufacturer.title} ${manufacturerModel.title}`
   if (yearManufactured) title = `${yearManufactured} ${title}`
-  if (modelSeries) title = `${title} ${modelSeries}`
+  if (manufacturerModelSeriesTitle) title = `${title} ${manufacturerModelSeriesTitle}`
 
   return title
 }
@@ -103,7 +103,6 @@ const publishProject = (params: PublishProjectParams) => {
 type DefaultState = {
   attributes: {
     colour: string,
-    model_series: string,
     year_manufactured: string,
     [key: string]: string,
   },
@@ -111,6 +110,8 @@ type DefaultState = {
   description: string,
   manufacturerId: string,
   manufacturerModelId: string,
+  manufacturerModelSeriesId: string,
+  manufacturerModelSeriesTitle: string,
   notificationsEnabled: boolean,
   projectsAttributes: { key: string, value: string }[],
   slug: string,
@@ -120,13 +121,14 @@ type DefaultState = {
 const defaultState: DefaultState = {
   attributes: {
     colour: '',
-    model_series: '',
     year_manufactured: '',
   },
   createdByOwner: false,
   description: '',
   manufacturerId: '',
   manufacturerModelId: '',
+  manufacturerModelSeriesId: '',
+  manufacturerModelSeriesTitle: '',
   notificationsEnabled: false,
   projectsAttributes: [],
   slug: '',
@@ -177,7 +179,8 @@ function useProjectForm(options: UseProjectFormOptions) {
   const createdByOwner = watch('createdByOwner')
   const manufacturerId = watch('manufacturerId')
   const manufacturerModelId = watch('manufacturerModelId')
-  const modelSeries = watch('attributes.model_series')
+  const manufacturerModelSeriesId = watch('manufacturerModelSeriesId')
+  const manufacturerModelSeriesTitle = watch('manufacturerModelSeriesTitle')
   const projectSlug = watch('slug')
   const yearManufactured = watch('attributes.year_manufactured')
 
@@ -206,7 +209,7 @@ function useProjectForm(options: UseProjectFormOptions) {
       const title = buildProjectTitle({
         manufacturer: selectedManufacturer,
         manufacturerModel: selectedManufacturerModel,
-        modelSeries,
+        manufacturerModelSeriesTitle,
         yearManufactured,
       })
 
@@ -216,7 +219,7 @@ function useProjectForm(options: UseProjectFormOptions) {
       }
     }
   }, [
-    modelSeries,
+    manufacturerModelSeriesTitle,
     project?.id,
     project?.slug,
     selectedManufacturer,
@@ -286,6 +289,8 @@ function useProjectForm(options: UseProjectFormOptions) {
     manufacturerId,
     manufacturerModelId,
     manufacturerModels,
+    manufacturerModelSeriesId,
+    manufacturerModelSeriesTitle,
     manufacturers,
     mutations: {
       createProject: createProjectMutation,

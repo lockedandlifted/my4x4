@@ -3,6 +3,7 @@ import { z } from 'zod'
 import type { AttributeValue, Prisma } from '@prisma/client'
 
 import createActivityItem from '@utils/createActivityItem'
+import { snakeCase } from '@utils/string'
 
 import { router, publicProcedure, protectedProcedure } from '../trpc'
 
@@ -53,6 +54,8 @@ const projectsRouter = router({
     .input(z.object({
       createdByOwner: z.boolean().optional(),
       manufacturerModelId: z.string(),
+      manufacturerModelSeriesId: z.string().optional(),
+      manufacturerModelSeriesTitle: z.string(),
       projectsAttributes: z.array(z.object({
         key: z.string(),
         value: z.string(),
@@ -64,9 +67,29 @@ const projectsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const attributeValues = await ctx.prisma.attributeValue.findMany()
 
-      const data: Prisma.ProjectCreateArgs['data'] = {
+      const data: Prisma.ProjectCreateInput = {
         createdByOwner: input.createdByOwner,
-        manufacturerModelId: input.manufacturerModelId,
+        manufacturerModel: {
+          connect: {
+            id: input.manufacturerModelId,
+          },
+        },
+        manufacturerModelSeries: {
+          connectOrCreate: {
+            where: {
+              id: input.manufacturerModelSeriesId || 'new-manufacturer-model-series',
+            },
+            create: {
+              key: `${input.manufacturerModelId}_${snakeCase(input.manufacturerModelSeriesTitle)}`,
+              manufacturerModel: {
+                connect: {
+                  id: input.manufacturerModelId,
+                },
+              },
+              title: input.manufacturerModelSeriesTitle,
+            },
+          },
+        },
         slug: input.slug,
         temporaryUserId: input.temporaryUserId,
         title: input.title,
