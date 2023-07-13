@@ -7,6 +7,8 @@ import CustomEditor from '@utils/customEditor'
 import DefaultElement from '@components/Post/Editor/Elements/DefaultElement'
 import Heading from '@components/Post/Editor/Elements/Heading'
 import ImageEmbed from '@components/Post/Editor/Elements/ImageEmbed'
+import List from '@components/Post/Editor/Elements/List'
+import ListItem from '@components/Post/Editor/Elements/ListItem'
 import ProjectEmbed from '@components/Post/Editor/Elements/ProjectEmbed'
 import YouTubeVideo from '@components/Post/Editor/Elements/YouTubeVideo'
 
@@ -29,8 +31,14 @@ const EditorInput = (props: EditorInputProps) => {
         return <Heading as="h2" size="lg" {...props} />
       case 'image':
         return <ImageEmbed {...props} />
+      case 'list-item':
+        return <ListItem {...props} />
       case 'my4x4_project':
         return <ProjectEmbed {...props} />
+      case 'ordered-list':
+        return <List {...props} />
+      case 'unordered-list':
+        return <List {...props} />
       case 'youtube':
         return <YouTubeVideo {...props} />
       default:
@@ -70,6 +78,7 @@ const EditorInput = (props: EditorInputProps) => {
       onPaste={async (event) => {
         CustomEditor.handlePaste(editor, event, trpcClient)
       }}
+      readOnly
       renderElement={renderElement}
       renderLeaf={renderLeaf}
     />

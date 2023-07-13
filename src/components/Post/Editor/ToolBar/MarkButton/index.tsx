@@ -22,6 +22,7 @@ const MarkButton = (props: MarkButtonProps) => {
         CustomEditor.toggleMark(editor, format)
       }}
       marginRight="1"
+      variant="outline"
     />
   )
 }

@@ -1,9 +1,7 @@
 import {
-  FaBold, FaItalic, FaUnderline, FaHeading,
+  FaBold, FaItalic, FaUnderline, FaListOl, FaListUl,
 } from 'react-icons/fa'
 import { Button, Flex, Text } from '@chakra-ui/react'
-
-import CustomEditor from '@utils/customEditor'
 
 import BlockButton from './BlockButton'
 import MarkButton from './MarkButton'
@@ -24,6 +22,9 @@ const ToolBar = (props: ToolBarProps) => {
       <BlockButton format="heading-one"><Text>H1</Text></BlockButton>
       <BlockButton format="heading-two"><Text>H2</Text></BlockButton>
 
+      <BlockButton format="ordered-list"><FaListOl /></BlockButton>
+      <BlockButton format="unordered-list"><FaListUl /></BlockButton>
+
       <Button
         onMouseDown={(event) => {
           event.preventDefault()
@@ -31,24 +32,6 @@ const ToolBar = (props: ToolBarProps) => {
         marginLeft="1"
       >
         Link
-      </Button>
-
-      <Button
-        onMouseDown={(event) => {
-          event.preventDefault()
-        }}
-        marginLeft="1"
-      >
-        Numbered List
-      </Button>
-
-      <Button
-        onMouseDown={(event) => {
-          event.preventDefault()
-        }}
-        marginLeft="1"
-      >
-        Bullets
       </Button>
 
       <Button

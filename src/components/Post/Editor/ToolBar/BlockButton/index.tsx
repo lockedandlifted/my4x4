@@ -5,7 +5,7 @@ import CustomEditor from '@utils/customEditor'
 
 type BlockButtonProps = {
   children: React.ReactElement,
-  format: 'heading-one' | 'heading-two',
+  format: 'heading-one' | 'heading-two' | 'ordered-list' | 'unordered-list',
 }
 
 const BlockButton = (props: BlockButtonProps) => {
@@ -22,6 +22,7 @@ const BlockButton = (props: BlockButtonProps) => {
         CustomEditor.toggleBlock(editor, format)
       }}
       marginRight="1"
+      variant="outline"
     />
   )
 }

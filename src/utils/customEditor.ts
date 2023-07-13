@@ -2,7 +2,7 @@ import { Editor, Element as SlateElement, Transforms } from 'slate'
 
 import asyncSome from '@utils/asyncSome'
 
-const LIST_TYPES = ['numbered-list', 'bulleted-list']
+const LIST_TYPES = ['ordered-list', 'unordered-list']
 const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify']
 
 const embedRegexes = [
@@ -117,6 +117,7 @@ const CustomEditor = {
       TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type',
     )
     const isList = LIST_TYPES.includes(format)
+    console.log({ format, isList, isActive })
 
     Transforms.unwrapNodes(editor, {
       match: n => !Editor.isEditor(n)
