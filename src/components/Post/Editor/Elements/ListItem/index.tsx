@@ -8,7 +8,6 @@ type ListItemProps = {
 const ListItem = (props: ListItemProps) => {
   const { attributes, children } = props
 
-  console.log('ListItem', props)
   return (
     <BaseListItem {...attributes}>
       {children}

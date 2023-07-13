@@ -1,3 +1,5 @@
+import { Node } from 'slate'
+
 import {
   FaBold, FaItalic, FaUnderline, FaListOl, FaListUl,
 } from 'react-icons/fa'
@@ -5,6 +7,14 @@ import { Button, Flex, Text } from '@chakra-ui/react'
 
 import BlockButton from './BlockButton'
 import MarkButton from './MarkButton'
+
+const serialize = value => (
+  value
+  // Return the string content of each paragraph in the value's children.
+    .map(n => Node.string(n))
+  // Join them all with line breaks denoting paragraphs.
+    .join('\n')
+)
 
 type ToolBarProps = {
   editor?: any,
@@ -46,6 +56,7 @@ const ToolBar = (props: ToolBarProps) => {
       <Button
         onClick={(event) => {
           event.preventDefault()
+          console.log(serialize(editor.children))
           console.log(editor.children)
         }}
         marginLeft="1"
