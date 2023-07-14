@@ -23,7 +23,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@phntms/next-gtm": "^0.3.0-rc1",
-    "@prisma/client": "^4.14.1",
+    "@prisma/client": "^5.0.0",
     "@react-email/components": "^0.0.6",
     "@react-email/render": "0.0.7",
     "@sendgrid/mail": "^7.7.0",
@@ -74,7 +74,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-next": "13.1.4",
-    "prisma": "^4.14.1",
+    "prisma": "^5.0.0",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4"
   },
