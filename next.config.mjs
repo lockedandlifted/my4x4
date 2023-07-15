@@ -9,6 +9,19 @@ import { withSuperjson } from 'next-superjson'
 
 /** @type {import("next").NextConfig} */
 const config = {
+  async headers() {
+    return [
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 's-maxage=60, stale-while-revalidate=3600',
+          },
+        ],
+      },
+    ]
+  },
   async rewrites() {
     return [
       {
