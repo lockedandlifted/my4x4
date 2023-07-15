@@ -7,10 +7,11 @@ import Header from '@components/Header'
 
 interface MobileLayoutProps {
   children: React.ReactNode,
+  generatedAt?: string,
 }
 
 const MobileLayout = (props: MobileLayoutProps) => {
-  const { children } = props
+  const { children, generatedAt } = props
 
   const { asPath } = useRouter()
 
@@ -49,7 +50,7 @@ const MobileLayout = (props: MobileLayoutProps) => {
           {children}
         </Flex>
 
-        <Footer />
+        <Footer generatedAt={generatedAt} />
       </Flex>
     </Flex>
   )
