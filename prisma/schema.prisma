@@ -2,8 +2,7 @@
 // -------
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["filteredRelationCount", "jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -454,10 +453,26 @@ model ManufacturerModel {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
+  manufacturerModelSeries ManufacturerModelSeries[]
   postsManufacturerModels PostsManufacturerModel[]
   projects                Project[]
 
   @@map("manufacturer_models")
+}
+
+model ManufacturerModelSeries {
+  id                  String            @id @default(uuid())
+  manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerModelId String            @map("manufacturer_model_id")
+  key                 String            @unique
+  title               String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  projects Project[]
+
+  @@map("manufacturer_model_series")
 }
 
 model ManufacturerPart {
@@ -634,6 +649,9 @@ model Project {
 
   manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   manufacturerModelId String            @map("manufacturer_model_id")
+
+  manufacturerModelSeries   ManufacturerModelSeries? @relation(fields: [manufacturerModelSeriesId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerModelSeriesId String?                  @map("manufacturer_model_series_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")

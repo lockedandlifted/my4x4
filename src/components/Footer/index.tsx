@@ -5,7 +5,11 @@ import { FaInstagram, FaTiktok } from 'react-icons/fa'
 
 import LogoUrl from './assets/logo.svg'
 
-const Footer = () => (
+type FooterProps = {
+  generatedAt?: string,
+}
+
+const Footer = ({ generatedAt }: FooterProps) => (
   <Flex
     flexDirection="column"
     height="80px"
@@ -60,6 +64,12 @@ const Footer = () => (
         </NextLink>
       </Flex>
     </Flex>
+
+    {!!generatedAt && (
+      <Flex borderTopWidth="1px" color="gray.300" fontSize="xs" marginTop="2" paddingY="2">
+        Generated at {generatedAt}
+      </Flex>
+    )}
   </Flex>
 )
 

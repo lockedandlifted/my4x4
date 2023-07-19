@@ -3,8 +3,9 @@ import {
 } from '@chakra-ui/react'
 import { FaGlobeAsia } from 'react-icons/fa'
 
-import type { Project } from '@prisma/client'
+import type { ManufacturerModelSeries, Project } from '@prisma/client'
 
+import AutocompleteField from '@components/AutocompleteField'
 import Form from '@components/Form'
 import Paragraph from '@components/Paragraph'
 import SectionDivider from '@components/SectionDivider'
@@ -35,6 +36,7 @@ const ProjectForm = (props: ProjectFormProps) => {
     manufacturers,
     manufacturerModels,
     manufacturerModelId,
+    manufacturerModelSeriesTitle,
     manufacturerId,
     mutations: {
       createProject: {
@@ -212,6 +214,31 @@ const ProjectForm = (props: ProjectFormProps) => {
                 </option>
               ))}
             </select>
+          </Form.Field>
+        )}
+
+        {!!manufacturerModelId && (
+          <Form.Field
+            label="Series"
+            name="manufacturerModelSeriesTitle"
+            marginTop={4}
+            validationRules={{ required: true }}
+          >
+            <AutocompleteField
+              callbacks={{
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) => setValue('manufacturerModelSeriesTitle', e.target?.value),
+                selectItem: (result: ManufacturerModelSeries) => {
+                  setValue('manufacturerModelSeriesId', result.id)
+                  setValue('manufacturerModelSeriesTitle', result.title || '')
+                },
+              }}
+              inputProps={{
+                value: manufacturerModelSeriesTitle,
+              }}
+              routerKey="manufacturerModelSeries"
+              queryKey="getManufacturerModelSeries"
+              queryParams={{ manufacturerModelId }}
+            />
           </Form.Field>
         )}
 

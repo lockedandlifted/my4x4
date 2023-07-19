@@ -36,7 +36,7 @@ const Link = (props: LinkProps) => {
         <ExternalLinkIcon externalLinkType={externalLink.externalLinkType?.key} />
       </Flex>
 
-      <Flex justifyContent="center" flexDirection="column" marginLeft={4}>
+      <Flex justifyContent="center" flexDirection="column" marginLeft={4} width="calc(100% - 80px)">
         <Heading size="small">
           {externalLink.title}
         </Heading>
