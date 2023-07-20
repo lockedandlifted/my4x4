@@ -12,6 +12,7 @@ import manufacturerModelSeriesSeedFn from './seeds/manufacturerModelSeries.js'
 import manufacturerSeedFn from './seeds/manufacturers.js'
 import manufacturerTypeSeedFn from './seeds/manufacturerTypes.js'
 import postTypeSeedFn from './seeds/postTypes.js'
+import roleSeedFn from './seeds/roles.js'
 import serviceSeedFn from './seeds/services.js'
 
 const seedDatabase = async () => {
@@ -62,6 +63,10 @@ const seedDatabase = async () => {
     // Post Types
     const postTypes = await Promise.all(postTypeSeedFn(prisma))
     console.log('--- Seeded Post Types ---', postTypes)
+
+    // Roles
+    const roles = await Promise.all(roleSeedFn(prisma))
+    console.log('--- Seeded Roles ---', roles)
 
     // Services
     const services = await Promise.all(serviceSeedFn(prisma))
