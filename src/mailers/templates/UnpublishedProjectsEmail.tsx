@@ -5,6 +5,8 @@ import {
 
 import DefaultLayout from '../layouts/DefaultLayout'
 
+import PlaceHolderImage from '../assets/placeholder.png'
+
 const baseUrl = process.env.VERCEL_URL
   ? 'https://www.my4x4.info'
   : 'http://localhost:3001'
@@ -43,13 +45,26 @@ const UnpublishedProjectsEmail = (props: UnpublishedProjectsEmailProps) => {
     >
       {projects.map(project => (
         <Section className="mt-0" key={project.id}>
-          <Img
-            src={project.imageUrl}
-            width="100"
-            height="100"
-            alt="MY4X4"
-            className="rounded-full mt-4"
-          />
+          {!!project.imageUrl && (
+            <Img
+              src={project.imageUrl}
+              width="100"
+              height="100"
+              alt="MY4X4"
+              className="rounded-full mt-4"
+            />
+          )}
+
+          {!project.imageUrl && (
+            <Img
+              src={PlaceHolderImage.src}
+              width="100"
+              height="100"
+              alt="Image Placeholder"
+              className="rounded-full mt-4"
+            />
+          )}
+
           <Heading className="text-[16px]">
             {project.title}
           </Heading>
@@ -58,7 +73,11 @@ const UnpublishedProjectsEmail = (props: UnpublishedProjectsEmailProps) => {
 
       <Section className="mt-4">
         <Text>
-          You have unpublished {manyProjects ? 'builds' : 'build'} on my4x4 click below to mark as published
+          Thanks for being part of the community!
+        </Text>
+
+        <Text>
+          You're {manyProjects ? "builds aren't" : "build isn't"} published yet, if you've had any problems with publishing please reach out to us and we can help you. Otherwise you can hit the button below to head into your profile and publish the build.
         </Text>
       </Section>
 
