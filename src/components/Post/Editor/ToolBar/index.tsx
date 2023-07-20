@@ -41,15 +41,6 @@ const ToolBar = (props: ToolBarProps) => {
         }}
         marginLeft="1"
       >
-        Link
-      </Button>
-
-      <Button
-        onMouseDown={(event) => {
-          event.preventDefault()
-        }}
-        marginLeft="1"
-      >
         Image
       </Button>
 

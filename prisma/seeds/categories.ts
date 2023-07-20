@@ -2,6 +2,7 @@ import type { CategoryType, Prisma, PrismaClient } from '@prisma/client'
 
 // Categories
 const seedFn = (prisma: PrismaClient, categoryTypes: CategoryType[]) => {
+  // Parts
   const partCategoryType = categoryTypes.find(categoryType => categoryType.key === 'part')
 
   // Update the icon component if modifying this
@@ -48,6 +49,11 @@ const seedFn = (prisma: PrismaClient, categoryTypes: CategoryType[]) => {
       categoryTypeId: partCategoryType?.id,
     },
     {
+      key: 'interior',
+      title: 'Interior',
+      categoryTypeId: partCategoryType?.id,
+    },
+    {
       key: 'lighting',
       title: 'Lighting',
       categoryTypeId: partCategoryType?.id,
@@ -79,8 +85,46 @@ const seedFn = (prisma: PrismaClient, categoryTypes: CategoryType[]) => {
     },
   ]
 
+  // Posts
+  const postCategoryType = categoryTypes.find(categoryType => categoryType.key === 'post')
+  // Update the icon component if modifying this
+  // src/components/Icons/PartIcon/index.tsx
+  const postCategories: Prisma.CategoryCreateArgs['data'][] = [
+    {
+      key: 'competitions',
+      title: 'Competitions',
+      categoryTypeId: postCategoryType?.id,
+    },
+    {
+      key: 'events',
+      title: 'Events',
+      categoryTypeId: postCategoryType?.id,
+    },
+    {
+      key: 'general',
+      title: 'General',
+      categoryTypeId: postCategoryType?.id,
+    },
+    {
+      key: 'shed_time',
+      title: 'Shed Time',
+      categoryTypeId: postCategoryType?.id,
+    },
+    {
+      key: 'technical',
+      title: 'Technical',
+      categoryTypeId: postCategoryType?.id,
+    },
+    {
+      key: 'trips',
+      title: 'Trips',
+      categoryTypeId: postCategoryType?.id,
+    },
+  ]
+
   const mergedCategories = [
     ...partCategories,
+    ...postCategories,
   ]
 
   return mergedCategories.map(async (data: Prisma.CategoryCreateArgs['data']) => {

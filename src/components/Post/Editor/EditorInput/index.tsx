@@ -7,6 +7,7 @@ import CustomEditor from '@utils/customEditor'
 import DefaultElement from '@components/Post/Editor/Elements/DefaultElement'
 import Heading from '@components/Post/Editor/Elements/Heading'
 import ImageEmbed from '@components/Post/Editor/Elements/ImageEmbed'
+import Link from '@components/Post/Editor/Elements/Link'
 import List from '@components/Post/Editor/Elements/List'
 import ListItem from '@components/Post/Editor/Elements/ListItem'
 import ProjectEmbed from '@components/Post/Editor/Elements/ProjectEmbed'
@@ -31,6 +32,8 @@ const EditorInput = (props: EditorInputProps) => {
         return <Heading as="h2" size="lg" {...props} />
       case 'image':
         return <ImageEmbed {...props} />
+      case 'link':
+        return <Link {...props} />
       case 'list-item':
         return <ListItem {...props} />
       case 'my4x4_project':
@@ -78,7 +81,7 @@ const EditorInput = (props: EditorInputProps) => {
       onPaste={async (event) => {
         CustomEditor.handlePaste(editor, event, trpcClient)
       }}
-      readOnly
+      readOnly={false}
       renderElement={renderElement}
       renderLeaf={renderLeaf}
     />

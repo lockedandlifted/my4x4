@@ -2,17 +2,20 @@ import { Flex, Heading } from '@chakra-ui/react'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-import Editor from '@components/Post/Editor'
+import usePostForm from '@hooks/usePostForm'
 
-const initialValue = [
-  {
-    type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }],
-  },
-]
+import PostForm from '@components/PostForm'
 
 const NewPostPage = () => {
-  console.log('New Page')
+  const postFormPayload = usePostForm()
+  const {
+    callbacks,
+    categories,
+    categoryKeys,
+    formPayload,
+  } = postFormPayload
+
+  console.log(categories)
 
   return (
     <MobileLayout>
@@ -21,10 +24,7 @@ const NewPostPage = () => {
           New Post
         </Heading>
 
-        <Editor initialValue={initialValue}>
-          <Editor.ToolBar />
-          <Editor.Input />
-        </Editor>
+        <PostForm />
       </Flex>
     </MobileLayout>
   )

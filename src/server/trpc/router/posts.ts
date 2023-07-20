@@ -24,6 +24,7 @@ const postsRouter = router({
   createPost: protectedProcedure
     .input(z.object({
       body: z.string(),
+      categoryKeys: z.array(z.string()).optional(),
       title: z.string(),
       postTypeKey: z.string(),
       relatedEntities: z.array(
@@ -58,6 +59,19 @@ const postsRouter = router({
             id: ctx.session.user.id,
           },
         },
+      }
+
+      // Categories
+      if (input.categoryKeys) {
+        data.postsCategories = {
+          create: input.categoryKeys.map(categoryKey => ({
+            category: {
+              connect: {
+                key: categoryKey,
+              },
+            },
+          })),
+        }
       }
 
       // Related Entities

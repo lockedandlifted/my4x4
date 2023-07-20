@@ -8,8 +8,9 @@ import EditorInput from '@components/Post/Editor/EditorInput'
 import ToolBar from '@components/Post/Editor/ToolBar'
 
 type CustomElement = {
-  type: 'code' | 'paragraph' | 'youtube',
+  type: 'code' | 'link' | 'paragraph' | 'youtube',
   children: CustomText[],
+  href?: string,
 }
 
 type CustomText = { text: string }

@@ -5,6 +5,8 @@ import asyncSome from '@utils/asyncSome'
 const LIST_TYPES = ['ordered-list', 'unordered-list']
 const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify']
 
+const urlRegex = /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g
+
 const embedRegexes = [
   {
     regex: /https?:\/\/(www\.my4x4\.info|localhost:3001)\/([-a-z-A-Z0-9]+)$/,
@@ -18,14 +20,14 @@ const embedRegexes = [
 
 const CustomEditor = {
   handleEmbed: async (editor, event, client) => {
+    event.preventDefault()
+
     const text = event.clipboardData.getData('text/plain')
 
     const matchedItem = await asyncSome(embedRegexes, async ({ regex, type }) => {
       const match = text.match(regex)
 
       if (match) {
-        event.preventDefault()
-
         // Find Project by slug
         if (type === 'my4x4_project') {
           const projectSlug = match[2]
@@ -72,15 +74,29 @@ const CustomEditor = {
       return false
     })
 
-    // No Regex Match or Item wasn't found in DB
-    if (!matchedItem) {
+    // Matched Embed Regex - Don't continue
+    if (matchedItem) return
+
+    // Url Match
+    if (text.match(urlRegex)) {
       Transforms.insertNodes(editor, [
         {
           children: [{ text }],
-          type: 'paragraph',
+          href: text,
+          type: 'link',
         },
       ])
+
+      return
     }
+
+    // No Regex Match or Item wasn't found in DB
+    Transforms.insertNodes(editor, [
+      {
+        children: [{ text }],
+        type: 'paragraph',
+      },
+    ])
   },
 
   handlePaste: async (editor, event, client) => {
