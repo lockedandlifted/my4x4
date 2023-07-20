@@ -10,12 +10,11 @@ import ProjectTile from '@components/ProjectTile'
 
 type ProjectsProps = {
   editMode: boolean,
-  temporaryUserId: string,
   user: User,
 }
 
 const Projects = (props: ProjectsProps) => {
-  const { editMode = false, temporaryUserId, user } = props
+  const { editMode = false, user } = props
 
   // Query
   const projectsQuery = trpc.projects.getProjects.useQuery({
@@ -25,39 +24,47 @@ const Projects = (props: ProjectsProps) => {
 
   const { data: projects = [] } = projectsQuery
 
-  const claimProjectsMutation = trpc.projects.claimProjectsByTemporaryUserId.useMutation()
-  const { mutate: claimProjects } = claimProjectsMutation
+  const unpublishedProjects = projects.filter(p => !p.published)
+  const publishedProjects = projects.filter(p => p.published)
 
   return (
     <Flex flexDirection="column" marginTop={8}>
-      <Flex justifyContent="space-between">
-        <Heading size="md" marginBottom="4">Unpublished Builds</Heading>
-      </Flex>
+      {!!unpublishedProjects.length && (
+        <>
+          <Flex justifyContent="space-between">
+            <Heading size="md" marginBottom="4">Unpublished Builds</Heading>
+          </Flex>
 
-      <SimpleGrid
-        columns={2}
-        gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"
-        marginBottom={8}
-        spacing="4"
-      >
-        {projects.filter(p => !p.published).map(project => (
-          <ProjectTile compact editMode={editMode} key={project.id} project={project} />
-        ))}
-      </SimpleGrid>
+          <SimpleGrid
+            columns={2}
+            gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"
+            marginBottom={8}
+            spacing="4"
+          >
+            {unpublishedProjects.map(project => (
+              <ProjectTile compact editMode={editMode} key={project.id} project={project} />
+            ))}
+          </SimpleGrid>
+        </>
+      )}
 
-      <Flex justifyContent="space-between">
-        <Heading size="md" marginBottom="4">Published Builds</Heading>
-      </Flex>
+      {!!publishedProjects.length && (
+        <>
+          <Flex justifyContent="space-between">
+            <Heading size="md" marginBottom="4">Published Builds</Heading>
+          </Flex>
 
-      <SimpleGrid
-        columns={2}
-        gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"
-        spacing="4"
-      >
-        {projects.filter(p => p.published).map(project => (
-          <ProjectTile compact editMode={editMode} key={project.id} project={project} />
-        ))}
-      </SimpleGrid>
+          <SimpleGrid
+            columns={2}
+            gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"
+            spacing="4"
+          >
+            {publishedProjects.map(project => (
+              <ProjectTile compact editMode={editMode} key={project.id} project={project} />
+            ))}
+          </SimpleGrid>
+        </>
+      )}
 
       {editMode && (
         <Button
