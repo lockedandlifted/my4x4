@@ -27,6 +27,7 @@ const postsRouter = router({
       categoryKeys: z.array(z.string()).optional(),
       title: z.string(),
       postTypeKey: z.string(),
+      published: z.boolean().optional(),
       relatedEntities: z.array(
         z.object({
           projectId: z.string().optional(),
@@ -46,13 +47,7 @@ const postsRouter = router({
             key: input.postTypeKey,
           },
         },
-        postsProjects: {
-          createMany: {
-            data: [
-              { projectId: 'a' },
-            ],
-          },
-        },
+        published: input.published,
         title: input.title,
         user: {
           connect: {
@@ -118,14 +113,16 @@ const postsRouter = router({
         },
       })
 
-      // Create Activity
-      await createActivityItem({
-        eventType: 'posts.created',
-        ownerId: ctx.session?.user?.id || '',
-        ownerType: 'User',
-        subjectId: post.id,
-        subjectType: 'Post',
-      })
+      // Create Activity - if Published
+      if (post.published) {
+        await createActivityItem({
+          eventType: 'posts.created',
+          ownerId: ctx.session?.user?.id || '',
+          ownerType: 'User',
+          subjectId: post.id,
+          subjectType: 'Post',
+        })
+      }
 
       // Queue Notification Email - Questions
       if (post.postType.key === 'question' && post.postsProjects[0]?.project) {
@@ -366,6 +363,32 @@ const postsRouter = router({
         },
       },
     })),
+
+  publishPostById: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const post = await ctx.prisma.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          published: true,
+        },
+      })
+
+      // Create Activity
+      await createActivityItem({
+        eventType: 'posts.published',
+        ownerId: ctx.session?.user?.id || '',
+        ownerType: 'User',
+        subjectId: post.id,
+        subjectType: 'Post',
+      })
+
+      return post
+    }),
 })
 
 export default postsRouter

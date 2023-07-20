@@ -29,17 +29,28 @@ const PostForm = (props: PostFormProps) => {
 
   const postFormPayload = usePostForm({ post })
   const {
-    callbacks,
     callbacks: {
+      createPost: createFn,
+      updatePost: updateFn,
       selectCategoryKey,
     },
     categories,
     categoryKeys,
     formPayload,
+    mutations: {
+      createPost: {
+        isLoading,
+      },
+    },
   } = postFormPayload
 
   return (
-    <Form callbacks={callbacks} formPayload={formPayload}>
+    <Form
+      callbacks={{
+        submitForm: post?.id ? updateFn : createFn,
+      }}
+      formPayload={formPayload}
+    >
       <Form.Field
         label="Title"
         name="title"
@@ -49,7 +60,7 @@ const PostForm = (props: PostFormProps) => {
       </Form.Field>
 
       <Form.BasicField
-        label="Tags"
+        label="* Tags"
         marginTop="4"
         name="tags"
       >
@@ -65,7 +76,7 @@ const PostForm = (props: PostFormProps) => {
 
       {!!post?.id && (
         <Form.BasicField
-          label="Body"
+          label="* Body"
           marginTop="4"
           name="body"
         >
@@ -80,8 +91,8 @@ const PostForm = (props: PostFormProps) => {
 
       <Button
         colorScheme="green"
-        // isDisabled={isLoading}
-        // isLoading={isLoading}
+        isDisabled={isLoading}
+        isLoading={isLoading}
         marginTop="4"
         size="lg"
         type="submit"

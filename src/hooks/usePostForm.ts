@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
 
 import setupInitialEntityState from '@utils/setupInitialEntityState'
 
@@ -10,6 +11,24 @@ import type { Prisma } from '@prisma/client'
 type PostWithIncludes = Prisma.PostGetPayload<{
   include: {},
 }>
+
+type CreatePostParams = {
+  data: typeof defaultState,
+  mutation: {
+    mutate: (data: typeof defaultState) => void,
+  },
+}
+
+const createPost = (params: CreatePostParams) => {
+  const { data, mutation } = params
+
+  const updatedData = {
+    ...data,
+    published: false,
+  }
+
+  return mutation.mutate(updatedData)
+}
 
 const setupPostInitialState = (currentState: object, post: PostWithIncludes) => {
   const initialState = {
@@ -37,6 +56,8 @@ type UsePostFormOptions = {
 function usePostForm(options?: UsePostFormOptions) {
   const { post } = options || {}
 
+  const router = useRouter()
+
   const formPayload = useForm({
     mode: 'onChange',
     // resolver: zodResolver(createProjectsPartValidationSchema, undefined),
@@ -54,8 +75,22 @@ function usePostForm(options?: UsePostFormOptions) {
   })
   const { data: categories = [] } = categoriesQuery
 
+  // Create Mutation
+  const createPostMutation = trpc.posts.createPost.useMutation({
+    onSuccess: (data) => {
+      const { id } = data
+      router.push(`/posts/${id}/edit`)
+    },
+  })
+
   return {
     callbacks: {
+      createPost: (data: typeof defaultState) => (
+        createPost({
+          data,
+          mutation: createPostMutation,
+        })
+      ),
       selectCategoryKey: (categoryKey: string) => {
         setValue('categoryKeys', toggleArray({ array: categoryKeys, value: categoryKey }))
       },
@@ -63,7 +98,9 @@ function usePostForm(options?: UsePostFormOptions) {
     categories,
     categoryKeys: categoryKeys || [],
     formPayload,
-    mutations: {},
+    mutations: {
+      createPost: createPostMutation,
+    },
   }
 }
 

@@ -2,21 +2,10 @@ import { Flex, Heading } from '@chakra-ui/react'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-import usePostForm from '@hooks/usePostForm'
-
 import PostForm from '@components/PostForm'
 
 const NewPostPage = () => {
-  const postFormPayload = usePostForm()
-  const {
-    callbacks,
-    categories,
-    categoryKeys,
-    formPayload,
-  } = postFormPayload
-
-  console.log(categories)
-
+  console.log('New Page')
   return (
     <MobileLayout>
       <Flex direction="column" marginTop={8} width="100%">

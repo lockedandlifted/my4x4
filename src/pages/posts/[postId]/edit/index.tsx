@@ -1,8 +1,11 @@
+import { useRouter } from 'next/router'
 import { Flex, Heading } from '@chakra-ui/react'
+
+import { trpc } from '@utils/trpc'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-import Editor from '@components/Post/Editor'
+import PostForm from '@components/PostForm'
 
 const initialValue = [
   {
@@ -12,7 +15,15 @@ const initialValue = [
 ]
 
 const EditPostPage = () => {
-  console.log('New Page')
+  const { query: { postId } } = useRouter()
+
+  const postQuery = trpc.posts.getPostById.useQuery(
+    { id: postId },
+    { enabled: !!postId },
+  )
+  const { data: post } = postQuery
+
+  console.log(post)
 
   return (
     <MobileLayout>
@@ -21,13 +32,7 @@ const EditPostPage = () => {
           Edit Post
         </Heading>
 
-        <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2">
-          <Editor initialValue={initialValue}>
-            <Editor.ToolBar />
-            <Editor.Input />
-          </Editor>
-        </Flex>
-        {/* </Form> */}
+        <PostForm post={post} />
       </Flex>
     </MobileLayout>
   )
