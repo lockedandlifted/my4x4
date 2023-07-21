@@ -876,13 +876,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  name          String?
-  email         String?   @unique
-  username      String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  bio           String?   @db.Text
+  id               String    @id @default(uuid())
+  name             String?
+  email            String?   @unique
+  username         String?   @unique
+  emailVerified    DateTime? @map("email_verified")
+  image            String?
+  bio              String?   @db.Text
+  referredByUserId String?   @map("referred_by_user_id")
 
   role   Role?   @relation(fields: [roleId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   roleId String? @map("role_id")
