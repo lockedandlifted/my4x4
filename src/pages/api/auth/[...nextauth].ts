@@ -1,5 +1,6 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import { deleteCookie, getCookie } from 'cookies-next'
+import cuid from 'cuid'
 
 import Auth0Provider from 'next-auth/providers/auth0'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
@@ -22,6 +23,7 @@ function CustomPrismaAdapter(p: typeof prisma, req: NextApiRequest, res: NextApi
       return p.user.create({
         data: {
           ...data,
+          username: `user-${cuid()}`,
           referredByUserId,
         },
       })
@@ -33,25 +35,6 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
   // Include user.id on session
   callbacks: {
     async signIn({ account, user }: any) {
-      const { id } = user
-
-      const existingUser = await prisma.user.findFirst({
-        where: {
-          id,
-        },
-      })
-
-      if (existingUser && !existingUser.username) {
-        await prisma.user.update({
-          where: {
-            id,
-          },
-          data: {
-            username: `user-${id}`,
-          },
-        })
-      }
-
       delete account.user_id
       return true
     },
