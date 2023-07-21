@@ -1,13 +1,35 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
+import { deleteCookie, getCookie } from 'cookies-next'
+
 import Auth0Provider from 'next-auth/providers/auth0'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import FacebookProvider from 'next-auth/providers/facebook'
 import InstagramProvider from 'next-auth/providers/instagram'
 
+import { type NextApiRequest, type NextApiResponse } from 'next'
+
 import { env } from '../../../env/server.mjs'
 import { prisma } from '../../../server/db/client'
 
-export const authOptions: NextAuthOptions = {
+function CustomPrismaAdapter(p: typeof prisma, req: NextApiRequest, res: NextApiResponse) {
+  return {
+    ...PrismaAdapter(p),
+    createUser: (data) => {
+      const cookieKey = 'my4x4-referrered-by-user-id'
+      const referredByUserId = getCookie(cookieKey, { req, res })
+      deleteCookie(cookieKey, { req, res })
+
+      return p.user.create({
+        data: {
+          ...data,
+          referredByUserId,
+        },
+      })
+    },
+  }
+}
+
+export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuthOptions => ({
   // Include user.id on session
   callbacks: {
     async signIn({ account, user }: any) {
@@ -40,7 +62,7 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
-  adapter: PrismaAdapter(prisma),
+  adapter: CustomPrismaAdapter(prisma, req, res),
   providers: [
     Auth0Provider({
       clientId: env.AUTH0_CLIENT_ID,
@@ -56,6 +78,6 @@ export const authOptions: NextAuthOptions = {
       clientSecret: env.INSTAGRAM_CLIENT_SECRET,
     }),
   ],
-}
+})
 
-export default NextAuth(authOptions)
+export default (req: NextApiRequest, res: NextApiResponse) => NextAuth(req, res, authOptions(req, res))
