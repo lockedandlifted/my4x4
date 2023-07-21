@@ -2,8 +2,8 @@ type SetupInitialEntityStateOptions = {
   additionalSetupFn?: (state: object, entity: object) => object,
 }
 
-function setupInitialEntityState(
-  defaultState: object,
+function setupInitialEntityState<DefaultState>(
+  defaultState: DefaultState,
   entity: object,
   options: SetupInitialEntityStateOptions = {},
 ) {

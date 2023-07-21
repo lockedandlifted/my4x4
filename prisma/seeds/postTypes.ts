@@ -3,6 +3,10 @@ import type { Prisma, PrismaClient } from '@prisma/client'
 // Post Types
 const postTypes: Prisma.PostTypeCreateArgs['data'][] = [
   {
+    key: 'forum',
+    title: 'Forum',
+  },
+  {
     key: 'question',
     title: 'Question',
   },

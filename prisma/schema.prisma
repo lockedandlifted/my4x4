@@ -238,6 +238,7 @@ model Category {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   manufacturerParts ManufacturerPart[]
+  postsCategories   PostsCategory[]
 
   @@map("categories")
 }
@@ -516,11 +517,13 @@ model Post {
   postTypeId String   @map("post_type_id")
   user       User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userId     String   @map("user_id")
+  published  Boolean  @default(true) @map("published")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
   postLikes               PostLike[]
+  postsCategories         PostsCategory[]
   postsComments           PostsComment[]
   postsImages             PostsImage[]
   postsManufacturerModels PostsManufacturerModel[]
@@ -529,6 +532,19 @@ model Post {
   postsProjects           PostsProject[]
 
   @@map("posts")
+}
+
+model PostsCategory {
+  id         String   @id @default(uuid())
+  category   Category @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  categoryId String   @map("category_id")
+  post       Post     @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId     String   @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("posts_categories")
 }
 
 model PostsComment {

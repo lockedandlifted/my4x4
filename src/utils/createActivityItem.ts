@@ -7,6 +7,7 @@ const oneHourAgo = new Date(currentDate.getTime() - 1000 * 60 * 60)
 
 const eventTypes = [
   'posts.created',
+  'posts.published',
   'posts_comments.created',
   'projects.published',
   'projects_images.created',
