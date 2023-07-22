@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Button, Flex, Heading } from '@chakra-ui/react'
 
 import usePostForm from '@hooks/usePostForm'
@@ -36,12 +37,14 @@ const PostForm = (props: PostFormProps) => {
     },
     categories,
     categoryKeys,
+    editor,
     formPayload,
     mutations: {
       createPost: {
         isLoading,
       },
     },
+    shouldUsePostEditor,
   } = postFormPayload
 
   return (
@@ -74,19 +77,30 @@ const PostForm = (props: PostFormProps) => {
         ))}
       </Form.BasicField>
 
-      {!!post?.id && (
+      {!!post?.id && shouldUsePostEditor && (
         <Form.BasicField
           label="* Body"
           marginTop="4"
           name="body"
         >
           <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
-            <Editor initialValue={initialValue}>
+            <Editor editor={editor} initialValue={post?.bodyData}>
               <Editor.ToolBar />
               <Editor.Input />
             </Editor>
           </Flex>
         </Form.BasicField>
+      )}
+
+      {!!post?.id && !shouldUsePostEditor && (
+        <Form.Field
+          label="Body"
+          name="body"
+          marginTop="4"
+          validationRules={{ required: true }}
+        >
+          <textarea style={{ height: 180 }} />
+        </Form.Field>
       )}
 
       <Button

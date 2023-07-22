@@ -1,10 +1,14 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
+import { Node } from 'slate'
 
 import setupInitialEntityState from '@utils/setupInitialEntityState'
 
 import { trpc } from '@utils/trpc'
 import toggleArray from '@utils/toggleArray'
+
+import { createWrappedEditor } from '@components/Post/Editor'
 
 import type { Prisma } from '@prisma/client'
 
@@ -25,6 +29,39 @@ const createPost = (params: CreatePostParams) => {
   const updatedData = {
     ...data,
     published: false,
+  }
+
+  return mutation.mutate(updatedData)
+}
+
+const serializeEditorValueAsString = value => (
+  value
+  // Return the string content of each paragraph in the value's children.
+    .map(n => Node.string(n))
+  // Join them all with line breaks denoting paragraphs.
+    .join('\n')
+)
+
+type UpdatePostParams = {
+  data: typeof defaultState,
+  editor: object,
+  mutation: {
+    mutate: (data: typeof defaultState) => void,
+  },
+  post: PostWithIncludes,
+  shouldUsePostEditor: boolean,
+}
+
+const updatePost = (params: UpdatePostParams) => {
+  const {
+    data, editor, mutation, post, shouldUsePostEditor,
+  } = params
+
+  const updatedData = {
+    ...data,
+    id: post?.id,
+    body: shouldUsePostEditor ? serializeEditorValueAsString(editor.children) : data.body,
+    bodyData: shouldUsePostEditor ? editor.children : undefined,
   }
 
   return mutation.mutate(updatedData)
@@ -56,6 +93,9 @@ type UsePostFormOptions = {
 function usePostForm(options?: UsePostFormOptions) {
   const { post } = options || {}
 
+  const shouldUsePostEditor = post?.postType?.key === 'forum'
+  const [editor] = useState(shouldUsePostEditor ? createWrappedEditor() : undefined)
+
   const router = useRouter()
 
   const formPayload = useForm({
@@ -83,6 +123,15 @@ function usePostForm(options?: UsePostFormOptions) {
     },
   })
 
+  // Update Mutation
+  const { posts: { getPostById: { invalidate: invalidateGetPostById } } } = trpc.useContext()
+
+  const updatePostMutation = trpc.posts.updatePostById.useMutation({
+    onSuccess: () => {
+      invalidateGetPostById({ id: post?.id })
+    },
+  })
+
   return {
     callbacks: {
       createPost: (data: typeof defaultState) => (
@@ -94,13 +143,25 @@ function usePostForm(options?: UsePostFormOptions) {
       selectCategoryKey: (categoryKey: string) => {
         setValue('categoryKeys', toggleArray({ array: categoryKeys, value: categoryKey }))
       },
+      updatePost: (data: typeof defaultState) => (
+        updatePost({
+          data,
+          editor,
+          mutation: updatePostMutation,
+          post,
+          shouldUsePostEditor,
+        })
+      ),
     },
     categories,
     categoryKeys: categoryKeys || [],
+    editor,
     formPayload,
     mutations: {
       createPost: createPostMutation,
+      updatePost: updatePostMutation,
     },
+    shouldUsePostEditor,
   }
 }
 

@@ -23,14 +23,20 @@ declare module 'slate' {
   }
 }
 
+export const createWrappedEditor = () => withEmbeds(withReact(createEditor()))
+
 type EditorProps = {
   children: React.ReactNode,
+  editor: any,
   initialValue: Descendant[],
 }
 
 const Editor = (props: EditorProps) => {
-  const { children, initialValue } = props
-  const [editor] = useState(() => withEmbeds(withReact(createEditor())))
+  const {
+    children,
+    editor,
+    initialValue,
+  } = props
 
   return (
     <Slate
