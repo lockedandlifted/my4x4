@@ -22,7 +22,12 @@ const NewProjectPage = (props: { temporaryUserId: string }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const temporaryUserId = setTemporaryUserIdCookie(context)
 
-  const session = await getServerSession(context.req, context.res, authOptions)
+  const session = await getServerSession(
+    context.req,
+    context.res,
+    authOptions(context.req, context.res),
+  )
+
   if (!session) {
     return {
       redirect: {

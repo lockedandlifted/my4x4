@@ -34,7 +34,7 @@ function CustomPrismaAdapter(p: typeof prisma, req: NextApiRequest, res: NextApi
 export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuthOptions => ({
   // Include user.id on session
   callbacks: {
-    async signIn({ account, user }: any) {
+    async signIn({ account }: any) {
       delete account.user_id
       return true
     },
