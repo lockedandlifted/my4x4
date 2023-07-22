@@ -513,6 +513,7 @@ model Post {
   id         String   @id @default(uuid())
   title      String
   body       String   @db.Text()
+  bodyData   Json?    @map("body_data") @db.JsonB()
   postType   PostType @relation(fields: [postTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   postTypeId String   @map("post_type_id")
   user       User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)

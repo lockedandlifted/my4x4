@@ -7,13 +7,6 @@ import MobileLayout from '@layouts/MobileLayout'
 
 import PostForm from '@components/PostForm'
 
-const initialValue = [
-  {
-    type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }],
-  },
-]
-
 const EditPostPage = () => {
   const { query: { postId } } = useRouter()
 

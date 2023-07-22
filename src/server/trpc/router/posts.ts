@@ -364,6 +364,37 @@ const postsRouter = router({
       },
     })),
 
+  updatePostById: protectedProcedure
+    .input(z.object({
+      body: z.string(),
+      bodyData: z.array(z.any()).optional(),
+      categoryKeys: z.array(z.string()).optional(),
+      id: z.string(),
+      title: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const post = ctx.prisma.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          body: input.body,
+          bodyData: input.bodyData,
+          title: input.title,
+        },
+        include: {
+          postType: true,
+          postsProjects: {
+            include: {
+              project: true,
+            },
+          },
+        },
+      })
+
+      return post
+    }),
+
   publishPostById: protectedProcedure
     .input(z.object({
       id: z.string(),
