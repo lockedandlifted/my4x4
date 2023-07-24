@@ -10,10 +10,10 @@ import Editor from '@components/Post/Editor'
 
 import type { Prisma } from '@prisma/client'
 
-const initialValue = [
+const defaultEditorValue = [
   {
     type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }],
+    children: [{ text: '' }],
   },
 ]
 
@@ -84,7 +84,7 @@ const PostForm = (props: PostFormProps) => {
           name="body"
         >
           <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
-            <Editor editor={editor} initialValue={post?.bodyData}>
+            <Editor editor={editor} initialValue={post?.bodyData || defaultEditorValue}>
               <Editor.ToolBar />
               <Editor.Input />
             </Editor>
