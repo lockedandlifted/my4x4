@@ -129,6 +129,7 @@ function usePostForm(options?: UsePostFormOptions) {
   const updatePostMutation = trpc.posts.updatePostById.useMutation({
     onSuccess: () => {
       invalidateGetPostById({ id: post?.id })
+      router.push('/users/account')
     },
   })
 
