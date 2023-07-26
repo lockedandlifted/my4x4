@@ -15,6 +15,7 @@ import CreateOrEditUsersExternalLinkModal from '@modals/CreateOrEditUsersExterna
 import Account from '@components/User/Account'
 import Businesses from '@components/User/Businesses'
 import Links from '@components/User/Links'
+import Posts from '@components/User/Posts'
 import Projects from '@components/User/Projects'
 import UserForm from '@components/UserForm'
 
@@ -67,6 +68,8 @@ const UserAccountPage = (props: { temporaryUserId: string }) => {
         <Links callbacks={callbacks(undefined, setState)} editMode user={user} />
 
         <Projects editMode temporaryUserId={temporaryUserId} user={user} />
+
+        {user?.role?.key === 'admin' && <Posts editMode user={user} />}
 
         <Businesses editMode user={user} />
 

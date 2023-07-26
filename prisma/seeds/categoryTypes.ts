@@ -6,6 +6,10 @@ const categoryTypes: Prisma.CategoryTypeCreateArgs['data'][] = [
     key: 'part',
     title: 'Part',
   },
+  {
+    key: 'post',
+    title: 'Post',
+  },
 ]
 
 const seedFn = (prisma: PrismaClient) => categoryTypes.map(async (data: Prisma.CategoryTypeCreateArgs['data']) => {

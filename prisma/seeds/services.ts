@@ -1,7 +1,7 @@
 import type { Prisma, PrismaClient } from '@prisma/client'
 
 // Services
-const attributes: Prisma.ServiceCreateArgs['data'][] = [
+const services: Prisma.ServiceCreateArgs['data'][] = [
   {
     key: 'accessory_fitting',
     title: 'Accessory Fitting',
@@ -44,7 +44,7 @@ const attributes: Prisma.ServiceCreateArgs['data'][] = [
   },
 ]
 
-const seedFn = (prisma: PrismaClient) => attributes.map(async (data: Prisma.ServiceCreateArgs['data']) => {
+const seedFn = (prisma: PrismaClient) => services.map(async (data: Prisma.ServiceCreateArgs['data']) => {
   const record = await prisma.service.upsert({
     where: { key: data.key },
     update: data,

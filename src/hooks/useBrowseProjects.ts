@@ -21,6 +21,7 @@ function useBrowseProjects(options: UseBrowseProjectsOptions) {
 
   // Load Projects
   const projectsQuery = trpc.projects.getProjects.useQuery({
+    limit: 100,
     manufacturerId,
     manufacturerModelId,
   })

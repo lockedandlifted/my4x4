@@ -1,0 +1,4 @@
+.root:focus-visible {
+  border: none;
+  outline: none;
+}

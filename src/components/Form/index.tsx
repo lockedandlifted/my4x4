@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
 
 import Actions from './Actions'
+import BasicField from './BasicField'
 import DynamicField from './DynamicField'
 import Field from './Field'
 
@@ -58,6 +59,7 @@ const Form = (props: FormProps) => {
 }
 
 Form.Actions = Actions
+Form.BasicField = BasicField
 Form.DynamicField = DynamicField
 Form.Field = Field
 

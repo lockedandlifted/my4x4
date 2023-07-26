@@ -5,6 +5,8 @@ import { NextSeo } from 'next-seo'
 import type { GetServerSideProps } from 'next'
 
 import { trpc } from '@utils/trpc'
+
+import setReferreredByUserIdCookie from '@utils/setReferreredByUserIdCookie'
 import setTemporaryUserIdCookie from '@utils/setTemporaryUserIdCookie'
 
 import useProjectOgImage from '@hooks/useProjectOgImage'
@@ -145,7 +147,10 @@ const BuildPage = (props: { temporaryUserId: string }) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  setReferreredByUserIdCookie(context)
+
   const temporaryUserId = setTemporaryUserIdCookie(context)
+
   return { props: { temporaryUserId } }
 }
 

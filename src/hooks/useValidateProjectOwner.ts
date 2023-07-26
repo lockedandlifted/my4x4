@@ -1,6 +1,8 @@
 import { useSession } from 'next-auth/react'
 
-import type { Prisma } from '@prisma/client'
+import { trpc } from '@utils/trpc'
+
+import type { Prisma, User } from '@prisma/client'
 
 type ProjectWithUsers = Prisma.ProjectGetPayload<{
   include: {
@@ -12,21 +14,44 @@ type ProjectWithUsers = Prisma.ProjectGetPayload<{
   },
 }>
 
+type UserWithIncludes = Prisma.UserGetPayload<{
+  include: {
+    usersImages: {
+      include: {
+        image: true,
+      },
+      orderBy: {
+        sort: 'asc',
+      },
+      take: 1,
+    },
+    role: {
+      select: {
+        key: true,
+      },
+    },
+  },
+}>
+
 type IsValidOwnerParams = {
-  loggedInUserId?: string,
+  user: UserWithIncludes | null,
   project?: ProjectWithUsers,
   temporaryUserId: string,
 }
 
 const isValidOwner = (params: IsValidOwnerParams) => {
-  const { loggedInUserId, project, temporaryUserId } = params
+  const {
+    project, temporaryUserId, user,
+  } = params
+
+  const userIsAdmin = ['admin'].includes(user?.role?.key)
 
   const validOwner = project?.projectsUsers?.some((projectsUser) => {
     const { userId } = projectsUser
-    return userId === loggedInUserId
+    return userId === user?.id
   })
 
-  if (validOwner) return true
+  if (validOwner || userIsAdmin) return true
 
   return !!project?.temporaryUserId && project?.temporaryUserId === temporaryUserId
 }
@@ -40,10 +65,19 @@ function useValidateProjectOwner(params: UseValidateProjectOwnerParams) {
   const { project, temporaryUserId } = params
 
   const { data: sessionData } = useSession()
-  const loggedInUserId = sessionData?.user?.id
+
+  // User
+  const userQuery = trpc.users.getUserById.useQuery(
+    { id: sessionData?.user?.id },
+    { enabled: !!sessionData?.user?.id }
+  )
+
+  const { data: user } = userQuery
 
   return {
-    isValidOwner: isValidOwner({ loggedInUserId, project, temporaryUserId }),
+    isValidOwner: isValidOwner({
+      project, temporaryUserId, user,
+    }),
   }
 }
 
