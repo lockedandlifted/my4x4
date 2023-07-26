@@ -65,12 +65,12 @@ function useValidateProjectOwner(params: UseValidateProjectOwnerParams) {
   const { project, temporaryUserId } = params
 
   const { data: sessionData } = useSession()
-  const loggedInUserId = sessionData?.user?.id
 
   // User
-  const userQuery = trpc.users.getUserById.useQuery({
-    id: loggedInUserId,
-  })
+  const userQuery = trpc.users.getUserById.useQuery(
+    { id: sessionData?.user?.id },
+    { enabled: !!sessionData?.user?.id }
+  )
 
   const { data: user } = userQuery
 
