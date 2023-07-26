@@ -24,8 +24,10 @@ const postsRouter = router({
   createPost: protectedProcedure
     .input(z.object({
       body: z.string(),
+      categoryKeys: z.array(z.string()).optional(),
       title: z.string(),
       postTypeKey: z.string(),
+      published: z.boolean().optional(),
       relatedEntities: z.array(
         z.object({
           projectId: z.string().optional(),
@@ -45,19 +47,26 @@ const postsRouter = router({
             key: input.postTypeKey,
           },
         },
-        postsProjects: {
-          createMany: {
-            data: [
-              { projectId: 'a' },
-            ],
-          },
-        },
+        published: input.published,
         title: input.title,
         user: {
           connect: {
             id: ctx.session.user.id,
           },
         },
+      }
+
+      // Categories
+      if (input.categoryKeys) {
+        data.postsCategories = {
+          create: input.categoryKeys.map(categoryKey => ({
+            category: {
+              connect: {
+                key: categoryKey,
+              },
+            },
+          })),
+        }
       }
 
       // Related Entities
@@ -104,14 +113,16 @@ const postsRouter = router({
         },
       })
 
-      // Create Activity
-      await createActivityItem({
-        eventType: 'posts.created',
-        ownerId: ctx.session?.user?.id || '',
-        ownerType: 'User',
-        subjectId: post.id,
-        subjectType: 'Post',
-      })
+      // Create Activity - if Published
+      if (post.published) {
+        await createActivityItem({
+          eventType: 'posts.created',
+          ownerId: ctx.session?.user?.id || '',
+          ownerType: 'User',
+          subjectId: post.id,
+          subjectType: 'Post',
+        })
+      }
 
       // Queue Notification Email - Questions
       if (post.postType.key === 'question' && post.postsProjects[0]?.project) {
@@ -352,6 +363,63 @@ const postsRouter = router({
         },
       },
     })),
+
+  updatePostById: protectedProcedure
+    .input(z.object({
+      body: z.string(),
+      bodyData: z.array(z.any()).optional(),
+      categoryKeys: z.array(z.string()).optional(),
+      id: z.string(),
+      title: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const post = ctx.prisma.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          body: input.body,
+          bodyData: input.bodyData,
+          title: input.title,
+        },
+        include: {
+          postType: true,
+          postsProjects: {
+            include: {
+              project: true,
+            },
+          },
+        },
+      })
+
+      return post
+    }),
+
+  publishPostById: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const post = await ctx.prisma.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          published: true,
+        },
+      })
+
+      // Create Activity
+      await createActivityItem({
+        eventType: 'posts.published',
+        ownerId: ctx.session?.user?.id || '',
+        ownerType: 'User',
+        subjectId: post.id,
+        subjectType: 'Post',
+      })
+
+      return post
+    }),
 })
 
 export default postsRouter

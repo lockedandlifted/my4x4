@@ -6,16 +6,16 @@ import ProjectTile from '@components/ProjectTile'
 
 const RecentProjects = () => {
   const projectsQuery = trpc.projects.getRecentProjects.useQuery({
-    limit: 10,
+    limit: 4,
   })
   const { data: projects } = projectsQuery
 
   return (
-    <Flex direction="column" marginTop={16}>
-      <Heading size="md" marginBottom={4}>
-        Recently Updated
-      </Heading>
-
+    <Flex
+      direction="column"
+      paddingTop="4"
+      width="100%"
+    >
       <SimpleGrid
         columns={2}
         gridTemplateColumns="repeat(auto-fill, minmax(40%, 1fr))"

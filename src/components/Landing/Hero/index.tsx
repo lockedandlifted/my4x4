@@ -1,24 +1,41 @@
-import { Button, Flex, Heading } from '@chakra-ui/react'
+import {
+  Button, Flex, Image,
+} from '@chakra-ui/react'
 
 import Paragraph from '@components/Paragraph'
 
+import BackgroundImage from './assets/background.svg'
+import GraphicImage from './assets/graphic.svg'
+
 const Hero = () => (
-  <Flex direction="column" alignItems="flex-start" marginTop={8}>
-    <Heading as="h1" fontWeight="normal" whiteSpace="pre-line" size="xl">
-      Welcome to MY4X4
-    </Heading>
+  <Flex
+    alignItems="flex-start"
+    backgroundColor="black"
+    backgroundImage={BackgroundImage.src}
+    borderRadius="xl"
+    color="white"
+    direction="column"
+    marginTop="2"
+    padding={8}
+  >
+    <Image
+      alt="Post Your Build"
+      src={GraphicImage.src}
+      width="100%"
+    />
 
     <Paragraph marginTop={8}>
-      Built for the community by four wheel drive enthusiasts to gather creators, builders, travellers and lovers of mud, parts and progress. We're collecting all the best information and builds to make it easier to learn, research and share anything related to four wheel driving. Add your build today to start contributing.
+      Join the community and share your 4x4, connect and become part of the ultimate hub for all things off-road. Add your ride today.
     </Paragraph>
 
     <Button
       as="a"
-      colorScheme="gray"
+      backgroundColor="#FFF500"
+      color="black"
       href="/projects/new"
       marginTop={8}
       size="lg"
-      width="auto"
+      width="100%"
     >
       Add your Build
     </Button>

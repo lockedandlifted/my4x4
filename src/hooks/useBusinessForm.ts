@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
 
 import type { Prisma } from '@prisma/client'
 
@@ -55,6 +56,19 @@ const createBusiness = (params: CreateBusinessParams) => {
   return mutation.mutate(updatedData)
 }
 
+type DeleteBusinessParams = {
+  business?: BusinessWithIncludes,
+  mutation: {
+    mutate: ({ id }: { id: string }) => void,
+  },
+}
+
+const deleteBusiness = (params: DeleteBusinessParams) => {
+  const { business, mutation } = params
+
+  return mutation.mutate({ id: business?.id })
+}
+
 type DefaultState = {
   address: {
     countryId: string,
@@ -104,9 +118,13 @@ type UseBusinessFormOptions = {
 function useBusinessForm(options: UseBusinessFormOptions) {
   const { business } = options || {}
 
+  const router = useRouter()
+
   const formPayload = useForm({
     defaultValues: business?.id
-      ? setupInitialEntityState(defaultState, business, { addtionalSetupFn: setupBusinessInitialState })
+      ? setupInitialEntityState(defaultState, business, {
+        additionalSetupFn: setupBusinessInitialState,
+      })
       : defaultState,
     mode: 'onChange',
   })
@@ -131,9 +149,17 @@ function useBusinessForm(options: UseBusinessFormOptions) {
     },
   })
 
+  // Delete Mutation
+  const deleteBusinessMutation = trpc.businesses.deleteBusinessById.useMutation({
+    onSuccess: () => {
+      router.push('/users/account')
+    },
+  })
+
   return {
     callbacks: {
       createBusiness: (data: typeof defaultState) => createBusiness({ data, mutation: createBusinessMutation }),
+      deleteBusiness: () => deleteBusiness({ business, mutation: deleteBusinessMutation }),
       updateBusiness: () => console.log('update'),
     },
     countries,

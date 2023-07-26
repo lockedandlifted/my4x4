@@ -12,7 +12,7 @@ import FilterGroup from '@components/BrowseProjects/FilterGroup'
 import Results from '@components/BrowseProjects/Results'
 
 const SearchPage = () => {
-  const { asPath, query: { manufacturerId, manufacturerModelId } } = useRouter()
+  const { query: { manufacturerId, manufacturerModelId } } = useRouter()
 
   const manufacturerQuery = trpc.manufacturers.getManufacturerById.useQuery(
     { id: manufacturerId },

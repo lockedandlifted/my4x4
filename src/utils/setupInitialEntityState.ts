@@ -1,21 +1,21 @@
 type SetupInitialEntityStateOptions = {
-  addtionalSetupFn?: (state: object, entity: object) => object,
+  additionalSetupFn?: (state: object, entity: object) => object,
 }
 
-function setupInitialEntityState(
-  defaultState: object,
+function setupInitialEntityState<DefaultState>(
+  defaultState: DefaultState,
   entity: object,
   options: SetupInitialEntityStateOptions = {},
 ) {
-  const { addtionalSetupFn } = options
+  const { additionalSetupFn } = options
 
   const initialState = Object.keys(defaultState).reduce((acc, key) => {
     acc[key] = entity[key] || defaultState[key]
     return acc
   }, { ...defaultState })
 
-  if (addtionalSetupFn) {
-    return addtionalSetupFn(initialState, entity)
+  if (additionalSetupFn) {
+    return additionalSetupFn(initialState, entity)
   }
 
   return initialState

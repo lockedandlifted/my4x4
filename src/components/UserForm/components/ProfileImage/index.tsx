@@ -10,6 +10,8 @@ import useUserImageUpload from '@hooks/useUserImageUpload'
 
 import FileUploadButton from '@components/FileUploadButton'
 
+import PlaceholderUrl from './assets/placeholder.png'
+
 type ProfileImageProps = {
   user: User,
 }
@@ -59,6 +61,15 @@ const ProfileImage = (props: ProfileImageProps) => {
             alt="User Main Image"
             fill
             src={imageUrl}
+            style={{ objectFit: 'cover' }}
+          />
+        )}
+
+        {!hasImage && (
+          <NextImage
+            alt="Placeholder Image"
+            fill
+            src={PlaceholderUrl}
             style={{ objectFit: 'cover' }}
           />
         )}

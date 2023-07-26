@@ -32,8 +32,10 @@ const ProjectsImageCreated = (props: ProjectsImageCreatedProps) => {
       />
 
       <ActivityContainer.Text>
-        A new image was added to {project?.title}.
-        <Link fontWeight="bold" href={`/${project?.slug}/images/${projectsImage?.id}`} marginLeft="1">Read More</Link>
+        A new image was added.
+        <Link fontWeight="bold" href={`/${project?.slug}/images/${projectsImage?.id}`} marginLeft="1">
+          View image of {project?.title}
+        </Link>
       </ActivityContainer.Text>
 
       <ActivityContainer.Body>

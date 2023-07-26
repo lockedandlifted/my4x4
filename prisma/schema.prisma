@@ -2,8 +2,7 @@
 // -------
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["filteredRelationCount", "jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -239,6 +238,7 @@ model Category {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   manufacturerParts ManufacturerPart[]
+  postsCategories   PostsCategory[]
 
   @@map("categories")
 }
@@ -454,10 +454,26 @@ model ManufacturerModel {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
+  manufacturerModelSeries ManufacturerModelSeries[]
   postsManufacturerModels PostsManufacturerModel[]
   projects                Project[]
 
   @@map("manufacturer_models")
+}
+
+model ManufacturerModelSeries {
+  id                  String            @id @default(uuid())
+  manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerModelId String            @map("manufacturer_model_id")
+  key                 String            @unique
+  title               String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  projects Project[]
+
+  @@map("manufacturer_model_series")
 }
 
 model ManufacturerPart {
@@ -497,15 +513,18 @@ model Post {
   id         String   @id @default(uuid())
   title      String
   body       String   @db.Text()
+  bodyData   Json?    @map("body_data") @db.JsonB()
   postType   PostType @relation(fields: [postTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   postTypeId String   @map("post_type_id")
   user       User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userId     String   @map("user_id")
+  published  Boolean  @default(true) @map("published")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
   postLikes               PostLike[]
+  postsCategories         PostsCategory[]
   postsComments           PostsComment[]
   postsImages             PostsImage[]
   postsManufacturerModels PostsManufacturerModel[]
@@ -514,6 +533,19 @@ model Post {
   postsProjects           PostsProject[]
 
   @@map("posts")
+}
+
+model PostsCategory {
+  id         String   @id @default(uuid())
+  category   Category @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  categoryId String   @map("category_id")
+  post       Post     @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId     String   @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("posts_categories")
 }
 
 model PostsComment {
@@ -629,11 +661,14 @@ model Project {
   published            Boolean @default(false)
   temporaryUserId      String? @map("temporary_user_id")
   createdByOwner       Boolean @default(true) @map("created_by_owner")
-  notificationsEnabled Boolean @default(false) @map("notifications_enabled")
+  notificationsEnabled Boolean @default(true) @map("notifications_enabled")
   authToken            String? @map("auth_token")
 
   manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   manufacturerModelId String            @map("manufacturer_model_id")
+
+  manufacturerModelSeries   ManufacturerModelSeries? @relation(fields: [manufacturerModelSeriesId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  manufacturerModelSeriesId String?                  @map("manufacturer_model_series_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
@@ -804,6 +839,19 @@ model ProjectsUser {
   @@map("projects_users")
 }
 
+model Role {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  users User[]
+
+  @@map("roles")
+}
+
 model Service {
   id    String @id @default(uuid())
   key   String @unique
@@ -829,13 +877,17 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  name          String?
-  email         String?   @unique
-  username      String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  bio           String?   @db.Text
+  id               String    @id @default(uuid())
+  name             String?
+  email            String?   @unique
+  username         String?   @unique
+  emailVerified    DateTime? @map("email_verified")
+  image            String?
+  bio              String?   @db.Text
+  referredByUserId String?   @map("referred_by_user_id")
+
+  role   Role?   @relation(fields: [roleId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  roleId String? @map("role_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")

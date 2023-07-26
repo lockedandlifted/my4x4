@@ -1,44 +1,38 @@
-import { Flex, Heading } from '@chakra-ui/react'
-import { useSession } from 'next-auth/react'
-
-import { trpc } from '@utils/trpc'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-import ActivityItem from '@components/ActivityItem'
+import About from '@components/Landing/About'
+import BrowseManufacturers from '@components/Landing/BrowseManufacturers'
 import Hero from '@components/Landing/Hero'
+import RecentActivity from '@components/Landing/RecentActivity'
+import RecentProjects from '@components/Landing/RecentProjects'
 
-const HomePage = () => {
-  const { data: sessionData } = useSession()
-  const isAuthenticated = !!sessionData?.user?.id
+const HomePage = (
+  { time }: InferGetServerSidePropsType<typeof getServerSideProps>,
+) => (
+  <MobileLayout generatedAt={time}>
+    <Hero />
+    <RecentProjects />
+    <BrowseManufacturers />
+    <RecentActivity />
+    <About />
+  </MobileLayout>
+)
 
-  const activityItemsQuery = trpc.activityItems.getActivityItems.useQuery({
-    limit: 20,
-  })
-  const { data: activityItems } = activityItemsQuery
-
-  return (
-    <MobileLayout>
-      {!isAuthenticated && <Hero />}
-
-      <Flex
-        borderTopWidth="1px"
-        borderStyle={isAuthenticated ? 'none' : 'dashed'}
-        direction="column"
-        marginTop="8"
-        paddingTop={isAuthenticated ? '0' : '8'}
-        width="100%"
-      >
-        <Heading as="h1" fontWeight="medium" marginBottom="8" size="lg">
-          Recent Activity
-        </Heading>
-
-        {activityItems?.map(activityItem => (
-          <ActivityItem key={activityItem.id} activityItem={activityItem} />
-        ))}
-      </Flex>
-    </MobileLayout>
+export const getServerSideProps: GetServerSideProps<{ time: string }> = async ({
+  res,
+}) => {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=60, stale-while-revalidate=3600',
   )
+
+  return {
+    props: {
+      time: new Date().toISOString(),
+    },
+  }
 }
 
 export default HomePage

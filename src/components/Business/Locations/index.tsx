@@ -26,7 +26,9 @@ const Locations = (props: LocationsProps) => {
 
   return (
     <Flex flexDirection="column" marginTop={8}>
-      <Heading size="md">Locations</Heading>
+      <Heading size="sm">
+        Locations
+      </Heading>
 
       {businessLocations.map(businessLocation => (
         <Location

@@ -4,6 +4,7 @@ import { trpc } from '@utils/trpc'
 
 import MobileLayout from '@layouts/MobileLayout'
 
+import Actions from '@components/Business/Actions'
 import BusinessForm from '@components/BusinessForm'
 import Locations from '@components/Business/Locations'
 
@@ -19,6 +20,7 @@ const EditBusinessPage = () => {
     <MobileLayout>
       <BusinessForm business={business} />
       <Locations business={business} />
+      <Actions business={business} />
     </MobileLayout>
   )
 }

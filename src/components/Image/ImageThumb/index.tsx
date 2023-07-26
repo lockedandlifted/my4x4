@@ -7,22 +7,33 @@ import type { Image } from '@prisma/client'
 import useImageUrl from '@hooks/useImageUrl'
 
 type ImageThumbProps = {
+  boxProps?: object,
+  height?: number,
   href?: string,
   image: Image,
+  width?: number,
 }
 
 const ImageThumb = (props: ImageThumbProps) => {
-  const { href, image } = props
+  const {
+    boxProps,
+    height = 120,
+    href,
+    image,
+    width = 120,
+  } = props
 
   const { imageUrl } = useImageUrl({
-    enabled: !!image.id,
-    path: image.fileKey,
+    enabled: !!image?.id,
+    path: image?.fileKey,
     transformation: [{
       focus: 'auto',
-      height: '240',
-      width: '240',
+      height: height * 2,
+      width: width * 2,
     }],
   })
+
+  if (!image?.id) return null
 
   return (
     <NextLink href={href}>
@@ -30,15 +41,16 @@ const ImageThumb = (props: ImageThumbProps) => {
         borderWidth="1px"
         borderRadius="2xl"
         flexShrink="0"
-        height="120px"
+        height={`${height}px`}
         overflow="hidden"
-        width="120px"
+        width={`${width}px`}
+        {...boxProps}
       >
         <NextImage
           alt="Project Image Thumbnail"
           src={imageUrl || ''}
-          height={120}
-          width={120}
+          height={height}
+          width={width}
           style={{ objectFit: 'cover' }}
         />
       </Flex>

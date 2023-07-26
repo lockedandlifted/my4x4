@@ -25,6 +25,11 @@ const usersRouter = router({
           },
           take: 1,
         },
+        role: {
+          select: {
+            key: true,
+          },
+        },
       },
     })),
 
