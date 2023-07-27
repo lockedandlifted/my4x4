@@ -99,6 +99,18 @@ const publishProject = (params: PublishProjectParams) => {
   return mutation.mutate({ id: project.id })
 }
 
+type UnpublishProjectParams = {
+  mutation: {
+    mutate: (data: { id: string }) => void,
+  },
+  project: Project,
+}
+
+const unpublishProject = (params: UnpublishProjectParams) => {
+  const { mutation, project } = params
+  return mutation.mutate({ id: project.id })
+}
+
 type DefaultState = {
   attributes: {
     colour: string,
@@ -277,6 +289,15 @@ function useProjectForm(options: UseProjectFormOptions) {
     },
   })
 
+  // Unpublish Mutation
+  const unpublishProjectMutation = trpc.projects.unpublishProjectById.useMutation({
+    onSuccess: () => {
+      if (project?.id) {
+        invalidateGetProjectById({ id: project.id })
+      }
+    },
+  })
+
   return {
     attributes,
     callbacks: {
@@ -296,6 +317,12 @@ function useProjectForm(options: UseProjectFormOptions) {
       publishProject: () => (
         publishProject({
           mutation: publishProjectMutation,
+          project,
+        })
+      ),
+      unpublishProject: () => (
+        unpublishProject({
+          mutation: unpublishProjectMutation,
           project,
         })
       ),
