@@ -270,6 +270,7 @@ model Comment {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   commentLikes     CommentLike[]
+  imagesComments   ImagesComment[]
   postsComments    PostsComment[]
   projectsComments ProjectsComment[]
 
@@ -365,11 +366,27 @@ model Image {
 
   businessesImages BusinessesImage[]
   imageTags        ImageTag[]
+  imagesComments   ImagesComment[]
   postsImages      PostsImage[]
   projectsImages   ProjectsImage[]
   usersImages      UsersImage[]
 
   @@map("images")
+}
+
+model ImagesComment {
+  id        String  @id @default(uuid())
+  image     Image   @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  imageId   String  @map("image_id")
+  comment   Comment @relation(fields: [commentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  commentId String  @map("comment_id")
+  sort      Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([imageId, commentId])
+  @@map("images_comments")
 }
 
 model ImageTag {

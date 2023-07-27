@@ -16,7 +16,7 @@ type ImageThumbsProps = {
   project: Project,
 }
 
-const ImageThumbs = (props: ImageThumbsProps) => {
+const ProjectImageThumbs = (props: ImageThumbsProps) => {
   const { editMode = false, project } = props
 
   const { projectsImages: { getProjectsImages: { invalidate } } } = trpc.useContext()
@@ -48,7 +48,7 @@ const ImageThumbs = (props: ImageThumbsProps) => {
           <ImageThumb
             href={editMode
               ? `/projects/${project?.id}/edit/images/${id}`
-              : `/${project?.slug}/images`}
+              : `/${project?.slug}/images/${id}`}
             key={id}
             image={image}
           />
@@ -75,4 +75,4 @@ const ImageThumbs = (props: ImageThumbsProps) => {
   )
 }
 
-export default ImageThumbs
+export default ProjectImageThumbs

@@ -14,6 +14,7 @@ import countriesRouter from './countries'
 import externalLinkViewsRouter from './externalLinkViews'
 import externalLinksRouter from './externalLinks'
 import imagesRouter from './images'
+import imagesCommentsRouter from './imagesComments'
 import manufacturerModelsRouter from './manufacturerModels'
 import manufacturerModelSeriesRouter from './manufacturerModelSeries'
 import manufacturerPartsRouter from './manufacturerParts'
@@ -49,6 +50,7 @@ export const appRouters = {
   externalLinkViews: externalLinkViewsRouter,
   externalLinks: externalLinksRouter,
   images: imagesRouter,
+  imagesComments: imagesCommentsRouter,
   manufacturerModels: manufacturerModelsRouter,
   manufacturerModelSeries: manufacturerModelSeriesRouter,
   manufacturerParts: manufacturerPartsRouter,
