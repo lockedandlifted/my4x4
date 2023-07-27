@@ -14,6 +14,7 @@ import CreateOrEditProjectExternalLinkModal from '@modals/CreateOrEditProjectExt
 
 import Form from '@components/Form'
 
+import Actions from '@components/Project/Actions'
 import Attributes from '@components/Project/Attributes'
 import CreateAccountNotice from '@components/Project/CreateAccountNotice'
 import EditProjectBanner from '@components/Project/EditProjectBanner'
@@ -83,7 +84,14 @@ const EditProjectPage = () => {
   const { data: projectViewCount } = projectViewQuery
 
   const projectFormPayload = useProjectForm({ project })
-  const { callbacks: { updateProject, publishProject }, formPayload } = projectFormPayload
+  const {
+    callbacks: {
+      updateProject,
+      publishProject,
+      unpublishProject,
+    },
+    formPayload,
+  } = projectFormPayload
 
   return (
     <MobileLayout>
@@ -98,6 +106,7 @@ const EditProjectPage = () => {
         <Share editMode project={project} />
         <Attributes editMode project={project} />
         <Links callbacks={callbacks(undefined, setState)} editMode project={project} />
+        <Actions callbacks={{ publishProject, unpublishProject }} editMode project={project} />
       </Form>
 
       <CreateOrEditProjectAttributeModal
