@@ -300,6 +300,8 @@ model Country {
 
   addresses         Address[]
   manufacturerParts ManufacturerPart[]
+  projects          Project[]
+  users             User[]
 
   @@map("countries")
 }
@@ -664,6 +666,9 @@ model Project {
   notificationsEnabled Boolean @default(true) @map("notifications_enabled")
   authToken            String? @map("auth_token")
 
+  country   Country? @relation(fields: [countryId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  countryId String?  @map("country_id")
+
   manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   manufacturerModelId String            @map("manufacturer_model_id")
 
@@ -885,6 +890,9 @@ model User {
   image            String?
   bio              String?   @db.Text
   referredByUserId String?   @map("referred_by_user_id")
+
+  country   Country? @relation(fields: [countryId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  countryId String?  @map("country_id")
 
   role   Role?   @relation(fields: [roleId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   roleId String? @map("role_id")

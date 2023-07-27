@@ -5,6 +5,8 @@ import { FaGlobeAsia } from 'react-icons/fa'
 
 import type { ManufacturerModelSeries, Project } from '@prisma/client'
 
+import { trpc } from '@utils/trpc'
+
 import AutocompleteField from '@components/AutocompleteField'
 import Form from '@components/Form'
 import Paragraph from '@components/Paragraph'
@@ -16,19 +18,19 @@ import Attributes from './components/Attributes'
 
 type ProjectFormProps = {
   project?: Project,
-  temporaryUserId?: string,
 }
 
 const ProjectForm = (props: ProjectFormProps) => {
-  const { project, temporaryUserId } = props
+  const { project } = props
 
-  const projectFormPayload = useProjectForm({ project, temporaryUserId })
+  const projectFormPayload = useProjectForm({ project })
   const {
     callbacks: {
       createProject: createFn,
       updateProject: updateFn,
     },
     createdByOwner,
+    countries,
     formPayload,
     formPayload: {
       setValue,
@@ -89,6 +91,22 @@ const ProjectForm = (props: ProjectFormProps) => {
             <option value="">Please Select...</option>
             <option value="false">No</option>
             <option value="true">Yes</option>
+          </select>
+        </Form.Field>
+
+        <Form.Field
+          label="Vehicle Location"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="countryId"
+          validationRules={{ required: true }}
+        >
+          <select>
+            <option value="">Please Select...</option>
+            {countries.map(country => (
+              <option key={country.id} value={country.id}>
+                {country.title}
+              </option>
+            ))}
           </select>
         </Form.Field>
 
