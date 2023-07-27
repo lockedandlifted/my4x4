@@ -39,22 +39,10 @@ const ImageThumbs = (props: ImageThumbsProps) => {
     return null
   }
 
+  const sortedImages = editMode ? [...projectsImages].reverse() : projectsImages
+
   return (
-    <Stack direction="row" spacing="2" paddingBottom="2" marginTop="2" overflowX="auto">
-      {projectsImages.map((projectsImage) => {
-        const { id, image } = projectsImage
-
-        return (
-          <ImageThumb
-            href={editMode
-              ? `/projects/${project?.id}/edit/images/${id}`
-              : `/${project?.slug}/images`}
-            key={id}
-            image={image}
-          />
-        )
-      })}
-
+    <Stack direction="row" spacing="2" paddingBottom="2" marginTop="2" overflowX="auto" width="100%">
       {editMode && !!uppy && (
         <FileUploadButton
           buttonProps={{
@@ -71,6 +59,20 @@ const ImageThumbs = (props: ImageThumbsProps) => {
           uppy={uppy}
         />
       )}
+
+      {sortedImages.map((projectsImage) => {
+        const { id, image } = projectsImage
+
+        return (
+          <ImageThumb
+            href={editMode
+              ? `/projects/${project?.id}/edit/images/${id}`
+              : `/${project?.slug}/images`}
+            key={id}
+            image={image}
+          />
+        )
+      })}
     </Stack>
   )
 }

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import cuid from 'cuid'
 
 import type {
@@ -39,17 +40,15 @@ const buildProjectTitle = (params: BuildProjectTitleParams) => {
 type CreateProjectParams = {
   data: typeof defaultState,
   mutation: {
-    mutate: (data: typeof defaultState & { temporaryUserId: string }) => void,
+    mutate: (data: typeof defaultState) => void,
   },
-  temporaryUserId?: string,
 }
 
 const createProject = (params: CreateProjectParams) => {
-  const { data, mutation, temporaryUserId } = params
+  const { data, mutation } = params
 
   const updatedData = {
     ...data,
-    temporaryUserId,
   }
 
   if (data.attributes) {
@@ -106,6 +105,7 @@ type DefaultState = {
     year_manufactured: string,
     [key: string]: string,
   },
+  countryId: string,
   createdByOwner: boolean,
   description: string,
   manufacturerId: string,
@@ -123,6 +123,7 @@ const defaultState: DefaultState = {
     colour: '',
     year_manufactured: '',
   },
+  countryId: '',
   createdByOwner: false,
   description: '',
   manufacturerId: '',
@@ -145,6 +146,11 @@ const setupProjectInitialState = (project: Project) => {
     initialState.manufacturerId = project.manufacturerModel.manufacturer.id
   }
 
+  if (project.manufacturerModelSeries) {
+    initialState.manufacturerModelSeriesId = project.manufacturerModelSeries.id
+    initialState.manufacturerModelSeriesTitle = project.manufacturerModelSeries.title
+  }
+
   if (project.projectsAttributes) {
     initialState.projectsAttributes = []
 
@@ -162,26 +168,38 @@ const setupProjectInitialState = (project: Project) => {
 
 type UseProjectFormOptions = {
   project?: Project,
-  temporaryUserId?: string,
 }
 
 function useProjectForm(options: UseProjectFormOptions) {
-  const { project, temporaryUserId } = options ?? {}
+  const { project } = options ?? {}
 
   const router = useRouter()
 
+  const { data: sessionData } = useSession()
+
+  const userQuery = trpc.users.getUserById.useQuery({
+    id: sessionData?.user?.id,
+  }, { enabled: !!sessionData?.user?.id })
+
+  const { data: user } = userQuery
+
   const formPayload = useForm({
-    defaultValues: project?.id ? setupProjectInitialState(project) : defaultState,
     mode: 'onChange',
+    values: project?.id ? setupProjectInitialState(project) : { ...defaultState, countryId: user?.countryId },
   })
 
   const { setValue, watch } = formPayload
   const createdByOwner = watch('createdByOwner')
   const manufacturerId = watch('manufacturerId')
   const manufacturerModelId = watch('manufacturerModelId')
+  const manufacturerModelSeriesId = watch('manufacturerModelSeriesId')
   const manufacturerModelSeriesTitle = watch('manufacturerModelSeriesTitle')
   const projectSlug = watch('slug')
   const yearManufactured = watch('attributes.year_manufactured')
+
+  // Load Countries
+  const countriesQuery = trpc.countries.getCountries.useQuery()
+  const { data: countries = [] } = countriesQuery
 
   // Load Manufacturers
   const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerTypeKey: 'vehicle' })
@@ -266,7 +284,6 @@ function useProjectForm(options: UseProjectFormOptions) {
         createProject({
           data,
           mutation: createProjectMutation,
-          temporaryUserId,
         })
       ),
       updateProject: (data: typeof defaultState) => (
@@ -284,10 +301,12 @@ function useProjectForm(options: UseProjectFormOptions) {
       ),
     },
     createdByOwner,
+    countries,
     formPayload,
     manufacturerId,
     manufacturerModelId,
     manufacturerModels,
+    manufacturerModelSeriesId,
     manufacturerModelSeriesTitle,
     manufacturers,
     mutations: {

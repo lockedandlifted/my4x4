@@ -24,8 +24,17 @@ const updateUser = (params: UpdateUserParams) => {
   return mutation.mutate(updatedData)
 }
 
-const defaultState = {
+type DefaultState = {
+  bio: string,
+  countryId: string,
+  email: string,
+  name: string,
+  username: string,
+}
+
+const defaultState: DefaultState = {
   bio: '',
+  countryId: '',
   email: '',
   name: '',
   username: '',
@@ -46,6 +55,10 @@ function useUserForm(options: UseUserFormOptions) {
     mode: 'onChange',
   })
 
+  // Load Countries
+  const countriesQuery = trpc.countries.getCountries.useQuery()
+  const { data: countries = [] } = countriesQuery
+
   // Update Mutation
   const updateUserMutation = trpc.users.updateUserById.useMutation({
     onSuccess: onUpdateSuccess,
@@ -55,6 +68,7 @@ function useUserForm(options: UseUserFormOptions) {
     callbacks: {
       updateUser: (data: typeof defaultState) => updateUser({ data, mutation: updateUserMutation, user }),
     },
+    countries,
     formPayload,
     mutations: {
       updateUserMutation,

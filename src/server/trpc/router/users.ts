@@ -60,6 +60,7 @@ const usersRouter = router({
       },
       data: {
         bio: input.bio,
+        countryId: input.countryId,
         email: input.email,
         name: input.name,
         username: input.username,

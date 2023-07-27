@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Button, Flex, Heading } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 
 import usePostForm from '@hooks/usePostForm'
 
@@ -9,13 +8,6 @@ import Tag from '@components/Category/Tag'
 import Editor from '@components/Post/Editor'
 
 import type { Prisma } from '@prisma/client'
-
-const defaultEditorValue = [
-  {
-    type: 'paragraph',
-    children: [{ text: '' }],
-  },
-]
 
 type PostWithIncludes = Prisma.PostGetPayload<{
   include: {},
@@ -77,14 +69,14 @@ const PostForm = (props: PostFormProps) => {
         ))}
       </Form.BasicField>
 
-      {!!post?.id && shouldUsePostEditor && (
+      {!!post?.id && shouldUsePostEditor && editor && (
         <Form.BasicField
           label="* Body"
           marginTop="4"
           name="body"
         >
           <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
-            <Editor editor={editor} initialValue={post?.bodyData || defaultEditorValue}>
+            <Editor editor={editor} initialValue={post?.bodyData}>
               <Editor.ToolBar />
               <Editor.Input />
             </Editor>
