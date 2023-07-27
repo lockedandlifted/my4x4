@@ -4,6 +4,8 @@ import { Toaster } from 'react-hot-toast'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Analytics } from '@vercel/analytics/react'
 import { TrackingHeadScript } from '@phntms/next-gtm'
+import { HighlightInit } from '@highlight-run/next/highlight-init'
+import { ErrorBoundary } from '@highlight-run/react'
 
 import type { AppType } from 'next/app'
 import type { Session } from 'next-auth'
@@ -13,12 +15,15 @@ import { trpc } from '@utils/trpc'
 
 import { ImageKitContextProvider } from '@contexts/imageKit'
 
+import IdentifySessionUser from '@components/IdentifySessionUser'
+
 import '@uppy/core/dist/style.min.css'
 import '@uppy/drag-drop/dist/style.min.css'
 import '@uppy/file-input/dist/style.min.css'
 import '@uppy/progress-bar/dist/style.min.css'
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID || ''
+const HIGHLIGHT_IO_PROJECT_ID = process.env.NEXT_PUBLIC_HIGHLIGHT_IO_PROJECT_ID || ''
 
 const MyApp: AppType<{ session: Session | null }> = (props) => {
   const {
@@ -32,7 +37,21 @@ const MyApp: AppType<{ session: Session | null }> = (props) => {
       <ChakraProvider theme={theme}>
         <ImageKitContextProvider>
           <TrackingHeadScript id={GA_TRACKING_ID} />
-          <Component key={router.asPath} {...pageProps} />
+          <HighlightInit
+            projectId={HIGHLIGHT_IO_PROJECT_ID}
+            tracingOrigins
+            networkRecording={{
+              enabled: true,
+              recordHeadersAndBody: true,
+              urlBlocklist: [],
+            }}
+          />
+
+          <ErrorBoundary>
+            <IdentifySessionUser />
+            <Component key={router.asPath} {...pageProps} />
+          </ErrorBoundary>
+
           <ReactQueryDevtools initialIsOpen={false} />
         </ImageKitContextProvider>
         <Toaster />
