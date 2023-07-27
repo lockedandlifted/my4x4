@@ -23,7 +23,7 @@ import '@uppy/file-input/dist/style.min.css'
 import '@uppy/progress-bar/dist/style.min.css'
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID || ''
-const HIGHLIGHT_IO_PROJECT_ID = process.env.NEXT_PUBLIC_HIGHLIGHT_IO_PROJECT_ID || ''
+const HIGHLIGHT_PROJECT_ID = process.env.NEXT_PUBLIC_HIGHLIGHT_PROJECT_ID || ''
 
 const MyApp: AppType<{ session: Session | null }> = (props) => {
   const {
@@ -38,7 +38,7 @@ const MyApp: AppType<{ session: Session | null }> = (props) => {
         <ImageKitContextProvider>
           <TrackingHeadScript id={GA_TRACKING_ID} />
           <HighlightInit
-            projectId={HIGHLIGHT_IO_PROJECT_ID}
+            projectId={HIGHLIGHT_PROJECT_ID}
             tracingOrigins
             networkRecording={{
               enabled: true,
