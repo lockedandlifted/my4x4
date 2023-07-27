@@ -51,9 +51,9 @@ const ImageThumbs = (props: ImageThumbsProps) => {
             marginTop: 'auto',
             size: 'lg',
             zIndex: '1',
-            height: '120px',
+            height: 120,
             variant: 'outline',
-            width: '120px',
+            width: 120,
           }}
           buttonText={<FiUploadCloud size={28} />}
           uppy={uppy}
