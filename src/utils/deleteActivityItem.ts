@@ -1,6 +1,7 @@
 import { prisma } from '@server/db/client'
 
 type ActivitySubject = {
+  eventType?: string,
   subjectId: string,
   subjectType: string,
 }

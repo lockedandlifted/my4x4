@@ -3,6 +3,7 @@ import { z } from 'zod'
 import type { AttributeValue, Prisma } from '@prisma/client'
 
 import createActivityItem from '@utils/createActivityItem'
+import deleteActivityItem from '@utils/deleteActivityItem'
 import { snakeCase } from '@utils/string'
 
 import { router, publicProcedure, protectedProcedure } from '../trpc'
@@ -569,7 +570,7 @@ const projectsRouter = router({
       ])
     }),
 
-  publishProjectById: publicProcedure
+  publishProjectById: protectedProcedure
     .input(z.object({
       id: z.string(),
     }))
@@ -590,6 +591,34 @@ const projectsRouter = router({
         ownerType: 'User',
         subjectId: project.id,
         subjectType: 'Project',
+      })
+
+      return project
+    }),
+
+  unpublishProjectById: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          published: false,
+        },
+      })
+
+      // Delete Activity
+      await deleteActivityItem({
+        subjects: [
+          {
+            eventType: 'projects.published',
+            subjectId: project.id,
+            subjectType: 'Project',
+          },
+        ],
       })
 
       return project
