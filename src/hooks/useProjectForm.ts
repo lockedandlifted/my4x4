@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import cuid from 'cuid'
 
 import type {
-  Manufacturer, ManufacturerModel, Project, ProjectsAttribute, User,
+  Manufacturer, ManufacturerModel, Project, ProjectsAttribute,
 } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
