@@ -504,7 +504,11 @@ const projectsRouter = router({
             id: input.id,
           },
           data: {
-            countryId: input.countryId,
+            country: {
+              connect: {
+                id: input.countryId,
+              },
+            },
             createdByOwner: input.createdByOwner,
             description: input.description,
             manufacturerModel: {

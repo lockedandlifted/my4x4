@@ -53,7 +53,7 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       key: 'ford_ranger_raptor_py',
       title: 'PY',
       manufacturerModelId: fordRangerRaptor.id,
-    }
+    },
   ]
 
   // Ford Everest
@@ -69,7 +69,7 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       key: 'ford_everest_UA2',
       title: 'UA2',
       manufacturerModelId: fordEverest.id,
-    }
+    },
   ]
 
   // Ford F-150
@@ -298,23 +298,28 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
 
   const toyotaHiluxSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
     {
+      key: 'toyota_hilux_n40',
+      title: 'N40',
+      manufacturerModelId: toyotaHilux.id,
+    },
+    {
       key: 'toyota_hilux_n50',
-      title: 'n50/ln106',
+      title: 'N50/LN106',
       manufacturerModelId: toyotaHilux.id,
     },
     {
       key: 'toyota_hilux_n60',
-      title: 'n60/ln110/rn110/ln167/ln166/kzn165/kun26r',
+      title: 'N60/LN110/RN110/LN167/LN166/KZN165/KUN26R',
       manufacturerModelId: toyotaHilux.id,
     },
     {
       key: 'toyota_hilux_n70',
-      title: 'n70',
+      title: 'N70',
       manufacturerModelId: toyotaHilux.id,
     },
     {
       key: 'toyota_hilux_n80',
-      title: 'n80',
+      title: 'N80',
       manufacturerModelId: toyotaHilux.id,
     },
   ]
@@ -336,7 +341,7 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
   const suzukiJimnySeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
     {
       key: 'suzuki_jimny_jb74',
-      title: 'jb74',
+      title: 'JB74',
       manufacturerModelId: suzukiJimny.id,
     },
   ]
@@ -363,7 +368,7 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
   const holdenRodeoSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
     {
       key: 'holden_rodeo_tf',
-      title: 'tf',
+      title: 'TF',
       manufacturerModelId: holdenRodeo.id,
     },
   ]
@@ -374,12 +379,12 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
   const holdenColoradoSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
     {
       key: 'holden_colorado_rc',
-      title: 'rc',
+      title: 'RC',
       manufacturerModelId: holdenColorado.id,
     },
     {
       key: 'holden_colorado_rg',
-      title: 'rg',
+      title: 'RG',
       manufacturerModelId: holdenColorado.id,
     },
   ]
@@ -406,7 +411,7 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     ...landRoverDefenderSeries,
     ...holdenRodeoSeries,
     ...holdenColoradoSeries,
-]
+  ]
   const queries = mergedSeries.map(async (data: Prisma.ManufacturerModelSeriesCreateArgs['data']) => {
     const record = await prisma.manufacturerModelSeries.upsert({
       where: { key: data.key },

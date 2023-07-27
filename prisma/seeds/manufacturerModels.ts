@@ -170,8 +170,18 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
 
   const toyotaModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
     {
-      key: 'toyota_land_cruiser',
-      title: 'LandCruiser',
+      key: 'toyota_4_runner',
+      title: '4Runner',
+      manufacturerId: toyota.id,
+    },
+    {
+      key: 'toyota_fj_cruiser',
+      title: 'FJ Cruiser',
+      manufacturerId: toyota.id,
+    },
+    {
+      key: 'toyota_fortuner',
+      title: 'Fortuner',
       manufacturerId: toyota.id,
     },
     {
@@ -185,18 +195,13 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
       manufacturerId: toyota.id,
     },
     {
+      key: 'toyota_land_cruiser',
+      title: 'LandCruiser',
+      manufacturerId: toyota.id,
+    },
+    {
       key: 'toyota_prado',
       title: 'Prado',
-      manufacturerId: toyota.id,
-    },
-    {
-      key: 'toyota_fj_cruiser',
-      title: 'FJ Cruiser',
-      manufacturerId: toyota.id,
-    },
-    {
-      key: 'toyota_fortuner',
-      title: 'Fortuner',
       manufacturerId: toyota.id,
     },
     {
