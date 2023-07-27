@@ -376,6 +376,7 @@ const projectsRouter = router({
             manufacturer: true,
           },
         },
+        manufacturerModelSeries: true,
         projectsAttributes: {
           include: {
             attribute: true,
@@ -477,6 +478,8 @@ const projectsRouter = router({
       createdByOwner: z.boolean().optional(),
       description: z.string(),
       manufacturerModelId: z.string(),
+      manufacturerModelSeriesId: z.string(),
+      manufacturerModelSeriesTitle: z.string(),
       notificationsEnabled: z.boolean().optional(),
       projectsAttributes: z.array(z.object({
         key: z.string(),
@@ -504,7 +507,27 @@ const projectsRouter = router({
             countryId: input.countryId,
             createdByOwner: input.createdByOwner,
             description: input.description,
-            manufacturerModelId: input.manufacturerModelId,
+            manufacturerModel: {
+              connect: {
+                id: input.manufacturerModelId,
+              },
+            },
+            manufacturerModelSeries: {
+              connectOrCreate: {
+                where: {
+                  id: input.manufacturerModelSeriesId || 'new-manufacturer-model-series',
+                },
+                create: {
+                  key: `${input.manufacturerModelId}_${snakeCase(input.manufacturerModelSeriesTitle)}`,
+                  manufacturerModel: {
+                    connect: {
+                      id: input.manufacturerModelId,
+                    },
+                  },
+                  title: input.manufacturerModelSeriesTitle,
+                },
+              },
+            },
             notificationsEnabled: input.notificationsEnabled,
             slug: input.slug,
             title: input.title,
