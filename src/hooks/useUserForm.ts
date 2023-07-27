@@ -55,6 +55,10 @@ function useUserForm(options: UseUserFormOptions) {
     mode: 'onChange',
   })
 
+  // Load Countries
+  const countriesQuery = trpc.countries.getCountries.useQuery()
+  const { data: countries = [] } = countriesQuery
+
   // Update Mutation
   const updateUserMutation = trpc.users.updateUserById.useMutation({
     onSuccess: onUpdateSuccess,
@@ -64,6 +68,7 @@ function useUserForm(options: UseUserFormOptions) {
     callbacks: {
       updateUser: (data: typeof defaultState) => updateUser({ data, mutation: updateUserMutation, user }),
     },
+    countries,
     formPayload,
     mutations: {
       updateUserMutation,

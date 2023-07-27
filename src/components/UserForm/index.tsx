@@ -28,6 +28,7 @@ const UserForm = (props: UserFormProps) => {
     callbacks: {
       updateUser,
     },
+    countries,
     formPayload,
     mutations: {
       updateUserMutation: {
@@ -35,10 +36,6 @@ const UserForm = (props: UserFormProps) => {
       },
     },
   } = userFormPayload
-
-  // Load Countries
-  const countriesQuery = trpc.countries.getCountries.useQuery({})
-  const { data: countries = [] } = countriesQuery
 
   return (
     <Flex direction="column" width="100%">

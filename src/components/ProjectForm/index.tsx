@@ -30,6 +30,7 @@ const ProjectForm = (props: ProjectFormProps) => {
       updateProject: updateFn,
     },
     createdByOwner,
+    countries,
     formPayload,
     formPayload: {
       setValue,
@@ -46,10 +47,6 @@ const ProjectForm = (props: ProjectFormProps) => {
     },
     projectSlug,
   } = projectFormPayload
-
-  // Load Countries
-  const countriesQuery = trpc.countries.getCountries.useQuery({})
-  const { data: countries = [] } = countriesQuery
 
   return (
     <Flex marginTop={8} width="100%">

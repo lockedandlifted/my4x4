@@ -191,6 +191,10 @@ function useProjectForm(options: UseProjectFormOptions) {
   const projectSlug = watch('slug')
   const yearManufactured = watch('attributes.year_manufactured')
 
+  // Load Countries
+  const countriesQuery = trpc.countries.getCountries.useQuery()
+  const { data: countries = [] } = countriesQuery
+
   // Load Manufacturers
   const manufacturersQuery = trpc.manufacturers.getManufacturers.useQuery({ manufacturerTypeKey: 'vehicle' })
   const { data: manufacturers = [] } = manufacturersQuery
@@ -291,6 +295,7 @@ function useProjectForm(options: UseProjectFormOptions) {
       ),
     },
     createdByOwner,
+    countries,
     formPayload,
     manufacturerId,
     manufacturerModelId,

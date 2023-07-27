@@ -299,8 +299,8 @@ model Country {
 
   addresses         Address[]
   manufacturerParts ManufacturerPart[]
-  project           Project[]
-  user              User[]
+  projects          Project[]
+  users             User[]
 
   @@map("countries")
 }
