@@ -52,6 +52,7 @@ const mapCreateProjectsAttributes = (
 const projectsRouter = router({
   createProject: publicProcedure
     .input(z.object({
+      countryId: z.string(),
       createdByOwner: z.boolean().optional(),
       manufacturerModelId: z.string(),
       manufacturerModelSeriesId: z.string().optional(),
@@ -62,13 +63,17 @@ const projectsRouter = router({
       })),
       slug: z.string(),
       title: z.string(),
-      temporaryUserId: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
       const attributeValues = await ctx.prisma.attributeValue.findMany()
 
       const data: Prisma.ProjectCreateInput = {
         createdByOwner: input.createdByOwner,
+        country: {
+          connect: {
+            id: input.countryId,
+          },
+        },
         manufacturerModel: {
           connect: {
             id: input.manufacturerModelId,
@@ -91,7 +96,6 @@ const projectsRouter = router({
           },
         },
         slug: input.slug,
-        temporaryUserId: input.temporaryUserId,
         title: input.title,
         projectsAttributes: {
           create: mapCreateProjectsAttributes(input, attributeValues),
@@ -469,6 +473,7 @@ const projectsRouter = router({
   updateProjectById: publicProcedure
     .input(z.object({
       id: z.string(),
+      countryId: z.string(),
       createdByOwner: z.boolean().optional(),
       description: z.string(),
       manufacturerModelId: z.string(),
@@ -496,6 +501,7 @@ const projectsRouter = router({
             id: input.id,
           },
           data: {
+            countryId: input.countryId,
             createdByOwner: input.createdByOwner,
             description: input.description,
             manufacturerModelId: input.manufacturerModelId,

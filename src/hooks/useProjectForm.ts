@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import cuid from 'cuid'
 
 import type {
-  Manufacturer, ManufacturerModel, Project, ProjectsAttribute,
+  Manufacturer, ManufacturerModel, Project, ProjectsAttribute, User,
 } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
@@ -39,17 +40,15 @@ const buildProjectTitle = (params: BuildProjectTitleParams) => {
 type CreateProjectParams = {
   data: typeof defaultState,
   mutation: {
-    mutate: (data: typeof defaultState & { temporaryUserId: string }) => void,
+    mutate: (data: typeof defaultState) => void,
   },
-  temporaryUserId?: string,
 }
 
 const createProject = (params: CreateProjectParams) => {
-  const { data, mutation, temporaryUserId } = params
+  const { data, mutation } = params
 
   const updatedData = {
     ...data,
-    temporaryUserId,
   }
 
   if (data.attributes) {
@@ -106,6 +105,7 @@ type DefaultState = {
     year_manufactured: string,
     [key: string]: string,
   },
+  countryId: string,
   createdByOwner: boolean,
   description: string,
   manufacturerId: string,
@@ -123,6 +123,7 @@ const defaultState: DefaultState = {
     colour: '',
     year_manufactured: '',
   },
+  countryId: '',
   createdByOwner: false,
   description: '',
   manufacturerId: '',
@@ -162,17 +163,24 @@ const setupProjectInitialState = (project: Project) => {
 
 type UseProjectFormOptions = {
   project?: Project,
-  temporaryUserId?: string,
 }
 
 function useProjectForm(options: UseProjectFormOptions) {
-  const { project, temporaryUserId } = options ?? {}
+  const { project } = options ?? {}
 
   const router = useRouter()
 
+  const { data: sessionData } = useSession()
+
+  const userQuery = trpc.users.getUserById.useQuery({
+    id: sessionData?.user?.id,
+  }, { enabled: !!sessionData?.user?.id })
+
+  const { data: user } = userQuery
+
   const formPayload = useForm({
-    defaultValues: project?.id ? setupProjectInitialState(project) : defaultState,
     mode: 'onChange',
+    values: project?.id ? setupProjectInitialState(project) : { ...defaultState, countryId: user?.countryId },
   })
 
   const { setValue, watch } = formPayload
@@ -266,7 +274,6 @@ function useProjectForm(options: UseProjectFormOptions) {
         createProject({
           data,
           mutation: createProjectMutation,
-          temporaryUserId,
         })
       ),
       updateProject: (data: typeof defaultState) => (

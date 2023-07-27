@@ -2,6 +2,8 @@ import { Button, Flex, Heading } from '@chakra-ui/react'
 
 import type { User } from '@prisma/client'
 
+import { trpc } from '@utils/trpc'
+
 import useUserForm from '@hooks/useUserForm'
 
 import Form from '@components/Form'
@@ -33,6 +35,10 @@ const UserForm = (props: UserFormProps) => {
       },
     },
   } = userFormPayload
+
+  // Load Countries
+  const countriesQuery = trpc.countries.getCountries.useQuery({})
+  const { data: countries = [] } = countriesQuery
 
   return (
     <Flex direction="column" width="100%">
@@ -74,6 +80,22 @@ const UserForm = (props: UserFormProps) => {
           validationRules={{ required: true }}
         >
           <input />
+        </Form.Field>
+
+        <Form.Field
+          label="Country"
+          marginTop={Form.Field.MARGIN_TOP}
+          name="countryId"
+          validationRules={{ required: true }}
+        >
+          <select>
+            <option value="">Please Select...</option>
+            {countries.map(country => (
+              <option key={country.id} value={country.id}>
+                {country.title}
+              </option>
+            ))}
+          </select>
         </Form.Field>
 
         <Form.Field

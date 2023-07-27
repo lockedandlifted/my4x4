@@ -24,8 +24,17 @@ const updateUser = (params: UpdateUserParams) => {
   return mutation.mutate(updatedData)
 }
 
-const defaultState = {
+type DefaultState = {
+  bio: string,
+  countryId: string,
+  email: string,
+  name: string,
+  username: string,
+}
+
+const defaultState: DefaultState = {
   bio: '',
+  countryId: '',
   email: '',
   name: '',
   username: '',
