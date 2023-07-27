@@ -39,9 +39,28 @@ const ImageThumbs = (props: ImageThumbsProps) => {
     return null
   }
 
+  const sortedImages = editMode ? [...projectsImages].reverse() : projectsImages
+
   return (
-    <Stack direction="row" spacing="2" paddingBottom="2" marginTop="2" overflowX="auto">
-      {projectsImages.map((projectsImage) => {
+    <Stack direction="row" spacing="2" paddingBottom="2" marginTop="2" overflowX="auto" width="100%">
+      {editMode && !!uppy && (
+        <FileUploadButton
+          buttonProps={{
+            borderRadius: '2xl',
+            colorScheme: 'gray',
+            marginTop: 'auto',
+            size: 'lg',
+            zIndex: '1',
+            height: '120px',
+            variant: 'outline',
+            width: '120px',
+          }}
+          buttonText={<FiUploadCloud size={28} />}
+          uppy={uppy}
+        />
+      )}
+
+      {sortedImages.map((projectsImage) => {
         const { id, image } = projectsImage
 
         return (
@@ -54,23 +73,6 @@ const ImageThumbs = (props: ImageThumbsProps) => {
           />
         )
       })}
-
-      {editMode && !!uppy && (
-        <FileUploadButton
-          buttonProps={{
-            borderRadius: '2xl',
-            colorScheme: 'gray',
-            marginTop: 'auto',
-            size: 'lg',
-            zIndex: '1',
-            height: 120,
-            variant: 'outline',
-            width: 120,
-          }}
-          buttonText={<FiUploadCloud size={28} />}
-          uppy={uppy}
-        />
-      )}
     </Stack>
   )
 }

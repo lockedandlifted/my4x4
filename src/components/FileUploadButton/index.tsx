@@ -69,7 +69,7 @@ const FileUploadButton = (props: FileUploadButtonProps) => {
   })
 
   return (
-    <Flex {...boxProps}>
+    <Flex position="relative" {...boxProps}>
       <input
         accept=".jpg,.jpeg,.png"
         className={styles.input}
