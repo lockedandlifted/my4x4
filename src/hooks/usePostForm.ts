@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { Node } from 'slate'
@@ -11,6 +11,13 @@ import toggleArray from '@utils/toggleArray'
 import { createWrappedEditor } from '@components/Post/Editor'
 
 import type { Prisma } from '@prisma/client'
+
+const defaultEditorValue = [
+  {
+    type: 'paragraph',
+    children: [{ text: '' }],
+  },
+]
 
 type PostWithIncludes = Prisma.PostGetPayload<{
   include: {},
@@ -28,6 +35,7 @@ const createPost = (params: CreatePostParams) => {
 
   const updatedData = {
     ...data,
+    bodyData: data.bodyData || defaultEditorValue,
     published: false,
   }
 
@@ -81,6 +89,7 @@ const setupPostInitialState = (currentState: object, post: PostWithIncludes) => 
 
 const defaultState = {
   body: '',
+  bodyData: undefined,
   categoryKeys: ['general'],
   postTypeKey: 'forum',
   title: '',
@@ -94,13 +103,17 @@ function usePostForm(options?: UsePostFormOptions) {
   const { post } = options || {}
 
   const shouldUsePostEditor = post?.postType?.key === 'forum'
-  const [editor] = useState(shouldUsePostEditor ? createWrappedEditor() : undefined)
+  const editor = useMemo(() => {
+    if (shouldUsePostEditor) {
+      return createWrappedEditor()
+    }
+    return undefined
+  }, [shouldUsePostEditor])
 
   const router = useRouter()
 
   const formPayload = useForm({
     mode: 'onChange',
-    // resolver: zodResolver(createProjectsPartValidationSchema, undefined),
     values: post ? setupInitialEntityState(defaultState, post, {
       additionalSetupFn: setupPostInitialState,
     }) : defaultState,

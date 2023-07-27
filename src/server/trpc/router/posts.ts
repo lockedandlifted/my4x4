@@ -24,6 +24,7 @@ const postsRouter = router({
   createPost: protectedProcedure
     .input(z.object({
       body: z.string(),
+      bodyData: z.array(z.any()).optional(),
       categoryKeys: z.array(z.string()).optional(),
       title: z.string(),
       postTypeKey: z.string(),
@@ -42,6 +43,7 @@ const postsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const data: Prisma.PostCreateInput = {
         body: input.body,
+        bodyData: input.bodyData,
         postType: {
           connect: {
             key: input.postTypeKey,
