@@ -36,6 +36,7 @@ const ProjectForm = (props: ProjectFormProps) => {
     manufacturers,
     manufacturerModels,
     manufacturerModelId,
+    manufacturerModelSeriesId,
     manufacturerModelSeriesTitle,
     manufacturerId,
     mutations: {
@@ -226,7 +227,12 @@ const ProjectForm = (props: ProjectFormProps) => {
           >
             <AutocompleteField
               callbacks={{
-                onChange: (e: React.ChangeEvent<HTMLInputElement>) => setValue('manufacturerModelSeriesTitle', e.target?.value),
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                  setValue('manufacturerModelSeriesTitle', e.target?.value)
+                  if (manufacturerModelSeriesId) {
+                    setValue('manufacturerModelSeriesId', '')
+                  }
+                },
                 selectItem: (result: ManufacturerModelSeries) => {
                   setValue('manufacturerModelSeriesId', result.id)
                   setValue('manufacturerModelSeriesTitle', result.title || '')

@@ -145,6 +145,11 @@ const setupProjectInitialState = (project: Project) => {
     initialState.manufacturerId = project.manufacturerModel.manufacturer.id
   }
 
+  if (project.manufacturerModelSeries) {
+    initialState.manufacturerModelSeriesId = project.manufacturerModelSeries.id
+    initialState.manufacturerModelSeriesTitle = project.manufacturerModelSeries.title
+  }
+
   if (project.projectsAttributes) {
     initialState.projectsAttributes = []
 
@@ -179,6 +184,7 @@ function useProjectForm(options: UseProjectFormOptions) {
   const createdByOwner = watch('createdByOwner')
   const manufacturerId = watch('manufacturerId')
   const manufacturerModelId = watch('manufacturerModelId')
+  const manufacturerModelSeriesId = watch('manufacturerModelSeriesId')
   const manufacturerModelSeriesTitle = watch('manufacturerModelSeriesTitle')
   const projectSlug = watch('slug')
   const yearManufactured = watch('attributes.year_manufactured')
@@ -288,6 +294,7 @@ function useProjectForm(options: UseProjectFormOptions) {
     manufacturerId,
     manufacturerModelId,
     manufacturerModels,
+    manufacturerModelSeriesId,
     manufacturerModelSeriesTitle,
     manufacturers,
     mutations: {
