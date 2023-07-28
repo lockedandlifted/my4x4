@@ -8,15 +8,28 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { router, publicProcedure } from '../trpc'
 
-const generateFileKey = (filename: string, fileType: string) => {
-  if (['image/jpeg', 'image/jpg', 'image/png'].includes(fileType)) {
+type GenerateFileKeyParams = {
+  fileKeyPrefix?: string,
+  filename: string,
+  fileType: string,
+}
+
+const generateFileKey = (params: GenerateFileKeyParams) => {
+  const {
+    fileKeyPrefix = 'images',
+    filename,
+    fileType,
+  } = params
+
+  if (['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'].includes(fileType)) {
     const uuid = uuidv4()
-    const fileExtension = filename.toLowerCase().match(/\.(jpg|jpeg|png)/g)?.[0] || '.jpg'
+    const fileExtension = filename.toLowerCase().match(/\.(jpg|jpeg|pdf|png)/g)?.[0] || '.jpg'
     const newFileName = `${uuid}${fileExtension}`
 
     return {
+      fileExtension: fileExtension.replace('.', ''),
       fileId: uuid,
-      fileKey: `images/${newFileName}`,
+      fileKey: `${fileKeyPrefix}/${newFileName}`,
       filename: newFileName,
     }
   }
@@ -27,16 +40,20 @@ const generateFileKey = (filename: string, fileType: string) => {
 const awsRouter = router({
   presignFileUpload: publicProcedure
     .input(z.object({
+      fileKeyPrefix: z.string().optional(),
       filename: z.string(),
       fileType: z.string(),
     }))
     .query(async ({ input }) => {
       const originalFilename = input.filename
 
-      const { fileId, fileKey, filename } = generateFileKey(
-        originalFilename,
-        input.fileType,
-      )
+      const {
+        fileExtension, fileId, fileKey, filename,
+      } = generateFileKey({
+        fileKeyPrefix: input.fileKeyPrefix || 'images',
+        fileType: input.fileType,
+        filename: originalFilename,
+      })
 
       if (!fileId) return {}
 
@@ -62,6 +79,7 @@ const awsRouter = router({
       )
 
       return {
+        fileExtension,
         fileId,
         fileKey,
         filename,

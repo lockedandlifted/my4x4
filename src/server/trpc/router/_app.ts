@@ -19,6 +19,7 @@ import manufacturerModelSeriesRouter from './manufacturerModelSeries'
 import manufacturerPartsRouter from './manufacturerParts'
 import manufacturersRouter from './manufacturers'
 import postLikesRouter from './postLikes'
+import postsAttachmentsRouter from './postsAttachments'
 import postsCommentsRouter from './postsComments'
 import postsRouter from './posts'
 import projectLikesRouter from './projectLikes'
@@ -49,12 +50,13 @@ export const appRouters = {
   externalLinkViews: externalLinkViewsRouter,
   externalLinks: externalLinksRouter,
   images: imagesRouter,
-  manufacturerModels: manufacturerModelsRouter,
   manufacturerModelSeries: manufacturerModelSeriesRouter,
+  manufacturerModels: manufacturerModelsRouter,
   manufacturerParts: manufacturerPartsRouter,
   manufacturers: manufacturersRouter,
   postLikes: postLikesRouter,
   posts: postsRouter,
+  postsAttachments: postsAttachmentsRouter,
   postsComments: postsCommentsRouter,
   projectLikes: projectLikesRouter,
   projectPageViews: projectPageViewsRouter,
