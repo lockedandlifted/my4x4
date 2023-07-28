@@ -7,12 +7,40 @@ const countries: Prisma.CountryCreateArgs['data'][] = [
     title: 'Australia',
   },
   {
+    key: 'CA',
+    title: 'Canada',
+  },
+  {
     key: 'CN',
     title: 'China',
   },
   {
+    key: 'DE',
+    title: 'Germany',
+  },
+  {
+    key: 'ID',
+    title: 'Indonesia',
+  },
+  {
+    key: 'NL',
+    title: 'Netherlands',
+  },
+  {
     key: 'NZ',
     title: 'New Zealand',
+  },
+  {
+    key: 'CH',
+    title: 'Switzerland',
+  },
+  {
+    key: 'GB',
+    title: 'United Kingdom',
+  },
+  {
+    key: 'US',
+    title: 'United States',
   },
   {
     key: 'ZA',
