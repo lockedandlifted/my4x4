@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import {
+  Button,
   Flex,
   TableContainer,
   Table,
@@ -9,6 +11,7 @@ import {
   Td,
 } from '@chakra-ui/react'
 import { FiUploadCloud } from 'react-icons/fi'
+import { DashboardModal } from '@uppy/react'
 
 import { trpc } from '@utils/trpc'
 
@@ -26,6 +29,8 @@ type AttachmentsProps = {
 const Attachments = (props: AttachmentsProps) => {
   const { editMode = false, post } = props
 
+  const [uploadModalOpen, setUploadModalOpen] = useState(false)
+
   const { postsAttachments: { getPostsAttachments: { invalidate } } } = trpc.useContext()
 
   const postsAttachmentsQuery = trpc.postsAttachments.getPostsAttachments.useQuery(
@@ -42,10 +47,17 @@ const Attachments = (props: AttachmentsProps) => {
     postId: post?.id,
   })
 
-  console.log(postsAttachments)
-
   return (
     <Flex direction="column">
+      {uppy && (
+        <DashboardModal
+          doneButtonHandler={() => setUploadModalOpen(false)}
+          onRequestClose={() => setUploadModalOpen(false)}
+          open={uploadModalOpen}
+          uppy={uppy}
+        />
+      )}
+
       <TableContainer marginBottom="2">
         <Table size="sm" variant="simple">
           <Thead>
@@ -71,23 +83,35 @@ const Attachments = (props: AttachmentsProps) => {
       </TableContainer>
 
       {editMode && !!uppy && (
-        <FileUploadButton
-          buttonProps={{
-            borderRadius: 'md',
-            colorScheme: 'gray',
-            leftIcon: <FiUploadCloud size={18} />,
-            size: 'md',
-            zIndex: '1',
-            // height: '30px',
-            variant: 'outline',
-            width: '100%',
-          }}
-          buttonText="Upload Files"
-          inputProps={{
-            accept: '.jpg,.jpeg,.pdf,.png',
-          }}
-          uppy={uppy}
-        />
+        <Button
+          borderRadius="md"
+          colorScheme="gray"
+          leftIcon={<FiUploadCloud size={18} />}
+          onClick={() => setUploadModalOpen(true)}
+          size="md"
+          zIndex="1"
+          variant="outline"
+          width="100%"
+        >
+          Upload Files
+        </Button>
+
+      // <FileUploadButton
+      //   buttonProps={{
+      //     borderRadius: 'md',
+      //     colorScheme: 'gray',
+      //     leftIcon: <FiUploadCloud size={18} />,
+      //     size: 'md',
+      //     zIndex: '1',
+      //     variant: 'outline',
+      //     width: '100%',
+      //   }}
+      //   buttonText="Upload Files"
+      //   inputProps={{
+      //     accept: '.jpg,.jpeg,.pdf,.png',
+      //   }}
+      //   uppy={uppy}
+      // />
       )}
     </Flex>
   )
