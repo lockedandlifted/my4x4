@@ -54,14 +54,12 @@
   },
   "workbench.startupEditor": "newUntitledFile",
   "javascript.updateImportsOnFileMove.enabled": "never",
-  "window.zoomLevel": 3,
   "javascript.suggest.autoImports": false,
   "typescript.suggest.autoImports": false,
   "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
   },
   "eslint.run": "onSave",
-  "eslint.alwaysShowStatus": true,
   "editor.wordWrap": "on",
   "diffEditor.ignoreTrimWhitespace": false,
 "editor.acceptSuggestionOnCommitCharacter": false,
