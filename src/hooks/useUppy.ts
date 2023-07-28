@@ -9,6 +9,7 @@ interface InitializeOptions {
     uploadSuccess?: (response) => void,
   },
   fileKey?: string,
+  fileKeyPrefix?: string,
   maxNumberOfFiles?: number,
   uppyOptions?: {
     id?: string,
@@ -18,8 +19,13 @@ interface InitializeOptions {
 
 const initializeUppy = (options: InitializeOptions, trpcClient): Uppy => {
   const {
-    callbacks, fileKey, maxNumberOfFiles, uppyOptions,
+    callbacks,
+    fileKey,
+    fileKeyPrefix,
+    maxNumberOfFiles,
+    uppyOptions,
   } = options || {}
+
   const { uploadSuccess } = callbacks || {}
   const { allowedFileTypes, id } = uppyOptions || {}
 
@@ -39,8 +45,9 @@ const initializeUppy = (options: InitializeOptions, trpcClient): Uppy => {
         const { meta, name, type } = file
 
         const presignData = await trpcClient.aws.presignFileUpload.fetch({
-          filename: name,
+          fileKeyPrefix,
           fileType: type,
+          filename: name,
           key: fileKey,
         })
 

@@ -77,6 +77,7 @@ model Address {
 
 model Attachment {
   id               String  @id @default(uuid())
+  fileExtension    String? @map("file_extension")
   fileKey          String  @map("file_key")
   filename         String
   originalFilename String  @map("original_filename")
@@ -84,11 +85,14 @@ model Attachment {
   userId           String? @map("user_id")
   title            String?
   description      String? @db.Text()
+  width            Int?
+  height           Int?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
   logBookEntriesAttachments LogBookEntriesAttachment[]
+  postsAttachments          PostsAttachment[]
 
   @@map("attachments")
 }
@@ -526,6 +530,7 @@ model Post {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   postLikes               PostLike[]
+  postsAttachments        PostsAttachment[]
   postsCategories         PostsCategory[]
   postsComments           PostsComment[]
   postsImages             PostsImage[]
@@ -535,6 +540,24 @@ model Post {
   postsProjects           PostsProject[]
 
   @@map("posts")
+}
+
+model PostsAttachment {
+  id           String     @id @default(uuid())
+  post         Post       @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId       String     @map("post_id")
+  attachment   Attachment @relation(fields: [attachmentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  attachmentId String     @map("attachment_id")
+  sort         Int?
+
+  user   User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId String? @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([postId, attachmentId])
+  @@map("posts_attachments")
 }
 
 model PostsCategory {
@@ -908,6 +931,7 @@ model User {
   images             Image[]
   postLikes          PostLike[]
   posts              Post[]
+  postsAttachments   PostsAttachment[]
   projectLikes       ProjectLike[]
   projectsImages     ProjectsImage[]
   projectsParts      ProjectsPart[]
