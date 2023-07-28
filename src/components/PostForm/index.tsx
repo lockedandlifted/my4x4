@@ -9,6 +9,8 @@ import Editor from '@components/Post/Editor'
 
 import type { Prisma } from '@prisma/client'
 
+import Attachments from './Attachments'
+
 type PostWithIncludes = Prisma.PostGetPayload<{
   include: {},
 }>
@@ -70,18 +72,30 @@ const PostForm = (props: PostFormProps) => {
       </Form.BasicField>
 
       {!!post?.id && shouldUsePostEditor && editor && (
-        <Form.BasicField
-          label="* Body"
-          marginTop="4"
-          name="body"
-        >
-          <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
-            <Editor editor={editor} initialValue={post?.bodyData}>
-              <Editor.ToolBar />
-              <Editor.Input />
-            </Editor>
-          </Flex>
-        </Form.BasicField>
+        <>
+          <Form.BasicField
+            label="* Body"
+            marginTop="4"
+            name="body"
+          >
+            <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
+              <Editor editor={editor} initialValue={post?.bodyData}>
+                <Editor.ToolBar />
+                <Editor.Input />
+              </Editor>
+            </Flex>
+          </Form.BasicField>
+
+          <Form.BasicField
+            label="Attachments"
+            marginTop="4"
+            name="attachments"
+          >
+            <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
+              <Attachments editMode post={post} />
+            </Flex>
+          </Form.BasicField>
+        </>
       )}
 
       {!!post?.id && !shouldUsePostEditor && (

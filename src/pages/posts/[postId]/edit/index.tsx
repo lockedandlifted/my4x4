@@ -16,8 +16,6 @@ const EditPostPage = () => {
   )
   const { data: post } = postQuery
 
-  console.log(post)
-
   return (
     <MobileLayout>
       <Flex direction="column" marginTop={8} width="100%">

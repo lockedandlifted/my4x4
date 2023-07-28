@@ -12,12 +12,13 @@ type FileUploadButtonProps = {
   callbacks?: {
     handleError,
   },
+  inputProps?: object,
   uppy: Uppy,
 }
 
 const FileUploadButton = (props: FileUploadButtonProps) => {
   const {
-    boxProps, buttonProps, buttonText, callbacks, uppy,
+    boxProps, buttonProps, buttonText, callbacks, inputProps, uppy,
   } = props
 
   const inputRef = useRef()
@@ -77,6 +78,7 @@ const FileUploadButton = (props: FileUploadButtonProps) => {
         multiple
         ref={inputRef}
         type="file"
+        {...inputProps}
       />
 
       <Button
