@@ -17,8 +17,6 @@ import { trpc } from '@utils/trpc'
 
 import usePostAttachmentUpload from '@hooks/usePostAttachmentUpload'
 
-import FileUploadButton from '@components/FileUploadButton'
-
 import type { Post } from '@prisma/client'
 
 type AttachmentsProps = {
@@ -95,23 +93,6 @@ const Attachments = (props: AttachmentsProps) => {
         >
           Upload Files
         </Button>
-
-      // <FileUploadButton
-      //   buttonProps={{
-      //     borderRadius: 'md',
-      //     colorScheme: 'gray',
-      //     leftIcon: <FiUploadCloud size={18} />,
-      //     size: 'md',
-      //     zIndex: '1',
-      //     variant: 'outline',
-      //     width: '100%',
-      //   }}
-      //   buttonText="Upload Files"
-      //   inputProps={{
-      //     accept: '.jpg,.jpeg,.pdf,.png',
-      //   }}
-      //   uppy={uppy}
-      // />
       )}
     </Flex>
   )

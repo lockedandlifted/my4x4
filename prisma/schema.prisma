@@ -931,6 +931,7 @@ model User {
   images             Image[]
   postLikes          PostLike[]
   posts              Post[]
+  postsAttachments   PostsAttachment[]
   projectLikes       ProjectLike[]
   projectsImages     ProjectsImage[]
   projectsParts      ProjectsPart[]
@@ -938,7 +939,6 @@ model User {
   sessions           Session[]
   usersExternalLinks UsersExternalLink[]
   usersImages        UsersImage[]
-  PostsAttachment    PostsAttachment[]
 
   @@map("users")
 }

@@ -61,14 +61,16 @@ const PostForm = (props: PostFormProps) => {
         marginTop="4"
         name="tags"
       >
-        {categories.map(category => (
-          <Tag
-            category={category}
-            key={category.id}
-            onClick={() => selectCategoryKey(category.key)}
-            selected={categoryKeys.includes(category.key)}
-          />
-        ))}
+        <Flex flexWrap="wrap">
+          {categories.map(category => (
+            <Tag
+              category={category}
+              key={category.id}
+              onClick={() => selectCategoryKey(category.key)}
+              selected={categoryKeys.includes(category.key)}
+            />
+          ))}
+        </Flex>
       </Form.BasicField>
 
       {!!post?.id && shouldUsePostEditor && editor && (

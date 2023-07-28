@@ -22,6 +22,7 @@ const Tag = (props: TagProps) => {
       borderColor={selected ? 'ButtonText' : 'gray.200'}
       color={selected ? 'white' : 'ButtonText'}
       cursor="pointer"
+      flexShrink={0}
       href={href}
       onClick={onClick}
       marginRight="1"
