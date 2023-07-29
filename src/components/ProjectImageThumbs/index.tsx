@@ -1,13 +1,13 @@
-import { Stack } from '@chakra-ui/react'
+import { useState } from 'react'
+import { Button, Stack } from '@chakra-ui/react'
 import { FiUploadCloud } from 'react-icons/fi'
+import { DashboardModal } from '@uppy/react'
 
 import type { Project } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
 
 import useProjectImageUpload from '@hooks/useProjectImageUpload'
-
-import FileUploadButton from '@components/FileUploadButton'
 
 import ImageThumb from '@components/Image/ImageThumb'
 
@@ -18,6 +18,8 @@ type ImageThumbsProps = {
 
 const ImageThumbs = (props: ImageThumbsProps) => {
   const { editMode = false, project } = props
+
+  const [uploadModalOpen, setUploadModalOpen] = useState(false)
 
   const { projectsImages: { getProjectsImages: { invalidate } } } = trpc.useContext()
 
@@ -43,21 +45,30 @@ const ImageThumbs = (props: ImageThumbsProps) => {
 
   return (
     <Stack direction="row" spacing="2" paddingBottom="2" marginTop="2" overflowX="auto" width="100%">
-      {editMode && !!uppy && (
-        <FileUploadButton
-          buttonProps={{
-            borderRadius: '2xl',
-            colorScheme: 'gray',
-            marginTop: 'auto',
-            size: 'lg',
-            zIndex: '1',
-            height: 120,
-            variant: 'outline',
-            width: 120,
-          }}
-          buttonText={<FiUploadCloud size={28} />}
+      {uppy && (
+        <DashboardModal
+          doneButtonHandler={() => setUploadModalOpen(false)}
+          onRequestClose={() => setUploadModalOpen(false)}
+          open={uploadModalOpen}
           uppy={uppy}
         />
+      )}
+
+      {editMode && !!uppy && (
+        <Button
+          borderRadius="2xl"
+          colorScheme="gray"
+          flexShrink={0}
+          height={120}
+          onClick={() => setUploadModalOpen(true)}
+          marginTop="auto"
+          size="lg"
+          zIndex="1"
+          variant="outline"
+          width={120}
+        >
+          <FiUploadCloud size={28} />
+        </Button>
       )}
 
       {sortedImages.map((projectsImage) => {
