@@ -14,18 +14,21 @@ import { FiUploadCloud } from 'react-icons/fi'
 import { DashboardModal } from '@uppy/react'
 
 import { trpc } from '@utils/trpc'
+import CustomEditor from '@utils/customEditor'
+import { imageFileExtensions } from '@utils/asset'
 
 import usePostAttachmentUpload from '@hooks/usePostAttachmentUpload'
 
 import type { Post } from '@prisma/client'
 
 type AttachmentsProps = {
+  editor: object,
   editMode?: boolean,
   post: Post,
 }
 
 const Attachments = (props: AttachmentsProps) => {
-  const { editMode = false, post } = props
+  const { editor, editMode = false, post } = props
 
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
 
@@ -66,13 +69,31 @@ const Attachments = (props: AttachmentsProps) => {
           </Thead>
 
           <Tbody>
-            {postsAttachments.map((postAttachment) => {
-              const { id, attachment } = postAttachment
+            {postsAttachments.map((postsAttachment) => {
+              const { id, attachment } = postsAttachment
+              const isImage = imageFileExtensions.includes(attachment?.fileExtension || '')
 
               return (
                 <Tr key={id}>
                   <Td>{attachment?.originalFilename}</Td>
-                  <Td>Download | Insert</Td>
+                  <Td>
+                    {editMode && isImage && (
+                      <>
+                        <Button
+                          onClick={() => CustomEditor.handleAttachmentInsert(editor, attachment)}
+                          size="sm"
+                          variant="link"
+                        >
+                          Insert
+                        </Button>
+                        <span> | </span>
+                      </>
+                    )}
+
+                    <Button size="sm" variant="link">
+                      Download
+                    </Button>
+                  </Td>
                 </Tr>
               )
             })}

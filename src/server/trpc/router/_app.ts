@@ -1,6 +1,7 @@
 import { router } from '../trpc'
 
 import activityItemsRouter from './activityItems'
+import attachmentsRouter from './attachments'
 import attributesRouter from './attributes'
 import authRouter from './auth'
 import awsRouter from './aws'
@@ -14,8 +15,8 @@ import countriesRouter from './countries'
 import externalLinkViewsRouter from './externalLinkViews'
 import externalLinksRouter from './externalLinks'
 import imagesRouter from './images'
-import manufacturerModelsRouter from './manufacturerModels'
 import manufacturerModelSeriesRouter from './manufacturerModelSeries'
+import manufacturerModelsRouter from './manufacturerModels'
 import manufacturerPartsRouter from './manufacturerParts'
 import manufacturersRouter from './manufacturers'
 import postLikesRouter from './postLikes'
@@ -37,6 +38,7 @@ import usersRouter from './users'
 
 export const appRouters = {
   activityItems: activityItemsRouter,
+  attachments: attachmentsRouter,
   attributes: attributesRouter,
   auth: authRouter,
   aws: awsRouter,

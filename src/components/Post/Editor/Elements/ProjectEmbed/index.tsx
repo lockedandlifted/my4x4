@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from '@chakra-ui/react'
+import { Flex, Heading } from '@chakra-ui/react'
 
 import { trpc } from '@utils/trpc'
 
@@ -6,7 +6,9 @@ import ImageThumb from '@components/Image/ImageThumb'
 import Tags from '@components/Project/Tags'
 
 type ProjectEmbedProps = {
+  attributes: object,
   children: React.ReactNode,
+  element: object,
 }
 
 const ProjectEmbed = (props: ProjectEmbedProps) => {
@@ -22,7 +24,6 @@ const ProjectEmbed = (props: ProjectEmbedProps) => {
   if (!element.projectId) return null
 
   const image = project?.projectsImages?.[0]?.image
-  const user = project?.projectsUsers?.[0]?.user
 
   return (
     <div {...attributes}>

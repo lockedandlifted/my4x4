@@ -4,6 +4,7 @@ import { Editable } from 'slate-react'
 import { trpc } from '@utils/trpc'
 import CustomEditor from '@utils/customEditor'
 
+import AttachmentEmbed from '@components/Post/Editor/Elements/AttachmentEmbed'
 import DefaultElement from '@components/Post/Editor/Elements/DefaultElement'
 import Heading from '@components/Post/Editor/Elements/Heading'
 import ImageEmbed from '@components/Post/Editor/Elements/ImageEmbed'
@@ -26,6 +27,8 @@ const EditorInput = (props: EditorInputProps) => {
 
   const renderElement = useCallback((props) => {
     switch (props.element.type) {
+      case 'my4x4_attachment':
+        return <AttachmentEmbed {...props} />
       case 'heading-one':
         return <Heading as="h1" size="xl" {...props} />
       case 'heading-two':

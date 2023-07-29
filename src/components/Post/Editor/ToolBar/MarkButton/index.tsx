@@ -13,16 +13,20 @@ const MarkButton = (props: MarkButtonProps) => {
 
   const editor = useSlate()
 
+  const isActive = CustomEditor.isMarkActive(editor, format)
+
   return (
     <IconButton
       aria-label={format}
+      backgroundColor={isActive ? 'ButtonText' : undefined}
+      color={isActive ? 'white' : undefined}
       icon={children}
       onMouseDown={(event) => {
         event.preventDefault()
         CustomEditor.toggleMark(editor, format)
       }}
       marginRight="1"
-      variant="outline"
+      variant={isActive ? 'solid' : 'outline'}
     />
   )
 }

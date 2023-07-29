@@ -99,6 +99,20 @@ const CustomEditor = {
     ])
   },
 
+  handleAttachmentInsert: async (editor, attachment) => {
+    Transforms.insertNodes(editor, [
+      {
+        children: [{ text: '' }],
+        attachmentId: attachment.id,
+        type: 'my4x4_attachment',
+      },
+      {
+        children: [{ text: '' }],
+        type: 'paragraph',
+      },
+    ])
+  },
+
   handlePaste: async (editor, event, client) => {
     CustomEditor.handleEmbed(editor, event, client)
 
@@ -133,7 +147,6 @@ const CustomEditor = {
       TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type',
     )
     const isList = LIST_TYPES.includes(format)
-    console.log({ format, isList, isActive })
 
     Transforms.unwrapNodes(editor, {
       match: n => !Editor.isEditor(n)

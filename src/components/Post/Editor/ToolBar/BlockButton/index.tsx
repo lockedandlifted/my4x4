@@ -13,9 +13,13 @@ const BlockButton = (props: BlockButtonProps) => {
 
   const editor = useSlate()
 
+  const isActive = CustomEditor.isBlockActive(editor, format)
+
   return (
     <IconButton
       aria-label={format}
+      backgroundColor={isActive ? 'ButtonText' : undefined}
+      color={isActive ? 'white' : undefined}
       icon={children}
       onMouseDown={(event) => {
         event.preventDefault()
@@ -23,6 +27,7 @@ const BlockButton = (props: BlockButtonProps) => {
       }}
       marginRight="1"
       variant="outline"
+      _hover={{ backgroundColor: isActive ? 'ButtonText' : undefined }}
     />
   )
 }

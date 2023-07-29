@@ -35,7 +35,10 @@ const PostForm = (props: PostFormProps) => {
     formPayload,
     mutations: {
       createPost: {
-        isLoading,
+        isLoading: isCreating,
+      },
+      updatePost: {
+        isLoading: isUpdating,
       },
     },
     shouldUsePostEditor,
@@ -94,7 +97,7 @@ const PostForm = (props: PostFormProps) => {
             name="attachments"
           >
             <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
-              <Attachments editMode post={post} />
+              <Attachments editor={editor} editMode post={post} />
             </Flex>
           </Form.BasicField>
         </>
@@ -113,8 +116,8 @@ const PostForm = (props: PostFormProps) => {
 
       <Button
         colorScheme="green"
-        isDisabled={isLoading}
-        isLoading={isLoading}
+        isDisabled={isCreating || isUpdating}
+        isLoading={isCreating || isUpdating}
         marginTop="4"
         size="lg"
         type="submit"
