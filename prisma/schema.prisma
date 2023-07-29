@@ -525,6 +525,7 @@ model Post {
   user       User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userId     String   @map("user_id")
   published  Boolean  @default(true) @map("published")
+  isRichText Boolean  @default(false) @map("is_rich_text")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")

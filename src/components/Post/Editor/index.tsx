@@ -8,12 +8,15 @@ import EditorInput from '@components/Post/Editor/EditorInput'
 import ToolBar from '@components/Post/Editor/ToolBar'
 
 type CustomElement = {
-  type: 'code' | 'link' | 'paragraph' | 'youtube',
+  type: 'code' | 'link' | 'my4x4_attachment' | 'paragraph' | 'youtube',
   children: CustomText[],
   href?: string,
 }
 
-type CustomText = { text: string }
+type CustomText = {
+  attachmentId?: string,
+  text: string,
+}
 
 declare module 'slate' {
   interface CustomTypes {

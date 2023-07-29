@@ -334,6 +334,17 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
     },
   ]
 
+  // Subaru
+  const subaru = manufacturers.find(manufacturer => manufacturer.key === 'subaru')
+
+  const subaruModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
+    {
+      key: 'subaru_brumby',
+      title: 'Brumby',
+      manufacturerId: subaru.id,
+    },
+  ]
+
   // Merge Models
   const mergedModels = [
     ...fordModels,
@@ -351,6 +362,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
     ...daihatsuModels,
     ...holdenModels,
     ...gmcModels,
+    ...subaruModels,
   ]
 
   const queries = mergedModels.map(async (data: Prisma.ManufacturerModelCreateArgs['data']) => {

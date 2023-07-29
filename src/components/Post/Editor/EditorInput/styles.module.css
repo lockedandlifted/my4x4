@@ -1,3 +1,7 @@
+.root {
+  min-height: 180px;
+}
+
 .root:focus-visible {
   border: none;
   outline: none;
