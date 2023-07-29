@@ -26,6 +26,7 @@ const postsRouter = router({
       body: z.string(),
       bodyData: z.array(z.any()).optional(),
       categoryKeys: z.array(z.string()).optional(),
+      isRichText: z.boolean().optional(),
       title: z.string(),
       postTypeKey: z.string(),
       published: z.boolean().optional(),
@@ -44,6 +45,7 @@ const postsRouter = router({
       const data: Prisma.PostCreateInput = {
         body: input.body,
         bodyData: input.bodyData,
+        isRichText: input.isRichText || false,
         postType: {
           connect: {
             key: input.postTypeKey,
@@ -292,6 +294,15 @@ const postsRouter = router({
             postLikes: true,
           },
         },
+        postsCategories: {
+          include: {
+            category: {
+              select: {
+                key: true,
+              },
+            },
+          },
+        },
         postsComments: {
           include: {
             comment: {
@@ -375,26 +386,49 @@ const postsRouter = router({
       title: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
-      const post = ctx.prisma.post.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          body: input.body,
-          bodyData: input.bodyData,
-          title: input.title,
-        },
-        include: {
-          postType: true,
-          postsProjects: {
-            include: {
-              project: true,
+      const data: Prisma.PostUpdateInput = {
+        body: input.body,
+        bodyData: input.bodyData,
+        title: input.title,
+      }
+
+      if (input.categoryKeys) {
+        data.postsCategories = {
+          create: input.categoryKeys.map(categoryKey => ({
+            category: {
+              connect: {
+                key: categoryKey,
+              },
+            },
+          })),
+        }
+      }
+
+      const result = ctx.prisma.$transaction([
+        // Delete existing post categories
+        ctx.prisma.postsCategory.deleteMany({
+          where: {
+            postId: input.categoryKeys ? input.id : 'undefined',
+          },
+        }),
+        // Update post
+        ctx.prisma.post.update({
+          where: {
+            id: input.id,
+          },
+          data,
+          include: {
+            postType: true,
+            postsProjects: {
+              include: {
+                project: true,
+              },
             },
           },
-        },
-      })
+        }),
+      ])
 
-      return post
+      return result
     }),
 
   publishPostById: protectedProcedure

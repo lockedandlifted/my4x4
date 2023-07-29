@@ -1,4 +1,5 @@
 const voidTypes = [
+  'my4x4_attachment',
   'my4x4_project',
   'youtube',
 ]

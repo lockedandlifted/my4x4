@@ -20,7 +20,94 @@ const defaultEditorValue = [
 ]
 
 type PostWithIncludes = Prisma.PostGetPayload<{
-  include: {},
+  include: {
+    _count: {
+      select: {
+        postsComments: true,
+        postLikes: true,
+      },
+    },
+    postsCategories: {
+      include: {
+        category: {
+          select: {
+            key: true,
+          },
+        },
+      },
+    },
+    postsComments: {
+      include: {
+        comment: {
+          include: {
+            _count: {
+              select: {
+                commentLikes: true,
+              },
+            },
+            subComments: {
+              include: {
+                _count: {
+                  select: {
+                    commentLikes: true,
+                  },
+                },
+                user: {
+                  include: {
+                    usersImages: {
+                      include: {
+                        image: true,
+                      },
+                      orderBy: {
+                        sort: 'asc',
+                      },
+                      take: 1,
+                    },
+                  },
+                },
+              },
+            },
+            user: {
+              include: {
+                usersImages: {
+                  include: {
+                    image: true,
+                  },
+                  orderBy: {
+                    sort: 'asc',
+                  },
+                  take: 1,
+                },
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    },
+    postLikes: true,
+    postsProjects: {
+      include: {
+        project: true,
+      },
+    },
+    postType: true,
+    user: {
+      include: {
+        usersImages: {
+          include: {
+            image: true,
+          },
+          orderBy: {
+            sort: 'asc',
+          },
+          take: 1,
+        },
+      },
+    },
+  },
 }>
 
 type CreatePostParams = {
@@ -80,9 +167,9 @@ const setupPostInitialState = (currentState: object, post: PostWithIncludes) => 
     ...currentState,
   }
 
-  // if (post.businessesServices) {
-  //   initialState.serviceKeys = post.businessesServices.map(businessesService => businessesService.service?.key)
-  // }
+  if (post.postsCategories) {
+    initialState.categoryKeys = post.postsCategories.map(postsCategory => postsCategory.category?.key)
+  }
 
   return initialState
 }
@@ -91,6 +178,7 @@ const defaultState = {
   body: '',
   bodyData: undefined,
   categoryKeys: ['general'],
+  isRichText: true,
   postTypeKey: 'forum',
   title: '',
 }
@@ -102,7 +190,7 @@ type UsePostFormOptions = {
 function usePostForm(options?: UsePostFormOptions) {
   const { post } = options || {}
 
-  const shouldUsePostEditor = post?.postType?.key === 'forum'
+  const shouldUsePostEditor = post?.isRichText
   const editor = useMemo(() => {
     if (shouldUsePostEditor) {
       return createWrappedEditor()
