@@ -454,6 +454,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: vehicleManufacturerType?.id,
     },
     {
+      key: 'subaru',
+      title: 'Subaru',
+      manufacturerTypeId: vehicleManufacturerType?.id,
+    },
+    {
       key: 'ram',
       title: 'Ram',
       manufacturerTypeId: vehicleManufacturerType?.id,
