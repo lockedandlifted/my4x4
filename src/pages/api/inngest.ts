@@ -8,6 +8,7 @@ import cronMonthlyUnpublishedProjectsEmailsJob from 'jobs/cronMonthlyUnpublished
 
 // Events
 import sendPostCommentNotificationJob from 'jobs/sendPostCommentNotificationJob'
+import sendProjectImagesCommentNotificationJob from 'jobs/sendProjectImagesCommentNotificationJob'
 import sendProjectQuestionNotificationJob from 'jobs/sendProjectQuestionNotificationJob'
 import sendWeeklyDigestEmailJob from 'jobs/sendWeeklyDigestEmailJob'
 import sendUnpublishedProjectsEmailJob from 'jobs/sendUnpublishedProjectsEmailJob'
@@ -17,6 +18,7 @@ export default serve(inngestClient, [
   cronWeeklyDigestEmailsJob,
   cronMonthlyUnpublishedProjectsEmailsJob,
   sendPostCommentNotificationJob,
+  sendProjectImagesCommentNotificationJob,
   sendProjectQuestionNotificationJob,
   sendUnpublishedProjectsEmailJob,
   sendWeeklyDigestEmailJob,

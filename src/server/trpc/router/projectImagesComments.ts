@@ -2,19 +2,21 @@ import { z } from 'zod'
 
 import type { Prisma } from '@prisma/client'
 
+import inngestClient from '@utils/inngestClient'
+
 import { router, publicProcedure, protectedProcedure } from '../trpc'
 
-const imagesCommentsRouter = router({
-  getImagesComments: publicProcedure
+const projectImagesCommentsRouter = router({
+  getProjectImagesComments: publicProcedure
     .input(z.object({
-      imageId: z.string(),
+      projectsImageId: z.string(),
     }))
     .query(({ ctx, input }) => {
-      const filters: Prisma.ImagesCommentWhereInput = {
-        imageId: input.imageId,
+      const filters: Prisma.ProjectImagesCommentWhereInput = {
+        projectsImageId: input.projectsImageId,
       }
 
-      return ctx.prisma.imagesComment.findMany({
+      return ctx.prisma.projectImagesComment.findMany({
         where: filters,
         include: {
           comment: {
@@ -63,14 +65,14 @@ const imagesCommentsRouter = router({
       })
     }),
 
-  createImagesComment: protectedProcedure
+  createProjectImagesComment: protectedProcedure
     .input(z.object({
       commentBody: z.string(),
-      imageId: z.string(),
+      projectsImageId: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
-      // Create ImagesComment
-      const imagesComment = await ctx.prisma.imagesComment.create({
+      // Create ProjectImagesComment
+      const projectImagesComment = await ctx.prisma.projectImagesComment.create({
         data: {
           comment: {
             create: {
@@ -82,19 +84,38 @@ const imagesCommentsRouter = router({
               },
             },
           },
-          image: {
+          projectsImage: {
             connect: {
-              id: input.imageId,
+              id: input.projectsImageId,
             },
           },
         },
         include: {
-          image: true,
+          comment: true,
+          projectsImage: true,
         },
       })
 
-      return imagesComment
+      // Queue Notification Email
+      // Dont send if the project user is the same as the comment user
+      const commentOwnerId = projectImagesComment?.comment?.userId
+
+      if (
+        commentOwnerId !== ctx.session?.user?.id
+        && projectImagesComment?.commentId
+        && projectImagesComment?.projectsImageId
+      ) {
+        await inngestClient.send({
+          name: 'mailers/new-project-images-comment-email',
+          data: {
+            commentId: projectImagesComment?.commentId,
+            projectsImageId: projectImagesComment?.projectsImageId,
+          },
+        })
+      }
+
+      return projectImagesComment
     }),
 })
 
-export default imagesCommentsRouter
+export default projectImagesCommentsRouter

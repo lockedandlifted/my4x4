@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router'
 
+import { Flex } from '@chakra-ui/react'
+
 import { trpc } from '@utils/trpc'
 
 import MobileLayout from '@layouts/MobileLayout'
@@ -12,7 +14,7 @@ import Preview from '@components/Image/Preview'
 import TaggedParts from '@components/Image/TaggedParts'
 import ProjectImageThumbs from '@components/ProjectImageThumbs'
 
-import useImageComments from '@hooks/useImageComments'
+import useProjectImagesComments from '@hooks/useProjectImagesComments'
 
 const ProjectImagePage = () => {
   const { query: { projectSlug, projectsImageId } } = useRouter()
@@ -27,20 +29,18 @@ const ProjectImagePage = () => {
   }, { enabled: !!projectsImageId })
   const { data: projectsImage } = projectsImageQuery
 
-  const image = projectsImage?.image || {}
-
-  const imagesCommentsQuery = trpc.imagesComments.getImagesComments.useQuery({
-    imageId: image.id,
+  const projectImagesCommentsQuery = trpc.projectImagesComments.getProjectImagesComments.useQuery({
+    projectsImageId,
   })
 
-  const { data: imageComments } = imagesCommentsQuery
+  const { data: projectImagesComments } = projectImagesCommentsQuery
 
-  const imageCommentsPayload = useImageComments({ image })
+  const imageCommentsPayload = useProjectImagesComments({ projectsImage })
   const {
     callbacks: {
-      createImagesComment,
+      createProjectImagesComment,
       setInputValue,
-      invalidateImageComments,
+      invalidateProjectImageComments,
     },
     inputValue,
     isLoading,
@@ -62,7 +62,7 @@ const ProjectImagePage = () => {
         callbacks={{
           onUpdateSuccess: () => invalidate({ id: projectsImageId }),
         }}
-        image={image}
+        image={projectsImage?.image}
       />
 
       <TaggedParts
@@ -70,28 +70,31 @@ const ProjectImagePage = () => {
         projectsImage={projectsImage}
       />
 
-      <AddCommentBox
-        callbacks={{
-          addComment: (commentBody: string) => createImagesComment({ body: commentBody }),
-          setInputValue,
-        }}
-        inputValue={inputValue}
-        isLoading={isLoading}
-      />
+      <Flex marginTop={8}>
+        <AddCommentBox
+          callbacks={{
+            addComment: (commentBody: string) => createProjectImagesComment({ body: commentBody }),
+            setInputValue,
+          }}
+          inputValue={inputValue}
+          isLoading={isLoading}
+        />
+      </Flex>
 
-      {imageComments?.map((imagesComment) => {
-        const comment = imagesComment?.comment
+      {projectImagesComments?.map((projectImagesComment) => {
+        const comment = projectImagesComment?.comment
         const commentUser = comment?.user
 
         return (
-          <Comment
-            callbacks={{
-              invalidate: invalidateImageComments,
-            }}
-            comment={comment}
-            key={comment.id}
-            user={commentUser}
-          />
+          <Flex key={comment.id} marginTop={4}>
+            <Comment
+              callbacks={{
+                invalidate: invalidateProjectImageComments,
+              }}
+              comment={comment}
+              user={commentUser}
+            />
+          </Flex>
         )
       })}
 

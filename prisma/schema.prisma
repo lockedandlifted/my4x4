@@ -269,10 +269,10 @@ model Comment {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  commentLikes     CommentLike[]
-  imagesComments   ImagesComment[]
-  postsComments    PostsComment[]
-  projectsComments ProjectsComment[]
+  commentLikes         CommentLike[]
+  postsComments        PostsComment[]
+  projectsComments     ProjectsComment[]
+  projectImagesComment ProjectImagesComment[]
 
   @@map("comments")
 }
@@ -366,27 +366,11 @@ model Image {
 
   businessesImages BusinessesImage[]
   imageTags        ImageTag[]
-  imagesComments   ImagesComment[]
   postsImages      PostsImage[]
   projectsImages   ProjectsImage[]
   usersImages      UsersImage[]
 
   @@map("images")
-}
-
-model ImagesComment {
-  id        String  @id @default(uuid())
-  image     Image   @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  imageId   String  @map("image_id")
-  comment   Comment @relation(fields: [commentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  commentId String  @map("comment_id")
-  sort      Int?
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
-
-  @@unique([imageId, commentId])
-  @@map("images_comments")
 }
 
 model ImageTag {
@@ -765,11 +749,27 @@ model ProjectsImage {
   user   User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userId String? @map("user_id")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+  createdAt            DateTime               @default(now()) @map("created_at")
+  updatedAt            DateTime               @default(now()) @map("updated_at")
+  projectImagesComment ProjectImagesComment[]
 
   @@unique([projectId, imageId])
   @@map("projects_images")
+}
+
+model ProjectImagesComment {
+  id              String        @id @default(uuid())
+  projectsImage   ProjectsImage @relation(fields: [projectsImageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  projectsImageId String        @map("projects_image_id")
+  comment         Comment       @relation(fields: [commentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  commentId       String        @map("comment_id")
+  sort            Int?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([projectsImageId, commentId])
+  @@map("project_images_comments")
 }
 
 model ProjectLike {
