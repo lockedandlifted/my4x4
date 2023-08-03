@@ -26,7 +26,7 @@ const callbacks = (componentName: string | undefined, setState) => {
   const componentCallbacks = {
     AddPostRelatedEntitiesModal: {
       closeModal: () => setState(s => ({ ...s, showAddPostRelatedEntitiesModal: false })),
-      // createProjectsExternalLink: payload => processCallback(payload),
+      updatePost: payload => processCallback(payload),
       showModal: (payload?: object) => showModal('AddPostRelatedEntitiesModal', setState, payload),
     },
   }
@@ -66,9 +66,7 @@ const EditPostPage = () => {
       </Flex>
 
       <AddPostRelatedEntitiesModal
-        callbacks={{
-          closeModal: () => setState(s => ({ ...s, showAddPostRelatedEntitiesModal: false })),
-        }}
+        callbacks={callbacks('AddPostRelatedEntitiesModal', setState)}
         post={post}
         showModal={showAddPostRelatedEntitiesModal}
       />

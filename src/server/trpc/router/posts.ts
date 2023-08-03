@@ -383,6 +383,11 @@ const postsRouter = router({
       bodyData: z.array(z.any()).optional(),
       categoryKeys: z.array(z.string()).optional(),
       id: z.string(),
+      relatedEntities: z.array(z.object({
+        key: z.string(),
+        title: z.string().optional(),
+        value: z.string(),
+      })).optional(),
       title: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {

@@ -13,7 +13,7 @@ import {
 import { FiTrash2 } from 'react-icons/fi'
 
 import type {
-  Prisma, Manufacturer, ManufacturerModel, ManufacturerPart,
+  Prisma, Manufacturer, ManufacturerModel, ManufacturerPart, Project,
 } from '@prisma/client'
 
 import usePostForm from '@hooks/usePostForm'
@@ -117,18 +117,25 @@ type PostWithIncludes = Prisma.PostGetPayload<{
 type AddPostRelatedEntitiesModalProps = {
   callbacks: {
     closeModal: VoidFunction,
+    updatePost: (data: object) => void,
   },
   post: PostWithIncludes,
   showModal: boolean,
 }
 
 const AddPostRelatedEntitiesModal = (props: AddPostRelatedEntitiesModalProps) => {
-  const { callbacks: { closeModal, createEntity }, post, showModal } = props
+  const { callbacks: { closeModal, updatePost }, post, showModal } = props
 
   const formPayload = usePostForm(post)
   const {
     callbacks: {
       toggleRelatedEntity,
+      updatePost: updateFn,
+    },
+    mutations: {
+      updatePost: {
+        isLoading: isUpdating,
+      },
     },
     relatedEntities,
   } = formPayload
@@ -141,12 +148,11 @@ const AddPostRelatedEntitiesModal = (props: AddPostRelatedEntitiesModalProps) =>
     relatedEntityType,
     manufacturerId,
   } = relatedEntitiesPayload
-  // const saveFn = newRecord ? createFn : updateFn
 
-  // const processCallbackPayload = {
-  //   action: saveFn,
-  //   afterAction: closeModal,
-  // }
+  const processCallbackPayload = {
+    action: updateFn,
+    afterAction: closeModal,
+  }
 
   return (
     <Drawer
@@ -161,160 +167,225 @@ const AddPostRelatedEntitiesModal = (props: AddPostRelatedEntitiesModalProps) =>
         <DrawerHeader>Add Post Reference</DrawerHeader>
 
         <DrawerBody>
-          <Form.BasicField
-            label="Type"
-            name="relatedEntityType"
+          <Form
+            callbacks={{
+              submitForm: (data) => {
+                updatePost({
+                  ...processCallbackPayload,
+                  actionPayload: data,
+                })
+              },
+            }}
+            formPayload={formPayload}
+            id="post-related-entities-form"
           >
-            <select
-              onChange={e => setState({
-                relatedEntityType: e.target.value,
-                manufacturerId: undefined,
-                manufacturerModelId: undefined,
-              })}
-              value={relatedEntityType}
-            >
-              <option value="">Please Select...</option>
-              <option value="manufacturerId">Manufacturer</option>
-              <option value="manufacturerModelId">Model</option>
-              <option value="manufacturerPartId">Part</option>
-              <option value="projectId">Project</option>
-            </select>
-          </Form.BasicField>
-
-          {['manufacturerId', 'manufacturerModelId', 'manufacturerPartId'].includes(relatedEntityType) && (
             <Form.BasicField
-              label="Manufacturer"
-              marginTop={4}
-              name="manufacturerId"
+              label="Type"
+              name="relatedEntityType"
             >
-              <AutocompleteField
-                callbacks={{
-                  selectItem: (result: Manufacturer) => {
-                    setState({
-                      manufacturerId: result.id,
-                    })
+              <select
+                onChange={e => setState({
+                  relatedEntityType: e.target.value,
+                  manufacturerId: undefined,
+                  manufacturerModelId: undefined,
+                })}
+                value={relatedEntityType}
+              >
+                <option value="">Please Select...</option>
+                <option value="manufacturerId">Manufacturer</option>
+                <option value="manufacturerModelId">Model</option>
+                <option value="manufacturerPartId">Part</option>
+                <option value="projectId">Project</option>
+              </select>
+            </Form.BasicField>
 
-                    if (relatedEntityType === 'manufacturerId') {
-                      toggleRelatedEntity({
-                        key: 'manufacturerId',
-                        title: result.title,
-                        value: result.id,
+            {['manufacturerId', 'manufacturerModelId', 'manufacturerPartId'].includes(relatedEntityType) && (
+              <Form.BasicField
+                label="Manufacturer"
+                marginTop={4}
+                name="manufacturerId"
+              >
+                <AutocompleteField
+                  callbacks={{
+                    selectItem: (result: Manufacturer) => {
+                      setState({
+                        manufacturerId: result.id,
                       })
-                    }
-                  },
-                }}
-                retainSelection
-                routerKey="manufacturers"
-                queryKey="getManufacturers"
-                queryParams={{
-                  manufacturerTypeKey: relatedEntityType === 'manufacturerModelId' ? 'vehicle' : 'part',
-                  limit: 10,
-                }}
-              />
-            </Form.BasicField>
-          )}
 
-          {['manufacturerModelId'].includes(relatedEntityType) && manufacturerId && (
-            <Form.BasicField
-              label="Model"
-              marginTop={4}
-              name="manufacturerModelId"
-            >
-              <AutocompleteField
-                callbacks={{
-                  selectItem: (result: ManufacturerModel) => {
-                    setState({
-                      manufacturerModelId: result.id,
-                    })
+                      if (relatedEntityType === 'manufacturerId') {
+                        setState({
+                          relatedEntityType: '',
+                        })
 
-                    toggleRelatedEntity({
-                      key: 'manufacturerModelId',
-                      title: result.title,
-                      value: result.id,
-                    })
-                  },
-                }}
-                retainSelection
-                routerKey="manufacturerModels"
-                queryKey="getManufacturerModels"
-                queryParams={{
-                  limit: 10,
-                  manufacturerId,
-                }}
-              />
-            </Form.BasicField>
-          )}
+                        toggleRelatedEntity({
+                          key: 'manufacturerId',
+                          title: result.title,
+                          value: result.id,
+                        })
+                      }
+                    },
+                  }}
+                  retainSelection
+                  routerKey="manufacturers"
+                  queryKey="getManufacturers"
+                  queryParams={{
+                    manufacturerTypeKey: relatedEntityType === 'manufacturerPartId' ? 'part' : 'vehicle',
+                    limit: 10,
+                  }}
+                />
+              </Form.BasicField>
+            )}
 
-          {['manufacturerPartId'].includes(relatedEntityType) && manufacturerId && (
-            <Form.BasicField
-              label="Part"
-              marginTop={4}
-              name="manufacturerPartId"
-            >
-              <AutocompleteField
-                callbacks={{
-                  selectItem: (result: ManufacturerPart) => {
-                    setState({
-                      manufacturerPartId: result.id,
-                    })
+            {['manufacturerModelId'].includes(relatedEntityType) && manufacturerId && (
+              <Form.BasicField
+                label="Model"
+                marginTop={4}
+                name="manufacturerModelId"
+              >
+                <AutocompleteField
+                  callbacks={{
+                    selectItem: (result: ManufacturerModel) => {
+                      setState({
+                        manufacturerModelId: result.id,
+                      })
 
-                    toggleRelatedEntity({
-                      key: 'manufacturerPartId',
-                      title: result.title,
-                      value: result.id,
-                    })
-                  },
-                }}
-                retainSelection
-                routerKey="manufacturerParts"
-                queryKey="getManufacturerParts"
-                queryParams={{
-                  limit: 10,
-                  manufacturerId,
-                }}
-              />
-            </Form.BasicField>
-          )}
+                      if (relatedEntityType === 'manufacturerModelId') {
+                        setState({
+                          relatedEntityType: '',
+                        })
 
-          {relatedEntities && !!relatedEntities.length && (
-            <Form.BasicField
-              label="References"
-              marginTop={4}
-            >
-              <Flex direction="column" width="100%">
-                {relatedEntities && relatedEntities.map((relatedEntity) => {
-                  const { key, value, title } = relatedEntity
+                        toggleRelatedEntity({
+                          key: 'manufacturerModelId',
+                          title: result.title,
+                          value: result.id,
+                        })
+                      }
+                    },
+                  }}
+                  retainSelection
+                  routerKey="manufacturerModels"
+                  queryKey="getManufacturerModels"
+                  queryParams={{
+                    limit: 10,
+                    manufacturerId,
+                  }}
+                />
+              </Form.BasicField>
+            )}
 
-                  return (
-                    <Flex
-                      alignItems="center"
-                      borderWidth="1px"
-                      borderRadius="md"
-                      paddingX="2"
-                      paddingY="2"
-                      marginBottom="2"
-                      width="100%"
-                      key={`${key}_${value}`}
-                    >
-                      <Flex direction="column">
-                        <Text fontSize="sm">
-                          {title}
+            {['manufacturerPartId'].includes(relatedEntityType) && manufacturerId && (
+              <Form.BasicField
+                label="Part"
+                marginTop={4}
+                name="manufacturerPartId"
+              >
+                <AutocompleteField
+                  callbacks={{
+                    selectItem: (result: ManufacturerPart) => {
+                      setState({
+                        manufacturerPartId: result.id,
+                      })
+
+                      if (relatedEntityType === 'manufacturerPartId') {
+                        setState({
+                          relatedEntityType: '',
+                        })
+
+                        toggleRelatedEntity({
+                          key: 'manufacturerPartId',
+                          title: result.title,
+                          value: result.id,
+                        })
+                      }
+                    },
+                  }}
+                  retainSelection
+                  routerKey="manufacturerParts"
+                  queryKey="getManufacturerParts"
+                  queryParams={{
+                    limit: 10,
+                    manufacturerId,
+                  }}
+                />
+              </Form.BasicField>
+            )}
+
+            {['projectId'].includes(relatedEntityType) && (
+              <Form.BasicField
+                label="Project"
+                marginTop={4}
+                name="projectId"
+              >
+                <AutocompleteField
+                  callbacks={{
+                    selectItem: (result: Project) => {
+                      setState({
+                        projectId: result.id,
+                      })
+
+                      if (relatedEntityType === 'projectId') {
+                        setState({
+                          relatedEntityType: '',
+                        })
+
+                        toggleRelatedEntity({
+                          key: 'projectId',
+                          title: result.title,
+                          value: result.id,
+                        })
+                      }
+                    },
+                  }}
+                  retainSelection
+                  routerKey="projects"
+                  queryKey="getProjects"
+                  queryParams={{
+                    limit: 10,
+                  }}
+                />
+              </Form.BasicField>
+            )}
+
+            {relatedEntities && !!relatedEntities.length && (
+              <Form.BasicField
+                label="References"
+                marginTop={4}
+              >
+                <Flex direction="column" width="100%">
+                  {relatedEntities && relatedEntities.map((relatedEntity) => {
+                    const { key, value, title } = relatedEntity
+
+                    return (
+                      <Flex
+                        alignItems="center"
+                        borderWidth="1px"
+                        borderRadius="md"
+                        paddingX="2"
+                        paddingY="2"
+                        marginBottom="2"
+                        width="100%"
+                        key={`${key}_${value}`}
+                      >
+                        <Flex direction="column">
+                          <Text fontSize="sm">
+                            {title}
+                          </Text>
+                        </Flex>
+
+                        <Text
+                          cursor="pointer"
+                          onClick={() => toggleRelatedEntity(relatedEntity)}
+                          marginLeft="auto"
+                        >
+                          <FiTrash2 />
                         </Text>
                       </Flex>
-
-                      <Text
-                        cursor="pointer"
-                        onClick={() => toggleRelatedEntity(relatedEntity)}
-                        marginLeft="auto"
-                      >
-                        <FiTrash2 />
-                      </Text>
-                    </Flex>
-                  )
-                })}
-              </Flex>
-            </Form.BasicField>
-          )}
+                    )
+                  })}
+                </Flex>
+              </Form.BasicField>
+            )}
+          </Form>
         </DrawerBody>
 
         <DrawerFooter borderTopWidth={1}>
@@ -324,7 +395,9 @@ const AddPostRelatedEntitiesModal = (props: AddPostRelatedEntitiesModalProps) =>
 
           <Button
             colorScheme="green"
-            form="post-part-form"
+            isDisabled={isUpdating}
+            isLoading={isUpdating}
+            form="post-related-entities-form"
             type="submit"
           >
             Save
