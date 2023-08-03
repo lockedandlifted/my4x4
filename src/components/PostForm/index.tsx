@@ -10,17 +10,110 @@ import Editor from '@components/Post/Editor'
 import type { Prisma } from '@prisma/client'
 
 import Attachments from './Attachments'
+import References from './References'
 
 type PostWithIncludes = Prisma.PostGetPayload<{
-  include: {},
+  include: {
+    _count: {
+      select: {
+        postsComments: true,
+        postLikes: true,
+      },
+    },
+    postsCategories: {
+      include: {
+        category: {
+          select: {
+            key: true,
+          },
+        },
+      },
+    },
+    postsComments: {
+      include: {
+        comment: {
+          include: {
+            _count: {
+              select: {
+                commentLikes: true,
+              },
+            },
+            subComments: {
+              include: {
+                _count: {
+                  select: {
+                    commentLikes: true,
+                  },
+                },
+                user: {
+                  include: {
+                    usersImages: {
+                      include: {
+                        image: true,
+                      },
+                      orderBy: {
+                        sort: 'asc',
+                      },
+                      take: 1,
+                    },
+                  },
+                },
+              },
+            },
+            user: {
+              include: {
+                usersImages: {
+                  include: {
+                    image: true,
+                  },
+                  orderBy: {
+                    sort: 'asc',
+                  },
+                  take: 1,
+                },
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    },
+    postLikes: true,
+    postsProjects: {
+      include: {
+        project: true,
+      },
+    },
+    postType: true,
+    user: {
+      include: {
+        usersImages: {
+          include: {
+            image: true,
+          },
+          orderBy: {
+            sort: 'asc',
+          },
+          take: 1,
+        },
+      },
+    },
+  },
 }>
 
 type PostFormProps = {
+  callbacks?: {
+    AddPostRelatedEntitiesModal: {
+      closeModal: VoidFunction,
+    },
+  },
   post?: PostWithIncludes,
 }
 
 const PostForm = (props: PostFormProps) => {
-  const { post } = props
+  const { callbacks, post } = props
 
   const postFormPayload = usePostForm({ post })
   const {
@@ -88,6 +181,16 @@ const PostForm = (props: PostFormProps) => {
                 <Editor.ToolBar />
                 <Editor.Input />
               </Editor>
+            </Flex>
+          </Form.BasicField>
+
+          <Form.BasicField
+            label="References"
+            marginTop="4"
+            name="references"
+          >
+            <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
+              <References callbacks={callbacks} editMode post={post} />
             </Flex>
           </Form.BasicField>
 

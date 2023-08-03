@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormSetValue } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { Node } from 'slate'
 
@@ -162,7 +162,7 @@ const updatePost = (params: UpdatePostParams) => {
   return mutation.mutate(updatedData)
 }
 
-const setupPostInitialState = (currentState: object, post: PostWithIncludes) => {
+const setupPostInitialState = (currentState: DefaultState, post: PostWithIncludes) => {
   const initialState = {
     ...currentState,
   }
@@ -174,12 +174,55 @@ const setupPostInitialState = (currentState: object, post: PostWithIncludes) => 
   return initialState
 }
 
-const defaultState = {
+type RelatedEntity = {
+  [key: string]: string,
+}
+
+type ToggleRelatedEntityParams = {
+  relatedEntity: {
+    key: string,
+    title: string,
+    value: string,
+  },
+  relatedEntities?: RelatedEntity[],
+  setValue: UseFormSetValue<DefaultState>,
+}
+
+const toggleRelatedEntity = (params: ToggleRelatedEntityParams) => {
+  const { relatedEntity, relatedEntities = [], setValue } = params
+
+  const updatedRelatedEntities = [...relatedEntities]
+
+  const existingIndex = updatedRelatedEntities.findIndex(entity => (
+    entity.key === relatedEntity.key && entity.value === relatedEntity.value
+  ))
+
+  if (existingIndex === -1) {
+    updatedRelatedEntities.push(relatedEntity)
+  } else {
+    updatedRelatedEntities.splice(existingIndex, 1)
+  }
+
+  setValue('relatedEntities', updatedRelatedEntities)
+}
+
+type DefaultState = {
+  body: string,
+  bodyData?: typeof defaultEditorValue,
+  categoryKeys: string[],
+  isRichText: boolean,
+  postTypeKey: 'forum' | 'question',
+  relatedEntities?: RelatedEntity[],
+  title: string,
+}
+
+const defaultState: DefaultState = {
   body: '',
   bodyData: undefined,
   categoryKeys: ['general'],
   isRichText: true,
   postTypeKey: 'forum',
+  relatedEntities: [],
   title: '',
 }
 
@@ -200,7 +243,7 @@ function usePostForm(options?: UsePostFormOptions) {
 
   const router = useRouter()
 
-  const formPayload = useForm({
+  const formPayload = useForm<DefaultState>({
     mode: 'onChange',
     values: post ? setupInitialEntityState(defaultState, post, {
       additionalSetupFn: setupPostInitialState,
@@ -209,6 +252,7 @@ function usePostForm(options?: UsePostFormOptions) {
 
   const { setValue, watch } = formPayload
   const categoryKeys = watch('categoryKeys')
+  const relatedEntities = watch('relatedEntities')
 
   // Load Categories
   const categoriesQuery = trpc.categories.getCategories.useQuery({
@@ -245,6 +289,13 @@ function usePostForm(options?: UsePostFormOptions) {
       selectCategoryKey: (categoryKey: string) => {
         setValue('categoryKeys', toggleArray({ array: categoryKeys, value: categoryKey }))
       },
+      toggleRelatedEntity: (relatedEntity: ToggleRelatedEntityParams['relatedEntity']) => (
+        toggleRelatedEntity({
+          relatedEntity,
+          relatedEntities,
+          setValue,
+        })
+      ),
       updatePost: (data: typeof defaultState) => (
         updatePost({
           data,
@@ -263,6 +314,7 @@ function usePostForm(options?: UsePostFormOptions) {
       createPost: createPostMutation,
       updatePost: updatePostMutation,
     },
+    relatedEntities,
     shouldUsePostEditor,
   }
 }
