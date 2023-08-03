@@ -126,19 +126,20 @@ type AddPostRelatedEntitiesModalProps = {
 const AddPostRelatedEntitiesModal = (props: AddPostRelatedEntitiesModalProps) => {
   const { callbacks: { closeModal, updatePost }, post, showModal } = props
 
-  const formPayload = usePostForm(post)
+  const postFormPayload = usePostForm({ post })
   const {
     callbacks: {
       toggleRelatedEntity,
       updatePost: updateFn,
     },
+    formPayload,
     mutations: {
       updatePost: {
         isLoading: isUpdating,
       },
     },
     relatedEntities,
-  } = formPayload
+  } = postFormPayload
 
   const relatedEntitiesPayload = useAddPostRelatedEntities()
   const {
