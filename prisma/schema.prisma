@@ -269,10 +269,10 @@ model Comment {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  commentLikes         CommentLike[]
-  postsComments        PostsComment[]
-  projectsComments     ProjectsComment[]
-  projectImagesComment ProjectImagesComment[]
+  commentLikes          CommentLike[]
+  postsComments         PostsComment[]
+  projectsComments      ProjectsComment[]
+  projectImagesComments ProjectImagesComment[]
 
   @@map("comments")
 }
@@ -369,8 +369,23 @@ model Image {
   postsImages      PostsImage[]
   projectsImages   ProjectsImage[]
   usersImages      UsersImage[]
+  imageLikes       ImageLike[]
 
   @@map("images")
+}
+
+model ImageLike {
+  id      String @id @default(uuid())
+  image   Image  @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  imageId String @map("image_id")
+  user    User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId  String @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([imageId, userId])
+  @@map("image_likes")
 }
 
 model ImageTag {
@@ -932,6 +947,7 @@ model User {
   sessions           Session[]
   usersExternalLinks UsersExternalLink[]
   usersImages        UsersImage[]
+  ImageLike          ImageLike[]
 
   @@map("users")
 }

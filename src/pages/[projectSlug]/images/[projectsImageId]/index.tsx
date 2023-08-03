@@ -10,6 +10,7 @@ import AddCommentBox from '@components/AddCommentBox'
 import BackToProjectButton from '@components/Project/BackToProjectButton'
 import Comment from '@components/Comment'
 import Details from '@components/Image/Details'
+import LikeButton from '@components/Image/LikeButton'
 import Preview from '@components/Image/Preview'
 import TaggedParts from '@components/Image/TaggedParts'
 import ProjectImageThumbs from '@components/ProjectImageThumbs'
@@ -35,6 +36,8 @@ const ProjectImagePage = () => {
 
   const { data: projectImagesComments } = projectImagesCommentsQuery
 
+  const image = projectsImage?.image
+
   const imageCommentsPayload = useProjectImagesComments({ projectsImage })
   const {
     callbacks: {
@@ -52,7 +55,7 @@ const ProjectImagePage = () => {
 
       <Preview
         enabledTagging={false}
-        image={projectsImage?.image}
+        image={image}
         projectsImage={projectsImage}
       />
 
@@ -62,13 +65,17 @@ const ProjectImagePage = () => {
         callbacks={{
           onUpdateSuccess: () => invalidate({ id: projectsImageId }),
         }}
-        image={projectsImage?.image}
+        image={image}
       />
 
       <TaggedParts
         project={project}
         projectsImage={projectsImage}
       />
+
+      <Flex borderBottomWidth="1px" borderTopWidth="1px" marginTop="4" paddingY="4">
+        <LikeButton image={image} redirect={`${project?.slug}/images/${projectsImage?.id}`} />
+      </Flex>
 
       <Flex marginTop={8}>
         <AddCommentBox

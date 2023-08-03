@@ -13,6 +13,7 @@ import commentsRouter from './comments'
 import countriesRouter from './countries'
 import externalLinkViewsRouter from './externalLinkViews'
 import externalLinksRouter from './externalLinks'
+import imageLikesRouter from './imageLikes'
 import imagesRouter from './images'
 import manufacturerModelsRouter from './manufacturerModels'
 import manufacturerModelSeriesRouter from './manufacturerModelSeries'
@@ -49,6 +50,7 @@ export const appRouters = {
   countries: countriesRouter,
   externalLinkViews: externalLinkViewsRouter,
   externalLinks: externalLinksRouter,
+  imageLikes: imageLikesRouter,
   images: imagesRouter,
   manufacturerModels: manufacturerModelsRouter,
   manufacturerModelSeries: manufacturerModelSeriesRouter,
