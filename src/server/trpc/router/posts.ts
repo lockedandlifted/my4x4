@@ -30,16 +30,11 @@ const postsRouter = router({
       title: z.string(),
       postTypeKey: z.string(),
       published: z.boolean().optional(),
-      relatedEntities: z.array(
-        z.object({
-          projectId: z.string().optional(),
-          manufacturerId: z.string().optional(),
-          manufacturerModelId: z.string().optional(),
-          manufacturerPartId: z.string().optional(),
-          imageId: z.string().optional(),
-        })
-          .refine(atLeastOneDefined),
-      ).optional(),
+      relatedEntities: z.array(z.object({
+        key: z.string(),
+        title: z.string().optional(),
+        value: z.string(),
+      })).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const data: Prisma.PostCreateInput = {
@@ -78,8 +73,9 @@ const postsRouter = router({
 
       if (input.relatedEntities) {
         relatedEntityData = input.relatedEntities.reduce((acc, relatedEntity) => {
-          const firstKey = Object.keys(relatedEntity)[0]
-          const key = relatedEntityKeys[firstKey]
+          const { key: relatedEntityKey, value } = relatedEntity
+
+          const key = relatedEntityKeys[relatedEntityKey]
 
           // Setup Object if it doesnt exist
           if (!acc[key]) {
@@ -93,7 +89,7 @@ const postsRouter = router({
 
           // acc[postsProjects].createMany.data.push({ projectId: 'a' })
           acc[key].createMany.data.push({
-            [firstKey]: relatedEntity[firstKey],
+            [relatedEntityKey]: value,
           })
 
           return acc
@@ -355,6 +351,21 @@ const postsRouter = router({
           },
         },
         postLikes: true,
+        postsManufacturers: {
+          include: {
+            manufacturer: true,
+          },
+        },
+        postsManufacturerModels: {
+          include: {
+            manufacturerModel: true,
+          },
+        },
+        postsManufacturerParts: {
+          include: {
+            manufacturerPart: true,
+          },
+        },
         postsProjects: {
           include: {
             project: true,
@@ -397,6 +408,7 @@ const postsRouter = router({
         title: input.title,
       }
 
+      // Categories
       if (input.categoryKeys) {
         data.postsCategories = {
           create: input.categoryKeys.map(categoryKey => ({
@@ -409,19 +421,77 @@ const postsRouter = router({
         }
       }
 
+      // Related Entities
+      let relatedEntityData = {}
+
+      if (input.relatedEntities) {
+        relatedEntityData = input.relatedEntities.reduce((acc, relatedEntity) => {
+          const { key: relatedEntityKey, value } = relatedEntity
+
+          const key = relatedEntityKeys[relatedEntityKey]
+
+          // Setup Object if it doesnt exist
+          if (!acc[key]) {
+            // acc[postsProjects]
+            acc[key] = {
+              createMany: {
+                data: [],
+              },
+            }
+          }
+
+          // acc[postsProjects].createMany.data.push({ projectId: 'a' })
+          acc[key].createMany.data.push({
+            [relatedEntityKey]: value,
+          })
+
+          return acc
+        }, {})
+      }
+
+      // Merge Data
+      const mergedData = {
+        ...data,
+        ...relatedEntityData,
+      }
+
       const result = ctx.prisma.$transaction([
-        // Delete existing post categories
+        // Delete existing postsCategory
         ctx.prisma.postsCategory.deleteMany({
           where: {
             postId: input.categoryKeys ? input.id : 'undefined',
           },
         }),
-        // Update post
+        // Delete existing postsProjects
+        ctx.prisma.postsProject.deleteMany({
+          where: {
+            postId: input.relatedEntities ? input.id : 'undefined',
+          },
+        }),
+        // Delete existing postsManufacturers
+        ctx.prisma.postsManufacturer.deleteMany({
+          where: {
+            postId: input.relatedEntities ? input.id : 'undefined',
+          },
+        }),
+        // Delete existing postsManufacturerModels
+        ctx.prisma.postsManufacturerModel.deleteMany({
+          where: {
+            postId: input.relatedEntities ? input.id : 'undefined',
+          },
+        }),
+        // Delete existing postsManufacturerParts
+        ctx.prisma.postsManufacturerPart.deleteMany({
+          where: {
+            postId: input.relatedEntities ? input.id : 'undefined',
+          },
+        }),
+        // Update Post
         ctx.prisma.post.update({
           where: {
             id: input.id,
           },
-          data,
+          data: mergedData,
           include: {
             postType: true,
             postsProjects: {
