@@ -126,7 +126,7 @@ type AddPostRelatedEntitiesModalProps = {
 const AddPostRelatedEntitiesModal = (props: AddPostRelatedEntitiesModalProps) => {
   const { callbacks: { closeModal, updatePost }, post, showModal } = props
 
-  const postFormPayload = usePostForm({ post })
+  const postFormPayload = usePostForm({ post, shouldRedirect: false })
   const {
     callbacks: {
       toggleRelatedEntity,

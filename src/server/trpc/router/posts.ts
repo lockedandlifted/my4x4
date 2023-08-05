@@ -403,9 +403,13 @@ const postsRouter = router({
     }))
     .mutation(async ({ ctx, input }) => {
       const data: Prisma.PostUpdateInput = {
-        body: input.body,
-        bodyData: input.bodyData,
-        title: input.title,
+        body: input.body || undefined,
+        title: input.title || undefined,
+      }
+
+      // Body Data
+      if (input.bodyData && input.bodyData.length) {
+        data.bodyData = input.bodyData
       }
 
       // Categories

@@ -11,6 +11,9 @@ import ImageEmbed from '@components/Post/Editor/Elements/ImageEmbed'
 import Link from '@components/Post/Editor/Elements/Link'
 import List from '@components/Post/Editor/Elements/List'
 import ListItem from '@components/Post/Editor/Elements/ListItem'
+import ManufacturerEmbed from '@components/Post/Editor/Elements/ManufacturerEmbed'
+import ManufacturerModelEmbed from '@components/Post/Editor/Elements/ManufacturerModelEmbed'
+import ManufacturerPartEmbed from '@components/Post/Editor/Elements/ManufacturerPartEmbed'
 import ProjectEmbed from '@components/Post/Editor/Elements/ProjectEmbed'
 import YouTubeVideo from '@components/Post/Editor/Elements/YouTubeVideo'
 
@@ -27,8 +30,6 @@ const EditorInput = (props: EditorInputProps) => {
 
   const renderElement = useCallback((props) => {
     switch (props.element.type) {
-      case 'my4x4_attachment':
-        return <AttachmentEmbed {...props} />
       case 'heading-one':
         return <Heading as="h1" size="xl" {...props} />
       case 'heading-two':
@@ -39,6 +40,14 @@ const EditorInput = (props: EditorInputProps) => {
         return <Link {...props} />
       case 'list-item':
         return <ListItem {...props} />
+      case 'my4x4_attachment':
+        return <AttachmentEmbed {...props} />
+      case 'my4x4_manufacturer':
+        return <ManufacturerEmbed {...props} />
+      case 'my4x4_manufacturer_model':
+        return <ManufacturerModelEmbed {...props} />
+      case 'my4x4_manufacturer_part':
+        return <ManufacturerPartEmbed {...props} />
       case 'my4x4_project':
         return <ProjectEmbed {...props} />
       case 'ordered-list':

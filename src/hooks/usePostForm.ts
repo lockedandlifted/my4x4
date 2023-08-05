@@ -5,6 +5,7 @@ import { Node } from 'slate'
 
 import setupInitialEntityState from '@utils/setupInitialEntityState'
 
+import CustomEditor from '@utils/customEditor'
 import { trpc } from '@utils/trpc'
 import toggleArray from '@utils/toggleArray'
 
@@ -88,6 +89,21 @@ type PostWithIncludes = Prisma.PostGetPayload<{
       },
     },
     postLikes: true,
+    postsManufacturers: {
+      include: {
+        manufacturer: true,
+      },
+    },
+    postsManufacturerModels: {
+      include: {
+        manufacturerModel: true,
+      },
+    },
+    postsManufacturerParts: {
+      include: {
+        manufacturerPart: true,
+      },
+    },
     postsProjects: {
       include: {
         project: true,
@@ -129,6 +145,42 @@ const createPost = (params: CreatePostParams) => {
   return mutation.mutate(updatedData)
 }
 
+type InsertRelatedEntityParams = {
+  editor: object,
+  relatedEntity: RelatedEntity,
+}
+
+const insertRelatedEntity = (params: InsertRelatedEntityParams) => {
+  const {
+    editor,
+    relatedEntity: {
+      key,
+      value,
+    },
+  } = params
+
+  if (!editor) return
+
+  if (key === 'manufacturerId') {
+    CustomEditor.handleManufacturerInsert(editor, { id: value })
+    return
+  }
+
+  if (key === 'manufacturerModelId') {
+    CustomEditor.handleManufacturerModelInsert(editor, { id: value })
+    return
+  }
+
+  if (key === 'manufacturerPartId') {
+    CustomEditor.handleManufacturerPartInsert(editor, { id: value })
+    return
+  }
+
+  if (key === 'projectId') {
+    CustomEditor.handleProjectInsert(editor, { id: value })
+  }
+}
+
 const serializeEditorValueAsString = value => (
   value
   // Return the string content of each paragraph in the value's children.
@@ -167,15 +219,63 @@ const setupPostInitialState = (currentState: DefaultState, post: PostWithInclude
     ...currentState,
   }
 
+  // Category Keys
   if (post.postsCategories) {
     initialState.categoryKeys = post.postsCategories.map(postsCategory => postsCategory.category?.key)
   }
 
+  // Related Entities
+  const relatedEntities: RelatedEntity[] = []
+
+  if (post.postsManufacturerModels) {
+    post.postsManufacturerModels.forEach((postsManufacturerModel) => {
+      relatedEntities.push({
+        key: 'manufacturerModelId',
+        title: postsManufacturerModel.manufacturerModel?.title,
+        value: postsManufacturerModel.manufacturerModel?.id,
+      })
+    })
+  }
+
+  if (post.postsManufacturerParts) {
+    post.postsManufacturerParts.forEach((postsManufacturerPart) => {
+      relatedEntities.push({
+        key: 'manufacturerPartId',
+        title: postsManufacturerPart.manufacturerPart?.title,
+        value: postsManufacturerPart.manufacturerPart?.id,
+      })
+    })
+  }
+
+  if (post.postsManufacturers) {
+    post.postsManufacturers.forEach((postsManufacturer) => {
+      relatedEntities.push({
+        key: 'manufacturerId',
+        title: postsManufacturer.manufacturer?.title,
+        value: postsManufacturer.manufacturer?.id,
+      })
+    })
+  }
+
+  if (post.postsProjects) {
+    post.postsProjects.forEach((postsProject) => {
+      relatedEntities.push({
+        key: 'projectId',
+        title: postsProject.project?.title,
+        value: postsProject.project?.id,
+      })
+    })
+  }
+
+  initialState.relatedEntities = relatedEntities
+
   return initialState
 }
 
-type RelatedEntity = {
-  [key: string]: string,
+export type RelatedEntity = {
+  key: string,
+  title?: string,
+  value: string,
 }
 
 type ToggleRelatedEntityParams = {
@@ -228,10 +328,11 @@ const defaultState: DefaultState = {
 
 type UsePostFormOptions = {
   post?: PostWithIncludes,
+  shouldRedirect?: boolean,
 }
 
 function usePostForm(options?: UsePostFormOptions) {
-  const { post } = options || {}
+  const { post, shouldRedirect = true } = options || {}
 
   const shouldUsePostEditor = post?.isRichText
   const editor = useMemo(() => {
@@ -264,7 +365,10 @@ function usePostForm(options?: UsePostFormOptions) {
   const createPostMutation = trpc.posts.createPost.useMutation({
     onSuccess: (data) => {
       const { id } = data
-      router.push(`/posts/${id}/edit`)
+
+      if (shouldRedirect) {
+        router.push(`/posts/${id}/edit`)
+      }
     },
   })
 
@@ -274,7 +378,10 @@ function usePostForm(options?: UsePostFormOptions) {
   const updatePostMutation = trpc.posts.updatePostById.useMutation({
     onSuccess: () => {
       invalidateGetPostById({ id: post?.id })
-      router.push('/users/account')
+
+      if (shouldRedirect) {
+        router.push('/users/account')
+      }
     },
   })
 
@@ -284,6 +391,12 @@ function usePostForm(options?: UsePostFormOptions) {
         createPost({
           data,
           mutation: createPostMutation,
+        })
+      ),
+      insertRelatedEntity: (relatedEntity: RelatedEntity) => (
+        insertRelatedEntity({
+          editor,
+          relatedEntity,
         })
       ),
       selectCategoryKey: (categoryKey: string) => {

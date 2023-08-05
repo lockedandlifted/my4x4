@@ -10,7 +10,7 @@ import Editor from '@components/Post/Editor'
 import type { Prisma } from '@prisma/client'
 
 import Attachments from './Attachments'
-import References from './References'
+import RelatedEntities from './RelatedEntities'
 
 type PostWithIncludes = Prisma.PostGetPayload<{
   include: {
@@ -119,6 +119,7 @@ const PostForm = (props: PostFormProps) => {
   const {
     callbacks: {
       createPost: createFn,
+      insertRelatedEntity,
       updatePost: updateFn,
       selectCategoryKey,
     },
@@ -134,6 +135,7 @@ const PostForm = (props: PostFormProps) => {
         isLoading: isUpdating,
       },
     },
+    relatedEntities,
     shouldUsePostEditor,
   } = postFormPayload
 
@@ -190,7 +192,14 @@ const PostForm = (props: PostFormProps) => {
             name="references"
           >
             <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
-              <References callbacks={callbacks} editMode post={post} />
+              <RelatedEntities
+                callbacks={{
+                  ...callbacks,
+                  insertRelatedEntity,
+                }}
+                editMode
+                relatedEntities={relatedEntities}
+              />
             </Flex>
           </Form.BasicField>
 
