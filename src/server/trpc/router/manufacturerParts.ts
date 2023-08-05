@@ -44,6 +44,16 @@ const manufacturerPartsRouter = router({
       })
     }),
 
+  getManufacturerPartById: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.manufacturerPart.findFirst({
+      where: {
+        id: input.id,
+      },
+    })),
+
   getProjectsWithPartId: publicProcedure
     .input(getProjectsWithPartValidationSchema)
     .query(async ({ ctx, input }) => ctx.prisma.manufacturerPart.findFirst({

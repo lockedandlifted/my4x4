@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createEditor, BaseEditor, Descendant } from 'slate'
 import { Slate, withReact, ReactEditor } from 'slate-react'
 
@@ -7,8 +7,18 @@ import withEmbeds from '@utils/withEmbeds'
 import EditorInput from '@components/Post/Editor/EditorInput'
 import ToolBar from '@components/Post/Editor/ToolBar'
 
+type CustomElementType = 'code'
+| 'link'
+| 'my4x4_attachment'
+| 'my4x4_manufacturer'
+| 'my4x4_manufacturer_model'
+| 'my4x4_manufacturer_part'
+| 'my4x4_project'
+| 'paragraph'
+| 'youtube'
+
 type CustomElement = {
-  type: 'code' | 'link' | 'my4x4_attachment' | 'paragraph' | 'youtube',
+  type: CustomElementType,
   children: CustomText[],
   href?: string,
 }

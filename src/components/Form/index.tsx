@@ -47,7 +47,9 @@ const Form = (props: FormProps) => {
     <FormProvider {...formPayload}>
       <form
         id={id}
-        onSubmit={e => handleSubmit(submitForm, showInvalidFormWarning)(e).catch(e => console.log(e.message))}
+        onSubmit={(e) => {
+          handleSubmit(submitForm, showInvalidFormWarning)(e).catch(e => console.log(e.message))
+        }}
         {...formProps}
       >
         <Flex flexDirection="column" width="100%">
