@@ -38,7 +38,7 @@ const ProjectImagePage = () => {
 
   const image = projectsImage?.image
 
-  const imageCommentsPayload = useProjectImagesComments({ projectsImage })
+  const projectImagesCommentsPayload = useProjectImagesComments({ projectsImage })
   const {
     callbacks: {
       createProjectImagesComment,
@@ -47,7 +47,7 @@ const ProjectImagePage = () => {
     },
     inputValue,
     isLoading,
-  } = imageCommentsPayload
+  } = projectImagesCommentsPayload
 
   return (
     <MobileLayout>

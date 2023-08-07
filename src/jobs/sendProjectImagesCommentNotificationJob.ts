@@ -12,7 +12,7 @@ const sendProjectImagesCommentNotificationJob = inngestClient.createFunction(
   async ({ event, step }) => {
     const { commentId, projectsImageId } = event.data
 
-    // Fetch Post Data
+    // Fetch Comment Data
     const comment = await step.run('Fetch Post Data', async () => prisma.comment.findUnique({
       where: {
         id: commentId,
@@ -71,7 +71,7 @@ const sendProjectImagesCommentNotificationJob = inngestClient.createFunction(
     const sendEmailResult = await step.run('Send Email', async () => sendEmail({
       email: projectUser?.email,
       html,
-      subject: `New Comment - ${project?.title}`,
+      subject: `New Image Comment - ${project?.title}`,
     }))
 
     return {

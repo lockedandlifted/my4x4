@@ -365,11 +365,11 @@ model Image {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   businessesImages BusinessesImage[]
+  imageLikes       ImageLike[]
   imageTags        ImageTag[]
   postsImages      PostsImage[]
   projectsImages   ProjectsImage[]
   usersImages      UsersImage[]
-  imageLikes       ImageLike[]
 
   @@map("images")
 }
@@ -764,8 +764,9 @@ model ProjectsImage {
   user   User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userId String? @map("user_id")
 
-  createdAt            DateTime               @default(now()) @map("created_at")
-  updatedAt            DateTime               @default(now()) @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
   projectImagesComment ProjectImagesComment[]
 
   @@unique([projectId, imageId])
@@ -937,6 +938,7 @@ model User {
   businessesUser     BusinessesUser[]
   commentLikes       CommentLike[]
   comments           Comment[]
+  imageLikes         ImageLike[]
   images             Image[]
   postLikes          PostLike[]
   posts              Post[]
@@ -947,7 +949,6 @@ model User {
   sessions           Session[]
   usersExternalLinks UsersExternalLink[]
   usersImages        UsersImage[]
-  ImageLike          ImageLike[]
 
   @@map("users")
 }
