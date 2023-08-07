@@ -23,6 +23,7 @@ import postLikesRouter from './postLikes'
 import postsAttachmentsRouter from './postsAttachments'
 import postsCommentsRouter from './postsComments'
 import postsRouter from './posts'
+import projectsCommentsRouter from './projectsComments'
 import projectLikesRouter from './projectLikes'
 import projectPageViewsRouter from './projectPageViews'
 import projectPartsExternalLinksRouter from './projectPartsExternalLinks'
@@ -60,6 +61,7 @@ export const appRouters = {
   posts: postsRouter,
   postsAttachments: postsAttachmentsRouter,
   postsComments: postsCommentsRouter,
+  projectsComments: projectsCommentsRouter,
   projectLikes: projectLikesRouter,
   projectPageViews: projectPageViewsRouter,
   projectPartsExternalLinks: projectPartsExternalLinksRouter,
