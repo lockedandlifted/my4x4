@@ -7,6 +7,7 @@ import { trpc } from '@utils/trpc'
 import type { appRouters } from '@server/trpc/router/_app'
 
 const defaultState = {
+  hideResults: false,
   string: '',
 }
 
@@ -24,6 +25,7 @@ type AutocompleteFieldProps = {
   },
   queryKey: string,
   queryParams?: object,
+  retainSelection?: boolean,
   routerKey: keyof typeof appRouters,
 }
 
@@ -35,13 +37,14 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
     inputProps,
     queryKey,
     queryParams,
+    retainSelection = false,
     routerKey,
   } = props
 
   const { value, ...restInputProps } = inputProps || {}
 
   const [state, setState] = useState(defaultState)
-  const { string } = state
+  const { hideResults, string } = state
 
   const [debouncedString] = useDebounce(string, 500)
 
@@ -59,18 +62,22 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
       <Flex width="100%">
         <input
           onChange={(e) => {
-            setState(s => ({ ...s, string: e.target.value }))
+            setState(s => ({
+              ...s,
+              hideResults: false,
+              string: e.target.value,
+            }))
             if (onChange) onChange(e)
           }}
           onClick={onClick}
           ref={ref}
           type="text"
-          value={string || value}
+          value={string || value || ''}
           {...restInputProps}
         />
       </Flex>
 
-      {!!mappedResults.length && (
+      {!hideResults && !!mappedResults.length && (
         <Flex
           backgroundColor="white"
           borderRadius={5}
@@ -97,7 +104,11 @@ const AutocompleteField = React.forwardRef<HTMLInputElement, AutocompleteFieldPr
                 <LinkOverlay
                   onClick={(e) => {
                     e.stopPropagation()
-                    setState(s => ({ ...s, string: '' }))
+                    setState(s => ({
+                      ...s,
+                      hideResults: true,
+                      string: retainSelection ? result.title : '',
+                    }))
                     selectItem(result)
                   }}
                 >

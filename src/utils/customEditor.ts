@@ -34,20 +34,7 @@ const CustomEditor = {
           const project = await client.projects.getProjectBySlug.query({ slug: projectSlug })
 
           if (project) {
-            Transforms.insertNodes(editor, [
-              {
-                children: [{ text: '' }],
-                type,
-                projectId: project.id,
-              },
-              {
-                children: [{ text: '' }],
-                type: 'paragraph',
-              },
-            ])
-
-            Transforms.move(editor)
-
+            CustomEditor.handleProjectInsert(editor, project)
             return true
           }
         }
@@ -113,10 +100,68 @@ const CustomEditor = {
     ])
   },
 
+  handleManufacturerInsert: async (editor, manufacturer: { id: string }) => {
+    Transforms.insertNodes(editor, [
+      {
+        children: [{ text: '' }],
+        manufacturerId: manufacturer.id,
+        type: 'my4x4_manufacturer',
+      },
+      {
+        children: [{ text: '' }],
+        type: 'paragraph',
+      },
+    ])
+  },
+
+  handleManufacturerModelInsert: async (editor, manufacturerModel: { id: string }) => {
+    Transforms.insertNodes(editor, [
+      {
+        children: [{ text: '' }],
+        manufacturerModelId: manufacturerModel.id,
+        type: 'my4x4_manufacturer_model',
+      },
+      {
+        children: [{ text: '' }],
+        type: 'paragraph',
+      },
+    ])
+  },
+
+  handleManufacturerPartInsert: async (editor, manufacturerPart: { id: string }) => {
+    Transforms.insertNodes(editor, [
+      {
+        children: [{ text: '' }],
+        manufacturerPartId: manufacturerPart.id,
+        type: 'my4x4_manufacturer_part',
+      },
+      {
+        children: [{ text: '' }],
+        type: 'paragraph',
+      },
+    ])
+  },
+
   handlePaste: async (editor, event, client) => {
     CustomEditor.handleEmbed(editor, event, client)
 
     console.log('onPaste', event.clipboardData.getData('text/plain'))
+  },
+
+  handleProjectInsert: (editor, project: { id: string }) => {
+    Transforms.insertNodes(editor, [
+      {
+        children: [{ text: '' }],
+        projectId: project.id,
+        type: 'my4x4_project',
+      },
+      {
+        children: [{ text: '' }],
+        type: 'paragraph',
+      },
+    ])
+
+    Transforms.move(editor)
   },
 
   isBlockActive(editor, format, blockType = 'type') {

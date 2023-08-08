@@ -14,6 +14,7 @@ import commentsRouter from './comments'
 import countriesRouter from './countries'
 import externalLinkViewsRouter from './externalLinkViews'
 import externalLinksRouter from './externalLinks'
+import imageLikesRouter from './imageLikes'
 import imagesRouter from './images'
 import manufacturerModelSeriesRouter from './manufacturerModelSeries'
 import manufacturerModelsRouter from './manufacturerModels'
@@ -24,6 +25,7 @@ import postsAttachmentsRouter from './postsAttachments'
 import postsCommentsRouter from './postsComments'
 import postsRouter from './posts'
 import projectsCommentsRouter from './projectsComments'
+import projectImagesCommentsRouter from './projectImagesComments'
 import projectLikesRouter from './projectLikes'
 import projectPageViewsRouter from './projectPageViews'
 import projectPartsExternalLinksRouter from './projectPartsExternalLinks'
@@ -52,6 +54,7 @@ export const appRouters = {
   countries: countriesRouter,
   externalLinkViews: externalLinkViewsRouter,
   externalLinks: externalLinksRouter,
+  imageLikes: imageLikesRouter,
   images: imagesRouter,
   manufacturerModelSeries: manufacturerModelSeriesRouter,
   manufacturerModels: manufacturerModelsRouter,
@@ -62,6 +65,7 @@ export const appRouters = {
   postsAttachments: postsAttachmentsRouter,
   postsComments: postsCommentsRouter,
   projectsComments: projectsCommentsRouter,
+  projectImagesComments: projectImagesCommentsRouter,
   projectLikes: projectLikesRouter,
   projectPageViews: projectPageViewsRouter,
   projectPartsExternalLinks: projectPartsExternalLinksRouter,

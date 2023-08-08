@@ -185,6 +185,7 @@ const projectsRouter = router({
       limit: z.number().optional(),
       manufacturerId: z.string().optional(),
       manufacturerModelId: z.string().optional(),
+      string: z.string().optional(),
       userId: z.string().uuid().optional(),
     }))
     .query(({ ctx, input }) => {
@@ -205,6 +206,14 @@ const projectsRouter = router({
       // Model
       if (input.manufacturerModelId) {
         filters.manufacturerModelId = input.manufacturerModelId
+      }
+
+      // String
+      if (input.string) {
+        filters.title = {
+          contains: input.string,
+          mode: 'insensitive',
+        }
       }
 
       // User
