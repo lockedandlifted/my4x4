@@ -16,6 +16,7 @@ import MobileLayout from '@layouts/MobileLayout'
 
 import Actions from '@components/Project/Actions'
 import Attributes from '@components/Project/Attributes'
+import Comments from '@components/Project/Comments'
 import Description from '@components/Project/Description'
 import EditProjectBanner from '@components/Project/EditProjectBanner'
 import Links from '@components/Project/Links'
@@ -91,6 +92,7 @@ const BuildPage = (props: { temporaryUserId: string }) => {
         <SocialActions project={project} />
         <Description project={project} />
         <Attributes project={project} />
+        <Comments project={project} />
         <Questions project={project} />
         <Parts project={project} />
         <ProjectOwner user={project?.projectsUsers?.[0]?.user} />

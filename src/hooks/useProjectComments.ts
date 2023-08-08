@@ -13,11 +13,11 @@ function useProjectComments(options: UseProjectCommentsParams) {
 
   const [inputValue, setInputValue] = useState('')
 
-  const { projects: { getProjectById: { invalidate } } } = trpc.useContext()
+  const { comments: { getComments: { invalidate } } } = trpc.useContext()
 
   const createProjectsCommentMutation = trpc.projectsComments.createProjectsComment.useMutation({
     onSuccess: () => {
-      invalidate({ id: project.id })
+      invalidate({ projectId: project.id })
       setInputValue('')
     },
   })
@@ -29,11 +29,11 @@ function useProjectComments(options: UseProjectCommentsParams) {
         commentBody: params.body,
         projectId: project.id,
       }),
-      invalidateProject: () => invalidate({ id: project.id }),
-      isLoading,
+      invalidateProjectsComment: () => invalidate({ projectId: project.id }),
       setInputValue,
     },
     inputValue,
+    isLoading,
   }
 }
 
