@@ -8,9 +8,8 @@ import useProjectComments from '@hooks/useProjectComments'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-import BackToProjectButton from '@components/Project/BackToProjectButton'
-
 import AddCommentBox from '@components/AddCommentBox'
+import BackToProjectButton from '@components/Project/BackToProjectButton'
 import Comment from '@components/Comment'
 
 const ProjectCommentsPage = () => {

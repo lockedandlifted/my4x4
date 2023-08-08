@@ -16,6 +16,7 @@ const Comments = (props: CommentsProps) => {
 
   const commentsQuery = trpc.comments.getComments.useQuery(
     {
+      limit: 3,
       projectId: project?.id,
     },
     { enabled: !!project?.id },

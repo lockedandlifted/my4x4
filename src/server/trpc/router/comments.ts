@@ -39,6 +39,7 @@ const commentsRouter = router({
 
   getComments: publicProcedure
     .input(z.object({
+      limit: z.number().optional(),
       projectId: z.string().optional(),
     }))
     .query(({ ctx, input }) => {
@@ -103,6 +104,7 @@ const commentsRouter = router({
             },
           },
         },
+        take: input.limit || undefined,
         orderBy: {
           createdAt: 'desc',
         },
