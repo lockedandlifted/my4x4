@@ -21,6 +21,11 @@ const projectImagesCommentsRouter = router({
         include: {
           comment: {
             include: {
+              _count: {
+                select: {
+                  commentLikes: true,
+                },
+              },
               subComments: {
                 include: {
                   _count: {
