@@ -441,6 +441,7 @@ const projectsRouter = router({
             manufacturer: true,
           },
         },
+        manufacturerModelSeries: true,
         projectsAttributes: {
           include: {
             attribute: true,
