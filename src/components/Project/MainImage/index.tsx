@@ -14,7 +14,9 @@ type MainImageProps = {
 const MainImage = (props: MainImageProps) => {
   const { project } = props
 
-  const image = project?.projectsImages?.[0]?.image
+  const firstProjectsImage = project?.projectsImages?.[0]
+  const image = firstProjectsImage?.image
+
   const hasImage = !!image
 
   const imageCountQuery = trpc.projectsImages.getProjectsImagesCount.useQuery(
@@ -52,7 +54,7 @@ const MainImage = (props: MainImageProps) => {
           as="a"
           backgroundColor="rgba(0, 0, 0, 0.7)"
           colorScheme="blackAlpha"
-          href={`/${project?.slug}/images`}
+          href={hasImage ? `/${project?.slug}/images/${firstProjectsImage?.id}` : ''}
           leftIcon={<FaImages />}
         >
           {imageCount} {imageCount === 1 ? 'Image' : 'Images'}

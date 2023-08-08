@@ -185,6 +185,8 @@ const projectsRouter = router({
       limit: z.number().optional(),
       manufacturerId: z.string().optional(),
       manufacturerModelId: z.string().optional(),
+      manufacturerModelSeriesId: z.string().optional(),
+      string: z.string().optional(),
       userId: z.string().uuid().optional(),
     }))
     .query(({ ctx, input }) => {
@@ -202,9 +204,22 @@ const projectsRouter = router({
         }
       }
 
+      // Manufacturer Model Series
+      if (input.manufacturerModelSeriesId) {
+        filters.manufacturerModelSeriesId = input.manufacturerModelSeriesId
+      }
+
       // Model
       if (input.manufacturerModelId) {
         filters.manufacturerModelId = input.manufacturerModelId
+      }
+
+      // String
+      if (input.string) {
+        filters.title = {
+          contains: input.string,
+          mode: 'insensitive',
+        }
       }
 
       // User
@@ -224,6 +239,7 @@ const projectsRouter = router({
               manufacturer: true,
             },
           },
+          manufacturerModelSeries: true,
           projectsImages: {
             include: {
               image: true,
@@ -432,6 +448,7 @@ const projectsRouter = router({
             manufacturer: true,
           },
         },
+        manufacturerModelSeries: true,
         projectsAttributes: {
           include: {
             attribute: true,

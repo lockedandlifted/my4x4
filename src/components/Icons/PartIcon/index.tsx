@@ -1,33 +1,33 @@
-import {
-  GiCampingTent,
-  GiCarBattery,
-  GiCarWheel,
-  GiGearStickPattern,
-  GiHealingShield,
-  GiRadioTower,
-  GiSkippingRope,
-  GiSpring,
-  GiSwordSpade,
-} from 'react-icons/gi'
-import { TbEngine, TbArrowAutofitUp } from 'react-icons/tb'
-import { FaTruckMonster } from 'react-icons/fa'
-import { MdOutlineRotate90DegreesCcw, MdWbTwighlight } from 'react-icons/md'
+import Accessories from './Icons/Accessories'
+import Body from './Icons/Body'
+import Camping from './Icons/Camping'
+import Communications from './Icons/Communications'
+import Driveline from './Icons/Driveline'
+import Electronics from './Icons/Electronics'
+import Engine from './Icons/Engine'
+import Lighting from './Icons/Lighting'
+import Protection from './Icons/Protection'
+import Recovery from './Icons/Recovery'
+import Roof from './Icons/Roof'
+import Suspension from './Icons/Suspension'
+import Transmission from './Icons/Transmission'
+import Wheels from './Icons/Wheels'
 
 const Icons = {
-  accessories: GiSwordSpade,
-  body: FaTruckMonster,
-  camp: GiCampingTent,
-  communications: GiRadioTower,
-  driveline: MdOutlineRotate90DegreesCcw,
-  electronics: GiCarBattery,
-  engine: TbEngine,
-  lighting: MdWbTwighlight,
-  protection: GiHealingShield,
-  recovery: GiSkippingRope,
-  roof: TbArrowAutofitUp,
-  suspension: GiSpring,
-  transmission: GiGearStickPattern,
-  wheels_types: GiCarWheel,
+  accessories: Accessories,
+  body: Body,
+  camping_gear: Camping,
+  communications: Communications,
+  driveline: Driveline,
+  electronics: Electronics,
+  engine: Engine,
+  lighting: Lighting,
+  protection: Protection,
+  recovery: Recovery,
+  roof: Roof,
+  suspension: Suspension,
+  transmission: Transmission,
+  wheels_tyres: Wheels,
 } as const
 
 type PartIconProps = {
@@ -40,10 +40,10 @@ const PartIcon = (props: PartIconProps) => {
   const IconComponent = Icons[categoryKey]
 
   if (!categoryKey || !IconComponent) {
-    return <TbEngine />
+    return <Engine height={20} width={20} />
   }
 
-  return <IconComponent />
+  return <IconComponent height={20} width={20} />
 }
 
 export default PartIcon

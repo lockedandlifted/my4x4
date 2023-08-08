@@ -44,8 +44,8 @@ function useProjectQuestions() {
         title: `Question about ${project?.title}`,
         postTypeKey: 'question',
         relatedEntities: [
-          { projectId: project?.id },
-          { manufacturerModelId: project?.manufacturerModelId },
+          { key: 'projectId', value: project?.id },
+          { key: 'manufacturerModelId', value: project?.manufacturerModelId },
         ],
         ...params,
       }),
