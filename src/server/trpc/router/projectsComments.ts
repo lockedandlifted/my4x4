@@ -45,7 +45,7 @@ const projectsCommentsRouter = router({
 
       // Queue Notification Email
       // Dont send if the project user is the same as the comment user
-      const projectOwnerIds = projectsComment?.project?.projectsUsers.map(user => user.id)
+      const projectOwnerIds = projectsComment?.project?.projectsUsers.map(projectsUser => projectsUser.user.id)
 
       if (
         !projectOwnerIds.includes(ctx.session?.user?.id)
