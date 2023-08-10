@@ -235,7 +235,9 @@ const projectsRouter = router({
 
       // Manufacturer Model Series
       if (input.manufacturerModelSeriesId) {
-        filters.manufacturerModelSeriesId = input.manufacturerModelSeriesId
+        filters.push({
+          manufacturerModelSeriesId: input.manufacturerModelSeriesId,
+        })
       }
 
       // Model
@@ -246,7 +248,7 @@ const projectsRouter = router({
       }
 
       // Part Manufacturer
-      if (input.manufacturerPartId) {
+      if (input.partManufacturerId) {
         filters.push({
           projectsParts: {
             some: {
@@ -287,16 +289,6 @@ const projectsRouter = router({
           manufacturerModel: {
             include: {
               manufacturer: true,
-            },
-          },
-          projectsParts: {
-            include: {
-              manufacturerPart: {
-                include: {
-                  category: true,
-                  manufacturer: true,
-                },
-              },
             },
           },
           manufacturerModelSeries: true,

@@ -14,11 +14,11 @@ import Results from '@components/BrowseProjects/Results'
 const SearchByPartPage = () => {
   const { query: { categoryId, manufacturerId, manufacturerPartId } } = useRouter()
 
-  const categorQuery = trpc.categories.getCategoryById.useQuery(
+  const categoryQuery = trpc.categories.getCategoryById.useQuery(
     { id: categoryId },
     { enabled: !!categoryId },
   )
-  const { data: category } = categorQuery
+  const { data: category } = categoryQuery
 
   const manufacturerQuery = trpc.manufacturers.getManufacturerById.useQuery(
     { id: manufacturerId },
