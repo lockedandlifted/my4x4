@@ -11,6 +11,7 @@ type ImageThumbProps = {
   height?: number,
   href?: string,
   image: Image,
+  linkOriginalImageUrl?: boolean,
   width?: number,
 }
 
@@ -20,6 +21,7 @@ const ImageThumb = (props: ImageThumbProps) => {
     height = 120,
     href,
     image,
+    linkOriginalImageUrl = false,
     width = 120,
   } = props
 
@@ -33,10 +35,15 @@ const ImageThumb = (props: ImageThumbProps) => {
     }],
   })
 
+  const { imageUrl: fullSizeUrl } = useImageUrl({
+    enabled: !!image?.id,
+    path: image?.fileKey,
+  })
+
   if (!image?.id) return null
 
   return (
-    <NextLink href={href}>
+    <NextLink href={linkOriginalImageUrl ? fullSizeUrl : href}>
       <Flex
         borderWidth="1px"
         borderRadius="2xl"
