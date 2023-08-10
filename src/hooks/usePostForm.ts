@@ -357,7 +357,7 @@ function usePostForm(options?: UsePostFormOptions) {
 
   // Load Categories
   const categoriesQuery = trpc.categories.getCategories.useQuery({
-    categoryType: 'post',
+    categoryTypeKey: 'post',
   })
   const { data: categories = [] } = categoriesQuery
 

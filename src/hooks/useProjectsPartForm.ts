@@ -82,7 +82,7 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   const title = watch('title')
 
   // Load Categories
-  const categoriesQuery = trpc.categories.getCategories.useQuery({ categoryType: 'part' })
+  const categoriesQuery = trpc.categories.getCategories.useQuery({ categoryTypeKey: 'part' })
   const { data: categories = [] } = categoriesQuery
 
   // Create Mutation

@@ -7,7 +7,16 @@ import { router, publicProcedure } from '../trpc'
 const manufacturersRouter = router({
   getManufacturers: publicProcedure
     .input(z.object({
+      include: z.object({
+        manufacturerParts: z.object({
+          include: z.object({
+            category: z.boolean().default(false),
+            manufacturer: z.boolean().default(false),
+          }).optional(),
+        }).optional(),
+      }).optional(),
       limit: z.number().optional(),
+      manufacturerPartCategoryId: z.string().optional(),
       manufacturerTypeKey: z.string().optional(),
       string: z.string().optional(),
     }))
@@ -17,6 +26,14 @@ const manufacturersRouter = router({
       if (input.manufacturerTypeKey) {
         filters.manufacturerType = {
           key: input.manufacturerTypeKey,
+        }
+      }
+
+      if (input.manufacturerPartCategoryId) {
+        filters.manufacturerParts = {
+          some: {
+            categoryId: input.manufacturerPartCategoryId,
+          },
         }
       }
 
@@ -33,6 +50,7 @@ const manufacturersRouter = router({
           title: 'asc',
         },
         take: input.limit || undefined,
+        include: input.include,
       })
     }),
 
