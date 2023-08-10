@@ -188,6 +188,7 @@ const projectsRouter = router({
       manufacturerModelId: z.string().optional(),
       manufacturerPartId: z.string().optional(),
       partManufacturerId: z.string().optional(),
+      manufacturerModelSeriesId: z.string().optional(),
       string: z.string().optional(),
       userId: z.string().uuid().optional(),
     }))
@@ -230,6 +231,11 @@ const projectsRouter = router({
             },
           },
         })
+      }
+
+      // Manufacturer Model Series
+      if (input.manufacturerModelSeriesId) {
+        filters.manufacturerModelSeriesId = input.manufacturerModelSeriesId
       }
 
       // Model
@@ -293,6 +299,7 @@ const projectsRouter = router({
               },
             },
           },
+          manufacturerModelSeries: true,
           projectsImages: {
             include: {
               image: true,
@@ -501,6 +508,7 @@ const projectsRouter = router({
             manufacturer: true,
           },
         },
+        manufacturerModelSeries: true,
         projectsAttributes: {
           include: {
             attribute: true,
