@@ -1,4 +1,4 @@
-import { Flex, Heading } from '@chakra-ui/react'
+import { Flex, Heading, Tag } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 
@@ -8,7 +8,7 @@ import useBrowseProjects from '@hooks/useBrowseProjects'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-import FilterGroup from '@components/BrowseProjects/FilterGroup'
+import FilterGroup from '@components/FilterGroup'
 import Results from '@components/BrowseProjects/Results'
 
 const SearchPage = () => {
@@ -56,6 +56,37 @@ const SearchPage = () => {
         <Heading as="h1" fontWeight="medium" size="lg">
           Browse Projects
         </Heading>
+
+        <Flex marginTop={2}>
+          <Tag
+            as="a"
+            backgroundColor="black"
+            color="white"
+            cursor="pointer"
+            href="/search"
+            marginRight="1"
+            marginBottom="1"
+            paddingY="2"
+            paddingX="3"
+          >
+            By Vehicle Model
+          </Tag>
+
+          <Tag
+            as="a"
+            backgroundColor="white"
+            borderWidth="1px"
+            color="black"
+            cursor="pointer"
+            href="/searchByPart"
+            marginRight="1"
+            marginBottom="1"
+            paddingY="2"
+            paddingX="3"
+          >
+            By Part
+          </Tag>
+        </Flex>
 
         <FilterGroup title="Manufacturer">
           {manufacturers.map((manufacturer) => {

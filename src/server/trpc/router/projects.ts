@@ -181,27 +181,56 @@ const projectsRouter = router({
 
   getProjects: publicProcedure
     .input(z.object({
+      manufacturerPartCategoryId: z.string().optional(),
       includeUnpublished: z.boolean().optional(),
       limit: z.number().optional(),
       manufacturerId: z.string().optional(),
       manufacturerModelId: z.string().optional(),
+      manufacturerPartId: z.string().optional(),
+      partManufacturerId: z.string().optional(),
       manufacturerModelSeriesId: z.string().optional(),
       string: z.string().optional(),
       userId: z.string().uuid().optional(),
     }))
     .query(({ ctx, input }) => {
-      const filters: Prisma.ProjectWhereInput = {}
+      const filters: Prisma.Enumerable<Prisma.ProjectWhereInput> = []
 
       /// Published
       if (!input.includeUnpublished) {
-        filters.published = true
+        filters.push({ published: true })
       }
 
       // Manufacturer
       if (input.manufacturerId) {
-        filters.manufacturerModel = {
-          manufacturerId: input.manufacturerId,
-        }
+        filters.push({
+          manufacturerModel: {
+            manufacturerId: input.manufacturerId,
+          },
+        })
+      }
+
+      // Manufacturer Part
+      if (input.manufacturerPartId) {
+        filters.push({
+          projectsParts: {
+            some: {
+              manufacturerPartId: input.manufacturerPartId,
+            },
+          },
+        })
+      }
+
+      // Manufacturer Part Category
+      if (input.manufacturerPartCategoryId) {
+        filters.push({
+          projectsParts: {
+            some: {
+              manufacturerPart: {
+                categoryId: input.manufacturerPartCategoryId,
+              },
+            },
+          },
+        })
       }
 
       // Manufacturer Model Series
@@ -211,32 +240,63 @@ const projectsRouter = router({
 
       // Model
       if (input.manufacturerModelId) {
-        filters.manufacturerModelId = input.manufacturerModelId
+        filters.push({
+          manufacturerModelId: input.manufacturerModelId,
+        })
+      }
+
+      // Part Manufacturer
+      if (input.manufacturerPartId) {
+        filters.push({
+          projectsParts: {
+            some: {
+              manufacturerPart: {
+                manufacturerId: input.partManufacturerId,
+              },
+            },
+          },
+        })
       }
 
       // String
       if (input.string) {
-        filters.title = {
-          contains: input.string,
-          mode: 'insensitive',
-        }
+        filters.push({
+          title: {
+            contains: input.string,
+            mode: 'insensitive',
+          },
+        })
       }
 
       // User
       if (input.userId) {
-        filters.projectsUsers = {
-          some: {
-            userId: input.userId,
+        filters.push({
+          projectsUsers: {
+            some: {
+              userId: input.userId,
+            },
           },
-        }
+        })
       }
 
       return ctx.prisma.project.findMany({
-        where: filters,
+        where: {
+          AND: filters,
+        },
         include: {
           manufacturerModel: {
             include: {
               manufacturer: true,
+            },
+          },
+          projectsParts: {
+            include: {
+              manufacturerPart: {
+                include: {
+                  category: true,
+                  manufacturer: true,
+                },
+              },
             },
           },
           manufacturerModelSeries: true,

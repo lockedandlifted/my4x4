@@ -23,10 +23,11 @@ import styles from './styles.module.css'
 
 type EditorInputProps = {
   editor?: any,
+  readOnly?: boolean,
 }
 
 const EditorInput = (props: EditorInputProps) => {
-  const { editor } = props
+  const { editor, readOnly = false } = props
 
   const renderElement = useCallback((props) => {
     switch (props.element.type) {
@@ -93,7 +94,7 @@ const EditorInput = (props: EditorInputProps) => {
       onPaste={async (event) => {
         CustomEditor.handlePaste(editor, event, trpcClient)
       }}
-      readOnly={false}
+      readOnly={readOnly}
       renderElement={renderElement}
       renderLeaf={renderLeaf}
     />

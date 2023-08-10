@@ -9,12 +9,17 @@ import { router, publicProcedure } from '../trpc'
 const manufacturerPartsRouter = router({
   getManufacturerParts: publicProcedure
     .input(z.object({
+      categoryId: z.string().optional(),
       manufacturerId: z.string().optional(),
       manufacturerTitle: z.string().optional(),
       string: z.string().optional(),
     }))
     .query(({ ctx, input }) => {
       const filters: Prisma.ManufacturerPartWhereInput = {}
+
+      if (input.categoryId) {
+        filters.categoryId = input.categoryId
+      }
 
       if (input.manufacturerId) {
         filters.manufacturerId = input.manufacturerId
