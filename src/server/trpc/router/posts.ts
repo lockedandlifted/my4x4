@@ -140,17 +140,31 @@ const postsRouter = router({
 
   getPosts: publicProcedure
     .input(z.object({
+      categoryId: z.string().optional(),
       imageId: z.string().optional(),
+      limit: z.number().optional(),
       manufacturerId: z.string().optional(),
       manufacturerModelId: z.string().optional(),
       manufacturerPartId: z.string().optional(),
       postTypeKey: z.string().optional(),
       projectId: z.string().optional(),
       projectSlug: z.string().optional(),
+      published: z.boolean().optional(),
       userId: z.string().optional(),
     }))
     .query(({ ctx, input }) => {
       const filters: Prisma.Enumerable<Prisma.PostWhereInput> = []
+
+      // Category ID
+      if (input.categoryId) {
+        filters.push({
+          postsCategories: {
+            some: {
+              categoryId: input.categoryId,
+            },
+          },
+        })
+      }
 
       // Image ID
       if (input.imageId) {
@@ -229,6 +243,13 @@ const postsRouter = router({
         })
       }
 
+      // Published
+      if (input.published !== undefined) {
+        filters.push({
+          published: input.published,
+        })
+      }
+
       // User ID
       if (input.userId) {
         filters.push({
@@ -243,7 +264,13 @@ const postsRouter = router({
         include: {
           _count: {
             select: {
+              postLikes: true,
               postsComments: true,
+            },
+          },
+          postsCategories: {
+            include: {
+              category: true,
             },
           },
           postsComments: {
@@ -272,6 +299,7 @@ const postsRouter = router({
         orderBy: {
           createdAt: 'desc',
         },
+        take: input.limit || 100,
       })
     }),
 
@@ -295,6 +323,7 @@ const postsRouter = router({
             category: {
               select: {
                 key: true,
+                title: true,
               },
             },
           },

@@ -2,7 +2,7 @@ import { Flex, Heading } from '@chakra-ui/react'
 
 import { trpc } from '@utils/trpc'
 
-import FilterGroup from '@components/BrowseProjects/FilterGroup'
+import FilterGroup from '@components/FilterGroup'
 
 const BrowseManufacturers = () => {
   // Load Manufacturers
