@@ -8,7 +8,7 @@ import useBrowseProjectsByPart from '@hooks/useBrowseProjectsByPart'
 
 import MobileLayout from '@layouts/MobileLayout'
 
-import FilterGroup from '@components/BrowseProjects/FilterGroup'
+import FilterGroup from '@components/FilterGroup'
 import Results from '@components/BrowseProjects/Results'
 
 const SearchByPartPage = () => {
