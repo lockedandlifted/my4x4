@@ -141,6 +141,7 @@ const postsRouter = router({
   getPosts: publicProcedure
     .input(z.object({
       categoryId: z.string().optional(),
+      categoryKey: z.string().optional(),
       imageId: z.string().optional(),
       limit: z.number().optional(),
       manufacturerId: z.string().optional(),
@@ -155,12 +156,24 @@ const postsRouter = router({
     .query(({ ctx, input }) => {
       const filters: Prisma.Enumerable<Prisma.PostWhereInput> = []
 
-      // Category ID
+      // Category
       if (input.categoryId) {
         filters.push({
           postsCategories: {
             some: {
               categoryId: input.categoryId,
+            },
+          },
+        })
+      }
+
+      if (input.categoryKey) {
+        filters.push({
+          postsCategories: {
+            some: {
+              category: {
+                key: input.categoryKey,
+              },
             },
           },
         })

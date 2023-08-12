@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react'
+import { Flex, Text } from '@chakra-ui/react'
 
 import usePostForm from '@hooks/usePostForm'
 
@@ -123,7 +123,13 @@ const Viewer = (props: ViewerProps) => {
   const { editor } = postFormPayload
 
   if (!post?.bodyData) {
-    return null
+    return (
+      <Flex width="100%">
+        <Text>
+          {post?.body}
+        </Text>
+      </Flex>
+    )
   }
 
   return (

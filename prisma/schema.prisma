@@ -547,6 +547,7 @@ model Post {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   postLikes               PostLike[]
+  postPageViews           PostPageView[]
   postsAttachments        PostsAttachment[]
   postsCategories         PostsCategory[]
   postsComments           PostsComment[]
@@ -615,6 +616,17 @@ model PostLike {
 
   @@unique([postId, userId])
   @@map("post_likes")
+}
+
+model PostPageView {
+  id     String @id @default(uuid())
+  post   Post   @relation(fields: [postId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  postId String @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("post_page_views")
 }
 
 model PostsImage {
