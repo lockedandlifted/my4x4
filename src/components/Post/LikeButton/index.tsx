@@ -7,10 +7,11 @@ import type { Post } from '@prisma/client'
 
 type LikeButtonProps = {
   post: Post,
+  redirect?: string,
 }
 
 const LikeButton = (props: LikeButtonProps) => {
-  const { post } = props
+  const { post, redirect } = props
 
   const { data: sessionData } = useSession()
 
@@ -49,7 +50,9 @@ const LikeButton = (props: LikeButtonProps) => {
       as={sessionData?.user?.id ? 'button' : 'a'}
       colorScheme={userPostLikesCount ? 'red' : 'gray'}
       leftIcon={userPostLikesCount ? <HiHeart fontSize={24} /> : <HiOutlineHeart fontSize={24} />}
-      href={sessionData?.user?.id ? undefined : `/users/login?redirect=/${post?.id}`}
+      href={sessionData?.user?.id
+        ? undefined
+        : `/users/login?redirect=${redirect || `/${post?.id}`}`}
       onClick={userPostLikesCount
         ? () => deletePostLikeFn({
           id: post?.id,

@@ -21,15 +21,16 @@ import manufacturerModelsRouter from './manufacturerModels'
 import manufacturerPartsRouter from './manufacturerParts'
 import manufacturersRouter from './manufacturers'
 import postLikesRouter from './postLikes'
+import postPageViewsRouter from './postPageViews'
 import postsAttachmentsRouter from './postsAttachments'
 import postsCommentsRouter from './postsComments'
 import postsRouter from './posts'
-import projectsCommentsRouter from './projectsComments'
 import projectImagesCommentsRouter from './projectImagesComments'
 import projectLikesRouter from './projectLikes'
 import projectPageViewsRouter from './projectPageViews'
 import projectPartsExternalLinksRouter from './projectPartsExternalLinks'
 import projectPartsImageTagsRouter from './projectPartsImageTags'
+import projectsCommentsRouter from './projectsComments'
 import projectsExternalLinksRouter from './projectsExternalLinks'
 import projectsImagesRouter from './projectsImages'
 import projectsPartsRouter from './projectsParts'
@@ -61,16 +62,17 @@ export const appRouters = {
   manufacturerParts: manufacturerPartsRouter,
   manufacturers: manufacturersRouter,
   postLikes: postLikesRouter,
+  postPageViews: postPageViewsRouter,
   posts: postsRouter,
   postsAttachments: postsAttachmentsRouter,
   postsComments: postsCommentsRouter,
-  projectsComments: projectsCommentsRouter,
   projectImagesComments: projectImagesCommentsRouter,
   projectLikes: projectLikesRouter,
   projectPageViews: projectPageViewsRouter,
   projectPartsExternalLinks: projectPartsExternalLinksRouter,
   projectPartsImageTags: projectPartsImageTagsRouter,
   projects: projectsRouter,
+  projectsComments: projectsCommentsRouter,
   projectsExternalLinks: projectsExternalLinksRouter,
   projectsImages: projectsImagesRouter,
   projectsParts: projectsPartsRouter,

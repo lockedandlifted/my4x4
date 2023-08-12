@@ -1,11 +1,11 @@
 import { trpc } from '@utils/trpc'
 
 type UseBrowsePostsOptions = {
-  categoryId?: string,
+  categoryKey?: string,
 }
 
 function useBrowsePosts(options: UseBrowsePostsOptions) {
-  const { categoryId } = options
+  const { categoryKey } = options
 
   // Load Categories
   const categoriesQuery = trpc.categories.getCategories.useQuery({
@@ -15,7 +15,7 @@ function useBrowsePosts(options: UseBrowsePostsOptions) {
 
   // Load Posts
   const postsQuery = trpc.posts.getPosts.useQuery({
-    categoryId,
+    categoryKey,
     limit: 100,
     postTypeKey: 'forum',
     published: true,

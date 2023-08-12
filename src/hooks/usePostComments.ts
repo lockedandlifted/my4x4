@@ -30,10 +30,10 @@ function usePostComments(options: UsePostCommentsParams) {
         postId: post.id,
       }),
       invalidatePost: () => invalidate({ id: post.id }),
-      isLoading,
       setInputValue,
     },
     inputValue,
+    isLoading,
   }
 }
 
