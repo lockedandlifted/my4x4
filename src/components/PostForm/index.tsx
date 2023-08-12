@@ -149,12 +149,14 @@ const PostForm = (props: PostFormProps) => {
       }}
       formPayload={formPayload}
     >
-      <PublishPost
-        callbacks={{
-          publishPost: publishFn,
-        }}
-        post={post}
-      />
+      {!!post?.id && (
+        <PublishPost
+          callbacks={{
+            publishPost: publishFn,
+          }}
+          post={post}
+        />
+      )}
 
       <Form.Field
         label="Title"
