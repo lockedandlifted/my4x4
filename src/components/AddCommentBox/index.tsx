@@ -15,6 +15,7 @@ type AddCommentBoxProps = {
   compact?: boolean,
   inputValue: string,
   isLoading?: boolean,
+  placeholder?: string,
 }
 
 const AddCommentBox = (props: AddCommentBoxProps) => {
@@ -26,6 +27,7 @@ const AddCommentBox = (props: AddCommentBoxProps) => {
     compact = false,
     inputValue,
     isLoading = false,
+    placeholder = 'Enter your reply',
   } = props
 
   const { data: sessionData } = useSession()
@@ -57,7 +59,7 @@ const AddCommentBox = (props: AddCommentBoxProps) => {
         {compact && (
           <>
             <InputComponent
-              placeholder="Enter your reply"
+              placeholder={placeholder}
               onChange={e => setInputValue(e.target.value)}
               value={inputValue}
               variant="unstyled"
@@ -79,7 +81,7 @@ const AddCommentBox = (props: AddCommentBoxProps) => {
           <>
             <Textarea
               height="130px"
-              placeholder="Enter your reply"
+              placeholder={placeholder}
               onChange={e => setInputValue(e.target.value)}
               value={inputValue}
               variant="unstyled"

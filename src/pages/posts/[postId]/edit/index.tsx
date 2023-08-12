@@ -9,6 +9,7 @@ import MobileLayout from '@layouts/MobileLayout'
 
 import AddPostRelatedEntitiesModal from '@modals/AddPostRelatedEntitiesModal'
 
+import EditPostBanner from '@components/Post/EditPostBanner'
 import PostForm from '@components/PostForm'
 
 const showModal = (modalKey: string, setState, payload?: object) => {
@@ -54,6 +55,8 @@ const EditPostPage = () => {
 
   return (
     <MobileLayout>
+      <EditPostBanner editMode post={post} />
+
       <Flex direction="column" marginTop={8} width="100%">
         <Heading as="h1" fontWeight="medium" marginBottom="4" size="lg">
           Edit Post

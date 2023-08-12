@@ -6,6 +6,7 @@ import Form from '@components/Form'
 import Tag from '@components/Category/Tag'
 
 import Editor from '@components/Post/Editor'
+import PublishPost from '@components/Post/PublishPost'
 
 import type { Prisma } from '@prisma/client'
 
@@ -109,17 +110,19 @@ type PostFormProps = {
       closeModal: VoidFunction,
     },
   },
+  categoryKey?: string,
   post?: PostWithIncludes,
 }
 
 const PostForm = (props: PostFormProps) => {
-  const { callbacks, post } = props
+  const { callbacks, categoryKey, post } = props
 
-  const postFormPayload = usePostForm({ post })
+  const postFormPayload = usePostForm({ categoryKey, post })
   const {
     callbacks: {
       createPost: createFn,
       insertRelatedEntity,
+      publishPost: publishFn,
       updatePost: updateFn,
       selectCategoryKey,
     },
@@ -146,6 +149,15 @@ const PostForm = (props: PostFormProps) => {
       }}
       formPayload={formPayload}
     >
+      {!!post?.id && (
+        <PublishPost
+          callbacks={{
+            publishPost: publishFn,
+          }}
+          post={post}
+        />
+      )}
+
       <Form.Field
         label="Title"
         name="title"

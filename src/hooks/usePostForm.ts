@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useForm, UseFormSetValue } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { Node } from 'slate'
@@ -189,6 +189,18 @@ const serializeEditorValueAsString = value => (
     .join('\n')
 )
 
+type PublishPostParams = {
+  mutation: {
+    mutate: (data: { id: string }) => void,
+  },
+  post: PostWithIncludes,
+}
+
+const publishPost = (params: PublishPostParams) => {
+  const { mutation, post } = params
+  return mutation.mutate({ id: post.id })
+}
+
 type UpdatePostParams = {
   data: typeof defaultState,
   editor: object,
@@ -327,12 +339,13 @@ const defaultState: DefaultState = {
 }
 
 type UsePostFormOptions = {
+  categoryKey?: string,
   post?: PostWithIncludes,
   shouldRedirect?: boolean,
 }
 
 function usePostForm(options?: UsePostFormOptions) {
-  const { post, shouldRedirect = true } = options || {}
+  const { categoryKey, post, shouldRedirect = true } = options || {}
 
   const shouldUsePostEditor = post?.isRichText
   const editor = useMemo(() => {
@@ -355,6 +368,13 @@ function usePostForm(options?: UsePostFormOptions) {
   const categoryKeys = watch('categoryKeys')
   const relatedEntities = watch('relatedEntities')
 
+  // Set Category Key
+  useEffect(() => {
+    if (categoryKey) {
+      setValue('categoryKeys', [categoryKey])
+    }
+  }, [categoryKey, setValue])
+
   // Load Categories
   const categoriesQuery = trpc.categories.getCategories.useQuery({
     categoryTypeKey: 'post',
@@ -372,15 +392,25 @@ function usePostForm(options?: UsePostFormOptions) {
     },
   })
 
-  // Update Mutation
+  // Invalidate
   const { posts: { getPostById: { invalidate: invalidateGetPostById } } } = trpc.useContext()
 
+  // Publish Mutation
+  const publishPostMutation = trpc.posts.publishPostById.useMutation({
+    onSuccess: () => {
+      if (post?.id) {
+        invalidateGetPostById({ id: post.id })
+      }
+    },
+  })
+
+  // Update Mutation
   const updatePostMutation = trpc.posts.updatePostById.useMutation({
     onSuccess: () => {
       invalidateGetPostById({ id: post?.id })
 
       if (shouldRedirect) {
-        router.push('/users/account')
+        router.push(`/posts/${post?.id}`)
       }
     },
   })
@@ -397,6 +427,12 @@ function usePostForm(options?: UsePostFormOptions) {
         insertRelatedEntity({
           editor,
           relatedEntity,
+        })
+      ),
+      publishPost: () => (
+        publishPost({
+          mutation: publishPostMutation,
+          post,
         })
       ),
       selectCategoryKey: (categoryKey: string) => {

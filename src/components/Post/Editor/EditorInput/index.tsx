@@ -97,6 +97,7 @@ const EditorInput = (props: EditorInputProps) => {
       readOnly={readOnly}
       renderElement={renderElement}
       renderLeaf={renderLeaf}
+      style={{ minHeight: readOnly ? undefined : 180 }}
     />
   )
 }
