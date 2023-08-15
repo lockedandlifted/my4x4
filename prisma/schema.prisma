@@ -858,6 +858,8 @@ model ProjectsPart {
   description           String?
   installedByBusiness   Business?        @relation(fields: [installedByBusinessId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   installedByBusinessId String?          @map("installed_by_business_id")
+  status                Status?          @relation(fields: [statusId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  statusId              String?          @map("status_id")
   user                  User?            @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userId                String?          @map("user_id")
 
@@ -948,6 +950,19 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+model Status {
+  id    String @id @default(uuid())
+  key   String @unique
+  title String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  projectsPart ProjectsPart[]
+
+  @@map("statuses")
 }
 
 model User {

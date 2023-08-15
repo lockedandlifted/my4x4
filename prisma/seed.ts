@@ -14,6 +14,7 @@ import manufacturerTypeSeedFn from './seeds/manufacturerTypes.js'
 import postTypeSeedFn from './seeds/postTypes.js'
 import roleSeedFn from './seeds/roles.js'
 import serviceSeedFn from './seeds/services.js'
+import statusSeedFn from './seeds/statuses.js'
 
 const seedDatabase = async () => {
   try {
@@ -71,6 +72,10 @@ const seedDatabase = async () => {
     // Services
     const services = await Promise.all(serviceSeedFn(prisma))
     console.log('--- Seeded Services ---', services)
+
+    // Statuses
+    const statuses = await Promise.all(statusSeedFn(prisma))
+    console.log('--- Seeded Statuses ---', statuses)
   } catch (error) {
     console.warn('Please define your seed data.')
     console.error(error)

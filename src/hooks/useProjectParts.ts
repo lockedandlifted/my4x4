@@ -52,6 +52,7 @@ function useProjectParts(
             manufacturer: true,
           },
         },
+        status: true,
         ...options?.queryOptions?.include,
       },
       projectId: project?.id,
@@ -60,8 +61,14 @@ function useProjectParts(
   )
   const { data: projectsParts = [] } = projectsPartsQuery
 
+  const removedParts = projectsParts.filter(projectsPart => projectsPart.status?.key === 'removed')
+
+  const installedParts = projectsParts.filter(projectsPart => projectsPart.status?.key === 'installed' || !projectsPart.status?.key)
+
   return {
     groupedParts: groupPartsByCategory({ projectsParts }),
+    groupedInstalledParts: groupPartsByCategory({ projectsParts: installedParts }),
+    groupedRemovedParts: groupPartsByCategory({ projectsParts: removedParts }),
     projectsParts,
   }
 }
