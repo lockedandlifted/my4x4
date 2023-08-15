@@ -199,6 +199,16 @@ const PostForm = (props: PostFormProps) => {
           </Form.BasicField>
 
           <Form.BasicField
+            label="Attachments"
+            marginTop="4"
+            name="attachments"
+          >
+            <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
+              <Attachments editor={editor} editMode post={post} />
+            </Flex>
+          </Form.BasicField>
+
+          <Form.BasicField
             label="References"
             marginTop="4"
             name="references"
@@ -212,16 +222,6 @@ const PostForm = (props: PostFormProps) => {
                 editMode
                 relatedEntities={relatedEntities}
               />
-            </Flex>
-          </Form.BasicField>
-
-          <Form.BasicField
-            label="Attachments"
-            marginTop="4"
-            name="attachments"
-          >
-            <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
-              <Attachments editor={editor} editMode post={post} />
             </Flex>
           </Form.BasicField>
         </>

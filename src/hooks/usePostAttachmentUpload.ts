@@ -49,6 +49,7 @@ function usePostAttachmentUpload(options: UsePostAttachmentUploadOptions) {
       uppyOptions: {
         allowedFileTypes: ['.jpg', '.jpeg', '.pdf', '.png'],
       },
+      maxNumberOfFiles: 100,
     },
     [postId],
   )

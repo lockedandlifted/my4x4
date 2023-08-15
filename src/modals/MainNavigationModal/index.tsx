@@ -7,7 +7,7 @@ import {
   DrawerOverlay,
 } from '@chakra-ui/react'
 import {
-  FaPlusCircle, FaHome, FaSignOutAlt, FaTruckMonster, FaUserEdit,
+  FaPlusCircle, FaComments, FaHome, FaSignOutAlt, FaTruckMonster, FaUserEdit,
 } from 'react-icons/fa'
 import { signOut, useSession } from 'next-auth/react'
 
@@ -42,6 +42,12 @@ const MainNavigationModal = (props: MainNavigationModalProps) => {
             href="/"
             icon={<FaHome />}
             title="Home"
+          />
+
+          <NavigationItem
+            href="/posts"
+            icon={<FaComments />}
+            title="Forum"
           />
 
           <NavigationItem

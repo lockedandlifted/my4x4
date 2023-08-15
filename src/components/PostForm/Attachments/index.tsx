@@ -41,6 +41,8 @@ const Attachments = (props: AttachmentsProps) => {
 
   const { data: postsAttachments = [] } = postsAttachmentsQuery
 
+  const hasPostsAttachments = postsAttachments?.length > 0
+
   const { uppy } = usePostAttachmentUpload({
     callbacks: {
       onSuccess: () => invalidate({ postId: post?.id }),
@@ -59,14 +61,16 @@ const Attachments = (props: AttachmentsProps) => {
         />
       )}
 
-      <TableContainer marginBottom="2">
+      <TableContainer marginBottom={hasPostsAttachments ? 2 : 0}>
         <Table size="sm" variant="simple">
-          <Thead>
-            <Tr>
-              <Th width="calc(100% - 100px)">Filename</Th>
-              <Th width="100px">Actions</Th>
-            </Tr>
-          </Thead>
+          {hasPostsAttachments && (
+            <Thead>
+              <Tr>
+                <Th width="calc(100% - 100px)">Filename</Th>
+                <Th width="100px">Actions</Th>
+              </Tr>
+            </Thead>
+          )}
 
           <Tbody>
             {postsAttachments.map((postsAttachment) => {
