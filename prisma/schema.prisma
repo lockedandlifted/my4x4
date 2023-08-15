@@ -960,7 +960,7 @@ model Status {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 
-  projectsPart ProjectsPart[]
+  projectsParts ProjectsPart[]
 
   @@map("statuses")
 }
