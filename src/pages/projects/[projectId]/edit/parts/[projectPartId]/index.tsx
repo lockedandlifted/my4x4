@@ -62,6 +62,7 @@ const EditProjectsPartPage = () => {
           manufacturer: true,
         },
       },
+      status: true,
     },
   }, { enabled: !!projectPartId })
   const { data: projectsPart } = projectsPartQuery
@@ -70,6 +71,7 @@ const EditProjectsPartPage = () => {
   const {
     callbacks: {
       deleteProjectsPart,
+      updateProjectsPart,
     },
   } = projectsPartFormPayload
 
@@ -87,6 +89,9 @@ const EditProjectsPartPage = () => {
         }}
         callbacks={{
           deleteProjectsPart: () => deleteProjectsPart(),
+          updateProjectsPart: projectsPart?.status?.key !== 'removed'
+            ? () => updateProjectsPart({ ...projectsPart, statusKey: 'removed' })
+            : undefined,
         }}
       />
 

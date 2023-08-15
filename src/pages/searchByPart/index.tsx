@@ -86,7 +86,6 @@ const SearchByPartPage = () => {
           >
             By Part
           </Tag>
-
         </Flex>
 
         <FilterGroup title="Category">
