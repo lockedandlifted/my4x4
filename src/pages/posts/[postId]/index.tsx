@@ -110,7 +110,7 @@ const PostPage = () => {
             <FaAngleLeft />
           </Text>
 
-          <Text fontWeight="bold" marginLeft={1}>Back</Text>
+          <Text fontWeight="bold" marginLeft={1}>Back to Forum</Text>
         </Flex>
       </NextLink>
 
@@ -125,7 +125,7 @@ const PostPage = () => {
         </Flex>
       )}
 
-      <Flex direction="column" alignItems="flex-start" marginTop={4} width="100%">
+      <Flex direction="column" alignItems="flex-start" width="100%">
         {hasImage && (
           <Flex
             alignItems="center"
