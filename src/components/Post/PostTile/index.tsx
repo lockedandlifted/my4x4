@@ -128,7 +128,7 @@ const PostTile = (props: PostTileProps) => {
           </Flex>
         </Flex>
 
-        <Heading as="h2" fontWeight="medium" marginTop="2" size="lg">
+        <Heading as="h2" fontWeight="bold" marginTop="4" size="md">
           <LinkOverlay href={`/posts/${post?.id}`}>
             {post?.title}
           </LinkOverlay>
