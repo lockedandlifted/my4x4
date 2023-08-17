@@ -1,11 +1,13 @@
 import {
-  Badge, Flex, Heading, Link, Text,
+  Badge, Flex, Heading, Image, Link, Text,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
 import type { ActivityItem } from '@prisma/client'
 
 import { trpc } from '@utils/trpc'
+
+import useImageUrl from '@hooks/useImageUrl'
 
 import ActivityContainer from '../ActivityContainer'
 
@@ -28,6 +30,20 @@ const PostPublished = (props: PostPublishedProps) => {
 
   const postUrl = `/posts/${post?.id}`
 
+  const image = post?.postsImages?.[0]?.image
+
+  const hasImage = !!image
+
+  const { imageUrl } = useImageUrl({
+    enabled: hasImage,
+    path: image?.fileKey,
+    transformation: [{
+      focus: 'auto',
+      height: '480',
+      width: '1000',
+    }],
+  })
+
   return (
     <ActivityContainer>
       <ActivityContainer.Owner
@@ -41,7 +57,26 @@ const PostPublished = (props: PostPublishedProps) => {
       </ActivityContainer.Text>
 
       <ActivityContainer.Body>
-        <Flex borderWidth="1px" borderRadius="xl" direction="column" padding="8">
+        <Flex borderWidth="1px" borderRadius="xl" direction="column" padding="4">
+          {hasImage && (
+            <Flex
+              backgroundColor="gray.100"
+              borderTopRadius="lg"
+              height="176px"
+              marginBottom={4}
+              overflow="hidden"
+              position="relative"
+              width="100%"
+            >
+              <Image
+                alt="Post Cover Image"
+                objectFit="cover"
+                src={imageUrl}
+                width="100%"
+              />
+            </Flex>
+          )}
+
           <Flex>
             {post?.postsCategories?.map((postCategory) => {
               const { category, id } = postCategory
@@ -67,9 +102,11 @@ const PostPublished = (props: PostPublishedProps) => {
             </Heading>
           </NextLink>
 
-          <Text marginTop="4" noOfLines={3}>
-            {post?.body}
-          </Text>
+          {!!post?.body && (
+            <Text marginTop="4" noOfLines={3}>
+              {post?.body}
+            </Text>
+          )}
 
           <Flex
             borderTopWidth="1px"

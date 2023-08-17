@@ -88,6 +88,15 @@ type PostWithIncludes = Prisma.PostGetPayload<{
         createdAt: 'desc',
       },
     },
+    postsImages: {
+      include: {
+        image: true,
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+      take: 1,
+    },
     postLikes: true,
     postsManufacturers: {
       include: {

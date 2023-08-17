@@ -4,27 +4,27 @@ import { trpc } from '@utils/trpc'
 
 import useUppy from '@hooks/useUppy'
 
-type UsePostAttachmentUploadOptions = {
+type UsePostImageUploadOptions = {
   callbacks: {
     onSuccess: (data: object) => void,
   },
   postId: string,
 }
 
-function usePostAttachmentUpload(options: UsePostAttachmentUploadOptions) {
+function usePostImageUpload(options: UsePostImageUploadOptions) {
   const { callbacks: { onSuccess }, postId } = options
 
-  // Create PostsAttachment Mutation
-  const createPostsAttachmentMutation = trpc.postsAttachments.createPostsAttachment.useMutation({
+  // Create PostsImage Mutation
+  const createPostsImageMutation = trpc.postsImages.createPostsImage.useMutation({
     onSuccess,
   })
 
-  const { mutate } = createPostsAttachmentMutation
+  const { mutate } = createPostsImageMutation
 
   const uploadSuccess = useCallback((file) => {
     const params = {
-      attachment: {
-        fileExtension: file?.meta?.fileExtension,
+      postId,
+      image: {
         fileKey: file?.meta?.fileKey,
         filename: file?.meta?.filename,
         height: file?.meta?.height,
@@ -32,7 +32,6 @@ function usePostAttachmentUpload(options: UsePostAttachmentUploadOptions) {
         originalFilename: file?.meta?.originalFilename,
         width: file?.meta?.width,
       },
-      postId,
     }
 
     mutate(params)
@@ -45,11 +44,7 @@ function usePostAttachmentUpload(options: UsePostAttachmentUploadOptions) {
       callbacks: {
         uploadSuccess,
       },
-      fileKeyPrefix: 'attachments',
-      uppyOptions: {
-        allowedFileTypes: ['.jpg', '.jpeg', '.pdf', '.png'],
-      },
-      maxNumberOfFiles: 100,
+      maxNumberOfFiles: 1,
     },
     [postId],
   )
@@ -59,4 +54,4 @@ function usePostAttachmentUpload(options: UsePostAttachmentUploadOptions) {
   }
 }
 
-export default usePostAttachmentUpload
+export default usePostImageUpload

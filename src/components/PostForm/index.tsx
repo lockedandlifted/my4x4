@@ -11,6 +11,7 @@ import PublishPost from '@components/Post/PublishPost'
 import type { Prisma } from '@prisma/client'
 
 import Attachments from './Attachments'
+import CoverImage from './CoverImage'
 import RelatedEntities from './RelatedEntities'
 
 type PostWithIncludes = Prisma.PostGetPayload<{
@@ -80,6 +81,15 @@ type PostWithIncludes = Prisma.PostGetPayload<{
       orderBy: {
         createdAt: 'desc',
       },
+    },
+    postsImages: {
+      include: {
+        image: true,
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+      take: 1,
     },
     postLikes: true,
     postsProjects: {
@@ -158,6 +168,18 @@ const PostForm = (props: PostFormProps) => {
         />
       )}
 
+      {!!post?.id && (
+        <Form.BasicField
+          label="Cover Image"
+          marginBottom="4"
+          name="coverImage"
+        >
+          <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
+            <CoverImage editMode post={post} />
+          </Flex>
+        </Form.BasicField>
+      )}
+
       <Form.Field
         label="Title"
         name="title"
@@ -199,6 +221,16 @@ const PostForm = (props: PostFormProps) => {
           </Form.BasicField>
 
           <Form.BasicField
+            label="Attachments"
+            marginTop="4"
+            name="attachments"
+          >
+            <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
+              <Attachments editor={editor} editMode post={post} />
+            </Flex>
+          </Form.BasicField>
+
+          <Form.BasicField
             label="References"
             marginTop="4"
             name="references"
@@ -212,16 +244,6 @@ const PostForm = (props: PostFormProps) => {
                 editMode
                 relatedEntities={relatedEntities}
               />
-            </Flex>
-          </Form.BasicField>
-
-          <Form.BasicField
-            label="Attachments"
-            marginTop="4"
-            name="attachments"
-          >
-            <Flex borderWidth="1px" borderRadius="lg" flexDirection="column" padding="2" width="100%">
-              <Attachments editor={editor} editMode post={post} />
             </Flex>
           </Form.BasicField>
         </>
