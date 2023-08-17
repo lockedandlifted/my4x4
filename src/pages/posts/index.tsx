@@ -25,6 +25,14 @@ const PostsPage = () => {
         </Heading>
 
         <FilterGroup title="Tags">
+          <FilterGroup.Tag
+            href="/posts"
+            isSelected={!categoryKey}
+            key="all"
+          >
+            All
+          </FilterGroup.Tag>
+
           {categories?.map((category) => {
             const { key, id, title } = category
 
