@@ -295,6 +295,15 @@ const postsRouter = router({
             },
             take: 1,
           },
+          postsImages: {
+            include: {
+              image: true,
+            },
+            orderBy: {
+              updatedAt: 'desc',
+            },
+            take: 1,
+          },
           user: {
             include: {
               usersImages: {
@@ -392,6 +401,15 @@ const postsRouter = router({
             createdAt: 'desc',
           },
         },
+        postsImages: {
+          include: {
+            image: true,
+          },
+          orderBy: {
+            updatedAt: 'desc',
+          },
+          take: 1,
+        },
         postLikes: true,
         postsManufacturers: {
           include: {
@@ -429,6 +447,61 @@ const postsRouter = router({
         },
       },
     })),
+
+  getSimilarPosts: publicProcedure
+    .input(z.object({
+      limit: z.number().optional(),
+      postId: z.string(),
+    }))
+    .query(async ({ ctx, input }) => {
+      const post = (await ctx.prisma.post.findFirst({
+        where: { id: input.postId },
+        include: {
+          postsCategories: {
+            include: {
+              category: true,
+            },
+          },
+        },
+      }))
+
+      const categories = post?.postsCategories.map(postsCategory => ({
+        categoryId: postsCategory?.category?.id,
+      }))
+
+      return ctx.prisma.post.findMany({
+        where: {
+          postsCategories: {
+            some: {
+              OR: categories,
+            },
+          },
+          published: true,
+          NOT: {
+            id: post?.id,
+          },
+        },
+        include: {
+          user: {
+            include: {
+              usersImages: {
+                include: {
+                  image: true,
+                },
+                orderBy: {
+                  sort: 'asc',
+                },
+                take: 1,
+              },
+            },
+          },
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        take: input.limit || 3,
+      })
+    }),
 
   updatePostById: protectedProcedure
     .input(z.object({

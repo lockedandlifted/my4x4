@@ -1,10 +1,12 @@
 import {
-  Badge, Box, Flex, Heading, Link, LinkBox, LinkOverlay, Text,
+  Badge, Box, Flex, Heading, Image, Link, LinkBox, LinkOverlay, Text,
 } from '@chakra-ui/react'
 import { HiOutlineHeart } from 'react-icons/hi'
 import { FaRegComments } from 'react-icons/fa'
 
 import type { Prisma } from '@prisma/client'
+
+import useImageUrl from '@hooks/useImageUrl'
 
 import UserImage from '@components/UserImage'
 
@@ -26,6 +28,15 @@ type PostWithIncludes = Prisma.PostGetPayload<{
       },
       orderBy: {
         createdAt: 'asc',
+      },
+      take: 1,
+    },
+    postsImages: {
+      include: {
+        image: true,
+      },
+      orderBy: {
+        updatedAt: 'desc',
       },
       take: 1,
     },
@@ -52,6 +63,20 @@ type PostTileProps = {
 const PostTile = (props: PostTileProps) => {
   const { post, post: { createdAt, user } } = props
 
+  const image = post?.postsImages?.[0]?.image
+
+  const hasImage = !!image
+
+  const { imageUrl } = useImageUrl({
+    enabled: hasImage,
+    path: image?.fileKey,
+    transformation: [{
+      focus: 'auto',
+      height: '480',
+      width: '1000',
+    }],
+  })
+
   return (
     <LinkBox
       alignItems="flex-start"
@@ -63,9 +88,24 @@ const PostTile = (props: PostTileProps) => {
       marginTop="4"
       width="100%"
     >
-      <Flex backgroundColor="gray.100" borderTopRadius="lg" height="176px" width="100%">
-        Image
-      </Flex>
+
+      {hasImage && (
+        <Flex
+          backgroundColor="gray.100"
+          borderTopRadius="lg"
+          height="176px"
+          overflow="hidden"
+          position="relative"
+          width="100%"
+        >
+          <Image
+            alt="Post Cover Image"
+            objectFit="cover"
+            src={imageUrl}
+            width="100%"
+          />
+        </Flex>
+      )}
 
       <Flex alignItems="flex-start" direction="column" padding="4">
         <Flex>
