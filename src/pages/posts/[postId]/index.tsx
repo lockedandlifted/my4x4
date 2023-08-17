@@ -114,7 +114,7 @@ const PostPage = () => {
         </Flex>
       </NextLink>
 
-      {!post?.published && (
+      {isValidOwner && !post?.published && (
         <Flex marginTop={8}>
           <PublishPost
             callbacks={{
