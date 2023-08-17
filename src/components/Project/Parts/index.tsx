@@ -1,4 +1,8 @@
-import { Button, Flex, Heading } from '@chakra-ui/react'
+import { useState } from 'react'
+
+import {
+  Button, Flex, Heading, Tag,
+} from '@chakra-ui/react'
 
 import type { Project } from '@prisma/client'
 
@@ -26,8 +30,15 @@ const Parts = (props: PartsProps) => {
   const { CreateOrEditProjectPartModal } = callbacks || {}
 
   const projectPartsPayload = useProjectParts(project)
-  const { groupedParts, projectsParts } = projectPartsPayload
+  const { groupedInstalledParts, groupedRemovedParts, projectsParts } = projectPartsPayload
+
   const hasParts = projectsParts.length > 0
+  const hasInstalledParts = groupedInstalledParts.length > 0
+  const hasRemovedParts = groupedRemovedParts.length > 0
+
+  const [statusKey, setStatusKey] = useState(hasInstalledParts ? 'installed' : 'removed')
+
+  const groupedParts = statusKey === 'removed' ? groupedRemovedParts : groupedInstalledParts
 
   if (!editMode && !hasParts) {
     return null
@@ -35,10 +46,46 @@ const Parts = (props: PartsProps) => {
 
   return (
     <Flex flexDirection="column" marginTop={8}>
-      <Heading size="sm">Parts</Heading>
+      <Heading marginBottom={2} size="sm">Parts</Heading>
+
+      {hasInstalledParts && hasRemovedParts && (
+        <Flex>
+          {hasInstalledParts && (
+            <Tag
+              backgroundColor={statusKey === 'installed' ? 'black' : 'white'}
+              borderWidth="1px"
+              color={statusKey === 'installed' ? 'white' : 'black'}
+              cursor="pointer"
+              marginRight="1"
+              marginBottom="1"
+              onClick={() => setStatusKey('installed')}
+              paddingY="2"
+              paddingX="3"
+            >
+              Installed
+            </Tag>
+          )}
+
+          {hasRemovedParts && (
+            <Tag
+              backgroundColor={statusKey === 'removed' ? 'black' : 'white'}
+              borderWidth="1px"
+              color={statusKey === 'removed' ? 'white' : 'black'}
+              cursor="pointer"
+              marginRight="1"
+              marginBottom="1"
+              onClick={() => setStatusKey('removed')}
+              paddingY="2"
+              paddingX="3"
+            >
+              Removed
+            </Tag>
+          )}
+        </Flex>
+      )}
 
       {hasParts && (
-        <Flex borderWidth="1px" borderColor="gray.200" borderRadius="lg" direction="column" marginTop="4" padding="4">
+        <Flex borderWidth="1px" borderColor="gray.200" borderRadius="lg" direction="column" marginTop="2" padding="4">
           {groupedParts.map((group) => {
             const { category, key, projectsParts } = group
 

@@ -47,6 +47,18 @@ const createProjectsPart = (params: CreateProjectsPartParams) => {
   return mutation.mutate(data)
 }
 
+type UpdateProjectsPartParams = {
+  data: typeof defaultState,
+  mutation: {
+    mutate: (data: typeof defaultState) => void,
+  },
+}
+
+const updateProjectsPart = (params: UpdateProjectsPartParams) => {
+  const { data, mutation } = params
+  return mutation.mutate(data)
+}
+
 const setupProjectPartInitialState = (projectsPart: ProjectsPart) => {
   const initialState = Object.keys(defaultState).reduce((acc, key) => {
     acc[key] = projectsPart[key] || defaultState[key]
@@ -93,15 +105,11 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
   })
 
   // Update Mutation
-  // const updateProjectsPartMutation = trpc.projectsParts.updateProjectById.useMutation({
-  //   onSuccess: (data) => {
-  //     const [_, project] = data
-
-  //     if (router.pathname !== '/projects/[projectId]/edit'){
-  //       router.push(`/projects/${project.id}/edit`)
-  //     }
-  //   }
-  // })
+  const updateProjectsPartMutation = trpc.projectsParts.updateProjectsPartById.useMutation({
+    onSuccess: () => {
+      router.replace(`/projects/${projectsPart.projectId}/edit`)
+    },
+  })
 
   // Delete Mutation
   const deleteProjectsPartMutation = trpc.projectsParts.deleteProjectsPartById.useMutation({
@@ -117,6 +125,9 @@ function useProjectsPartForm(options: UseProjectPartFormOptions) {
       ),
       deleteProjectsPart: () => (
         deleteProjectsPart({ projectsPart, mutation: deleteProjectsPartMutation })
+      ),
+      updateProjectsPart: (data: typeof defaultState & { statusKey?: string }) => (
+        updateProjectsPart({ data, projectsPart, mutation: updateProjectsPartMutation })
       ),
     },
     categories,

@@ -21,6 +21,7 @@ const projectsPartsRouter = router({
           }).optional(),
         }).optional(),
         project: z.boolean().optional(),
+        status: z.boolean().optional(),
       }).optional(),
       projectId: z.string(),
       string: z.string().optional(),
@@ -93,6 +94,7 @@ const projectsPartsRouter = router({
           },
         },
         project: true,
+        status: true,
         user: {
           include: {
             usersImages: {
@@ -305,6 +307,30 @@ const projectsPartsRouter = router({
       })
 
       return result
+    }),
+
+  updateProjectsPartById: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+      statusKey: z.string().optional(),
+    }))
+    .mutation(({ ctx, input }) => {
+      const data: Prisma.ProjectsPartUpdateInput = {}
+
+      if (input.statusKey) {
+        data.status = {
+          connect: {
+            key: input.statusKey,
+          },
+        }
+      }
+
+      return ctx.prisma.projectsPart.update({
+        where: {
+          id: input.id,
+        },
+        data,
+      })
     }),
 })
 

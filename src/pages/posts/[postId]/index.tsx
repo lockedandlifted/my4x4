@@ -1,13 +1,16 @@
 import { useRouter } from 'next/router'
+import NextLink from 'next/link'
 import {
-  Badge, Box, Flex, Heading, SimpleGrid,
+  Badge, Box, Flex, Heading, Image, SimpleGrid, Text,
 } from '@chakra-ui/react'
-import { FaRegCalendar } from 'react-icons/fa'
+import { FaAngleLeft, FaRegCalendar } from 'react-icons/fa'
 
 import { trpc } from '@utils/trpc'
 
+import useImageUrl from '@hooks/useImageUrl'
 import usePostAttachments from '@hooks/usePostAttachments'
 import usePostComments from '@hooks/usePostComments'
+import usePostForm from '@hooks/usePostForm'
 import useValidatePostOwner from '@hooks/useValidatePostOwner'
 
 import MobileLayout from '@layouts/MobileLayout'
@@ -17,7 +20,9 @@ import Comment from '@components/Comment'
 import EditPostBanner from '@components/Post/EditPostBanner'
 import ImageThumb from '@components/Image/ImageThumb'
 import LikeButton from '@components/Post/LikeButton'
+import PublishPost from '@components/Post/PublishPost'
 import PostViewer from '@components/Post/Viewer'
+import SimilarPosts from '@components/Post/SimilarPosts'
 
 const PostPage = () => {
   const { query: { postId } } = useRouter()
@@ -40,6 +45,13 @@ const PostPage = () => {
   )
 
   const { data: post } = postQuery
+
+  const postFormPayload = usePostForm({ post })
+  const {
+    callbacks: {
+      publishPost: publishFn,
+    },
+  } = postFormPayload
 
   // Get Views
   const postViewQuery = trpc.postPageViews.getViewCountForPostId.useQuery(
@@ -69,11 +81,73 @@ const PostPage = () => {
     isLoading,
   } = postCommentsPayload
 
+  const image = post?.postsImages?.[0]?.image
+
+  const hasImage = !!image
+
+  const { imageUrl } = useImageUrl({
+    enabled: hasImage,
+    path: image?.fileKey,
+    transformation: [{
+      focus: 'auto',
+      height: '480',
+      width: '1000',
+    }],
+  })
+
   return (
     <MobileLayout>
       {isValidOwner && <EditPostBanner post={post} postViewCount={postViewCount} />}
 
-      <Flex direction="column" alignItems="flex-start" marginTop={8} width="100%">
+      <NextLink href="/posts">
+        <Flex
+          alignItems="center"
+          justifyContent="flex-start"
+          paddingY={4}
+          width="100%"
+        >
+          <Text fontSize="xl">
+            <FaAngleLeft />
+          </Text>
+
+          <Text fontWeight="bold" marginLeft={1}>Back</Text>
+        </Flex>
+      </NextLink>
+
+      {isValidOwner && !post?.published && (
+        <Flex marginTop={8}>
+          <PublishPost
+            callbacks={{
+              publishPost: publishFn,
+            }}
+            post={post}
+          />
+        </Flex>
+      )}
+
+      <Flex direction="column" alignItems="flex-start" marginTop={4} width="100%">
+        {hasImage && (
+          <Flex
+            alignItems="center"
+            borderRadius="lg"
+            flexDirection="column"
+            marginBottom={4}
+            overflow="hidden"
+            position="relative"
+            justifyContent="center"
+            height="240px"
+            width="100%"
+          >
+            <Image
+              alt="Post Cover Image"
+              backgroundPosition="center center"
+              objectFit="cover"
+              src={imageUrl}
+              width="100%"
+            />
+          </Flex>
+        )}
+
         <Heading as="h1" fontWeight="medium" size="lg">
           {post?.title}
         </Heading>
@@ -190,6 +264,8 @@ const PostPage = () => {
             )
           })}
         </Flex>
+
+        <SimilarPosts post={post} />
       </Flex>
     </MobileLayout>
   )

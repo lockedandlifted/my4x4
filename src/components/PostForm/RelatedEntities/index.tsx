@@ -34,20 +34,24 @@ const RelatedEntities = (props: RelatedEntitiesProps) => {
     insertRelatedEntity,
   } = callbacks || {}
 
+  const hasRelatedEntities = relatedEntities?.length > 0
+
   if (!relatedEntities) {
     return null
   }
 
   return (
     <Flex direction="column">
-      <TableContainer marginBottom="2">
+      <TableContainer marginBottom={hasRelatedEntities ? 2 : 0}>
         <Table size="sm" variant="simple">
-          <Thead>
-            <Tr>
-              <Th width="calc(100% - 100px)">Title</Th>
-              <Th width="100px">Actions</Th>
-            </Tr>
-          </Thead>
+          {hasRelatedEntities && (
+            <Thead>
+              <Tr>
+                <Th width="calc(100% - 100px)">Title</Th>
+                <Th width="100px">Actions</Th>
+              </Tr>
+            </Thead>
+          )}
 
           <Tbody>
             {relatedEntities.map((relatedEntity) => {
