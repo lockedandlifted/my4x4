@@ -319,7 +319,7 @@ const postsRouter = router({
           },
         },
         orderBy: {
-          createdAt: 'desc',
+          updatedAt: 'desc',
         },
         take: input.limit || 100,
       })
@@ -520,6 +520,7 @@ const postsRouter = router({
       const data: Prisma.PostUpdateInput = {
         body: input.body || undefined,
         title: input.title || undefined,
+        updatedAt: new Date(),
       }
 
       // Body Data
