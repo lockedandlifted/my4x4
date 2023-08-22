@@ -201,6 +201,22 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     },
   ]
 
+  // Land Rover Range Rover
+  const landRoverRangeRover = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'land_rover_range_rover')
+
+  const landRoverRangeRoverSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'range_rover_classic',
+      title: 'Classic',
+      manufacturerModelId: landRoverRangeRover.id,
+    },
+    {
+      key: 'range_rover_p38a',
+      title: 'P38A',
+      manufacturerModelId: landRoverRangeRover.id,
+    },
+  ]
+
   // Mazda BT-50
   const mazdaBt50 = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'mazda_bt50')
 
@@ -312,22 +328,6 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     },
   ]
 
-  // Range Rover
-  const rangeRover = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'range_rover')
-
-  const rangeRoverSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
-    {
-      key: 'range_rover_classic',
-      title: 'Classic',
-      manufacturerModelId: rangeRover.id,
-    },
-    {
-      key: 'range_rover_p38a',
-      title: 'P38A',
-      manufacturerModelId: rangeRover.id,
-    },
-  ]
-
   // Toyota LandCruiser
   const toyotaLandCruiser = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'toyota_land_cruiser')
 
@@ -400,7 +400,7 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     },
     {
       key: 'toyota_hilux_n60',
-      title: 'N60/LN110/RN110/LN167/LN166/KZN165/KUN26R',
+      title: 'N60',
       manufacturerModelId: toyotaHilux.id,
     },
     {
@@ -440,12 +440,12 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     ...jeepWranglerSeries,
     ...landRoverDefenderSeries,
     ...landRoverDiscoverySeries,
+    ...landRoverRangeRoverSeries,
     ...mazdaBt50Series,
     ...mitsubishiPajeroSeries,
     ...mitsubishiTritonSeries,
     ...nissanNavaraSeries,
     ...nissanPatrolSeries,
-    ...rangeRoverSeries,
     ...suzukiJimnySeries,
     ...toyotaHiluxSeries,
     ...toyotaLandCruiserSeries,

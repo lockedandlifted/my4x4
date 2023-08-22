@@ -269,7 +269,7 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
       manufacturerId: landRover.id,
     },
     {
-      key: 'range_rover',
+      key: 'land_rover_range_rover',
       title: 'Range Rover',
       manufacturerId: landRover.id,
     },
