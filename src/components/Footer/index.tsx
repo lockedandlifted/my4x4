@@ -42,32 +42,35 @@ const Footer = ({ generatedAt }: FooterProps) => (
       </NextLink>
     </Flex>
 
-    <Flex alignItems="center" flexDirection="row" paddingTop="2" justifyContent="space-between">
-      <Flex direction="column">
-
-        <NextLink href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
-          <Text fontSize="sm" color="gray.400" textDecoration="underline">Got a suggestion?</Text>
+    <Flex flexDirection="column" marginBottom="4">
+      <Flex marginBottom="2">
+        <NextLink href="/">
+          <Text fontSize="sm" fontWeight="bold">Company</Text>
         </NextLink>
+      </Flex>
 
-        <Text fontSize="sm" fontWeight="bold" color="gray.400">
+      <NextLink href="/aboutUs">
+        <Text color="gray.600" fontSize="sm">About Us</Text>
+      </NextLink>
+
+      <NextLink href="/privacyPolicy">
+        <Text color="gray.600" fontSize="sm">Privacy Policy</Text>
+      </NextLink>
+
+      <NextLink href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
+        <Text color="gray.600" fontSize="sm">Got a Suggestion?</Text>
+      </NextLink>
+    </Flex>
+
+    <Flex alignItems="center" flexDirection="row" paddingTop="2" justifyContent="space-between">
+      <Flex>
+        <Text fontSize="sm" color="gray.400">
           MY4X4.INFO © 2023
         </Text>
 
         <Flex>
-          <NextLink href="/privacyPolicy">
-            <Text fontSize="sm" color="gray.400" textDecoration="underline">Privacy Policy</Text>
-          </NextLink>
-
-          <Text fontSize="sm" color="gray.400" marginLeft={1}>
-            |
-          </Text>
-
-          <NextLink href="https://www.initium.studio">
-            <Text fontSize="sm" color="gray.400" marginLeft={1}>Site by</Text>
-          </NextLink>
-
-          <NextLink href="https://www.initium.studio">
-            <Text fontSize="sm" fontStyle="italic" fontWeight="bold" color="gray.600" marginLeft={1}>Initium</Text>
+          <NextLink href="https://www.kengreeff.com">
+            <Text fontSize="sm" color="gray.400" marginLeft={1}>by Initium Studio</Text>
           </NextLink>
         </Flex>
       </Flex>
