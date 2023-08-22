@@ -485,7 +485,7 @@ model ManufacturerModel {
 
 model ManufacturerModelSeries {
   id                  String            @id @default(uuid())
-  displayTitle        String?
+  displayTitle        String?           @map("display_title")
   manufacturerModel   ManufacturerModel @relation(fields: [manufacturerModelId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   manufacturerModelId String            @map("manufacturer_model_id")
   key                 String            @unique
