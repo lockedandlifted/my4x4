@@ -160,7 +160,7 @@ const setupProjectInitialState = (project: Project) => {
 
   if (project.manufacturerModelSeries) {
     initialState.manufacturerModelSeriesId = project.manufacturerModelSeries.id
-    initialState.manufacturerModelSeriesTitle = project.manufacturerModelSeries.title
+    initialState.manufacturerModelSeriesTitle = project.manufacturerModelSeries.displayTitle || project.manufacturerModelSeries.title
   }
 
   if (project.projectsAttributes) {

@@ -400,7 +400,8 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     },
     {
       key: 'toyota_hilux_n60',
-      title: 'N60',
+      displayTitle: 'N60/LN167',
+      title: 'N60/LN110/RN110/LN167/LN166/KZN165/KUN26R',
       manufacturerModelId: toyotaHilux.id,
     },
     {

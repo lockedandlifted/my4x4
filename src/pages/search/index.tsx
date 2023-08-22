@@ -125,7 +125,7 @@ const SearchPage = () => {
         {!!manufacturerModelSeries.length && (
           <FilterGroup title="Series">
             {manufacturerModelSeries.map((modelSeriesItem) => {
-              const { id, title } = modelSeriesItem
+              const { id, displayTitle, title } = modelSeriesItem
 
               return (
                 <FilterGroup.Tag
@@ -133,7 +133,7 @@ const SearchPage = () => {
                   key={id}
                   isSelected={manufacturerModelSeriesId === id}
                 >
-                  {title}
+                  {displayTitle || title}
                 </FilterGroup.Tag>
               )
             })}
