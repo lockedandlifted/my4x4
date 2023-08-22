@@ -1,9 +1,6 @@
-import Image from 'next/image'
 import { Flex, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { FaInstagram, FaTiktok } from 'react-icons/fa'
-
-import LogoUrl from './assets/logo.svg'
 
 type FooterProps = {
   generatedAt?: string,
@@ -17,37 +14,63 @@ const Footer = ({ generatedAt }: FooterProps) => (
     width="100%"
     paddingX={[4]}
   >
-    <Flex>
-      <NextLink href="/">
-        <Image src={LogoUrl} width={60} alt="Locked and Lifted Logo" />
+    <Flex flexDirection="column" marginBottom="4">
+      <Flex marginBottom="2">
+        <NextLink href="/">
+          <Text fontSize="sm" fontWeight="bold">MY4X4 Builds, Parts and Community</Text>
+        </NextLink>
+      </Flex>
+
+      <NextLink href="/posts">
+        <Text color="gray.600" fontSize="sm">All Forum Posts</Text>
+      </NextLink>
+
+      <NextLink href="posts?categoryKey=competitions">
+        <Text color="gray.600" fontSize="sm">Latest 4X4 Competitions</Text>
+      </NextLink>
+
+      <NextLink href="posts?categoryKey=events">
+        <Text color="gray.600" fontSize="sm">Upcoming 4X4 Events</Text>
+      </NextLink>
+
+      <NextLink href="/search">
+        <Text color="gray.600" fontSize="sm">Browse all 4X4 Builds by Manufacturer</Text>
+      </NextLink>
+
+      <NextLink href="/searchByPart">
+        <Text color="gray.600" fontSize="sm">Browse all 4X4 Builds by Parts</Text>
+      </NextLink>
+    </Flex>
+
+    <Flex flexDirection="column" marginBottom="4">
+      <Flex marginBottom="2">
+        <NextLink href="/">
+          <Text fontSize="sm" fontWeight="bold">Company</Text>
+        </NextLink>
+      </Flex>
+
+      <NextLink href="/about">
+        <Text color="gray.600" fontSize="sm">About Us</Text>
+      </NextLink>
+
+      <NextLink href="/privacyPolicy">
+        <Text color="gray.600" fontSize="sm">Privacy Policy</Text>
+      </NextLink>
+
+      <NextLink href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
+        <Text color="gray.600" fontSize="sm">Got a Suggestion?</Text>
       </NextLink>
     </Flex>
 
     <Flex alignItems="center" flexDirection="row" paddingTop="2" justifyContent="space-between">
-      <Flex direction="column">
-        <Flex>
-          <NextLink href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
-            <Text fontSize="sm" color="gray.400">Got a suggestion?</Text>
-          </NextLink>
+      <Flex>
+        <Text fontSize="sm" color="gray.400">
+          MY4X4.INFO © 2023
+        </Text>
 
-          <Text fontSize="sm" color="gray.400" marginLeft={1}>
-            MY4X4.info © 2023
-          </Text>
-        </Flex>
-
-        <Flex>
-          <NextLink href="/privacyPolicy">
-            <Text fontSize="sm" color="gray.600">Privacy Policy</Text>
-          </NextLink>
-
-          <Text fontSize="sm" color="gray.400" marginLeft={1}>
-            |
-          </Text>
-
-          <NextLink href="https://www.kengreeff.com">
-            <Text fontSize="sm" color="gray.600" marginLeft={1}>Site by Ken Greeff</Text>
-          </NextLink>
-        </Flex>
+        <NextLink href="https://www.kengreeff.com">
+          <Text fontSize="sm" color="gray.400" marginLeft={1}>by Initium Studio</Text>
+        </NextLink>
       </Flex>
 
       <Flex flexDirection="row" fontSize={18}>
