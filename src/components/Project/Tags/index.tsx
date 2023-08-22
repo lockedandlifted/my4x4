@@ -54,7 +54,7 @@ const Tags = (props: TagsProps) => {
         paddingY="2"
         paddingX="3"
       >
-        {project?.manufacturerModelSeries?.title}
+        {project?.manufacturerModelSeries?.displayTitle || project?.manufacturerModelSeries?.title}
       </Tag>
     </Flex>
   )
