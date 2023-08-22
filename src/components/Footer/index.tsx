@@ -49,7 +49,7 @@ const Footer = ({ generatedAt }: FooterProps) => (
         </NextLink>
       </Flex>
 
-      <NextLink href="/aboutUs">
+      <NextLink href="/about">
         <Text color="gray.600" fontSize="sm">About Us</Text>
       </NextLink>
 
@@ -68,11 +68,9 @@ const Footer = ({ generatedAt }: FooterProps) => (
           MY4X4.INFO © 2023
         </Text>
 
-        <Flex>
-          <NextLink href="https://www.kengreeff.com">
-            <Text fontSize="sm" color="gray.400" marginLeft={1}>by Initium Studio</Text>
-          </NextLink>
-        </Flex>
+        <NextLink href="https://www.kengreeff.com">
+          <Text fontSize="sm" color="gray.400" marginLeft={1}>by Initium Studio</Text>
+        </NextLink>
       </Flex>
 
       <Flex flexDirection="row" fontSize={18}>

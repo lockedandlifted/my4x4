@@ -6,7 +6,7 @@ import MobileLayout from '@layouts/MobileLayout'
 
 import Paragraph from '@components/Paragraph'
 
-const AboutUsPage = () => (
+const AboutPage = () => (
   <MobileLayout>
     <Flex direction="column" marginTop={8}>
       <Heading fontWeight="medium" size="lg">
@@ -52,4 +52,4 @@ const AboutUsPage = () => (
   </MobileLayout>
 )
 
-export default AboutUsPage
+export default AboutPage
