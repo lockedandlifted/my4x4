@@ -206,12 +206,12 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
 
   const landRoverRangeRoverSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
     {
-      key: 'range_rover_classic',
+      key: 'land_rover_range_rover_classic',
       title: 'Classic',
       manufacturerModelId: landRoverRangeRover.id,
     },
     {
-      key: 'range_rover_p38a',
+      key: 'land_rover_range_rover_p38a',
       title: 'P38A',
       manufacturerModelId: landRoverRangeRover.id,
     },
