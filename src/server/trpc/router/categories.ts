@@ -27,6 +27,16 @@ const categoriesRouter = router({
         id: input.id,
       },
     })),
+
+  getCategoryByKey: publicProcedure
+    .input(z.object({
+      key: z.string(),
+    }))
+    .query(({ ctx, input }) => ctx.prisma.category.findFirst({
+      where: {
+        key: input.key,
+      },
+    })),
 })
 
 export default categoriesRouter
