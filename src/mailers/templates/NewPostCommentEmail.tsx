@@ -3,9 +3,28 @@ import {
   Button, Heading, Img, Section, Text,
 } from '@react-email/components'
 
-import type { Post } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
 import DefaultLayout from '../layouts/DefaultLayout'
+
+type PostWithIncludes = Prisma.PostGetPayload<{
+  include: {
+    postType: true,
+    user: {
+      include: {
+        usersImages: {
+          include: {
+            image: true,
+          },
+          orderBy: {
+            sort: 'asc',
+          },
+          take: 1,
+        },
+      },
+    },
+  },
+}>
 
 const baseUrl = process.env.VERCEL_URL
   ? 'https://www.my4x4.info'
@@ -14,6 +33,9 @@ const baseUrl = process.env.VERCEL_URL
 const defaultPost = {
   title: 'Question about 2021 Ford Ranger',
   body: 'Did you look at any other options for canopies? The one you ended up with is sick!',
+  postType: {
+    key: 'question',
+  },
 }
 
 type NewPostCommentEmailProps = {
@@ -21,7 +43,7 @@ type NewPostCommentEmailProps = {
   commentUserImageUrl: string,
   commentUserName: string,
   generationDate: string,
-  post: Post,
+  post: PostWithIncludes,
   postPath: string,
   userEmail: string,
 }
@@ -49,7 +71,7 @@ const NewPostCommentEmail = (props: NewPostCommentEmailProps) => {
     >
       <Section className="mt-0">
         <Heading className="text-[16px]">
-          {post.body}
+          {post?.postType?.key === 'question' ? post.body : post.title}
         </Heading>
       </Section>
 
@@ -64,7 +86,7 @@ const NewPostCommentEmail = (props: NewPostCommentEmailProps) => {
           />
 
           <span className="ml-2">
-            <span className="font-bold">{commentUserName}</span> replied to your post:
+            <span className="font-bold">{commentUserName}</span> replied to you:
           </span>
         </Text>
 
