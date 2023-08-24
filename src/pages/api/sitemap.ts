@@ -9,7 +9,15 @@ const sitemap = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   })
 
-  const string = projects.reduce((acc, project) => {
+  const posts = await prisma.post.findMany({
+    where: {
+      postType: {
+        key: 'forum',
+      },
+    },
+  })
+
+  const projectsString = projects.reduce((acc, project) => {
     const baseProjectUrl = `https://www.my4x4.info/${project.slug}`
     const projectImagesUrl = `${baseProjectUrl}/images`
 
@@ -18,7 +26,13 @@ const sitemap = async (req: NextApiRequest, res: NextApiResponse) => {
     return acc + projectStrings
   }, '')
 
-  res.send(string)
+  const postsString = posts.reduce((acc, post) => {
+    const postUrl = `https://www.my4x4.info/posts/${post.id}\n`
+
+    return acc + postUrl
+  }, '')
+
+  res.send(projectsString + postsString)
 }
 
 export default sitemap
