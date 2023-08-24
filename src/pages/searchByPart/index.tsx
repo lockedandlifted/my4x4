@@ -12,17 +12,17 @@ import FilterGroup from '@components/FilterGroup'
 import Results from '@components/BrowseProjects/Results'
 
 const SearchByPartPage = () => {
-  const { query: { categoryId, manufacturerId, manufacturerPartId } } = useRouter()
+  const { query: { categoryKey, manufacturerKey, manufacturerPartId } } = useRouter()
 
-  const categoryQuery = trpc.categories.getCategoryById.useQuery(
-    { id: categoryId },
-    { enabled: !!categoryId },
+  const categoryQuery = trpc.categories.getCategoryByKey.useQuery(
+    { key: categoryKey },
+    { enabled: !!categoryKey },
   )
   const { data: category } = categoryQuery
 
-  const manufacturerQuery = trpc.manufacturers.getManufacturerById.useQuery(
-    { id: manufacturerId },
-    { enabled: !!manufacturerId },
+  const manufacturerQuery = trpc.manufacturers.getManufacturerByKey.useQuery(
+    { key: manufacturerKey },
+    { enabled: !!manufacturerKey },
   )
   const { data: manufacturer } = manufacturerQuery
 
@@ -33,9 +33,9 @@ const SearchByPartPage = () => {
   const { data: manufacturerPart } = manufacturerPartQuery
 
   const browseProjectsPayload = useBrowseProjectsByPart({
-    categoryId,
-    manufacturerId,
-    manufacturerPartId,
+    categoryId: category?.id,
+    manufacturerId: manufacturer?.id,
+    manufacturerPartId: manufacturerPart?.id,
   })
 
   const {
@@ -89,14 +89,14 @@ const SearchByPartPage = () => {
         </Flex>
 
         <FilterGroup title="Category">
-          {categories.map((category) => {
-            const { id, title } = category
+          {categories.map((categoryItem) => {
+            const { key, title } = categoryItem
 
             return (
               <FilterGroup.Tag
-                href={`/searchByPart?categoryId=${id}`}
-                key={id}
-                isSelected={categoryId === id}
+                href={`/searchByPart?categoryKey=${key}`}
+                key={key}
+                isSelected={categoryKey === key}
               >
                 {title}
               </FilterGroup.Tag>
@@ -106,14 +106,14 @@ const SearchByPartPage = () => {
 
         {!!manufacturers.length && (
           <FilterGroup title="Manufacturer">
-            {manufacturers.map((manufacturer) => {
-              const { id, title } = manufacturer
+            {manufacturers.map((manufacturerItem) => {
+              const { key, title } = manufacturerItem
 
               return (
                 <FilterGroup.Tag
-                  href={`/searchByPart?categoryId=${categoryId}&manufacturerId=${id}`}
-                  key={id}
-                  isSelected={manufacturerId === id}
+                  href={`/searchByPart?categoryKey=${categoryKey}&manufacturerKey=${key}`}
+                  key={key}
+                  isSelected={manufacturerKey === key}
                 >
                   {title}
                 </FilterGroup.Tag>
@@ -124,12 +124,12 @@ const SearchByPartPage = () => {
 
         {!!manufacturerParts.length && (
           <FilterGroup title="Parts">
-            {manufacturerParts.map((manufacturerPart) => {
-              const { id, title } = manufacturerPart
+            {manufacturerParts.map((manufacturerPartItem) => {
+              const { id, title } = manufacturerPartItem
 
               return (
                 <FilterGroup.Tag
-                  href={`/searchByPart?categoryId=${categoryId}&manufacturerId=${manufacturerId}&manufacturerPartId=${id}`}
+                  href={`/searchByPart?categoryKey=${categoryKey}&manufacturerKey=${manufacturerKey}&manufacturerPartId=${id}`}
                   key={id}
                   isSelected={manufacturerPartId === id}
                 >

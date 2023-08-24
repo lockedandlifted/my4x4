@@ -12,30 +12,30 @@ import FilterGroup from '@components/FilterGroup'
 import Results from '@components/BrowseProjects/Results'
 
 const SearchPage = () => {
-  const { query: { manufacturerId, manufacturerModelId, manufacturerModelSeriesId } } = useRouter()
+  const { query: { manufacturerKey, manufacturerModelKey, manufacturerModelSeriesKey } } = useRouter()
 
-  const manufacturerQuery = trpc.manufacturers.getManufacturerById.useQuery(
-    { id: manufacturerId },
-    { enabled: !!manufacturerId },
+  const manufacturerQuery = trpc.manufacturers.getManufacturerByKey.useQuery(
+    { key: manufacturerKey },
+    { enabled: !!manufacturerKey },
   )
   const { data: manufacturer } = manufacturerQuery
 
-  const manufacturerModelQuery = trpc.manufacturerModels.getManufacturerModelById.useQuery(
-    { id: manufacturerModelId },
-    { enabled: !!manufacturerModelId },
+  const manufacturerModelQuery = trpc.manufacturerModels.getManufacturerModelByKey.useQuery(
+    { key: manufacturerModelKey },
+    { enabled: !!manufacturerModelKey },
   )
   const { data: manufacturerModel } = manufacturerModelQuery
 
-  const manufacturerModelSeriesQuery = trpc.manufacturerModelSeries.getManufacturerModelSeriesById.useQuery(
-    { id: manufacturerModelSeriesId },
-    { enabled: !!manufacturerModelSeriesId },
+  const manufacturerModelSeriesQuery = trpc.manufacturerModelSeries.getManufacturerModelSeriesByKey.useQuery(
+    { key: manufacturerModelSeriesKey },
+    { enabled: !!manufacturerModelSeriesKey },
   )
   const { data: modelSeries } = manufacturerModelSeriesQuery
 
   const browseProjectsPayload = useBrowseProjects({
-    manufacturerId,
-    manufacturerModelId,
-    manufacturerModelSeriesId,
+    manufacturerId: manufacturer?.id,
+    manufacturerModelId: manufacturerModel?.id,
+    manufacturerModelSeriesId: modelSeries?.id,
   })
 
   const {
@@ -89,14 +89,14 @@ const SearchPage = () => {
         </Flex>
 
         <FilterGroup title="Manufacturer">
-          {manufacturers.map((manufacturer) => {
-            const { id, title } = manufacturer
+          {manufacturers.map((manufacturerItem) => {
+            const { key, title } = manufacturerItem
 
             return (
               <FilterGroup.Tag
-                href={`/search?manufacturerId=${id}`}
-                key={id}
-                isSelected={manufacturerId === id}
+                href={`/search?manufacturerKey=${key}`}
+                key={key}
+                isSelected={manufacturerKey === key}
               >
                 {title}
               </FilterGroup.Tag>
@@ -106,14 +106,14 @@ const SearchPage = () => {
 
         {!!manufacturerModels.length && (
           <FilterGroup title="Model">
-            {manufacturerModels.map((manufacturerModel) => {
-              const { id, title } = manufacturerModel
+            {manufacturerModels.map((manufacturerModelItem) => {
+              const { key, title } = manufacturerModelItem
 
               return (
                 <FilterGroup.Tag
-                  href={`/search?manufacturerId=${manufacturerId}&manufacturerModelId=${id}`}
-                  key={id}
-                  isSelected={manufacturerModelId === id}
+                  href={`/search?manufacturerKey=${manufacturerKey}&manufacturerModelKey=${key}`}
+                  key={key}
+                  isSelected={manufacturerModelKey === key}
                 >
                   {title}
                 </FilterGroup.Tag>
@@ -125,13 +125,13 @@ const SearchPage = () => {
         {!!manufacturerModelSeries.length && (
           <FilterGroup title="Series">
             {manufacturerModelSeries.map((modelSeriesItem) => {
-              const { id, title } = modelSeriesItem
+              const { key, title } = modelSeriesItem
 
               return (
                 <FilterGroup.Tag
-                  href={`/search?manufacturerId=${manufacturerId}&manufacturerModelId=${manufacturerModelId}&manufacturerModelSeriesId=${id}`}
-                  key={id}
-                  isSelected={manufacturerModelSeriesId === id}
+                  href={`/search?manufacturerKey=${manufacturerKey}&manufacturerModelKey=${manufacturerModelKey}&manufacturerModelSeriesKey=${key}`}
+                  key={key}
+                  isSelected={manufacturerModelSeriesKey === key}
                 >
                   {title}
                 </FilterGroup.Tag>
