@@ -62,7 +62,7 @@ const Footer = ({ generatedAt }: FooterProps) => (
       </NextLink>
     </Flex>
 
-    <Flex alignItems="center" flexDirection="row" paddingTop="2" justifyContent="space-between">
+    <Flex alignItems="center" flexDirection="row" paddingY="2" justifyContent="space-between" marginBottom="2">
       <Flex>
         <Text fontSize="sm" color="gray.400">
           MY4X4.INFO © 2023
@@ -89,7 +89,7 @@ const Footer = ({ generatedAt }: FooterProps) => (
     </Flex>
 
     {!!generatedAt && (
-      <Flex borderTopWidth="1px" color="gray.300" fontSize="xs" marginTop="2" paddingY="2">
+      <Flex borderTopWidth="1px" color="gray.300" fontSize="xs" paddingY="2">
         Generated at {generatedAt}
       </Flex>
     )}

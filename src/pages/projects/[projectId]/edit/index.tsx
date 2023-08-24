@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
+import { Button } from '@chakra-ui/react'
+
 import processCallback from '@utils/processCallback'
 import { trpc } from '@utils/trpc'
 
 import useProjectForm from '@hooks/useProjectForm'
+import useProjectsPosts from '@hooks/useProjectsPosts'
 
 import MobileLayout from '@layouts/MobileLayout'
 
@@ -93,6 +96,11 @@ const EditProjectPage = () => {
     formPayload,
   } = projectFormPayload
 
+  const projectPostsPayload = useProjectsPosts({ project })
+  const {
+    callbacks: { createPost },
+  } = projectPostsPayload
+
   return (
     <MobileLayout>
       <Form callbacks={{ submitForm: updateProject }} formPayload={formPayload} id="project-form">
@@ -103,6 +111,17 @@ const EditProjectPage = () => {
         <ProjectImageThumbs editMode project={project} />
         <LegacyDescription editMode project={project} />
         <Parts editMode callbacks={callbacks(undefined, setState)} project={project} />
+
+        <Button
+          colorScheme="gray"
+          marginTop="4"
+          onClick={() => createPost({ categoryKey: 'shed_time' })}
+          size="lg"
+          width="auto"
+        >
+          Create Shed Time Post
+        </Button>
+
         <Share editMode project={project} />
         <Attributes editMode project={project} />
         <Links callbacks={callbacks(undefined, setState)} editMode project={project} />

@@ -13,7 +13,7 @@ import { createWrappedEditor } from '@components/Post/Editor'
 
 import type { Prisma } from '@prisma/client'
 
-const defaultEditorValue = [
+export const defaultEditorValue = [
   {
     type: 'paragraph',
     children: [{ text: '' }],
