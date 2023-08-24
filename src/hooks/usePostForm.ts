@@ -154,6 +154,19 @@ const createPost = (params: CreatePostParams) => {
   return mutation.mutate(updatedData)
 }
 
+type DeletePostParams = {
+  post?: PostWithIncludes,
+  mutation: {
+    mutate: ({ id }: { id: string }) => void,
+  },
+}
+
+const deletePost = (params: DeletePostParams) => {
+  const { post, mutation } = params
+
+  return mutation.mutate({ id: post?.id })
+}
+
 type InsertRelatedEntityParams = {
   editor: object,
   relatedEntity: RelatedEntity,
@@ -206,6 +219,18 @@ type PublishPostParams = {
 }
 
 const publishPost = (params: PublishPostParams) => {
+  const { mutation, post } = params
+  return mutation.mutate({ id: post.id })
+}
+
+type UnpublishPostParams = {
+  mutation: {
+    mutate: (data: { id: string }) => void,
+  },
+  post: PostWithIncludes,
+}
+
+const unpublishPost = (params: UnpublishPostParams) => {
   const { mutation, post } = params
   return mutation.mutate({ id: post.id })
 }
@@ -401,11 +426,27 @@ function usePostForm(options?: UsePostFormOptions) {
     },
   })
 
+  // Delete Mutation
+  const deletePostMutation = trpc.posts.deletePostById.useMutation({
+    onSuccess: () => {
+      router.push('/posts')
+    },
+  })
+
   // Invalidate
   const { posts: { getPostById: { invalidate: invalidateGetPostById } } } = trpc.useContext()
 
   // Publish Mutation
   const publishPostMutation = trpc.posts.publishPostById.useMutation({
+    onSuccess: () => {
+      if (post?.id) {
+        invalidateGetPostById({ id: post.id })
+      }
+    },
+  })
+
+  // Unpublish Mutation
+  const unpublishPostMutation = trpc.posts.unpublishPostById.useMutation({
     onSuccess: () => {
       if (post?.id) {
         invalidateGetPostById({ id: post.id })
@@ -432,6 +473,7 @@ function usePostForm(options?: UsePostFormOptions) {
           mutation: createPostMutation,
         })
       ),
+      deletePost: () => deletePost({ post, mutation: deletePostMutation }),
       insertRelatedEntity: (relatedEntity: RelatedEntity) => (
         insertRelatedEntity({
           editor,
@@ -452,6 +494,12 @@ function usePostForm(options?: UsePostFormOptions) {
           relatedEntity,
           relatedEntities,
           setValue,
+        })
+      ),
+      unpublishPost: () => (
+        unpublishPost({
+          mutation: unpublishPostMutation,
+          post,
         })
       ),
       updatePost: (data: typeof defaultState) => (

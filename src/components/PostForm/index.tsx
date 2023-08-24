@@ -1,12 +1,13 @@
-import { Button, Flex } from '@chakra-ui/react'
+import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 
 import usePostForm from '@hooks/usePostForm'
 
+import DeleteConfirmationDialog from '@components/DeleteConfirmationDialog'
 import Form from '@components/Form'
 import Tag from '@components/Category/Tag'
 
 import Editor from '@components/Post/Editor'
-import PublishPost from '@components/Post/PublishPost'
+import TogglePublishPost from '@components/Post/TogglePublishPost'
 
 import type { Prisma } from '@prisma/client'
 
@@ -127,12 +128,16 @@ type PostFormProps = {
 const PostForm = (props: PostFormProps) => {
   const { callbacks, categoryKey, post } = props
 
+  const { isOpen, onClose, onOpen } = useDisclosure()
+
   const postFormPayload = usePostForm({ categoryKey, post })
   const {
     callbacks: {
       createPost: createFn,
+      deletePost,
       insertRelatedEntity,
       publishPost: publishFn,
+      unpublishPost: unpublishFn,
       updatePost: updateFn,
       selectCategoryKey,
     },
@@ -160,9 +165,9 @@ const PostForm = (props: PostFormProps) => {
       formPayload={formPayload}
     >
       {!!post?.id && (
-        <PublishPost
+        <TogglePublishPost
           callbacks={{
-            publishPost: publishFn,
+            togglePublishPost: post.published ? unpublishFn : publishFn,
           }}
           post={post}
         />
@@ -259,6 +264,21 @@ const PostForm = (props: PostFormProps) => {
           <textarea style={{ height: 180 }} />
         </Form.Field>
       )}
+
+      {!!post?.id && (
+        <Button onClick={onOpen} marginTop={2} variant="outline">
+          Delete Post
+        </Button>
+      )}
+
+      <DeleteConfirmationDialog
+        callbacks={{
+          closeDialog: onClose,
+          confirmAction: deletePost,
+        }}
+        isOpen={isOpen}
+        title="Delete Post?"
+      />
 
       <Button
         colorScheme="green"
