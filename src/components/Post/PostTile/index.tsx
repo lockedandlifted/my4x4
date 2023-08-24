@@ -107,7 +107,7 @@ const PostTile = (props: PostTileProps) => {
         </Flex>
       )}
 
-      <Flex alignItems="flex-start" direction="column" padding="4">
+      <Flex alignItems="flex-start" direction="column" maxWidth="100%" padding="4">
         <Flex>
           <UserImage user={user} />
 
@@ -153,7 +153,7 @@ const PostTile = (props: PostTileProps) => {
           })}
         </Flex>
 
-        <Text marginTop="2" noOfLines={3}>
+        <Text marginTop="2" noOfLines={3} maxWidth="100%">
           {post?.body}
         </Text>
 
