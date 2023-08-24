@@ -5,12 +5,12 @@ import type { Project } from '@prisma/client'
 
 import { defaultEditorValue } from '@hooks/usePostForm'
 
-type UseProjectPostsParams = {
+type UseProjectPostsOptions = {
   project: Project,
 }
 
-function useProjectPosts(params: UseProjectPostsParams) {
-  const { project } = params
+function useProjectPosts(options: UseProjectPostsOptions) {
+  const { project } = options
 
   const router = useRouter()
 
@@ -23,7 +23,7 @@ function useProjectPosts(params: UseProjectPostsParams) {
 
   return {
     callbacks: {
-      createPost: (createParams: { categoryKey: string }) => createPostFn({
+      createPost: (params: { categoryKey: string }) => createPostFn({
         body: '',
         bodyData: defaultEditorValue,
         title: `Shed Time on ${project?.title}`,
@@ -33,7 +33,7 @@ function useProjectPosts(params: UseProjectPostsParams) {
           { key: 'manufacturerModelId', value: project?.manufacturerModelId },
         ],
         isRichText: true,
-        categoryKeys: [createParams.categoryKey],
+        categoryKeys: [params.categoryKey],
       }),
     },
     isLoading,
