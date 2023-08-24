@@ -22,6 +22,7 @@ import EditProjectBanner from '@components/Project/EditProjectBanner'
 import Links from '@components/Project/Links'
 import MainImage from '@components/Project/MainImage'
 import Parts from '@components/Project/Parts'
+import Posts from '@components/Project/Posts'
 import ProjectOwner from '@components/Project/ProjectOwner'
 import Questions from '@components/Project/Questions'
 import SimilarProjects from '@components/Project/SimilarProjects'
@@ -96,6 +97,7 @@ const BuildPage = (props: { temporaryUserId: string }) => {
         <Questions project={project} />
         <Parts project={project} />
         <ProjectOwner user={project?.projectsUsers?.[0]?.user} />
+        <Posts project={project} />
         <Links project={project} />
         <SimilarProjects project={project} />
 
