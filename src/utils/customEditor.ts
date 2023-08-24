@@ -5,7 +5,7 @@ import asyncSome from '@utils/asyncSome'
 const LIST_TYPES = ['ordered-list', 'unordered-list']
 const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify']
 
-const urlRegex = /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g
+const urlRegex = /((https?:\/\/(www\.)?)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|(https?:\/\/(www\.)?)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?|(https?:\/\/(www\.)?)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,}))[^ ]+/g
 
 const embedRegexes = [
   {
@@ -66,13 +66,27 @@ const CustomEditor = {
 
     // Url Match
     if (text.match(urlRegex)) {
-      Transforms.insertNodes(editor, [
-        {
-          children: [{ text }],
-          href: text,
-          type: 'link',
-        },
-      ])
+      const urlMatches = text.match(urlRegex) || []
+      const nodes = []
+
+      let lastIndex = 0
+
+      urlMatches.forEach((match: string) => {
+        const matchIndex = text.indexOf(match, lastIndex)
+
+        if (matchIndex > lastIndex) {
+          nodes.push({ type: 'paragraph', children: [{ text: text.substring(lastIndex, matchIndex) }] })
+        }
+
+        nodes.push({ href: match, type: 'link', children: [{ text: match }] })
+        lastIndex = matchIndex + match.length
+      })
+
+      if (lastIndex < text.length) {
+        nodes.push({ type: 'paragraph', children: [{ text: text.substring(lastIndex) }] })
+      }
+
+      Transforms.insertNodes(editor, nodes)
 
       return
     }
