@@ -16,6 +16,7 @@ function useBrowsePosts(options: UseBrowsePostsOptions) {
   // Load Posts
   const postsQuery = trpc.posts.getPosts.useQuery({
     categoryKey,
+    hidden: false,
     limit: 100,
     postTypeKey: 'forum',
     published: true,

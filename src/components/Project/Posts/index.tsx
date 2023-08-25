@@ -16,6 +16,7 @@ const Posts = (props: PostsProps) => {
   const { project } = props
 
   const postsQuery = trpc.posts.getPosts.useQuery({
+    hidden: false,
     limit: 3,
     postTypeKey: 'forum',
     projectId: project?.id,
