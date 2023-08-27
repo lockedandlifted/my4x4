@@ -143,7 +143,6 @@ const postsRouter = router({
     .input(z.object({
       categoryId: z.string().optional(),
       categoryKey: z.string().optional(),
-      hidden: z.boolean().optional(),
       imageId: z.string().optional(),
       limit: z.number().optional(),
       manufacturerId: z.string().optional(),
@@ -178,13 +177,6 @@ const postsRouter = router({
               },
             },
           },
-        })
-      }
-
-      // Hidden
-      if (input.hidden !== undefined) {
-        filters.push({
-          hidden: input.hidden,
         })
       }
 
@@ -687,31 +679,6 @@ const postsRouter = router({
       })
 
       return post
-    }),
-
-  deletePostById: publicProcedure
-    .input(z.object({
-      id: z.string(),
-    }))
-    .mutation(async ({ ctx, input }) => {
-      const result = await ctx.prisma.post.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          hidden: true,
-        },
-      })
-
-      // Delete Activity
-      await ctx.prisma.activityItem.deleteMany({
-        where: {
-          subjectId: input.id,
-          subjectType: 'Post',
-        },
-      })
-
-      return result
     }),
 })
 

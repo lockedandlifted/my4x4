@@ -19,7 +19,6 @@ const ProjectPostsPage = () => {
   const { data: project } = projectQuery
 
   const postsQuery = trpc.posts.getPosts.useQuery({
-    hidden: false,
     postTypeKey: 'forum',
     projectId: project?.id,
   }, { enabled: !!project?.id })

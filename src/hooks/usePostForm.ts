@@ -154,19 +154,6 @@ const createPost = (params: CreatePostParams) => {
   return mutation.mutate(updatedData)
 }
 
-type DeletePostParams = {
-  post?: PostWithIncludes,
-  mutation: {
-    mutate: ({ id }: { id: string }) => void,
-  },
-}
-
-const deletePost = (params: DeletePostParams) => {
-  const { post, mutation } = params
-
-  return mutation.mutate({ id: post?.id })
-}
-
 type InsertRelatedEntityParams = {
   editor: object,
   relatedEntity: RelatedEntity,
@@ -426,13 +413,6 @@ function usePostForm(options?: UsePostFormOptions) {
     },
   })
 
-  // Delete Mutation
-  const deletePostMutation = trpc.posts.deletePostById.useMutation({
-    onSuccess: () => {
-      router.push('/posts')
-    },
-  })
-
   // Invalidate
   const { posts: { getPostById: { invalidate: invalidateGetPostById } } } = trpc.useContext()
 
@@ -473,7 +453,6 @@ function usePostForm(options?: UsePostFormOptions) {
           mutation: createPostMutation,
         })
       ),
-      deletePost: () => deletePost({ post, mutation: deletePostMutation }),
       insertRelatedEntity: (relatedEntity: RelatedEntity) => (
         insertRelatedEntity({
           editor,

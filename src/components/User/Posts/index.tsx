@@ -18,7 +18,6 @@ const Posts = (props: PostsProps) => {
 
   // Query
   const postsQuery = trpc.posts.getPosts.useQuery({
-    hidden: false,
     postTypeKey: 'forum',
     userId: user?.id,
   }, { enabled: !!user?.id })
