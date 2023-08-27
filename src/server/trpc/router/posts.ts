@@ -3,6 +3,7 @@ import { z } from 'zod'
 import inngestClient from '@utils/inngestClient'
 
 import createActivityItem from '@utils/createActivityItem'
+import deleteActivityItem from '@utils/deleteActivityItem'
 
 import type { Prisma } from '@prisma/client'
 
@@ -647,6 +648,34 @@ const postsRouter = router({
         ownerType: 'User',
         subjectId: post.id,
         subjectType: 'Post',
+      })
+
+      return post
+    }),
+
+  unpublishPostById: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const post = await ctx.prisma.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          published: false,
+        },
+      })
+
+      // Delete Activity
+      await deleteActivityItem({
+        subjects: [
+          {
+            eventType: 'posts.published',
+            subjectId: post.id,
+            subjectType: 'Post',
+          },
+        ],
       })
 
       return post

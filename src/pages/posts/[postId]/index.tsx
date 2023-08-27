@@ -20,7 +20,7 @@ import Comment from '@components/Comment'
 import EditPostBanner from '@components/Post/EditPostBanner'
 import ImageThumb from '@components/Image/ImageThumb'
 import LikeButton from '@components/Post/LikeButton'
-import PublishPost from '@components/Post/PublishPost'
+import TogglePublishPost from '@components/Post/TogglePublishPost'
 import PostViewer from '@components/Post/Viewer'
 import SimilarPosts from '@components/Post/SimilarPosts'
 
@@ -50,6 +50,7 @@ const PostPage = () => {
   const {
     callbacks: {
       publishPost: publishFn,
+      unpublishPost: unpublishFn,
     },
   } = postFormPayload
 
@@ -114,11 +115,11 @@ const PostPage = () => {
         </Flex>
       </NextLink>
 
-      {isValidOwner && !post?.published && (
+      {isValidOwner && (
         <Flex marginTop={8}>
-          <PublishPost
+          <TogglePublishPost
             callbacks={{
-              publishPost: publishFn,
+              togglePublishPost: post?.published ? unpublishFn : publishFn,
             }}
             post={post}
           />

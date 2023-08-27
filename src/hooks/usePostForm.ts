@@ -210,6 +210,18 @@ const publishPost = (params: PublishPostParams) => {
   return mutation.mutate({ id: post.id })
 }
 
+type UnpublishPostParams = {
+  mutation: {
+    mutate: (data: { id: string }) => void,
+  },
+  post: PostWithIncludes,
+}
+
+const unpublishPost = (params: UnpublishPostParams) => {
+  const { mutation, post } = params
+  return mutation.mutate({ id: post.id })
+}
+
 type UpdatePostParams = {
   data: typeof defaultState,
   editor: object,
@@ -413,6 +425,15 @@ function usePostForm(options?: UsePostFormOptions) {
     },
   })
 
+  // Unpublish Mutation
+  const unpublishPostMutation = trpc.posts.unpublishPostById.useMutation({
+    onSuccess: () => {
+      if (post?.id) {
+        invalidateGetPostById({ id: post.id })
+      }
+    },
+  })
+
   // Update Mutation
   const updatePostMutation = trpc.posts.updatePostById.useMutation({
     onSuccess: () => {
@@ -452,6 +473,12 @@ function usePostForm(options?: UsePostFormOptions) {
           relatedEntity,
           relatedEntities,
           setValue,
+        })
+      ),
+      unpublishPost: () => (
+        unpublishPost({
+          mutation: unpublishPostMutation,
+          post,
         })
       ),
       updatePost: (data: typeof defaultState) => (

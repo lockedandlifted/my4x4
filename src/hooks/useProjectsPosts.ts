@@ -26,14 +26,15 @@ function useProjectPosts(options: UseProjectPostsOptions) {
       createPost: (params: { categoryKey: string }) => createPostFn({
         body: '',
         bodyData: defaultEditorValue,
-        title: `Shed Time on ${project?.title}`,
+        categoryKeys: [params.categoryKey],
+        isRichText: true,
         postTypeKey: 'forum',
+        published: false,
         relatedEntities: [
           { key: 'projectId', value: project?.id },
           { key: 'manufacturerModelId', value: project?.manufacturerModelId },
         ],
-        isRichText: true,
-        categoryKeys: [params.categoryKey],
+        title: `Shed Time on ${project?.title}`,
       }),
     },
     isLoading,

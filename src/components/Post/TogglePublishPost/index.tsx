@@ -7,17 +7,15 @@ import {
 
 import type { Post } from '@prisma/client'
 
-type PublishPostProps = {
+type TogglePublishPostProps = {
   callbacks: {
-    publishPost: VoidFunction,
+    togglePublishPost: VoidFunction,
   },
   post: Post,
 }
 
-const PublishPost = (props: PublishPostProps) => {
-  const { callbacks: { publishPost }, post } = props
-
-  if (post?.published) return null
+const TogglePublishPost = (props: TogglePublishPostProps) => {
+  const { callbacks: { togglePublishPost }, post } = props
 
   return (
     <Alert
@@ -28,22 +26,25 @@ const PublishPost = (props: PublishPostProps) => {
       variant="subtle"
     >
       <Flex alignItems="flex-start" direction="column">
+
         <AlertDescription>
-          Post is not Published and therefore not visible to the public.
+          {post.published
+            ? 'Post is Published and visible to the public'
+            : 'Post is not Published and therefore not visible to the public.'}
         </AlertDescription>
 
         <Button
           as="a"
           colorScheme="blue"
-          onClick={publishPost}
+          onClick={() => togglePublishPost()}
           marginTop={4}
           size="md"
         >
-          Publish Post
+          {post.published ? 'Unpublish Post' : 'Publish Post'}
         </Button>
       </Flex>
     </Alert>
   )
 }
 
-export default PublishPost
+export default TogglePublishPost

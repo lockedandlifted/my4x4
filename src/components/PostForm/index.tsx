@@ -1,4 +1,4 @@
-import { Button, Flex } from '@chakra-ui/react'
+import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 
 import usePostForm from '@hooks/usePostForm'
 
@@ -6,7 +6,7 @@ import Form from '@components/Form'
 import Tag from '@components/Category/Tag'
 
 import Editor from '@components/Post/Editor'
-import PublishPost from '@components/Post/PublishPost'
+import TogglePublishPost from '@components/Post/TogglePublishPost'
 
 import type { Prisma } from '@prisma/client'
 
@@ -133,6 +133,7 @@ const PostForm = (props: PostFormProps) => {
       createPost: createFn,
       insertRelatedEntity,
       publishPost: publishFn,
+      unpublishPost: unpublishFn,
       updatePost: updateFn,
       selectCategoryKey,
     },
@@ -160,9 +161,9 @@ const PostForm = (props: PostFormProps) => {
       formPayload={formPayload}
     >
       {!!post?.id && (
-        <PublishPost
+        <TogglePublishPost
           callbacks={{
-            publishPost: publishFn,
+            togglePublishPost: post.published ? unpublishFn : publishFn,
           }}
           post={post}
         />
