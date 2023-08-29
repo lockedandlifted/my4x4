@@ -35,7 +35,7 @@ const initializeUppy = (options: InitializeOptions, trpcClient): Uppy => {
     id: id || 'uppy',
     restrictions: {
       maxNumberOfFiles: maxNumberOfFiles || 5,
-      allowedFileTypes: allowedFileTypes || ['.jpg', '.jpeg', '.png'],
+      allowedFileTypes: allowedFileTypes || ['.heic', '.jpg', '.jpeg', '.png', '.webp'],
     },
     ...uppyOptions,
   })
