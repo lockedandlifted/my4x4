@@ -6,7 +6,7 @@ import { Hash } from '@aws-sdk/hash-node'
 import { formatUrl } from '@aws-sdk/util-format-url'
 import { v4 as uuidv4 } from 'uuid'
 
-import { imageMimeTypes } from '@utils/asset'
+import { supportedMimeTypes } from '@utils/asset'
 
 import { router, publicProcedure } from '../trpc'
 
@@ -23,7 +23,7 @@ const generateFileKey = (params: GenerateFileKeyParams) => {
     fileType,
   } = params
 
-  if (imageMimeTypes.includes(fileType)) {
+  if (supportedMimeTypes.includes(fileType)) {
     const uuid = uuidv4()
     const fileExtension = filename.toLowerCase().match(/\.(heic|jpg|jpeg|pdf|png|webp)/g)?.[0] || '.jpg'
     const newFileName = `${uuid}${fileExtension}`

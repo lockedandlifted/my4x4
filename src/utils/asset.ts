@@ -8,7 +8,7 @@ export const imageFileExtensions = [
   'webp',
 ]
 
-export const imageMimeTypes = [
+export const supportedMimeTypes = [
   'application/pdf',
   'image/heic-sequence',
   'image/heic',
