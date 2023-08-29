@@ -7,9 +7,9 @@ import { snakeCase } from '@utils/string'
 
 import { createProjectsPartValidationSchema, getSimilarProjectsValidationSchema } from '@validationSchemas/projectsPart'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const projectsPartsRouter = router({
+const projectsPartsRouter = createTRPCRouter({
   getProjectsParts: publicProcedure
     .input(z.object({
       ids: z.array(z.string()).optional(),

@@ -9,7 +9,8 @@ import {
 import {
   FaPlusCircle, FaComments, FaHome, FaSignOutAlt, FaTruckMonster, FaUserEdit,
 } from 'react-icons/fa'
-import { signOut, useSession } from 'next-auth/react'
+
+import useSession from '@hooks/useSession'
 
 import NavigationItem from './NavigationItem'
 
@@ -23,7 +24,7 @@ type MainNavigationModalProps = {
 const MainNavigationModal = (props: MainNavigationModalProps) => {
   const { callbacks: { closeModal }, showModal } = props
 
-  const { data: sessionData } = useSession()
+  const { isAuthenticated } = useSession()
 
   return (
     <Drawer
@@ -62,7 +63,7 @@ const MainNavigationModal = (props: MainNavigationModalProps) => {
             title="Add a Build"
           />
 
-          {!!sessionData && (
+          {isAuthenticated && (
             <>
               <NavigationItem
                 href="/businesses/new"
@@ -77,8 +78,8 @@ const MainNavigationModal = (props: MainNavigationModalProps) => {
               />
 
               <NavigationItem
+                href="/api/auth/logout"
                 icon={<FaSignOutAlt />}
-                onClick={() => signOut({ callbackUrl: '/' })}
                 title="Sign Out"
               />
             </>

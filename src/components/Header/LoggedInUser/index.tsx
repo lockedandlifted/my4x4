@@ -1,21 +1,13 @@
 import { Flex, Text } from '@chakra-ui/react'
 import NextImage from 'next/image'
 import NextLink from 'next/link'
-import { useSession } from 'next-auth/react'
 import { FaUser } from 'react-icons/fa'
 
-import { trpc } from '@utils/trpc'
-
 import useImageUrl from '@hooks/useImageUrl'
+import useSession from '@hooks/useSession'
 
 const LoggedInUser = () => {
-  const { data: sessionData } = useSession()
-
-  const userQuery = trpc.users.getUserById.useQuery({
-    id: sessionData?.user?.id,
-  }, { enabled: !!sessionData?.user?.id })
-
-  const { data: user } = userQuery
+  const { isAuthenticated, user } = useSession({ includeUser: true })
 
   const image = user?.usersImages?.[0]?.image
   const hasImage = !!image
@@ -31,7 +23,7 @@ const LoggedInUser = () => {
   })
 
   return (
-    <NextLink href={!sessionData ? '/users/login' : '/users/account'}>
+    <NextLink href={!isAuthenticated ? '/users/login' : '/users/account'}>
       <Flex
         alignItems="center"
         borderWidth={hasImage ? undefined : '1px'}

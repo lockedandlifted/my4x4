@@ -1,6 +1,6 @@
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const servicesRouter = router({
+const servicesRouter = createTRPCRouter({
   getServices: publicProcedure
     .query(({ ctx }) => ctx.prisma.service.findMany({
       orderBy: {

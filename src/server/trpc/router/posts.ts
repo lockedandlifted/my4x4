@@ -7,7 +7,7 @@ import deleteActivityItem from '@utils/deleteActivityItem'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
 const relatedEntityKeys = {
   projectId: 'postsProjects',
@@ -21,7 +21,7 @@ const atLeastOneDefined = (
   obj: Record<string | number | symbol, unknown>,
 ) => Object.values(obj).some(v => v !== undefined)
 
-const postsRouter = router({
+const postsRouter = createTRPCRouter({
   createPost: protectedProcedure
     .input(z.object({
       body: z.string(),

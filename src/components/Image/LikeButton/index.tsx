@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi'
 import { trpc } from '@utils/trpc'
 
@@ -13,7 +13,7 @@ type LikeButtonProps = {
 const LikeButton = (props: LikeButtonProps) => {
   const { image, redirect } = props
 
-  const { data: sessionData } = useSession()
+  const { isAuthenticated } = useSession()
 
   const { imageLikes: { getLikesCountForImageId: { invalidate } } } = trpc.useContext()
 
@@ -47,10 +47,10 @@ const LikeButton = (props: LikeButtonProps) => {
 
   return (
     <Button
-      as={sessionData?.user?.id ? 'button' : 'a'}
+      as={isAuthenticated ? 'button' : 'a'}
       colorScheme={userImageLikesCount ? 'red' : 'gray'}
       leftIcon={userImageLikesCount ? <HiHeart fontSize={24} /> : <HiOutlineHeart fontSize={24} />}
-      href={sessionData?.user?.id ? undefined : `/users/login?redirect=/${redirect}`}
+      href={isAuthenticated ? undefined : `/users/login?redirect=/${redirect}`}
       onClick={userImageLikesCount
         ? () => deleteImageLikeFn({
           id: image?.id,

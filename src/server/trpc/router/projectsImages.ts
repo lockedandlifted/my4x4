@@ -5,9 +5,9 @@ import deleteActivityItem from '@utils/deleteActivityItem'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const projectsImagesRouter = router({
+const projectsImagesRouter = createTRPCRouter({
   createProjectsImage: protectedProcedure
     .input(z.object({
       projectId: z.string(),

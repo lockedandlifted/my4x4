@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const businessesImagesRouter = router({
+const businessesImagesRouter = createTRPCRouter({
   createBusinessesImage: publicProcedure
     .input(z.object({
       businessId: z.string(),

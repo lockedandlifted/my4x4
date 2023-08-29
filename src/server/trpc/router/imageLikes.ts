@@ -2,9 +2,9 @@ import { z } from 'zod'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const imageLikesRouter = router({
+const imageLikesRouter = createTRPCRouter({
   createImageLike: protectedProcedure
     .input(z.object({
       id: z.string(),

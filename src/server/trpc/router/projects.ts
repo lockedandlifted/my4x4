@@ -6,7 +6,7 @@ import createActivityItem from '@utils/createActivityItem'
 import deleteActivityItem from '@utils/deleteActivityItem'
 import { snakeCase } from '@utils/string'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
 const mapCreateProjectsAttributes = (
   input: {
@@ -50,7 +50,7 @@ const mapCreateProjectsAttributes = (
   return projectsAttributes
 }
 
-const projectsRouter = router({
+const projectsRouter = createTRPCRouter({
   createProject: publicProcedure
     .input(z.object({
       countryId: z.string(),

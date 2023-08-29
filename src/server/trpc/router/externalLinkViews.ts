@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const externalLinkViewsRouter = router({
+const externalLinkViewsRouter = createTRPCRouter({
   createExternalLinkView: publicProcedure
     .input(z.object({
       externalLinkId: z.string(),

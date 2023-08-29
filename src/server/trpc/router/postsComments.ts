@@ -2,9 +2,9 @@ import { z } from 'zod'
 
 import inngestClient from '@utils/inngestClient'
 
-import { router, protectedProcedure } from '../trpc'
+import { createTRPCRouter, protectedProcedure } from '../trpc'
 
-const postsCommentsRouter = router({
+const postsCommentsRouter = createTRPCRouter({
   createPostsComment: protectedProcedure
     .input(z.object({
       commentBody: z.string(),

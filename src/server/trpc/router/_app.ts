@@ -1,4 +1,4 @@
-import { router } from '../trpc'
+import { createTRPCRouter } from '../trpc'
 
 import activityItemsRouter from './activityItems'
 import attachmentsRouter from './attachments'
@@ -84,7 +84,7 @@ export const appRouters = {
   usersImages: usersImagesRouter,
 }
 
-export const appRouter = router(appRouters)
+export const appRouter = createTRPCRouter(appRouters)
 
 // export type definition of API
 export type AppRouter = typeof appRouter

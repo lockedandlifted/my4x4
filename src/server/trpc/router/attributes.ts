@@ -1,6 +1,6 @@
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const attributesRouter = router({
+const attributesRouter = createTRPCRouter({
   getAttributes: publicProcedure
     .query(({ ctx }) => ctx.prisma.attribute.findMany({
       include: {

@@ -5,9 +5,9 @@ import deleteActivityItem from '@utils/deleteActivityItem'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const postsAttachmentsRouter = router({
+const postsAttachmentsRouter = createTRPCRouter({
   createPostsAttachment: protectedProcedure
     .input(z.object({
       attachment: z.object({

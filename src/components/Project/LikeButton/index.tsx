@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi'
 import { trpc } from '@utils/trpc'
 
@@ -12,7 +12,7 @@ type LikeButtonProps = {
 const LikeButton = (props: LikeButtonProps) => {
   const { project } = props
 
-  const { data: sessionData } = useSession()
+  const { isAuthenticated } = useSession()
 
   const { projectLikes: { getLikesCountForProjectSlug: { invalidate } } } = trpc.useContext()
 
@@ -46,10 +46,10 @@ const LikeButton = (props: LikeButtonProps) => {
 
   return (
     <Button
-      as={sessionData?.user?.id ? 'button' : 'a'}
+      as={isAuthenticated ? 'button' : 'a'}
       colorScheme={userProjectLikesCount ? 'red' : 'gray'}
       leftIcon={userProjectLikesCount ? <HiHeart fontSize={24} /> : <HiOutlineHeart fontSize={24} />}
-      href={sessionData?.user?.id ? undefined : `/users/login?redirect=/${project?.slug}`}
+      href={isAuthenticated ? undefined : `/users/login?redirect=/${project?.slug}`}
       onClick={userProjectLikesCount
         ? () => deleteProjectLikeFn({
           slug: project?.slug,

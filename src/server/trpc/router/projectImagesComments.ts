@@ -4,9 +4,9 @@ import type { Prisma } from '@prisma/client'
 
 import inngestClient from '@utils/inngestClient'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const projectImagesCommentsRouter = router({
+const projectImagesCommentsRouter = createTRPCRouter({
   getProjectImagesComments: publicProcedure
     .input(z.object({
       projectsImageId: z.string(),

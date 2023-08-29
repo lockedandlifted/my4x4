@@ -2,9 +2,9 @@ import { z } from 'zod'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const businessLocationsRouter = router({
+const businessLocationsRouter = createTRPCRouter({
   getBusinessLocations: publicProcedure
     .input(z.object({
       businessId: z.string(),
