@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!session) {
     return {
       redirect: {
-        destination: '/users/login?redirect=/posts/new',
+        destination: '/api/kindeAuth/login?callback_url=/posts/new',
         permanent: false,
       },
     }

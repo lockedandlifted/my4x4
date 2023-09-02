@@ -16,15 +16,6 @@ const __dirname = dirname(__filename)
 
 /** @type {import("next").NextConfig} */
 const config = {
-  async redirects() {
-    return [
-      {
-        source: '/users/login',
-        destination: '/api/auth/login',
-        permanent: false,
-      },
-    ]
-  },
   async rewrites() {
     return [
       {
