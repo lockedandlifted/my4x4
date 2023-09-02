@@ -47,7 +47,7 @@ function usePostAttachmentUpload(options: UsePostAttachmentUploadOptions) {
       },
       fileKeyPrefix: 'attachments',
       uppyOptions: {
-        allowedFileTypes: ['.jpg', '.jpeg', '.pdf', '.png'],
+        allowedFileTypes: ['.heic', '.jpg', '.jpeg', '.pdf', '.png', '.webp'],
       },
       maxNumberOfFiles: 100,
     },

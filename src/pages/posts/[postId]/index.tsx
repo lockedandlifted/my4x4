@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 import {
-  Badge, Box, Flex, Heading, Image, SimpleGrid, Text,
+  Badge, Box, Flex, Heading, Image, Link, SimpleGrid, Text,
 } from '@chakra-ui/react'
 import { FaAngleLeft, FaRegCalendar } from 'react-icons/fa'
 
@@ -23,6 +23,7 @@ import LikeButton from '@components/Post/LikeButton'
 import TogglePublishPost from '@components/Post/TogglePublishPost'
 import PostViewer from '@components/Post/Viewer'
 import SimilarPosts from '@components/Post/SimilarPosts'
+import Tags from '@components/Project/Tags'
 
 const PostPage = () => {
   const { query: { postId } } = useRouter()
@@ -198,6 +199,41 @@ const PostPage = () => {
         >
           <PostViewer post={post} />
         </Flex>
+
+        {!!post?.postsProjects?.length && (
+          <Flex direction="column" marginTop="8" width="100%">
+            <Heading size="sm">Projects</Heading>
+
+            {post?.postsProjects.map((postsProject) => {
+              const { project, project: { slug } } = postsProject
+              const projectImage = project?.projectsImages?.[0]?.image
+
+              return (
+                <Flex
+                  alignItems="center"
+                  borderRadius="lg"
+                  borderWidth="1px"
+                  key={project.id}
+                  marginTop="4"
+                  padding="2"
+                  width="100%"
+                >
+                  <ImageThumb href={`/${slug}`} image={projectImage} />
+
+                  <Flex direction="column" marginLeft="4">
+                    <Heading size="md">
+                      <NextLink href={`/${slug}`}>
+                        {project?.title}
+                      </NextLink>
+                    </Heading>
+
+                    <Tags marginTop="2" project={project} />
+                  </Flex>
+                </Flex>
+              )
+            })}
+          </Flex>
+        )}
 
         {!!groupedAttachments?.images?.length && (
           <Flex direction="column" marginTop="8" width="100%">
