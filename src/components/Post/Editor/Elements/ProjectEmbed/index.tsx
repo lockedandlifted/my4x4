@@ -29,7 +29,7 @@ const ProjectEmbed = (props: ProjectEmbedProps) => {
     <div {...attributes}>
       <div contentEditable={false}>
         <Flex alignItems="center" borderWidth="1px" borderRadius="lg" padding="2">
-          <ImageThumb href="" image={image} />
+          <ImageThumb href={`/${project?.slug}`} image={image} />
 
           <Flex direction="column" marginLeft="4">
             <Heading size="md">
