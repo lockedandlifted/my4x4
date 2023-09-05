@@ -9,6 +9,7 @@ import {
 import {
   FaPlusCircle, FaComments, FaHome, FaSignOutAlt, FaTruckMonster, FaUserEdit,
 } from 'react-icons/fa'
+import { signOut } from 'next-auth/react'
 
 import useSession from '@hooks/useSession'
 
@@ -78,8 +79,9 @@ const MainNavigationModal = (props: MainNavigationModalProps) => {
               />
 
               <NavigationItem
-                href="/api/kindeAuth/logout"
+                href={process.env.NEXT_PUBLIC_AUTH_PROVIDER === 'kinde' ? '/api/kindeAuth/logout' : undefined}
                 icon={<FaSignOutAlt />}
+                onClick={process.env.NEXT_PUBLIC_AUTH_PROVIDER === 'kinde' ? undefined : () => signOut({ callbackUrl: '/' })}
                 title="Sign Out"
               />
             </>

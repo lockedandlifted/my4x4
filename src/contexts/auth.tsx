@@ -11,7 +11,7 @@ type AuthProviderProps = {
 export const AuthProvider = (props: AuthProviderProps) => {
   const { children, session } = props
 
-  if (process.env.AUTH_PROVIDER === 'kinde') {
+  if (process.env.NEXT_PUBLIC_AUTH_PROVIDER === 'kinde') {
     return (
       <KindeProvider>
         {children}

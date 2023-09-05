@@ -61,4 +61,4 @@ function useNextAuthSession(options?: UseSessionOptions) {
   }
 }
 
-export default process.env.AUTH_PROVIDER === 'kinde' ? useKindeSession : useNextAuthSession
+export default process.env.NEXT_PUBLIC_AUTH_PROVIDER === 'kinde' ? useKindeSession : useNextAuthSession

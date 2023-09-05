@@ -35,7 +35,7 @@ export const TRPCProvider: React.FC<TRPCProviderProps> = ({ children }) => {
   const { getToken } = useKindeAuth()
 
   const authTokenRef = useRef<string>('')
-  authTokenRef.current = process.env.AUTH_PROVIDER === 'kinde' ? getToken() : ''
+  authTokenRef.current = process.env.NEXT_PUBLIC_AUTH_PROVIDER === 'kinde' ? getToken() : ''
 
   // Query Client
   const [queryClient] = React.useState(() => new QueryClient({
