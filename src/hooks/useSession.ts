@@ -9,11 +9,12 @@ type UseSessionOptions = {
 function useSession(options?: UseSessionOptions) {
   const { includeUser } = options || {}
 
+  const kindeAuthPayload = useKindeAuth()
   const {
     isAuthenticated,
     isLoading,
     user: kindeUser,
-  } = useKindeAuth()
+  } = kindeAuthPayload
 
   const userQuery = trpc.users.findOrCreateUserForProviderById.useQuery(
     {

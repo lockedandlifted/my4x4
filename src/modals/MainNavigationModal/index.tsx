@@ -78,7 +78,7 @@ const MainNavigationModal = (props: MainNavigationModalProps) => {
               />
 
               <NavigationItem
-                href="/api/auth/logout"
+                href="/api/kindeAuth/logout"
                 icon={<FaSignOutAlt />}
                 title="Sign Out"
               />

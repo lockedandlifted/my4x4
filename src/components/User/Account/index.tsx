@@ -10,7 +10,7 @@ const Account = () => (
 
     <Button
       as="a"
-      href="/api/auth/logout"
+      href="/api/kindeAuth/logout"
       marginTop={2}
       size="lg"
     >
