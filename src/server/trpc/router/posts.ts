@@ -51,7 +51,7 @@ const postsRouter = createTRPCRouter({
         title: input.title,
         user: {
           connect: {
-            id: ctx.session.user.id,
+            id: ctx.user.id,
           },
         },
       }
@@ -118,7 +118,7 @@ const postsRouter = createTRPCRouter({
       if (post.published) {
         await createActivityItem({
           eventType: 'posts.created',
-          ownerId: ctx.session?.user?.id || '',
+          ownerId: ctx.user?.id || '',
           ownerType: 'User',
           subjectId: post.id,
           subjectType: 'Post',
@@ -644,7 +644,7 @@ const postsRouter = createTRPCRouter({
       // Create Activity
       await createActivityItem({
         eventType: 'posts.published',
-        ownerId: ctx.session?.user?.id || '',
+        ownerId: ctx.user?.id || '',
         ownerType: 'User',
         subjectId: post.id,
         subjectType: 'Post',

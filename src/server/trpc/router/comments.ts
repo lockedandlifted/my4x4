@@ -15,7 +15,7 @@ const commentsRouter = createTRPCRouter({
         body: input.body,
         user: {
           connect: {
-            id: ctx.session.user.id,
+            id: ctx.user.id,
           },
         },
       }

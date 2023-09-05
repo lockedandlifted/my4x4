@@ -19,7 +19,7 @@ const postsCommentsRouter = createTRPCRouter({
               body: input.commentBody,
               user: {
                 connect: {
-                  id: ctx.session?.user?.id,
+                  id: ctx.user?.id,
                 },
               },
             },
@@ -39,7 +39,7 @@ const postsCommentsRouter = createTRPCRouter({
       // Dont send if the post user is the same as the comment user
       const postOwnerId = postsComment?.post?.userId
 
-      if (postOwnerId !== ctx.session?.user?.id && postsComment?.commentId && postsComment?.postId) {
+      if (postOwnerId !== ctx.user?.id && postsComment?.commentId && postsComment?.postId) {
         await inngestClient.send({
           name: 'mailers/new-post-comment-email',
           data: {

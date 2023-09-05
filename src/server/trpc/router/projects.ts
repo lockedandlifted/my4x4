@@ -103,12 +103,12 @@ const projectsRouter = createTRPCRouter({
         },
       }
 
-      if (ctx.session?.user?.id) {
+      if (ctx.user?.id) {
         data.projectsUsers = {
           create: {
             user: {
               connect: {
-                id: ctx.session.user.id,
+                id: ctx.user.id,
               },
             },
           },
@@ -168,7 +168,7 @@ const projectsRouter = createTRPCRouter({
             create: {
               user: {
                 connect: {
-                  id: ctx.session?.user?.id,
+                  id: ctx.user?.id,
                 },
               },
             },
@@ -656,7 +656,7 @@ const projectsRouter = createTRPCRouter({
       // Create Activity
       await createActivityItem({
         eventType: 'projects.published',
-        ownerId: ctx.session?.user?.id || '',
+        ownerId: ctx.user?.id || '',
         ownerType: 'User',
         subjectId: project.id,
         subjectType: 'Project',

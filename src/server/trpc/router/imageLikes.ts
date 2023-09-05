@@ -18,7 +18,7 @@ const imageLikesRouter = createTRPCRouter({
         },
         user: {
           connect: {
-            id: ctx.session.user.id,
+            id: ctx.user.id,
           },
         },
       },
@@ -38,7 +38,7 @@ const imageLikesRouter = createTRPCRouter({
 
       if (input.currentUserOnly) {
         filters.user = {
-          id: ctx.session?.user?.id || 'unauthenticated',
+          id: ctx.user?.id || 'unauthenticated',
         }
       }
 
@@ -57,7 +57,7 @@ const imageLikesRouter = createTRPCRouter({
           id: input.id,
         },
         user: {
-          id: ctx.session.user.id,
+          id: ctx.user.id,
         },
       },
     })),

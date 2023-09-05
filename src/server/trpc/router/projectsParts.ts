@@ -229,7 +229,7 @@ const projectsPartsRouter = createTRPCRouter({
         },
         user: {
           connect: {
-            id: ctx.session?.user?.id || 'unauthenticated',
+            id: ctx.user?.id || 'unauthenticated',
           },
         },
       }
@@ -275,7 +275,7 @@ const projectsPartsRouter = createTRPCRouter({
       if (project.published) {
         await createActivityItem({
           eventType: 'projects_manufacturer_parts.created',
-          ownerId: ctx.session?.user?.id || '',
+          ownerId: ctx.user?.id || '',
           ownerType: 'User',
           parentSubjectId: project.id,
           parentSubjectType: 'Project',

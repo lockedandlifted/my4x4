@@ -59,7 +59,7 @@ const businessesRouter = createTRPCRouter({
           create: {
             user: {
               connect: {
-                id: ctx.session.user.id,
+                id: ctx.user.id,
               },
             },
           },

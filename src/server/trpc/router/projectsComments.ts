@@ -19,7 +19,7 @@ const projectsCommentsRouter = createTRPCRouter({
               body: input.commentBody,
               user: {
                 connect: {
-                  id: ctx.session?.user?.id,
+                  id: ctx.user?.id,
                 },
               },
             },
@@ -48,7 +48,7 @@ const projectsCommentsRouter = createTRPCRouter({
       const projectOwnerIds = projectsComment?.project?.projectsUsers.map(projectsUser => projectsUser.user.id)
 
       if (
-        !projectOwnerIds.includes(ctx.session?.user?.id)
+        !projectOwnerIds.includes(ctx.user?.id)
         && projectsComment?.commentId
         && projectsComment?.projectId
       ) {

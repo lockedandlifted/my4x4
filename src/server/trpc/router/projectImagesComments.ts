@@ -84,7 +84,7 @@ const projectImagesCommentsRouter = createTRPCRouter({
               body: input.commentBody,
               user: {
                 connect: {
-                  id: ctx.session?.user?.id,
+                  id: ctx.user?.id,
                 },
               },
             },
@@ -106,7 +106,7 @@ const projectImagesCommentsRouter = createTRPCRouter({
       const commentOwnerId = projectImagesComment?.comment?.userId
 
       if (
-        commentOwnerId !== ctx.session?.user?.id
+        commentOwnerId !== ctx.user?.id
         && projectImagesComment?.commentId
         && projectImagesComment?.projectsImageId
       ) {

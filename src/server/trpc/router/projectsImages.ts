@@ -39,14 +39,14 @@ const projectsImagesRouter = createTRPCRouter({
             image: {
               create: {
                 title: input.image.originalFilename,
-                userId: ctx.session?.user?.id || '',
+                userId: ctx.user?.id || '',
                 ...input.image,
               },
             },
             sort: sort ? sort + 1 : 1,
             user: {
               connect: {
-                id: ctx.session?.user?.id || '',
+                id: ctx.user?.id || '',
               },
             },
           },
@@ -67,7 +67,7 @@ const projectsImagesRouter = createTRPCRouter({
       if (project.published) {
         await createActivityItem({
           eventType: 'projects_images.created',
-          ownerId: ctx.session?.user?.id || '',
+          ownerId: ctx.user?.id || '',
           ownerType: 'User',
           parentSubjectId: project.id,
           parentSubjectType: 'Project',

@@ -40,14 +40,14 @@ const postsAttachmentsRouter = createTRPCRouter({
             attachment: {
               create: {
                 title: input.attachment.originalFilename,
-                userId: ctx.session?.user?.id || '',
+                userId: ctx.user?.id || '',
                 ...input.attachment,
               },
             },
             sort: sort ? sort + 1 : 1,
             user: {
               connect: {
-                id: ctx.session?.user?.id || '',
+                id: ctx.user?.id || '',
               },
             },
           },

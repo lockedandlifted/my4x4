@@ -18,7 +18,7 @@ const projectLikesRouter = createTRPCRouter({
         },
         user: {
           connect: {
-            id: ctx.session.user.id,
+            id: ctx.user.id,
           },
         },
       },
@@ -38,7 +38,7 @@ const projectLikesRouter = createTRPCRouter({
 
       if (input.currentUserOnly) {
         filters.user = {
-          id: ctx.session?.user?.id || 'unauthenticated',
+          id: ctx.user?.id || 'unauthenticated',
         }
       }
 
@@ -57,7 +57,7 @@ const projectLikesRouter = createTRPCRouter({
           slug: input.slug,
         },
         user: {
-          id: ctx.session.user.id,
+          id: ctx.user.id,
         },
       },
     })),
