@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 import {
-  Badge, Box, Flex, Heading, Image, Link, SimpleGrid, Text,
+  Badge, Box, Flex, Heading, Image, SimpleGrid, Text,
 } from '@chakra-ui/react'
 import { FaAngleLeft, FaRegCalendar } from 'react-icons/fa'
 
@@ -23,7 +23,6 @@ import LikeButton from '@components/Post/LikeButton'
 import TogglePublishPost from '@components/Post/TogglePublishPost'
 import PostViewer from '@components/Post/Viewer'
 import SimilarPosts from '@components/Post/SimilarPosts'
-import Tags from '@components/Project/Tags'
 
 const PostPage = () => {
   const { query: { postId } } = useRouter()
@@ -226,8 +225,6 @@ const PostPage = () => {
                         {project?.title}
                       </NextLink>
                     </Heading>
-
-                    <Tags marginTop="2" project={project} />
                   </Flex>
                 </Flex>
               )
