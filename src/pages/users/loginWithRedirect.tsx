@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
   return {
     props: {},
     redirect: {
-      destination: '/api/kindeAuth/login?callback_url=/custom/path',
+      destination: '/api/kindeAuth/login?post_login_redirect_url=/custom/path',
       permanent: false,
     },
   }
