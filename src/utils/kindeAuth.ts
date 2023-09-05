@@ -4,7 +4,7 @@ import type { GetServerSidePropsContext } from 'next'
 
 const issuer = process.env.KINDE_ISSUER_URL || ''
 
-export const getServerSession = async (context: GetServerSidePropsContext) => {
+export const getServerAuthSession = async (context: GetServerSidePropsContext) => {
   const { req } = context
 
   const kindeToken = req?.cookies?.kinde_token || ''
@@ -27,4 +27,4 @@ export const getServerSession = async (context: GetServerSidePropsContext) => {
   }
 }
 
-export default getServerSession
+export default getServerAuthSession

@@ -30,7 +30,7 @@ const CreateAccountNotice = () => {
         <Button
           as="a"
           colorScheme="green"
-          href="/api/kindeAuth/login"
+          href="/users/login"
           marginTop={4}
           size="md"
         >

@@ -4,7 +4,7 @@ import type { GetServerSideProps } from 'next'
 
 import { Flex, Heading } from '@chakra-ui/react'
 
-import { getServerSession } from '@utils/kindeAuth'
+import { getServerAuthSession } from '@utils/getServerSession'
 
 import MobileLayout from '@layouts/MobileLayout'
 
@@ -27,12 +27,12 @@ const NewPostPage = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context)
+  const session = await getServerAuthSession(context)
 
   if (!session) {
     return {
       redirect: {
-        destination: '/api/kindeAuth/login?post_login_redirect_url=/posts/new',
+        destination: '/users/login?callback_url=/posts/new',
         permanent: false,
       },
     }

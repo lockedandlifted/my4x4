@@ -49,7 +49,7 @@ const LikeButton = (props: LikeButtonProps) => {
       as={isAuthenticated ? 'button' : 'a'}
       colorScheme={userProjectLikesCount ? 'red' : 'gray'}
       leftIcon={userProjectLikesCount ? <HiHeart fontSize={24} /> : <HiOutlineHeart fontSize={24} />}
-      href={isAuthenticated ? undefined : `/api/kindeAuth/login?post_login_redirect_url=/${project?.slug}`}
+      href={isAuthenticated ? undefined : `/users/login?callback_url=/${project?.slug}`}
       onClick={userProjectLikesCount
         ? () => deleteProjectLikeFn({
           slug: project?.slug,

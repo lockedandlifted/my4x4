@@ -5,6 +5,7 @@ import type { CreateNextContextOptions } from '@trpc/server/adapters/next'
 
 import type { User } from '@prisma/client'
 
+import { getServerAuthSession } from '@utils/getServerSession'
 import { prisma } from '../db/client'
 
 /**
@@ -46,40 +47,58 @@ export const createInnerTRPCContext = async (options: CreateContextOptions) => (
  */
 export const createTRPCContext = async (options: CreateNextContextOptions) => {
   const {
+    req,
     req: {
       headers: {
         authorization: authHeader,
       },
     },
+    res,
   } = options
 
   const issuer = process.env.KINDE_ISSUER_URL || ''
 
   try {
-    const verifier = JwtRsaVerifier.create({
-      audience: null,
-      issuer,
-      jwksUri: `${issuer}/.well-known/jwks.json`,
-    })
+    // Kinde Auth
+    if (process.env.AUTH_PROVIDER === 'kinde') {
+      const verifier = JwtRsaVerifier.create({
+        audience: null,
+        issuer,
+        jwksUri: `${issuer}/.well-known/jwks.json`,
+      })
 
-    const token = authHeader && authHeader.split(' ')[1]
-    const payload = await verifier.verify(token)
+      const token = authHeader && authHeader.split(' ')[1]
+      const payload = await verifier.verify(token)
 
-    const kindeUserId = payload.sub as string
+      const kindeUserId = payload.sub as string
+
+      const user = await prisma.user.findFirst({
+        where: {
+          accounts: {
+            some: {
+              provider: 'kinde',
+              providerAccountId: kindeUserId,
+            },
+          },
+        },
+      })
+
+      return await createInnerTRPCContext({
+        token,
+        user,
+      })
+    }
+
+    // NextAuth
+    const session = await getServerAuthSession({ req, res })
 
     const user = await prisma.user.findFirst({
       where: {
-        accounts: {
-          some: {
-            provider: 'kinde',
-            providerAccountId: kindeUserId,
-          },
-        },
+        id: session?.user?.id,
       },
     })
 
     return await createInnerTRPCContext({
-      token,
       user,
     })
   } catch (error) {

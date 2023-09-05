@@ -50,7 +50,7 @@ const LikeButton = (props: LikeButtonProps) => {
       as={isAuthenticated ? 'button' : 'a'}
       colorScheme={userImageLikesCount ? 'red' : 'gray'}
       leftIcon={userImageLikesCount ? <HiHeart fontSize={24} /> : <HiOutlineHeart fontSize={24} />}
-      href={isAuthenticated ? undefined : `/api/kindeAuth/login?post_login_redirect_url=/${redirect}`}
+      href={isAuthenticated ? undefined : `/users/login?callback_url=/${redirect}`}
       onClick={userImageLikesCount
         ? () => deleteImageLikeFn({
           id: image?.id,

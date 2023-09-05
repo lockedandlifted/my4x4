@@ -52,7 +52,7 @@ const LikeButton = (props: LikeButtonProps) => {
       leftIcon={userPostLikesCount ? <HiHeart fontSize={24} /> : <HiOutlineHeart fontSize={24} />}
       href={isAuthenticated
         ? undefined
-        : `/api/kindeAuth/login?post_login_redirect_url=${redirect || `/${post?.id}`}`}
+        : `/users/login?callback_url=${redirect || `/${post?.id}`}`}
       onClick={userPostLikesCount
         ? () => deletePostLikeFn({
           id: post?.id,

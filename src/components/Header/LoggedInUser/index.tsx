@@ -23,7 +23,7 @@ const LoggedInUser = () => {
   })
 
   return (
-    <NextLink href={!isAuthenticated ? '/api/kindeAuth/login' : '/users/account'}>
+    <NextLink href={!isAuthenticated ? '/users/login' : '/users/account'}>
       <Flex
         alignItems="center"
         borderWidth={hasImage ? undefined : '1px'}

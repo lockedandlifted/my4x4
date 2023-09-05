@@ -6,14 +6,15 @@ import { TrackingHeadScript } from '@phntms/next-gtm'
 import { HighlightInit } from '@highlight-run/next/highlight-init'
 import { ErrorBoundary } from '@highlight-run/react'
 import { KindeProvider } from '@kinde-oss/kinde-auth-nextjs'
-import { TRPCProvider } from '@contexts/trpc'
 
 import type { AppType } from 'next/app'
 import type { Session } from 'next-auth'
 
 import theme from '@utils/theme'
 
+import { AuthProvider } from '@contexts/auth'
 import { ImageKitContextProvider } from '@contexts/imageKit'
+import { TRPCProvider } from '@contexts/trpc'
 
 import IdentifySessionUser from '@components/IdentifySessionUser'
 
@@ -34,7 +35,7 @@ const MyApp: AppType<{ session: Session | null }> = (props) => {
   } = props
 
   return (
-    <KindeProvider>
+    <AuthProvider session={session}>
       <TRPCProvider>
         <ChakraProvider theme={theme}>
           <ImageKitContextProvider>
@@ -60,7 +61,7 @@ const MyApp: AppType<{ session: Session | null }> = (props) => {
           <Analytics />
         </ChakraProvider>
       </TRPCProvider>
-    </KindeProvider>
+    </AuthProvider>
   )
 }
 
