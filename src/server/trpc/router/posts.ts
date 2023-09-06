@@ -429,7 +429,25 @@ const postsRouter = createTRPCRouter({
         },
         postsProjects: {
           include: {
-            project: true,
+            project: {
+              include: {
+                manufacturerModel: {
+                  include: {
+                    manufacturer: true,
+                  },
+                },
+                manufacturerModelSeries: true,
+                projectsImages: {
+                  include: {
+                    image: true,
+                  },
+                  orderBy: {
+                    sort: 'asc',
+                  },
+                  take: 1,
+                },
+              },
+            },
           },
         },
         postType: true,

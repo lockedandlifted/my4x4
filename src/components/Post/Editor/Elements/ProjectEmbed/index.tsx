@@ -3,7 +3,6 @@ import { Flex, Heading } from '@chakra-ui/react'
 import { trpc } from '@utils/trpc'
 
 import ImageThumb from '@components/Image/ImageThumb'
-import Tags from '@components/Project/Tags'
 
 type ProjectEmbedProps = {
   attributes: object,
@@ -29,14 +28,12 @@ const ProjectEmbed = (props: ProjectEmbedProps) => {
     <div {...attributes}>
       <div contentEditable={false}>
         <Flex alignItems="center" borderWidth="1px" borderRadius="lg" padding="2">
-          <ImageThumb href="" image={image} />
+          <ImageThumb href={`/${project?.slug}`} image={image} />
 
           <Flex direction="column" marginLeft="4">
             <Heading size="md">
               {project?.title}
             </Heading>
-
-            <Tags marginTop="2" project={project} />
           </Flex>
         </Flex>
       </div>
