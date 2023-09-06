@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 import {
   Badge, Box, Flex, Heading, Image, Link, SimpleGrid, Text,
 } from '@chakra-ui/react'
+import { NextSeo } from 'next-seo'
 import { FaAngleLeft, FaRegCalendar } from 'react-icons/fa'
 
 import { trpc } from '@utils/trpc'
@@ -10,6 +11,7 @@ import { trpc } from '@utils/trpc'
 import useImageUrl from '@hooks/useImageUrl'
 import usePostAttachments from '@hooks/usePostAttachments'
 import usePostComments from '@hooks/usePostComments'
+import usePostOgImage from '@hooks/usePostOgImage'
 import usePostForm from '@hooks/usePostForm'
 import useValidatePostOwner from '@hooks/useValidatePostOwner'
 
@@ -97,8 +99,30 @@ const PostPage = () => {
     }],
   })
 
+  const { ogImageUrl } = usePostOgImage(post)
+  console.log(ogImageUrl)
   return (
     <MobileLayout>
+      <NextSeo
+        title={`MY4X4 | ${post?.title}`}
+        description={post?.body}
+        facebook={{
+          appId: '100089112092156',
+        }}
+        openGraph={{
+          description: post?.body || 'Checkout this post on MY4X4.info',
+          images: [
+            {
+              url: ogImageUrl,
+              alt: `Main Image for ${post?.title}`,
+            },
+          ],
+          title: post?.title,
+          type: 'website',
+          url: `https://www.my4x4.info/posts/${post?.id}`,
+        }}
+      />
+
       {isValidOwner && <EditPostBanner post={post} postViewCount={postViewCount} />}
 
       <NextLink href="/posts">
