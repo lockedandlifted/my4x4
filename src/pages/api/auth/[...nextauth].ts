@@ -60,6 +60,30 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
       clientId: env.INSTAGRAM_CLIENT_ID,
       clientSecret: env.INSTAGRAM_CLIENT_SECRET,
     }),
+    {
+      id: 'kinde',
+      name: 'Kinde',
+      type: 'oauth',
+      wellKnown: `${process.env.KINDE_ISSUER_URL}/.well-known/openid-configuration`,
+      idToken: true,
+      authorization: {
+        params: {
+          scope: 'openid email profile',
+        },
+      },
+      checks: ['state', 'pkce'],
+      options: {
+        clientId: process.env.KINDE_CLIENT_ID,
+        clientSecret: process.env.KINDE_CLIENT_SECRET,
+      },
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+        }
+      },
+    },
   ],
 })
 

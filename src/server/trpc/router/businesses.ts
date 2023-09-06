@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 
 import { createBusinessValidationSchema } from '@validationSchemas/business'
 
-import { router, protectedProcedure, publicProcedure } from '../trpc'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 
 const mapBusinessServices = (
   input: {
@@ -32,7 +32,7 @@ const mapBusinessServices = (
   return businessLocationsServices
 }
 
-const businessesRouter = router({
+const businessesRouter = createTRPCRouter({
   createBusiness: protectedProcedure
     .input(createBusinessValidationSchema)
     .mutation(({ ctx, input }) => ctx.prisma.business.create({
@@ -59,7 +59,7 @@ const businessesRouter = router({
           create: {
             user: {
               connect: {
-                id: ctx.session.user.id,
+                id: ctx.user.id,
               },
             },
           },

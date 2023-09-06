@@ -1,11 +1,10 @@
-import { getServerSession } from 'next-auth/next'
 import { useRouter } from 'next/router'
 
 import type { GetServerSideProps } from 'next'
 
-import { authOptions } from '@pages/api/auth/[...nextauth]'
-
 import { Flex, Heading } from '@chakra-ui/react'
+
+import { getServerAuthSession } from '@utils/getServerSession'
 
 import MobileLayout from '@layouts/MobileLayout'
 
@@ -28,16 +27,12 @@ const NewPostPage = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(
-    context.req,
-    context.res,
-    authOptions(context.req, context.res),
-  )
+  const session = await getServerAuthSession(context)
 
   if (!session) {
     return {
       redirect: {
-        destination: '/users/login?redirect=/posts/new',
+        destination: '/users/login?callback_url=/posts/new',
         permanent: false,
       },
     }

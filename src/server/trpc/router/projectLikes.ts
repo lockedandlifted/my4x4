@@ -2,9 +2,9 @@ import { z } from 'zod'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const projectLikesRouter = router({
+const projectLikesRouter = createTRPCRouter({
   createProjectLike: protectedProcedure
     .input(z.object({
       slug: z.string(),
@@ -18,7 +18,7 @@ const projectLikesRouter = router({
         },
         user: {
           connect: {
-            id: ctx.session.user.id,
+            id: ctx.user.id,
           },
         },
       },
@@ -38,7 +38,7 @@ const projectLikesRouter = router({
 
       if (input.currentUserOnly) {
         filters.user = {
-          id: ctx.session?.user?.id || 'unauthenticated',
+          id: ctx.user?.id || 'unauthenticated',
         }
       }
 
@@ -57,7 +57,7 @@ const projectLikesRouter = router({
           slug: input.slug,
         },
         user: {
-          id: ctx.session.user.id,
+          id: ctx.user.id,
         },
       },
     })),

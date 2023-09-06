@@ -4,9 +4,9 @@ import type { Prisma } from '@prisma/client'
 
 import { createProjectPartsImageTagValidationSchema } from '@validationSchemas/projectPartsImageTag'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const projectPartsImageTagsRouter = router({
+const projectPartsImageTagsRouter = createTRPCRouter({
   getProjectPartsImageTags: publicProcedure
     .input(z.object({
       include: z.object({

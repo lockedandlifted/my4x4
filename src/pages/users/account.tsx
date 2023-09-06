@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { Flex } from '@chakra-ui/react'
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 
 import type { GetServerSideProps } from 'next'
 
 import processCallback from '@utils/processCallback'
-import { trpc } from '@utils/trpc'
 import setTemporaryUserIdCookie from '@utils/setTemporaryUserIdCookie'
 
 import MobileLayout from '@layouts/MobileLayout'
@@ -49,16 +48,10 @@ const defaultState = {
 const UserAccountPage = (props: { temporaryUserId: string }) => {
   const { temporaryUserId } = props
 
-  const { data: sessionData } = useSession()
+  const { user } = useSession({ includeUser: true })
 
   const [state, setState] = useState(defaultState)
   const { showCreateOrEditUsersExternalLinkModal } = state
-
-  const userQuery = trpc.users.getUserById.useQuery({
-    id: sessionData?.user?.id,
-  }, { enabled: !!sessionData?.user?.id })
-
-  const { data: user } = userQuery
 
   return (
     <MobileLayout>

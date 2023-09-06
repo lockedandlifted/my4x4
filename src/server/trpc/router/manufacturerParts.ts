@@ -4,9 +4,9 @@ import type { Prisma } from '@prisma/client'
 
 import { getProjectsWithPartValidationSchema } from '@validationSchemas/manufacturerPart'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const manufacturerPartsRouter = router({
+const manufacturerPartsRouter = createTRPCRouter({
   getManufacturerParts: publicProcedure
     .input(z.object({
       categoryId: z.string().optional(),

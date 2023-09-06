@@ -4,12 +4,12 @@ import {
   Button,
   Flex,
 } from '@chakra-ui/react'
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 
 const CreateAccountNotice = () => {
-  const { data: sessionData } = useSession()
+  const { isAuthenticated } = useSession()
 
-  if (sessionData?.user !== undefined) {
+  if (isAuthenticated) {
     return null
   }
 

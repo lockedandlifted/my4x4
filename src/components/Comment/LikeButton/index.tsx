@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 import { trpc } from '@utils/trpc'
 
 import type { Comment } from '@prisma/client'
@@ -19,7 +19,7 @@ const LikeButton = (props: LikeButtonProps) => {
     comment,
   } = props
 
-  const { data: sessionData } = useSession()
+  const { isAuthenticated } = useSession()
 
   const {
     commentLikes: {
@@ -54,7 +54,7 @@ const LikeButton = (props: LikeButtonProps) => {
 
   return (
     <Button
-      as={sessionData?.user?.id ? 'button' : 'a'}
+      as={isAuthenticated ? 'button' : 'a'}
       colorScheme={userCommentLikesCount ? 'red' : 'gray'}
       onClick={userCommentLikesCount
         ? () => deleteCommentLikeFn({

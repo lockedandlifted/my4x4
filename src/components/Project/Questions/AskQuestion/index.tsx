@@ -1,9 +1,7 @@
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 
 import { Flex, Text } from '@chakra-ui/react'
 import { FaAngleRight } from 'react-icons/fa'
-
-import { trpc } from '@utils/trpc'
 
 import UserImage from '@components/UserImage'
 
@@ -14,13 +12,7 @@ type AskQuestionProps = {
 const AskQuestion = (props: AskQuestionProps) => {
   const { href } = props
 
-  const { data: sessionData } = useSession()
-
-  const userQuery = trpc.users.getUserById.useQuery({
-    id: sessionData?.user?.id,
-  }, { enabled: !!sessionData?.user?.id })
-
-  const { data: user } = userQuery
+  const { user } = useSession({ includeUser: true })
 
   return (
     <Flex

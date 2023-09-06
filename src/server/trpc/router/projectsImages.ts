@@ -5,9 +5,9 @@ import deleteActivityItem from '@utils/deleteActivityItem'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const projectsImagesRouter = router({
+const projectsImagesRouter = createTRPCRouter({
   createProjectsImage: protectedProcedure
     .input(z.object({
       projectId: z.string(),
@@ -39,14 +39,14 @@ const projectsImagesRouter = router({
             image: {
               create: {
                 title: input.image.originalFilename,
-                userId: ctx.session?.user?.id || '',
+                userId: ctx.user?.id || '',
                 ...input.image,
               },
             },
             sort: sort ? sort + 1 : 1,
             user: {
               connect: {
-                id: ctx.session?.user?.id || '',
+                id: ctx.user?.id || '',
               },
             },
           },
@@ -67,7 +67,7 @@ const projectsImagesRouter = router({
       if (project.published) {
         await createActivityItem({
           eventType: 'projects_images.created',
-          ownerId: ctx.session?.user?.id || '',
+          ownerId: ctx.user?.id || '',
           ownerType: 'User',
           parentSubjectId: project.id,
           parentSubjectType: 'Project',

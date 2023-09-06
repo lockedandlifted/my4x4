@@ -4,9 +4,9 @@ import { createProjectPartsExternalLinkValidationSchema } from '@validationSchem
 
 import { getExternalLinkUrlType } from '@utils/externalLinkType'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const projectPartsExternalLinksRouter = router({
+const projectPartsExternalLinksRouter = createTRPCRouter({
   getProjectPartsExternalLinks: publicProcedure
     .input(z.object({
       include: z.object({

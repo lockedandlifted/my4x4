@@ -1,7 +1,8 @@
-import { type GetServerSidePropsContext } from 'next'
 import { getServerSession } from 'next-auth'
 
-import { authOptions } from '../../pages/api/auth/[...nextauth]'
+import { type GetServerSidePropsContext } from 'next'
+
+import { authOptions } from '../pages/api/auth/[...nextauth]'
 
 /**
  * Wrapper for getServerSession https://next-auth.js.org/configuration/nextjs

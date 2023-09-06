@@ -1,13 +1,13 @@
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 import { H } from 'highlight.run'
 
 const IdentifySessionUser = () => {
-  const { data: sessionData } = useSession()
+  const { isAuthenticated, user } = useSession({ includeUser: true })
 
-  if (!sessionData?.user?.id) return null
+  if (!isAuthenticated || !user?.id) return null
 
-  H.identify(sessionData.user.email || 'unauthenticated', {
-    id: sessionData?.user?.id,
+  H.identify(user?.email || 'unauthenticated', {
+    id: user?.id,
   })
 
   return null

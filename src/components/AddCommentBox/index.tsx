@@ -1,9 +1,7 @@
 import {
   Button, Flex, Input, Textarea,
 } from '@chakra-ui/react'
-import { useSession } from 'next-auth/react'
-
-import { trpc } from '@utils/trpc'
+import useSession from '@hooks/useSession'
 
 import UserImage from '@components/UserImage'
 
@@ -30,13 +28,7 @@ const AddCommentBox = (props: AddCommentBoxProps) => {
     placeholder = 'Enter your reply',
   } = props
 
-  const { data: sessionData } = useSession()
-
-  const userQuery = trpc.users.getUserById.useQuery({
-    id: sessionData?.user?.id,
-  }, { enabled: !!sessionData?.user?.id })
-
-  const { data: user } = userQuery
+  const { user } = useSession({ includeUser: true })
 
   if (!user) {
     return null

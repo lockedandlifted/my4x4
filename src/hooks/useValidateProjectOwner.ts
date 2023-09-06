@@ -1,8 +1,6 @@
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 
-import { trpc } from '@utils/trpc'
-
-import type { Prisma, User } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
 type ProjectWithUsers = Prisma.ProjectGetPayload<{
   include: {
@@ -64,15 +62,7 @@ type UseValidateProjectOwnerParams = {
 function useValidateProjectOwner(params: UseValidateProjectOwnerParams) {
   const { project, temporaryUserId } = params
 
-  const { data: sessionData } = useSession()
-
-  // User
-  const userQuery = trpc.users.getUserById.useQuery(
-    { id: sessionData?.user?.id },
-    { enabled: !!sessionData?.user?.id }
-  )
-
-  const { data: user } = userQuery
+  const { user } = useSession({ includeUser: true })
 
   return {
     isValidOwner: isValidOwner({

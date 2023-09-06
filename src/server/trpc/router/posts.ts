@@ -7,7 +7,7 @@ import deleteActivityItem from '@utils/deleteActivityItem'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
 const relatedEntityKeys = {
   projectId: 'postsProjects',
@@ -21,7 +21,7 @@ const atLeastOneDefined = (
   obj: Record<string | number | symbol, unknown>,
 ) => Object.values(obj).some(v => v !== undefined)
 
-const postsRouter = router({
+const postsRouter = createTRPCRouter({
   createPost: protectedProcedure
     .input(z.object({
       body: z.string(),
@@ -51,7 +51,7 @@ const postsRouter = router({
         title: input.title,
         user: {
           connect: {
-            id: ctx.session.user.id,
+            id: ctx.user.id,
           },
         },
       }
@@ -118,7 +118,7 @@ const postsRouter = router({
       if (post.published) {
         await createActivityItem({
           eventType: 'posts.created',
-          ownerId: ctx.session?.user?.id || '',
+          ownerId: ctx.user?.id || '',
           ownerType: 'User',
           subjectId: post.id,
           subjectType: 'Post',
@@ -662,7 +662,7 @@ const postsRouter = router({
       // Create Activity
       await createActivityItem({
         eventType: 'posts.published',
-        ownerId: ctx.session?.user?.id || '',
+        ownerId: ctx.user?.id || '',
         ownerType: 'User',
         subjectId: post.id,
         subjectType: 'Post',

@@ -66,7 +66,7 @@ const ProjectCommentsPage = () => {
           />
         </Flex>
 
-        {!!comments.length && (
+        {!!comments?.length && (
           <Flex direction="column" marginTop={4}>
             {comments && comments.map(comment => (
               <Comment

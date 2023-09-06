@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const attachmentsRouter = router({
+const attachmentsRouter = createTRPCRouter({
   getAttachmentById: publicProcedure
     .input(z.object({
       id: z.string(),

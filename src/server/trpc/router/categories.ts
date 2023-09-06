@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const categoriesRouter = router({
+const categoriesRouter = createTRPCRouter({
   getCategories: publicProcedure
     .input(z.object({
       categoryTypeKey: z.string().nullable(),
