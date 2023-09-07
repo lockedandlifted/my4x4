@@ -61,6 +61,15 @@ const Footer = ({ generatedAt }: FooterProps) => (
       <Link
         color="gray.600"
         fontSize="sm"
+        onClick={() => signIn('auth0', { callbackUrl: '/users/account' })}
+        variant="ghost"
+      >
+        Login with Auth0
+      </Link>
+
+      <Link
+        color="gray.600"
+        fontSize="sm"
         onClick={() => signIn('kinde', { callbackUrl: '/users/account' })}
         variant="ghost"
       >

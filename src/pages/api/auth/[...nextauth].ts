@@ -12,6 +12,40 @@ import { type NextApiRequest, type NextApiResponse } from 'next'
 import { env } from '../../../env/server.mjs'
 import { prisma } from '../../../server/db/client'
 
+const findOrCreateUserAccount = async (params) => {
+  const { account, user } = params
+
+  if (!account.provider) return undefined
+
+  const userAccount = await prisma.account.findFirst({
+    where: {
+      provider: account.provider,
+      providerAccountId: account.providerAccountId,
+    },
+  })
+
+  // Already linked, move on
+  if (userAccount) return undefined
+
+  const dbUser = await prisma.user.findFirst({
+    where: {
+      email: user.email,
+    },
+  })
+
+  if (!dbUser) return undefined
+
+  // Create Account and link to user
+  const createdAccount = await prisma.account.create({
+    data: {
+      ...account,
+      userId: dbUser.id,
+    },
+  })
+
+  return createdAccount
+}
+
 function CustomPrismaAdapter(p: typeof prisma, req: NextApiRequest, res: NextApiResponse) {
   return {
     ...PrismaAdapter(p),
@@ -34,11 +68,17 @@ function CustomPrismaAdapter(p: typeof prisma, req: NextApiRequest, res: NextApi
 export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuthOptions => ({
   // Include user.id on session
   callbacks: {
-    async signIn({ account }: any) {
+    async signIn(options: any) {
+      const { account, user } = options
+
+      await findOrCreateUserAccount({ account, user })
+
       delete account.user_id
       return true
     },
-    session({ session, user }) {
+    session(options) {
+      const { session, user } = options
+
       if (session.user) {
         session.user.id = user.id
       }
@@ -79,7 +119,7 @@ export const authOptions = (req: NextApiRequest, res: NextApiResponse): NextAuth
       profile(profile) {
         return {
           id: profile.sub,
-          name: profile.name,
+          name: profile.name || profile.email,
           email: profile.email,
         }
       },
