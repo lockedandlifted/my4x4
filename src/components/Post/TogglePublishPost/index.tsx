@@ -28,7 +28,7 @@ const TogglePublishPost = (props: TogglePublishPostProps) => {
       <Flex alignItems="flex-start" direction="column">
 
         <AlertDescription>
-          {post.published
+          {post?.published
             ? 'Post is Published and visible to the public'
             : 'Post is not Published and therefore not visible to the public.'}
         </AlertDescription>
@@ -40,7 +40,7 @@ const TogglePublishPost = (props: TogglePublishPostProps) => {
           marginTop={4}
           size="md"
         >
-          {post.published ? 'Unpublish Post' : 'Publish Post'}
+          {post?.published ? 'Unpublish Post' : 'Publish Post'}
         </Button>
       </Flex>
     </Alert>

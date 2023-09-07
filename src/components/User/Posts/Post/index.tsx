@@ -39,7 +39,7 @@ const Post = (props: PostProps) => {
         </Heading>
 
         <Text color="gray.500" fontSize="sm" fontStyle="italic" noOfLines={1}>
-          {post.published ? 'Published' : 'Draft'}
+          {post?.published ? 'Published' : 'Draft'}
         </Text>
       </Flex>
     </Flex>

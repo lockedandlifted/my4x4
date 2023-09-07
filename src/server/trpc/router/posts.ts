@@ -115,7 +115,7 @@ const postsRouter = createTRPCRouter({
       })
 
       // Create Activity - if Published
-      if (post.published) {
+      if (post?.published) {
         await createActivityItem({
           eventType: 'posts.created',
           ownerId: ctx.user?.id || '',
