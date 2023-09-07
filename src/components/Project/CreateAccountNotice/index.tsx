@@ -23,7 +23,7 @@ const CreateAccountNotice = () => {
     >
       <Flex alignItems="flex-start" direction="column">
         <AlertDescription>
-          Create an account to save your build and secure your custom
+          Create an account to show off your build and secure your custom
           url e.g. www.my4x4.info/<strong>black-beauty</strong>
         </AlertDescription>
 
