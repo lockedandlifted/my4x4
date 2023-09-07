@@ -11,10 +11,10 @@ import type { AppType } from 'next/app'
 import type { Session } from 'next-auth'
 
 import theme from '@utils/theme'
+import { trpc } from '@utils/trpc'
 
 import { AuthProvider } from '@contexts/auth'
 import { ImageKitContextProvider } from '@contexts/imageKit'
-import { TRPCProvider } from '@contexts/trpc'
 
 import IdentifySessionUser from '@components/IdentifySessionUser'
 
@@ -36,33 +36,31 @@ const MyApp: AppType<{ session: Session | null }> = (props) => {
 
   return (
     <AuthProvider session={session}>
-      <TRPCProvider>
-        <ChakraProvider theme={theme}>
-          <ImageKitContextProvider>
-            <TrackingHeadScript id={GA_TRACKING_ID} />
-            <HighlightInit
-              projectId={HIGHLIGHT_PROJECT_ID}
-              tracingOrigins
-              networkRecording={{
-                enabled: true,
-                recordHeadersAndBody: true,
-                urlBlocklist: [],
-              }}
-            />
+      <ChakraProvider theme={theme}>
+        <ImageKitContextProvider>
+          <TrackingHeadScript id={GA_TRACKING_ID} />
+          <HighlightInit
+            projectId={HIGHLIGHT_PROJECT_ID}
+            tracingOrigins
+            networkRecording={{
+              enabled: true,
+              recordHeadersAndBody: true,
+              urlBlocklist: [],
+            }}
+          />
 
-            <ErrorBoundary>
-              <IdentifySessionUser />
-              <Component key={router.asPath} {...pageProps} />
-            </ErrorBoundary>
+          <ErrorBoundary>
+            <IdentifySessionUser />
+            <Component key={router.asPath} {...pageProps} />
+          </ErrorBoundary>
 
-            <ReactQueryDevtools initialIsOpen={false} />
-          </ImageKitContextProvider>
-          <Toaster />
-          <Analytics />
-        </ChakraProvider>
-      </TRPCProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </ImageKitContextProvider>
+        <Toaster />
+        <Analytics />
+      </ChakraProvider>
     </AuthProvider>
   )
 }
 
-export default MyApp
+export default trpc.withTRPC(MyApp)
