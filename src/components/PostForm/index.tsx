@@ -1,4 +1,4 @@
-import { Button, Flex, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 
 import usePostForm from '@hooks/usePostForm'
 
@@ -163,7 +163,7 @@ const PostForm = (props: PostFormProps) => {
       {!!post?.id && (
         <TogglePublishPost
           callbacks={{
-            togglePublishPost: post.published ? unpublishFn : publishFn,
+            togglePublishPost: post?.published ? unpublishFn : publishFn,
           }}
           post={post}
         />

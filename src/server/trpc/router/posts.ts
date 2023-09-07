@@ -115,7 +115,7 @@ const postsRouter = router({
       })
 
       // Create Activity - if Published
-      if (post.published) {
+      if (post?.published) {
         await createActivityItem({
           eventType: 'posts.created',
           ownerId: ctx.session?.user?.id || '',

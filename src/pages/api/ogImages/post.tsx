@@ -6,8 +6,6 @@ import CommentIcon from '@components/Icons/CommentIcon'
 import LicensePlateLogo from '@components/LicensePlateLogo'
 import LikeIcon from '@components/Icons/LikeIcon'
 
-import BackgroundImage from '@assets/post-og-background.jpg'
-
 const imageKit = new ImageKit({
   urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT_URL || '',
 })
@@ -38,6 +36,8 @@ async function post(req: NextRequest) {
   const postImageKey = searchParams.get('postImageKey')
   const title = searchParams.get('title')
 
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+
   const imageUrl = postImageKey !== 'undefined' ? imageKit.url({
     path: postImageKey,
     transformation: [{
@@ -45,7 +45,7 @@ async function post(req: NextRequest) {
       height: '630',
       width: '1200',
     }],
-  }) : undefined
+  }) : `${baseUrl}/post-og-background.jpg`
 
   return new ImageResponse(
     (
@@ -62,50 +62,64 @@ async function post(req: NextRequest) {
       >
         <div
           style={{
-            alignItems: 'center',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             display: 'flex',
             height: '100%',
             justifyContent: 'center',
+            padding: 50,
             width: '100%',
           }}
         >
           <div
             style={{
               background: 'white',
-              borderRadius: 25,
+              borderRadius: 15,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-start',
               padding: 50,
-              width: 845,
+              width: 560,
               maxHeight: '100%',
             }}
           >
-            <div
-              style={{
-                alignItems: 'center',
-                backgroundColor: '#fff500',
-                borderRadius: 5,
-                display: 'flex',
-                justifyContent: 'center',
-                marginRight: 'auto',
-                padding: 10,
-                width: 'auto',
-              }}
-            >
-              <span
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div
                 style={{
                   alignItems: 'center',
-                  fontSize: 16,
-                  fontStyle: 'normal',
-                  fontWeight: 'bold',
-                  lineHeight: 1,
-                  textTransform: 'uppercase',
+                  backgroundColor: '#fff500',
+                  borderRadius: 5,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginRight: 'auto',
+                  padding: 10,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  width: 'auto',
                 }}
               >
-                {categoryTitle}
-              </span>
+                <span
+                  style={{
+                    alignItems: 'center',
+                    fontSize: 16,
+                    fontStyle: 'normal',
+                    fontWeight: 'bold',
+                    justifyContent: 'center',
+                    lineHeight: 1,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {categoryTitle}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  marginLeft: 'auto',
+                }}
+              >
+                <LicensePlateLogo backgroundColor="black" fillColor="white" height={57} width={126} />
+              </div>
             </div>
 
             <span
@@ -114,7 +128,10 @@ async function post(req: NextRequest) {
                 fontStyle: 'normal',
                 fontWeight: 400,
                 lineHeight: 1.3,
-                marginTop: 32,
+                marginTop: 'auto',
+                maxHeight: 188,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
               {title}
@@ -128,7 +145,7 @@ async function post(req: NextRequest) {
                 fontSize: 20,
                 fontWeight: 400,
                 lineHeight: 1.3,
-                marginTop: 32,
+                marginTop: 'auto',
                 maxWidth: '100%',
                 textAlign: 'left',
                 whiteSpace: 'pre-wrap',
@@ -142,15 +159,6 @@ async function post(req: NextRequest) {
 
               <span style={{ marginLeft: 4 }}>{commentCount} Comments</span>
 
-            </div>
-
-            <div style={{
-              display: 'flex',
-              marginLeft: 'auto',
-              marginBottom: -95,
-            }}
-            >
-              <LicensePlateLogo height={100} width={231} />
             </div>
           </div>
         </div>
