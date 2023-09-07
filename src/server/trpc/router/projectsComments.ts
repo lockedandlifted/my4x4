@@ -2,9 +2,9 @@ import { z } from 'zod'
 
 import inngestClient from '@utils/inngestClient'
 
-import { router, protectedProcedure } from '../trpc'
+import { createTRPCRouter, protectedProcedure } from '../trpc'
 
-const projectsCommentsRouter = router({
+const projectsCommentsRouter = createTRPCRouter({
   createProjectsComment: protectedProcedure
     .input(z.object({
       commentBody: z.string(),
@@ -19,7 +19,7 @@ const projectsCommentsRouter = router({
               body: input.commentBody,
               user: {
                 connect: {
-                  id: ctx.session?.user?.id,
+                  id: ctx.user?.id,
                 },
               },
             },
@@ -48,7 +48,7 @@ const projectsCommentsRouter = router({
       const projectOwnerIds = projectsComment?.project?.projectsUsers.map(projectsUser => projectsUser.user.id)
 
       if (
-        !projectOwnerIds.includes(ctx.session?.user?.id)
+        !projectOwnerIds.includes(ctx.user?.id)
         && projectsComment?.commentId
         && projectsComment?.projectId
       ) {

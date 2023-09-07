@@ -4,12 +4,12 @@ import {
   Button,
   Flex,
 } from '@chakra-ui/react'
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 
 const CreateAccountNotice = () => {
-  const { data: sessionData } = useSession()
+  const { isAuthenticated } = useSession()
 
-  if (sessionData?.user !== undefined) {
+  if (isAuthenticated) {
     return null
   }
 
@@ -23,7 +23,7 @@ const CreateAccountNotice = () => {
     >
       <Flex alignItems="flex-start" direction="column">
         <AlertDescription>
-          Create an account to save your build and secure your custom
+          Create an account to show off your build and secure your custom
           url e.g. www.my4x4.info/<strong>black-beauty</strong>
         </AlertDescription>
 

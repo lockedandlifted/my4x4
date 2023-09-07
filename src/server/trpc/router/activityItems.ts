@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 import { Prisma } from '@prisma/client'
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const activityItemsRouter = router({
+const activityItemsRouter = createTRPCRouter({
   getActivityItems: publicProcedure
     .input(z.object({
       limit: z.number().optional(),

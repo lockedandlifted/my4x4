@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const manufacturerModelsRouter = router({
+const manufacturerModelsRouter = createTRPCRouter({
   getManufacturerModels: publicProcedure
     .input(z.object({ manufacturerId: z.string() }))
     .query(({ ctx, input }) => ctx.prisma.manufacturerModel.findMany({

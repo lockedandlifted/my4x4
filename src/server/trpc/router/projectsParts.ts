@@ -7,9 +7,9 @@ import { snakeCase } from '@utils/string'
 
 import { createProjectsPartValidationSchema, getSimilarProjectsValidationSchema } from '@validationSchemas/projectsPart'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const projectsPartsRouter = router({
+const projectsPartsRouter = createTRPCRouter({
   getProjectsParts: publicProcedure
     .input(z.object({
       ids: z.array(z.string()).optional(),
@@ -229,7 +229,7 @@ const projectsPartsRouter = router({
         },
         user: {
           connect: {
-            id: ctx.session?.user?.id || 'unauthenticated',
+            id: ctx.user?.id || 'unauthenticated',
           },
         },
       }
@@ -275,7 +275,7 @@ const projectsPartsRouter = router({
       if (project.published) {
         await createActivityItem({
           eventType: 'projects_manufacturer_parts.created',
-          ownerId: ctx.session?.user?.id || '',
+          ownerId: ctx.user?.id || '',
           ownerType: 'User',
           parentSubjectId: project.id,
           parentSubjectType: 'Project',

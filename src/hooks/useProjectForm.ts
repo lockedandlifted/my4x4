@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 import cuid from 'cuid'
 
 import type {
@@ -187,13 +187,7 @@ function useProjectForm(options: UseProjectFormOptions) {
 
   const router = useRouter()
 
-  const { data: sessionData } = useSession()
-
-  const userQuery = trpc.users.getUserById.useQuery({
-    id: sessionData?.user?.id,
-  }, { enabled: !!sessionData?.user?.id })
-
-  const { data: user } = userQuery
+  const { user } = useSession({ includeUser: true })
 
   const formPayload = useForm({
     mode: 'onChange',

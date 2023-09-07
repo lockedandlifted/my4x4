@@ -1,6 +1,4 @@
-import { useSession } from 'next-auth/react'
-
-import { trpc } from '@utils/trpc'
+import useSession from '@hooks/useSession'
 
 import type { Prisma, Post } from '@prisma/client'
 
@@ -49,15 +47,7 @@ type UseValidatePostOwnerParams = {
 function useValidatePostOwner(params: UseValidatePostOwnerParams) {
   const { post } = params
 
-  const { data: sessionData } = useSession()
-
-  // User
-  const userQuery = trpc.users.getUserById.useQuery(
-    { id: sessionData?.user?.id },
-    { enabled: !!sessionData?.user?.id },
-  )
-
-  const { data: user } = userQuery
+  const { user } = useSession({ includeUser: true })
 
   return {
     isValidOwner: isValidOwner({

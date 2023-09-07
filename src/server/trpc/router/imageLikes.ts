@@ -2,9 +2,9 @@ import { z } from 'zod'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const imageLikesRouter = router({
+const imageLikesRouter = createTRPCRouter({
   createImageLike: protectedProcedure
     .input(z.object({
       id: z.string(),
@@ -18,7 +18,7 @@ const imageLikesRouter = router({
         },
         user: {
           connect: {
-            id: ctx.session.user.id,
+            id: ctx.user.id,
           },
         },
       },
@@ -38,7 +38,7 @@ const imageLikesRouter = router({
 
       if (input.currentUserOnly) {
         filters.user = {
-          id: ctx.session?.user?.id || 'unauthenticated',
+          id: ctx.user?.id || 'unauthenticated',
         }
       }
 
@@ -57,7 +57,7 @@ const imageLikesRouter = router({
           id: input.id,
         },
         user: {
-          id: ctx.session.user.id,
+          id: ctx.user.id,
         },
       },
     })),

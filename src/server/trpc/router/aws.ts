@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { supportedMimeTypes } from '@utils/asset'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
 type GenerateFileKeyParams = {
   fileKeyPrefix?: string,
@@ -39,7 +39,7 @@ const generateFileKey = (params: GenerateFileKeyParams) => {
   return {}
 }
 
-const awsRouter = router({
+const awsRouter = createTRPCRouter({
   presignFileUpload: publicProcedure
     .input(z.object({
       fileKeyPrefix: z.string().optional(),

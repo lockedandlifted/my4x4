@@ -4,9 +4,9 @@ import { updateImageByIdValidationSchema } from '@validationSchemas/image'
 
 import deleteActivityItem from '@utils/deleteActivityItem'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const imagesRouter = router({
+const imagesRouter = createTRPCRouter({
   updateImageById: publicProcedure
     .input(updateImageByIdValidationSchema)
     .mutation(({ ctx, input }) => ctx.prisma.image.update({

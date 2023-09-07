@@ -1,6 +1,7 @@
-import { Flex, Text } from '@chakra-ui/react'
+import { Flex, Link, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { FaInstagram, FaTiktok } from 'react-icons/fa'
+import { signIn } from 'next-auth/react'
 
 type FooterProps = {
   generatedAt?: string,
@@ -56,6 +57,24 @@ const Footer = ({ generatedAt }: FooterProps) => (
       <NextLink href="/privacyPolicy">
         <Text color="gray.600" fontSize="sm">Privacy Policy</Text>
       </NextLink>
+
+      <Link
+        color="gray.600"
+        fontSize="sm"
+        onClick={() => signIn('auth0', { callbackUrl: '/users/account' })}
+        variant="ghost"
+      >
+        Login with Auth0
+      </Link>
+
+      <Link
+        color="gray.600"
+        fontSize="sm"
+        onClick={() => signIn('kinde', { callbackUrl: '/users/account' })}
+        variant="ghost"
+      >
+        Login with Kinde
+      </Link>
 
       <NextLink href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
         <Text color="gray.600" fontSize="sm">Got a Suggestion?</Text>

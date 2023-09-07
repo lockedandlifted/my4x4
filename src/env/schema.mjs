@@ -14,6 +14,11 @@ export const serverSchema = z.object({
   FACEBOOK_CLIENT_SECRET: z.string(),
   INSTAGRAM_CLIENT_ID: z.string(),
   INSTAGRAM_CLIENT_SECRET: z.string(),
+  KINDE_CLIENT_ID: z.string(),
+  KINDE_ISSUER_URL: z.string().url(),
+  KINDE_POST_LOGIN_REDIRECT_URL: z.string().url(),
+  KINDE_POST_LOGOUT_REDIRECT_URL: z.string().url(),
+  KINDE_SITE_URL: z.string().url(),
   NODE_ENV: z.enum(['development', 'test', 'production']),
   NEXTAUTH_SECRET:
     process.env.NODE_ENV === 'production'

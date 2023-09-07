@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { router, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const projectPageViewsRouter = router({
+const projectPageViewsRouter = createTRPCRouter({
   createProjectPageView: publicProcedure
     .input(z.object({
       slug: z.string(),

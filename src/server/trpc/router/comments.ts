@@ -2,9 +2,9 @@ import { z } from 'zod'
 
 import type { Prisma } from '@prisma/client'
 
-import { router, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const commentsRouter = router({
+const commentsRouter = createTRPCRouter({
   createComment: protectedProcedure
     .input(z.object({
       body: z.string(),
@@ -15,7 +15,7 @@ const commentsRouter = router({
         body: input.body,
         user: {
           connect: {
-            id: ctx.session.user.id,
+            id: ctx.user.id,
           },
         },
       }

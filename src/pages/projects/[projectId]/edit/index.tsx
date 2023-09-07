@@ -8,6 +8,7 @@ import { trpc } from '@utils/trpc'
 
 import useProjectForm from '@hooks/useProjectForm'
 import useProjectsPosts from '@hooks/useProjectsPosts'
+import useValidateProjectOwner from '@hooks/useValidateProjectOwner'
 
 import MobileLayout from '@layouts/MobileLayout'
 
@@ -101,10 +102,19 @@ const EditProjectPage = () => {
     callbacks: { createPost },
   } = projectPostsPayload
 
+  const { isValidOwner } = useValidateProjectOwner({ project })
+
+  if (!isValidOwner) {
+    return (
+      <MobileLayout>
+        <CreateAccountNotice />
+      </MobileLayout>
+    )
+  }
+
   return (
     <MobileLayout>
       <Form callbacks={{ submitForm: updateProject }} formPayload={formPayload} id="project-form">
-        <CreateAccountNotice project={project} />
         <EditProjectBanner editMode project={project} projectViewCount={projectViewCount} />
         <MainImage project={project} />
         <PublishProject callbacks={{ publishProject }} project={project} />

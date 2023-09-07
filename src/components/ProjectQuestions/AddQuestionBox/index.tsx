@@ -1,5 +1,5 @@
 import { Button, Flex, Textarea } from '@chakra-ui/react'
-import { useSession } from 'next-auth/react'
+import useSession from '@hooks/useSession'
 
 import { trpc } from '@utils/trpc'
 
@@ -24,13 +24,7 @@ const AddQuestionBox = (props: AddQuestionBoxProps) => {
     isLoading,
   } = props
 
-  const { data: sessionData } = useSession()
-
-  const userQuery = trpc.users.getUserById.useQuery({
-    id: sessionData?.user?.id,
-  }, { enabled: !!sessionData?.user?.id })
-
-  const { data: user } = userQuery
+  const { user } = useSession({ includeUser: true })
 
   if (!user) {
     return null

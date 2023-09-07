@@ -17,6 +17,7 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": "./src",
     "paths": {
+      "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
       "@contexts/*": ["contexts/*"],
       "@hooks/*": ["hooks/*"],
