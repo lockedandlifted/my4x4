@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   Button, Flex, Heading, Tag,
@@ -36,9 +36,15 @@ const Parts = (props: PartsProps) => {
   const hasInstalledParts = groupedInstalledParts.length > 0
   const hasRemovedParts = groupedRemovedParts.length > 0
 
-  const [statusKey, setStatusKey] = useState(hasInstalledParts ? 'installed' : 'removed')
+  const [statusKey, setStatusKey] = useState('installed')
 
   const groupedParts = statusKey === 'removed' ? groupedRemovedParts : groupedInstalledParts
+
+  useEffect(() => {
+    if (!hasInstalledParts && hasRemovedParts) {
+      setStatusKey('removed')
+    }
+  }, [hasInstalledParts, hasRemovedParts])
 
   if (!editMode && !hasParts) {
     return null
