@@ -18,7 +18,7 @@ const Tags = (props: TagsProps) => {
         borderWidth={1}
         borderColor="gray.200"
         cursor="pointer"
-        href={`/search?manufacturerId=${project?.manufacturerModel?.manufacturer?.id}`}
+        href={`/search?manufacturerKey=${project?.manufacturerModel?.manufacturer?.key}`}
         marginRight="1"
         marginBottom="1"
         paddingY="2"
@@ -33,7 +33,7 @@ const Tags = (props: TagsProps) => {
         borderWidth={1}
         borderColor="gray.200"
         cursor="pointer"
-        href={`/search?manufacturerId=${project?.manufacturerModel?.manufacturer?.id}&manufacturerModelId=${project?.manufacturerModel?.id}`}
+        href={`/search?manufacturerKey=${project?.manufacturerModel?.manufacturer?.key}&manufacturerModelKey=${project?.manufacturerModel?.key}`}
         marginRight="1"
         marginBottom="1"
         paddingY="2"
@@ -48,7 +48,7 @@ const Tags = (props: TagsProps) => {
         borderWidth={1}
         borderColor="gray.200"
         cursor="pointer"
-        href={`/search?manufacturerId=${project?.manufacturerModel?.manufacturer?.id}&manufacturerModelId=${project?.manufacturerModel?.id}&manufacturerModelSeriesId=${project?.manufacturerModelSeries?.id}`}
+        href={`/search?manufacturerKey=${project?.manufacturerModel?.manufacturer?.key}&manufacturerModelKey=${project?.manufacturerModel?.key}&manufacturerModelSeriesKey=${project?.manufacturerModelSeries?.key}`}
         marginRight="1"
         marginBottom="1"
         paddingY="2"

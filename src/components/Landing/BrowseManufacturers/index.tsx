@@ -34,12 +34,12 @@ const BrowseManufacturers = () => {
         </FilterGroup.Tag>
 
         {manufacturers.map((manufacturer) => {
-          const { id, title } = manufacturer
+          const { key, title } = manufacturer
 
           return (
             <FilterGroup.Tag
-              href={`/search?manufacturerId=${id}`}
-              key={id}
+              href={`/search?manufacturerKey=${key}`}
+              key={key}
               isSelected={false}
             >
               {title}
