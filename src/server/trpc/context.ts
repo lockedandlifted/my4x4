@@ -94,7 +94,7 @@ export const createTRPCContext = async (options: CreateNextContextOptions) => {
 
     const user = await prisma.user.findFirst({
       where: {
-        id: session?.user?.id,
+        id: session?.user?.id || 'undefined',
       },
     })
 
