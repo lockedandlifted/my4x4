@@ -99,7 +99,7 @@ const PostPage = () => {
   })
 
   const { ogImageUrl } = usePostOgImage(post)
-  console.log(ogImageUrl)
+
   return (
     <MobileLayout>
       <NextSeo
