@@ -409,6 +409,11 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
 
   const vehicleManufacturers: Prisma.ManufacturerCreateArgs['data'][] = [
     {
+      key: 'custom_built',
+      title: 'Custom Built',
+      manufacturerTypeId: vehicleManufacturerType?.id,
+    },
+    {
       key: 'ford',
       title: 'Ford',
       manufacturerTypeId: vehicleManufacturerType?.id,
