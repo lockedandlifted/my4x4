@@ -4,6 +4,28 @@ import type {
 
 // Manufacturer Model Series
 const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) => {
+  // Custom Buggy
+  const customBuggy = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'custom_built_buggy')
+
+  const customBuggySeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'custom_built_buggy_unique',
+      title: 'Unique',
+      manufacturerModelId: customBuggy.id,
+    },
+  ]
+
+  // Custom Crawler
+  const customCrawler = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'custom_built_crawler')
+
+  const customCrawlerSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'custom_built_crawler_unique',
+      title: 'Unique',
+      manufacturerModelId: customCrawler.id,
+    },
+  ]
+
   // Ford Everest
   const fordEverest = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'ford_everest')
 
@@ -112,6 +134,22 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       key: 'holden_colorado_rg',
       title: 'RG',
       manufacturerModelId: holdenColorado.id,
+    },
+  ]
+
+  // Holden Crewman
+  const holdenCrewman = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'holden_crewman')
+
+  const holdenCrewmanSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'holden_crewman_vy',
+      title: 'VY',
+      manufacturerModelId: holdenCrewman.id,
+    },
+    {
+      key: 'holden_crewman_vz',
+      title: 'VZ',
+      manufacturerModelId: holdenCrewman.id,
     },
   ]
 
@@ -235,6 +273,27 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       key: 'mazda_bt50_tf',
       title: 'TF',
       manufacturerModelId: mazdaBt50.id,
+    },
+  ]
+
+  // Mitsubishi Canter
+  const mitsubishiCanter = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'mitsubishi_canter')
+
+  const mitsubishiCanterSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'mitsubishi_canter_fg637',
+      title: 'FG637',
+      manufacturerModelId: mitsubishiCanter.id,
+    },
+    {
+      key: 'mitsubishi_canter_fg639',
+      title: 'FG639',
+      manufacturerModelId: mitsubishiCanter.id,
+    },
+    {
+      key: 'mitsubishi_canter_fg649',
+      title: 'FG649',
+      manufacturerModelId: mitsubishiCanter.id,
     },
   ]
 
@@ -429,12 +488,15 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
 
   // Merge Series
   const mergedSeries = [
+    ...customBuggySeries,
+    ...customCrawlerSeries,
     ...fordEverestSeries,
     ...fordF150Series,
     ...fordMaverickSeries,
     ...fordRangerRaptorSeries,
     ...fordRangerSeries,
     ...holdenColoradoSeries,
+    ...holdenCrewmanSeries,
     ...holdenRodeoSeries,
     ...isuzuDmaxSeries,
     ...isuzuMuxSeries,
@@ -443,6 +505,7 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     ...landRoverDiscoverySeries,
     ...landRoverRangeRoverSeries,
     ...mazdaBt50Series,
+    ...mitsubishiCanterSeries,
     ...mitsubishiPajeroSeries,
     ...mitsubishiTritonSeries,
     ...nissanNavaraSeries,
