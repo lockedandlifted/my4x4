@@ -91,6 +91,6 @@
     "initVersion": "6.10.3"
   },
   "prisma": {
-    "seed": "ts-node --esm prisma/seed.ts"
+    "seed": "node --no-warnings=ExperimentalWarning --loader ts-node/esm prisma/seed.ts"
   }
 }
