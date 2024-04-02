@@ -2,6 +2,22 @@ import type { Prisma, PrismaClient, Manufacturer } from '@prisma/client'
 
 // Manufacturer Models
 const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
+  // Custom
+  const custom = manufacturers.find(manufacturer => manufacturer.key === 'custom_built')
+
+  const customModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
+    {
+      key: 'custom_built_buggy',
+      title: 'Buggy',
+      manufacturerId: custom.id,
+    },
+    {
+      key: 'custom_built_crawler',
+      title: 'Crawler',
+      manufacturerId: custom.id,
+    },
+  ]
+
   // Ford
   const ford = manufacturers.find(manufacturer => manufacturer.key === 'ford')
 
@@ -140,7 +156,11 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
       title: 'Challenger',
       manufacturerId: mitsubishi.id,
     },
-
+    {
+      key: 'mitsubishi_canter',
+      title: 'Canter',
+      manufacturerId: mitsubishi.id,
+    },
   ]
 
   // Nissan
@@ -337,6 +357,11 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
       title: 'Colorado',
       manufacturerId: holden.id,
     },
+    {
+      key: 'holden_crewman',
+      title: 'Crewman',
+      manufacturerId: holden.id,
+    },
   ]
 
   // Subaru
@@ -352,22 +377,23 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
 
   // Merge Models
   const mergedModels = [
+    ...chevroletModels,
+    ...customModels,
+    ...daihatsuModels,
     ...fordModels,
+    ...gmcModels,
+    ...holdenModels,
     ...isuzuModels,
     ...jeepModels,
-    ...mazdaModels,
-    ...nissanModels,
-    ...mitsubishiModels,
-    ...toyotaModels,
-    ...ramModels,
-    ...volkswagenModels,
-    ...chevroletModels,
-    ...suzukiModels,
     ...landRoverModels,
-    ...daihatsuModels,
-    ...holdenModels,
-    ...gmcModels,
+    ...mazdaModels,
+    ...mitsubishiModels,
+    ...nissanModels,
+    ...ramModels,
     ...subaruModels,
+    ...suzukiModels,
+    ...toyotaModels,
+    ...volkswagenModels,
   ]
 
   const queries = mergedModels.map(async (data: Prisma.ManufacturerModelCreateArgs['data']) => {
