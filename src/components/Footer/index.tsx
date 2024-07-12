@@ -87,7 +87,7 @@ const Footer = ({ generatedAt }: FooterProps) => (
           MY4X4.INFO © 2023
         </Text>
 
-        <NextLink href="https://www.kengreeff.com">
+        <NextLink href="https://www.initium.studio">
           <Text fontSize="sm" color="gray.400" marginLeft={1}>by Initium Studio</Text>
         </NextLink>
       </Flex>
