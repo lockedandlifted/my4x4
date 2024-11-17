@@ -76,6 +76,10 @@ const Footer = ({ generatedAt }: FooterProps) => (
         Login with Kinde
       </Link>
 
+      <NextLink href="mailto:support@lockedandlifted4x4.com">
+        <Text color="gray.600" fontSize="sm">Contact Us</Text>
+      </NextLink>
+
       <NextLink href="mailto:support@lockedandlifted4x4.com?subject=Suggestion for MY4X4">
         <Text color="gray.600" fontSize="sm">Got a Suggestion?</Text>
       </NextLink>
