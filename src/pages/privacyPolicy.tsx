@@ -149,6 +149,10 @@ const PrivacyPolicyPage = () => (
         You can also control the information that we collect and share through the Services by adjusting your privacy settings in your account settings. Please note that even if you opt-out of receiving promotional communications, we may still send you non-promotional communications, such as those about your account or our ongoing business relations.
       </Paragraph>
 
+      <Paragraph marginTop={4}>
+        You can request deletion of your data by contacting our team using the Contact Us link on this website.
+      </Paragraph>
+
       <Heading fontWeight="medium" marginTop={8} size="md">
         5. Children's Privacy
       </Heading>
@@ -230,7 +234,7 @@ const PrivacyPolicyPage = () => (
       </Paragraph>
 
       <Paragraph marginTop={4}>
-        This policy was last modified on 10th January 2023.
+        This policy was last modified on 18th November 2024.
       </Paragraph>
 
       <Heading fontWeight="medium" marginTop={8} size="md">
