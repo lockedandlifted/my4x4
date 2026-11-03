@@ -40,6 +40,11 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       title: 'UA2',
       manufacturerModelId: fordEverest.id,
     },
+    {
+      key: 'ford_everest_next_gen',
+      title: 'Next-Gen',
+      manufacturerModelId: fordEverest.id,
+    },
   ]
 
   // Ford F-150
@@ -107,6 +112,17 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       key: 'ford_ranger_raptor_py',
       title: 'PY',
       manufacturerModelId: fordRangerRaptor.id,
+    },
+  ]
+
+  // Ford Ranger Super Duty
+  const fordRangerSuperDuty = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'ford_ranger_super_duty')
+
+  const fordRangerSuperDutySeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'ford_ranger_super_duty_next_gen',
+      title: 'Next-Gen',
+      manufacturerModelId: fordRangerSuperDuty.id,
     },
   ]
 
@@ -200,6 +216,16 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       title: 'TJ',
       manufacturerModelId: jeepWrangler.id,
     },
+    {
+      key: 'jeep_wrangler_jk',
+      title: 'JK',
+      manufacturerModelId: jeepWrangler.id,
+    },
+    {
+      key: 'jeep_wrangler_jl',
+      title: 'JL',
+      manufacturerModelId: jeepWrangler.id,
+    },
   ]
 
   // Land Rover Defender
@@ -214,6 +240,11 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     {
       key: 'land_rover_defender_130',
       title: 'TD5/130',
+      manufacturerModelId: landRoverDefender.id,
+    },
+    {
+      key: 'land_rover_defender_l663',
+      title: 'L663 (2020+)',
       manufacturerModelId: landRoverDefender.id,
     },
   ]
@@ -235,6 +266,11 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     {
       key: 'land_rover_discovery_series_l3_l319',
       title: 'LR3 (L319)',
+      manufacturerModelId: landRoverDiscovery.id,
+    },
+    {
+      key: 'land_rover_discovery_5_l462',
+      title: 'Discovery 5 (L462)',
       manufacturerModelId: landRoverDiscovery.id,
     },
   ]
@@ -327,6 +363,11 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       title: 'MR',
       manufacturerModelId: mitsubishiTriton.id,
     },
+    {
+      key: 'mitsubishi_triton_mv',
+      title: 'MV',
+      manufacturerModelId: mitsubishiTriton.id,
+    },
   ]
 
   // Nissan Navara
@@ -346,6 +387,11 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     {
       key: 'nissan_navara_d23',
       title: 'D23/NP300',
+      manufacturerModelId: nissanNavara.id,
+    },
+    {
+      key: 'nissan_navara_d27',
+      title: 'D27',
       manufacturerModelId: nissanNavara.id,
     },
   ]
@@ -374,6 +420,11 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       title: 'Y62',
       manufacturerModelId: nissanPatrol.id,
     },
+    {
+      key: 'nissan_patrol_y63',
+      title: 'Y63',
+      manufacturerModelId: nissanPatrol.id,
+    },
   ]
 
   // Suzuki Jimny
@@ -383,6 +434,11 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     {
       key: 'suzuki_jimny_jb74',
       title: 'JB74',
+      manufacturerModelId: suzukiJimny.id,
+    },
+    {
+      key: 'suzuki_jimny_xl',
+      title: 'Jimny XL (5-door)',
       manufacturerModelId: suzukiJimny.id,
     },
   ]
@@ -473,6 +529,11 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       title: 'N80',
       manufacturerModelId: toyotaHilux.id,
     },
+    {
+      key: 'toyota_hilux_n90',
+      title: 'N90',
+      manufacturerModelId: toyotaHilux.id,
+    },
   ]
 
   // Toyota Prado
@@ -483,6 +544,38 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
       key: 'toyota_prado_150',
       title: '150',
       manufacturerModelId: toyotaPrado.id,
+    },
+    {
+      key: 'toyota_prado_250',
+      title: '250',
+      manufacturerModelId: toyotaPrado.id,
+    },
+  ]
+
+  // Jeep Gladiator
+  const jeepGladiator = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'jeep_gladiator')
+
+  const jeepGladiatorSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'jeep_gladiator_jt',
+      title: 'JT',
+      manufacturerModelId: jeepGladiator.id,
+    },
+  ]
+
+  // Volkswagen Amarok
+  const volkswagenAmarok = manufacturerModels.find(manufacturerModel => manufacturerModel.key === 'volkswagen_amarok')
+
+  const volkswagenAmarokSeries: Prisma.ManufacturerModelSeriesCreateArgs['data'][] = [
+    {
+      key: 'volkswagen_amarok_2h',
+      title: '2H',
+      manufacturerModelId: volkswagenAmarok.id,
+    },
+    {
+      key: 'volkswagen_amarok_nf',
+      title: 'NF',
+      manufacturerModelId: volkswagenAmarok.id,
     },
   ]
 
@@ -495,11 +588,13 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     ...fordMaverickSeries,
     ...fordRangerRaptorSeries,
     ...fordRangerSeries,
+    ...fordRangerSuperDutySeries,
     ...holdenColoradoSeries,
     ...holdenCrewmanSeries,
     ...holdenRodeoSeries,
     ...isuzuDmaxSeries,
     ...isuzuMuxSeries,
+    ...jeepGladiatorSeries,
     ...jeepWranglerSeries,
     ...landRoverDefenderSeries,
     ...landRoverDiscoverySeries,
@@ -514,6 +609,7 @@ const seedFn = (prisma: PrismaClient, manufacturerModels: ManufacturerModel[]) =
     ...toyotaHiluxSeries,
     ...toyotaLandCruiserSeries,
     ...toyotaPradoSeries,
+    ...volkswagenAmarokSeries,
   ]
   const queries = mergedSeries.map(async (data: Prisma.ManufacturerModelSeriesCreateArgs['data']) => {
     const record = await prisma.manufacturerModelSeries.upsert({

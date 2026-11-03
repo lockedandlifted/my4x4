@@ -33,6 +33,11 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
       manufacturerId: ford.id,
     },
     {
+      key: 'ford_ranger_super_duty',
+      title: 'Ranger Super Duty',
+      manufacturerId: ford.id,
+    },
+    {
       key: 'ford_everest',
       title: 'Everest',
       manufacturerId: ford.id,
@@ -375,17 +380,102 @@ const seedFn = (prisma: PrismaClient, manufacturers: Manufacturer[]) => {
     },
   ]
 
+  // BYD
+  const byd = manufacturers.find(manufacturer => manufacturer.key === 'byd')
+
+  const bydModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
+    {
+      key: 'byd_shark_6',
+      title: 'Shark 6',
+      manufacturerId: byd.id,
+    },
+  ]
+
+  // GWM
+  const gwm = manufacturers.find(manufacturer => manufacturer.key === 'gwm')
+
+  const gwmModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
+    {
+      key: 'gwm_cannon',
+      title: 'Cannon',
+      manufacturerId: gwm.id,
+    },
+    {
+      key: 'gwm_cannon_alpha',
+      title: 'Cannon Alpha',
+      manufacturerId: gwm.id,
+    },
+    {
+      key: 'gwm_tank_300',
+      title: 'Tank 300',
+      manufacturerId: gwm.id,
+    },
+    {
+      key: 'gwm_tank_500',
+      title: 'Tank 500',
+      manufacturerId: gwm.id,
+    },
+  ]
+
+  // Ineos
+  const ineos = manufacturers.find(manufacturer => manufacturer.key === 'ineos')
+
+  const ineosModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
+    {
+      key: 'ineos_grenadier',
+      title: 'Grenadier',
+      manufacturerId: ineos.id,
+    },
+    {
+      key: 'ineos_quartermaster',
+      title: 'Quartermaster',
+      manufacturerId: ineos.id,
+    },
+  ]
+
+  // Kia
+  const kia = manufacturers.find(manufacturer => manufacturer.key === 'kia')
+
+  const kiaModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
+    {
+      key: 'kia_tasman',
+      title: 'Tasman',
+      manufacturerId: kia.id,
+    },
+  ]
+
+  // LDV
+  const ldv = manufacturers.find(manufacturer => manufacturer.key === 'ldv')
+
+  const ldvModels: Prisma.ManufacturerModelCreateArgs['data'][] = [
+    {
+      key: 'ldv_t60',
+      title: 'T60',
+      manufacturerId: ldv.id,
+    },
+    {
+      key: 'ldv_terron_9',
+      title: 'Terron 9',
+      manufacturerId: ldv.id,
+    },
+  ]
+
   // Merge Models
   const mergedModels = [
+    ...bydModels,
     ...chevroletModels,
     ...customModels,
     ...daihatsuModels,
     ...fordModels,
     ...gmcModels,
+    ...gwmModels,
     ...holdenModels,
+    ...ineosModels,
     ...isuzuModels,
     ...jeepModels,
+    ...kiaModels,
     ...landRoverModels,
+    ...ldvModels,
     ...mazdaModels,
     ...mitsubishiModels,
     ...nissanModels,

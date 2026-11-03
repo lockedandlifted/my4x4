@@ -499,6 +499,31 @@ const seedFn = (prisma: PrismaClient, manufacturerTypes: ManufacturerType[]) => 
       manufacturerTypeId: vehicleManufacturerType?.id,
     },
     {
+      key: 'byd',
+      title: 'BYD',
+      manufacturerTypeId: vehicleManufacturerType?.id,
+    },
+    {
+      key: 'gwm',
+      title: 'GWM',
+      manufacturerTypeId: vehicleManufacturerType?.id,
+    },
+    {
+      key: 'ineos',
+      title: 'Ineos',
+      manufacturerTypeId: vehicleManufacturerType?.id,
+    },
+    {
+      key: 'kia',
+      title: 'Kia',
+      manufacturerTypeId: vehicleManufacturerType?.id,
+    },
+    {
+      key: 'ldv',
+      title: 'LDV',
+      manufacturerTypeId: vehicleManufacturerType?.id,
+    },
+    {
       key: 'not_listed',
       title: 'Other',
       manufacturerTypeId: vehicleManufacturerType?.id,
